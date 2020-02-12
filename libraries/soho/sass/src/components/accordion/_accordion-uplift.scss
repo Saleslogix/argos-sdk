@@ -20,14 +20,25 @@
       }
     }
   }
+
+  &.is-expanded {
+    + .accordion-header {
+      &.is-focused:not(.hide-focus),
+      &.is-selected {
+        border-top-color: $accordion-focused-border-color;
+      }
+    }
+  }
 }
 
 // Reset positioning for Uplift expander buttons
 .accordion-header {
-  > [class^='btn'] {
-    .icon.chevron {
-      top: auto;
-    }
+  > a {
+    padding: 11px 0 13px 20px;
+  }
+
+  .btn {
+    top: -2px;
   }
 }
 
@@ -40,6 +51,15 @@ html {
           min-height: 24px;
         }
       }
+    }
+  }
+}
+
+// Adjust the acccordion panel examples
+.accordion.panel {
+  .accordion-header {
+    .btn {
+      top: -1px;
     }
   }
 }

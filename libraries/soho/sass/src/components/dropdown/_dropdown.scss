@@ -98,7 +98,7 @@ div.multiselect {
     text-align: center;
   }
 
-  > span {
+  > span:not(.tag-list) {
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -107,7 +107,6 @@ div.multiselect {
     &[data-placeholder-text]::before {
       color: $input-placeholder-color;
       content: attr(data-placeholder-text);
-      -webkit-text-fill-color: $input-placeholder-color;
     }
   }
 
@@ -143,7 +142,6 @@ div.multiselect {
     color: $input-disabled-color;
     cursor: default;
     pointer-events: none;
-    -webkit-text-fill-color: $input-disabled-color;
 
     .icon,
     + .icon {
@@ -189,7 +187,6 @@ div.multiselect {
     border-color: $input-color-readonly-border;
     color: $input-readonly-color;
     cursor: text;
-    -webkit-text-fill-color: $input-readonly-color;
 
     &[tabindex='-1']:focus {
       border-color: $input-color-readonly-border !important;
@@ -201,6 +198,39 @@ div.multiselect {
     border-color: $input-color-focus-border !important;
   }
 
+  &.has-tags {
+    line-height: normal;
+    padding: 0 30px 1px 10px;
+  }
+
+  .tag-list {
+    display: block;
+    line-height: 26px;
+    margin: 0;
+    overflow: auto;
+    padding: 2px 4px 3px;
+    text-overflow: clip;
+    white-space: normal;
+
+    &.empty {
+      padding: 16px 0 15px;
+    }
+
+    .dismissible-btn,
+    .linkable-btn {
+      .icon {
+        vertical-align: baseline;
+      }
+    }
+
+    .tag {
+      margin: 0 3px 0 0;
+    }
+
+    .icon {
+      background-color: transparent;
+    }
+  }
 }
 
 // The List
@@ -371,7 +401,7 @@ div.multiselect {
       display: inline-block;
       float: right;
       margin-left: -40px;
-      margin-top: 4px;
+      margin-top: 5px;
       position: relative;
       right: 8px;
       text-indent: 0;
@@ -573,6 +603,10 @@ div.multiselect {
     > .trigger {
       margin-left: -18px;
     }
+
+    &.ffdropdown > .trigger {
+      margin-left: 14px;
+    }
   }
 }
 
@@ -642,19 +676,37 @@ input.dropdown.error:focus {
   color: $input-color;
 }
 
-.field,
-.field-short {
+.field-short,
+.form-layout-compact .field {
   .dropdown-wrapper {
     margin-bottom: 0;
   }
 
   .dropdown {
-    line-height: normal;
+    height: $input-size-compact-height;
+  }
+
+  .dropdown-list {
+    .group-label {
+      text-indent: 5px;
+    }
   }
 }
 
 // Zeroes out a standard form-field rule
 .field {
+  .dropdown-wrapper {
+    margin-bottom: 0;
+  }
+
+  .dropdown {
+    height: $input-size-regular-height;
+
+    &.has-tags {
+      height: auto;
+    }
+  }
+
   div.dropdown,
   div.multiselect {
     .icon + span {
@@ -663,12 +715,13 @@ input.dropdown.error:focus {
   }
 }
 
-//Shorter Field Size
-.field-short {
+// Shorter Field Size
+.field-short,
+.form-layout-compact .field {
   div.dropdown {
-    font-size: $theme-size-font-sm;
+    font-size: $input-size-compact-font-size;
     margin-bottom: 0;
-    padding: 5px 21px 5px 5px;
+    padding: $dropdown-size-compact-padding;
 
     > .listoption-icon {
       height: 14px;
@@ -687,6 +740,7 @@ input.dropdown.error:focus {
       height: 30px;
       right: 4px;
       top: -2px;
+      width: 16px;
     }
 
     ~ .icon-error {
@@ -700,9 +754,36 @@ input.dropdown.error:focus {
 
 }
 
+// Compound field icon adjustments
+.compound-field {
+  .dropdown-wrapper {
+    margin-top: 0;
+  }
+
+  div.dropdown,
+  div.multiselect {
+    + .icon {
+      top: 4px;
+    }
+  }
+}
+
+.compound-field {
+  .field-short,
+  .form-layout-compact .field {
+    div.dropdown,
+    div.multiselect {
+      + .icon {
+        top: -2px;
+      }
+    }
+  }
+}
+
 // Different Width Dropdowns
 .dropdown-lg,
-.field-short .dropdown-lg {
+.field-short .dropdown-lg,
+.form-layout-compact .field .dropdown-lg {
   width: 400px;
 }
 
@@ -712,33 +793,39 @@ div.dropdown-lg {
 
 .dropdown-md,
 div.dropdown-md,
-.field-short .dropdown-md {
+.field-short .dropdown-md,
+.form-layout-compact .field .dropdown-md {
   width: 300px;
 }
 
 .dropdown-mm,
 div.dropdown-mm,
-.field-short .dropdown-mm {
+.field-short .dropdown-mm,
+.form-layout-compact .field .dropdown-mm {
   width: 225px;
 }
 
 .dropdown-sm,
 div.dropdown-sm,
-.field-short .dropdown-sm {
+.field-short .dropdown-sm,
+.form-layout-compact .field .dropdown-sm {
   width: 150px;
 }
 
 .dropdown-xs,
 div.dropdown-xs,
-.field-short .dropdown-xs {
+.field-short .dropdown-xs,
+.form-layout-compact .field .dropdown-xs {
   width: 75px;
 }
 
 // Shorter Drop Down Lists
 .dropdown-list.dropdown-short {
   .dropdown-search {
-    font-size: $theme-size-font-sm;
-    padding: 5px 16px 5px 5px;
+    font-size: $input-size-compact-font-size !important;
+    height: $input-size-compact-height !important;
+    padding: $input-size-compact-padding !important;
+    padding-right: 21px;
   }
 
   &.has-icons {
@@ -754,7 +841,10 @@ div.dropdown-xs,
 
   li {
     > a {
-      line-height: 24px;
+      font-size: $input-size-compact-font-size !important;
+      line-height: $input-size-compact-font-size * 2;
+      min-height: $input-size-compact-font-size;
+      text-indent: 5px;
     }
 
     .listoption-icon {
@@ -778,14 +868,16 @@ div.dropdown-xs,
 
   > .trigger {
     .icon {
+      height: 16px;
       left: auto;
-      right: 5px;
-      top: 3px;
+      right: 1px;
+      top: 4px;
+      width: 16px;
 
       &.search {
         height: 12px;
-        right: -4px;
-        top: -2px;
+        right: -1px;
+        top: 5px;
         width: 12px;
       }
     }
@@ -865,18 +957,38 @@ div.dropdown-xs,
 
   div.dropdown,
   div.multiselect {
-    padding: 9px 30px 8px 10px;
+    padding: $dropdown-size-regular-padding;
 
-    > span {
-      padding-top: 1px;
+    &:not(.has-tags) {
+      > span {
+        padding-top: 1px;
+      }
+    }
+
+    &.has-tags {
+      padding: 1px 30px 0 10px;
+    }
+
+    .dismissible-btn,
+    .linkable-btn {
+      .icon {
+        top: 2px;
+      }
     }
   }
 
   // Reset the padding in the rule above for Short Fields
-  .field-short {
+  .field-short,
+  .form-layout-compact .field {
     div.dropdown,
     div.multiselect {
-      padding: 5px 21px 5px 5px;
+      font-size: $input-size-compact-font-size;
+      height: $input-size-compact-height !important;
+      padding: $dropdown-size-compact-padding !important;
+
+      &.has-tags {
+        height: auto !important;
+      }
     }
   }
 
@@ -925,10 +1037,6 @@ div.dropdown-xs,
     > .listoption-icon {
       top: 11px;
     }
-
-    + .icon {
-      top: 4px;
-    }
   }
 
   .dropdown-list {
@@ -936,6 +1044,17 @@ div.dropdown-xs,
       .icon {
         &.close {
           top: 10px;
+        }
+      }
+    }
+
+    &.dropdown-short {
+      > .trigger {
+        .icon {
+          &.close {
+            height: 15px;
+            top: 5px;
+          }
         }
       }
     }
@@ -997,6 +1116,13 @@ html[dir='rtl'] {
     }
   }
 
+  div.dropdown,
+  div.multiselect {
+    &.has-tags {
+      padding: 5px 10px 5px 30px;
+    }
+  }
+
   div.dropdown {
     > .listoption-icon {
       left: auto;
@@ -1042,7 +1168,7 @@ html[dir='rtl'] {
 
     > .trigger {
       .icon {
-        margin-right: -23px;
+        margin-right: -20px;
       }
     }
 
@@ -1061,6 +1187,14 @@ html[dir='rtl'] {
           margin-left: auto;
           margin-right: -17px;
         }
+      }
+
+      // Badge Support
+      .badge {
+        float: left;
+        margin-left: 0;
+        right: -10px;
+        text-indent: 0;
       }
     }
 
@@ -1096,7 +1230,7 @@ html[dir='rtl'] {
 
   .dropdown-list.dropdown-short {
     .dropdown-search {
-      padding: 5px 5px 5px 32px;
+      padding: 4px 5px 5px 32px !important;
     }
 
     &.has-icons {
@@ -1115,7 +1249,15 @@ html[dir='rtl'] {
       li {
         a {
           padding-left: 0;
-          padding-right: 27px;
+          padding-right: 22px;
+        }
+
+        &::before {
+          right: 5px;
+        }
+
+        &.is-selected::after {
+          right: 10px;
         }
       }
     }
@@ -1136,12 +1278,13 @@ html[dir='rtl'] {
     }
   }
 
-  .field-short {
+  .field-short,
+  .form-layout-compact .field {
     .dropdown,
     .multiselect,
     input.dropdown,
     input.multiselect {
-      padding: 5px 5px 5px 18px;
+      padding: 4px 5px 5px 18px;
 
       ~ .icon-error {
         margin-left: inherit;
@@ -1187,7 +1330,8 @@ html[dir='rtl'] {
     }
 
     // Reset the padding in the rule above for Short Fields
-    .field-short {
+    .field-short,
+    .form-layout-compact .field {
       div.dropdown,
       div.multiselect {
         padding: 5px 5px 5px 21px;

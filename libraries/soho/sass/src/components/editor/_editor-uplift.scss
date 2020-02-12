@@ -24,7 +24,7 @@
     }
 
     &[data-element='u'] .icon {
-      height: 18px;
+      height: 17px;
       margin-top: 1px;
     }
 
@@ -55,7 +55,7 @@
 
     .html-icon {
       margin-left: auto;
-      width: 60px;
+      width: 45px;
     }
   }
 }
@@ -64,16 +64,19 @@
   top: 61px;
 }
 
+.is-safari {
+  .flex-toolbar.formatter-toolbar {
+    > * {
+      display: unset;
+    }
+  }
+}
+
 // IE/Edge have different icon alignments
 .ie-edge {
   .toolbar.formatter-toolbar,
   .flex-toolbar.formatter-toolbar {
     [class*='btn'] {
-      .icon {
-        margin-left: -2px;
-        margin-top: -5px;
-      }
-
       &[data-action='visual'] {
         width: 85px;
       }

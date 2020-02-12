@@ -23,14 +23,11 @@
       &::-webkit-input-placeholder {
         color: $uplift-appmenu-searchfield-placeholder-color;
         opacity: 1;
-        -webkit-text-fill-color: $uplift-appmenu-searchfield-placeholder-color;
       }
 
       &::-moz-placeholder {
         color: $uplift-appmenu-searchfield-placeholder-color;
-        line-height: normal;
         opacity: 1;
-        -webkit-text-fill-color: $uplift-appmenu-searchfield-placeholder-color;
       }
 
       &:-ms-input-placeholder {
@@ -41,6 +38,10 @@
 
     > .icon {
       top: 13px;
+    }
+
+    &:first-child {
+      margin-top: 10px;
     }
   }
 
@@ -128,19 +129,21 @@
   // so all internal accordion styles have to override this rule.
   .accordion.panel.inverse {
     background-color: transparent;
-    margin: calc(#{$theme-number-spacing-base} * 1);
+    padding: calc(#{$theme-number-spacing-base} * 1);
     width: auto;
 
     .accordion-header {
-      @include transition(border-color 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
+      @include transition(border-color 300ms $cubic-ease, padding 300ms $cubic-ease, margin 300ms $cubic-ease);
 
       border-bottom-color: transparent;
+      border-radius: $uplift-acc-border-radius;
       color: $uplift-acc-header-text-color;
       height: auto;
 
       .btn,
       .btn-expander {
         color: inherit;
+        top: auto;
 
         &:focus:not(.hide-focus) {
           border-color: $uplift-appmenu-selected-border-color;
@@ -150,6 +153,7 @@
 
       .icon {
         color: inherit;
+        top: auto;
 
         &.plus-minus {
           &::before,
@@ -184,8 +188,6 @@
 
     // Top level rules
     > .accordion-header {
-      border-radius: $uplift-acc-border-radius;
-
       > a {
         padding-bottom: 7px;
         padding-top: 9px;
@@ -209,34 +211,76 @@
 
       &.is-expanded {
         background-color: $uplift-acc-expanded-bg-color;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
+        border-radius: 0;
+        margin: 10px -10px 0;
+        padding: 10px;
+        position: relative;
 
         &:not(.is-focused),
         &:not(.is-selected) {
           border-bottom-color: transparent;
         }
 
-        &.is-focused {
-          border-bottom-color: $uplift-appmenu-selected-border-color;
+        // Shared pseudo-element for hovering/focusing/selecting this particular level
+        &:hover,
+        &.is-focused,
+        &.is-selected {
+          > a {
+            // allows the text inside the pseudo to be placed in front.
+            position: relative;
+          }
 
-          &.is-selected {
-            border-bottom-color: $uplift-appmenu-selected-border-color;
+          &::before {
+            border: 1px solid transparent;
+            border-radius: $uplift-acc-border-radius;
+            content: ' ';
+            display: block;
+            height: calc(100% - 22px);
+            position: absolute;
+            width: calc(100% - 20px);
+          }
+
+          z-index: 0;
+        }
+
+        &.is-focused {
+          background-color: $uplift-acc-expanded-bg-color;
+          border-color: transparent;
+
+          &::before {
+            border-color: $uplift-appmenu-selected-border-color;
           }
         }
 
         &.is-selected {
-          background-color: $uplift-appmenu-selected-bg-color;
+          background-color: $uplift-acc-expanded-bg-color;
           border-bottom-color: transparent;
+          border-top-color: transparent;
+
+          &::before {
+            background-color: $uplift-appmenu-selected-bg-color;
+            border-color: $uplift-appmenu-selected-bg-color;
+          }
         }
 
-        + .accordion-pane {
+        &:hover {
           background-color: $uplift-acc-expanded-bg-color;
-          border-bottom-left-radius: $uplift-acc-border-radius;
-          border-bottom-right-radius: $uplift-acc-border-radius;
 
-          .accordion-header:not(.is-selected):not(.is-focused) {
-            border-color: transparent;
+          &::before {
+            background-color: $uplift-appmenu-hover-bg-color;
+            border-color: $uplift-appmenu-hover-bg-color;
+          }
+        }
+
+        + .accordion-pane:not(.all-children-filtered) {
+          background-color: $uplift-acc-expanded-bg-color;
+
+          .accordion-header {
+            border-radius: $uplift-acc-border-radius;
+
+            &:not(.is-selected):not(.is-focused) {
+              border-color: transparent;
+            }
           }
 
           .accordion-pane {
@@ -248,11 +292,33 @@
       + .accordion-header {
         margin-top: 4px;
       }
+
+      .accordion-pane {
+        background-color: transparent;
+      }
+
+      &.filtered {
+        + .accordion-pane {
+          background-color: $uplift-acc-expanded-bg-color;
+        }
+      }
+    }
+
+    > .accordion-pane {
+      padding: 0;
+      position: relative;
+
+      &.is-expanded {
+        margin: 0 -10px;
+        padding: 0 10px 10px;
+      }
     }
 
     // Visible accordion panes force a border to show up on the next
     // accordion header for visual separation
     .accordion-pane {
+      background-color: transparent;
+
       .accordion-header {
         border-bottom-color: transparent;
         color: $uplift-acc-subheader-text-color;
@@ -313,7 +379,9 @@
 
         &.list-item {
           &::before {
-            font-size: 1rem;
+            color: inherit;
+            font-size: 0.8rem;
+            padding-right: 12px;
           }
         }
 
@@ -330,36 +398,11 @@
         + .accordion-content {
           border-top-color: transparent;
         }
-
-        + .accordion-header {
-          &.is-focused {
-            border-top-color: $uplift-appmenu-selected-border-color;
-          }
-        }
       }
     }
 
     // Round the borders of 2nd-level accordion headers in some special cases
     > .accordion-pane {
-      > .accordion-header {
-        &:not(.is-expanded):last-of-type {
-          border-bottom-left-radius: $uplift-acc-border-radius;
-          border-bottom-right-radius: $uplift-acc-border-radius;
-        }
-
-        &:last-child {
-          border-bottom-left-radius: $uplift-acc-border-radius;
-          border-bottom-right-radius: $uplift-acc-border-radius;
-        }
-      }
-
-      &.is-expanded {
-        &:last-of-type {
-          border-bottom-left-radius: $uplift-acc-border-radius;
-          border-bottom-right-radius: $uplift-acc-border-radius;
-        }
-      }
-
       + .accordion-header {
         margin-top: 4px;
       }
@@ -440,10 +483,20 @@ html[dir='rtl'] {
 
     .accordion.panel.inverse {
       .accordion-pane {
-        .accordion-header:not(.has-chevron) {
-          .icon.chevron {
-            left: auto;
-            right: -5px;
+        .accordion-header {
+          &:not(.has-chevron) {
+            .icon.chevron {
+              left: auto;
+              right: -5px;
+            }
+          }
+
+          &.list-item {
+            &::before {
+              font-size: 1.2rem;
+              padding-left: 8px;
+              padding-right: 28px;
+            }
           }
         }
       }

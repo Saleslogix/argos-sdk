@@ -18,7 +18,8 @@ label.required:not(.inline):not(.accessible)::after,
 .label.required:not(.inline):not(.accessible)::after,
 label.required .label-text:not(.accessible)::after,
 .label.required .label-text:not(.accessible)::after {
-  font-size: $theme-size-font-md;
+  font-size: $theme-size-font-sm;
+  top: 1px;
 }
 
 .field-info {
@@ -34,13 +35,5 @@ label.required .label-text:not(.accessible)::after,
 .error-message {
   .icon {
     height: 15px;
-  }
-}
-
-html:not(.is-firefox) {
-  .field-short {
-    input {
-      padding: 3px 5px;
-    }
   }
 }

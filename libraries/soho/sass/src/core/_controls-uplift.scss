@@ -22,6 +22,9 @@
 @import '../components/input/input-uplift';
 @import '../components/skiplink/skiplink';
 @import '../components/switch/switch';
+@import '../components/radios/radios-uplift';
+@import '../components/tag/tag';
+@import '../components/tag/tag-uplift';
 
 // Mid-level ====/
 @import '../components/about/about';
@@ -54,12 +57,15 @@
 @import '../components/fieldset/fieldset-uplift';
 @import '../components/fileupload/fileupload';
 @import '../components/fileupload/fileupload-uplift';
+@import '../components/fontpicker/fontpicker';
+@import '../components/fontpicker/fontpicker-uplift';
 @import '../components/header/header';
 @import '../components/header/header-uplift';
 @import '../components/hierarchy/hierarchy';
 @import '../components/hierarchy/hierarchy-uplift';
 @import '../components/listbuilder/listbuilder';
 @import '../components/listview/listview';
+@import '../components/listview/listview-uplift';
 @import '../components/lookup/lookup';
 @import '../components/lookup/lookup-uplift';
 @import '../components/mask/mask';
@@ -78,8 +84,8 @@
 @import '../components/progress/progress';
 @import '../components/rating/rating';
 @import '../components/searchfield/searchfield';
-@import '../components/searchfield/searchfield-uplift';
 @import '../components/searchfield/searchfield-toolbar';
+@import '../components/searchfield/searchfield-uplift';
 @import '../components/slider/slider';
 @import '../components/spinbox/spinbox';
 @import '../components/spinbox/spinbox-uplift';
@@ -96,7 +102,9 @@
 @import '../components/toast/toast-uplift';
 @import '../components/toolbar-flex/toolbar-flex';
 @import '../components/toolbar-flex/toolbar-flex-searchfield';
+@import '../components/toolbar-flex/toolbar-flex-searchfield-uplift';
 @import '../components/toolbar/toolbar';
+@import '../components/toolbar/toolbar-uplift';
 @import '../components/tooltip/tooltip';
 @import '../components/tooltip/tooltip-uplift';
 @import '../components/tree/tree';

@@ -1,23 +1,23 @@
-/*! 
- *  IDS Enterprise Components - v4.23.0
- *  Date: 2019-11-21T17:30:31.566Z
- *  Revision: 82cef83d9847b84aec89b42f0fff37e041a0df31
- *  
- *  
+/*!
+ *  IDS Enterprise Components - v4.25.2
+ *  Date: 2020-02-10T15:53:02.567Z
+ *  Revision: 7c93ea62e2cddfd335fb3919792c37db5e9b138e
+ *
+ *
  *  Apache License
  *  Version 2.0, January 2004
  *  http://www.apache.org/licenses/
- *  
+ *
  *  TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
- *  
+ *
  *  1. Definitions.
- *  
+ *
  *  "License" shall mean the terms and conditions for use, reproduction,
  *  and distribution as defined by Sections 1 through 9 of this document.
- *  
+ *
  *  "Licensor" shall mean the copyright owner or entity authorized by
  *  the copyright owner that is granting the License.
- *  
+ *
  *  "Legal Entity" shall mean the union of the acting entity and all
  *  other entities that control, are controlled by, or are under common
  *  control with that entity. For the purposes of this definition,
@@ -25,24 +25,24 @@
  *  direction or management of such entity, whether by contract or
  *  otherwise, or (ii) ownership of fifty percent (50%) or more of the
  *  outstanding shares, or (iii) beneficial ownership of such entity.
- *  
+ *
  *  "You" (or "Your") shall mean an individual or Legal Entity
  *  exercising permissions granted by this License.
- *  
+ *
  *  "Source" form shall mean the preferred form for making modifications,
  *  including but not limited to software source code, documentation
  *  source, and configuration files.
- *  
+ *
  *  "Object" form shall mean any form resulting from mechanical
  *  transformation or translation of a Source form, including but
  *  not limited to compiled object code, generated documentation,
  *  and conversions to other media types.
- *  
+ *
  *  "Work" shall mean the work of authorship, whether in Source or
  *  Object form, made available under the License, as indicated by a
  *  copyright notice that is included in or attached to the work
  *  (an example is provided in the Appendix below).
- *  
+ *
  *  "Derivative Works" shall mean any work, whether in Source or Object
  *  form, that is based on (or derived from) the Work and for which the
  *  editorial revisions, annotations, elaborations, or other modifications
@@ -50,7 +50,7 @@
  *  of this License, Derivative Works shall not include works that remain
  *  separable from, or merely link (or bind by name) to the interfaces of,
  *  the Work and Derivative Works thereof.
- *  
+ *
  *  "Contribution" shall mean any work of authorship, including
  *  the original version of the Work and any modifications or additions
  *  to that Work or Derivative Works thereof, that is intentionally
@@ -64,18 +64,18 @@
  *  Licensor for the purpose of discussing and improving the Work, but
  *  excluding communication that is conspicuously marked or otherwise
  *  designated in writing by the copyright owner as "Not a Contribution."
- *  
+ *
  *  "Contributor" shall mean Licensor and any individual or Legal Entity
  *  on behalf of whom a Contribution has been received by Licensor and
  *  subsequently incorporated within the Work.
- *  
+ *
  *  2. Grant of Copyright License. Subject to the terms and conditions of
  *  this License, each Contributor hereby grants to You a perpetual,
  *  worldwide, non-exclusive, no-charge, royalty-free, irrevocable
  *  copyright license to reproduce, prepare Derivative Works of,
  *  publicly display, publicly perform, sublicense, and distribute the
  *  Work and such Derivative Works in Source or Object form.
- *  
+ *
  *  3. Grant of Patent License. Subject to the terms and conditions of
  *  this License, each Contributor hereby grants to You a perpetual,
  *  worldwide, non-exclusive, no-charge, royalty-free, irrevocable
@@ -91,24 +91,24 @@
  *  or contributory patent infringement, then any patent licenses
  *  granted to You under this License for that Work shall terminate
  *  as of the date such litigation is filed.
- *  
+ *
  *  4. Redistribution. You may reproduce and distribute copies of the
  *  Work or Derivative Works thereof in any medium, with or without
  *  modifications, and in Source or Object form, provided that You
  *  meet the following conditions:
- *  
+ *
  *  (a) You must give any other recipients of the Work or
  *  Derivative Works a copy of this License; and
- *  
+ *
  *  (b) You must cause any modified files to carry prominent notices
  *  stating that You changed the files; and
- *  
+ *
  *  (c) You must retain, in the Source form of any Derivative Works
  *  that You distribute, all copyright, patent, trademark, and
  *  attribution notices from the Source form of the Work,
  *  excluding those notices that do not pertain to any part of
  *  the Derivative Works; and
- *  
+ *
  *  (d) If the Work includes a "NOTICE" text file as part of its
  *  distribution, then any Derivative Works that You distribute must
  *  include a readable copy of the attribution notices contained
@@ -125,14 +125,14 @@
  *  or as an addendum to the NOTICE text from the Work, provided
  *  that such additional attribution notices cannot be construed
  *  as modifying the License.
- *  
+ *
  *  You may add Your own copyright statement to Your modifications and
  *  may provide additional or different license terms and conditions
  *  for use, reproduction, or distribution of Your modifications, or
  *  for any such Derivative Works as a whole, provided Your use,
  *  reproduction, and distribution of the Work otherwise complies with
  *  the conditions stated in this License.
- *  
+ *
  *  5. Submission of Contributions. Unless You explicitly state otherwise,
  *  any Contribution intentionally submitted for inclusion in the Work
  *  by You to the Licensor shall be under the terms and conditions of
@@ -140,12 +140,12 @@
  *  Notwithstanding the above, nothing herein shall supersede or modify
  *  the terms of any separate license agreement you may have executed
  *  with Licensor regarding such Contributions.
- *  
+ *
  *  6. Trademarks. This License does not grant permission to use the trade
  *  names, trademarks, service marks, or product names of the Licensor,
  *  except as required for reasonable and customary use in describing the
  *  origin of the Work and reproducing the content of the NOTICE file.
- *  
+ *
  *  7. Disclaimer of Warranty. Unless required by applicable law or
  *  agreed to in writing, Licensor provides the Work (and each
  *  Contributor provides its Contributions) on an "AS IS" BASIS,
@@ -155,7 +155,7 @@
  *  PARTICULAR PURPOSE. You are solely responsible for determining the
  *  appropriateness of using or redistributing the Work and assume any
  *  risks associated with Your exercise of permissions under this License.
- *  
+ *
  *  8. Limitation of Liability. In no event and under no legal theory,
  *  whether in tort (including negligence), contract, or otherwise,
  *  unless required by applicable law (such as deliberate and grossly
@@ -167,7 +167,7 @@
  *  work stoppage, computer failure or malfunction, or any and all
  *  other commercial damages or losses), even if such Contributor
  *  has been advised of the possibility of such damages.
- *  
+ *
  *  9. Accepting Warranty or Additional Liability. While redistributing
  *  the Work or Derivative Works thereof, You may choose to offer,
  *  and charge a fee for, acceptance of support, warranty, indemnity,
@@ -178,11 +178,11 @@
  *  defend, and hold each Contributor harmless for any liability
  *  incurred by, or claims asserted against, such Contributor by reason
  *  of your accepting any such warranty or additional liability.
- *  
+ *
  *  END OF TERMS AND CONDITIONS
- *  
+ *
  *  APPENDIX: How to apply the Apache License to your work.
- *  
+ *
  *  To apply the Apache License to your work, attach the following
  *  boilerplate notice, with the fields enclosed by brackets "[]"
  *  replaced with your own identifying information. (Don't include
@@ -191,24 +191,23 @@
  *  file or class name and description of purpose be included on the
  *  same "printed page" as the copyright notice for easier
  *  identification within third-party archives.
- *  
+ *
  *  Copyright 2018  Infor, Inc.
- *  
+ *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- *  
+ *
  *  http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
- *  
- */ 
+ *
+ */
 var Soho = (function (exports) {
-  'use strict';
 
   /* eslint-disable no-console */
 
@@ -246,13 +245,37 @@ var Soho = (function (exports) {
     }
   }
 
+  /**
+   * Returns a list of all elements that currently have a $.data() property.
+   * @param {jQuery[]|HTMLElement} rootElem the root element to work from.
+   * @returns {array} containing all matching elements with a data property attached.
+   */
+  function getComponents(rootElem) {
+    var elem = !rootElem ? $('body') : $(rootElem);
+    var allElems = elem.find('*');
+    var results = [];
+
+    allElems.each(function (i, thisElem) {
+      var data = $(thisElem).data();
+      if (data && Object.keys(data).length) {
+        results.push({
+          data: data,
+          element: thisElem
+        });
+      }
+    });
+
+    return results;
+  }
+
   var debug = /*#__PURE__*/Object.freeze({
     __proto__: null,
     enableTimeLogging: enableTimeLogging,
     logTimeStart: logTimeStart,
     logTimeEnd: logTimeEnd,
     enableConsoleLogging: enableConsoleLogging,
-    log: log
+    log: log,
+    getComponents: getComponents
   });
 
   // Polyfill for `Element.prototype.matches`
@@ -266,7 +289,28 @@ var Soho = (function (exports) {
     };
   }
 
-  var version = "4.23.0";
+  // from:https://github.com/jserz/js_piece/blob/master/DOM/ChildNode/remove()/remove().md
+  /* eslint-disable */
+  (function (arr) {
+    arr.forEach(function (item) {
+      if (item.hasOwnProperty('remove')) {
+        return;
+      }
+      Object.defineProperty(item, 'remove', {
+        configurable: true,
+        enumerable: true,
+        writable: true,
+        value: function remove() {
+          if (this.parentNode === null) {
+            return;
+          }
+          this.parentNode.removeChild(this);
+        }
+      });
+    });
+  })([Element.prototype, CharacterData.prototype, DocumentType.prototype]);
+
+  var version = "4.25.2";
 
   var xssUtils = {};
 
@@ -736,6 +780,60 @@ var Soho = (function (exports) {
     return parentEls;
   };
 
+  /**
+   * Get the next sibling with an optional css selector.
+   * @param {HTMLElement/SVGElement} el The element being checked
+   * @param {string} selector a valid CSS selector
+   * @returns {HTMLElement} The next sibling
+   */
+  DOM.getNextSibling = function getNextSibling(el, selector) {
+    if (el instanceof $ && el.length) {
+      el = el[0];
+    }
+
+    // Get the next sibling element
+    var sibling = el.nextElementSibling;
+
+    // If there's no selector, return the first sibling
+    if (!selector) return sibling;
+
+    // If the sibling matches our selector, use it
+    // If not, jump to the next sibling and continue the loop
+    while (sibling) {
+      if (sibling.matches(selector)) return sibling;
+      sibling = sibling.nextElementSibling;
+    }
+
+    return undefined;
+  };
+
+  /**
+   * Get the next previous with an optional css selector.
+   * @param {HTMLElement/SVGElement} el The element being checked
+   * @param {string} selector a valid CSS selector
+   * @returns {HTMLElement} The previous sibling
+   */
+  DOM.getPreviousSibling = function getPreviousSibling(el, selector) {
+    if (el instanceof $ && el.length) {
+      el = el[0];
+    }
+
+    // Get the previous sibling element
+    var sibling = el.previousElementSibling;
+
+    // If there's no selector, return the first sibling
+    if (!selector) return sibling;
+
+    // If the sibling matches our selector, use it
+    // If not, jump to the previous sibling and continue the loop
+    while (sibling) {
+      if (sibling.matches(selector)) return sibling;
+      sibling = sibling.previousElementSibling;
+    }
+
+    return undefined;
+  };
+
   // =================================================================
   // Soho JS-level Breakpoint Access
   // NOTE: these should match whatever the breakpoints are in "/sass/_config.scss"
@@ -984,6 +1082,24 @@ var Soho = (function (exports) {
         this.browser.name = 'safari';
       }
 
+      this.browser.isWKWebView = function () {
+        return false;
+      };
+
+      if (navigator.platform.substr(0, 2) === 'iP') {
+        var lte9 = /constructor/i.test(window.HTMLElement);
+        var idb = !!window.indexedDB;
+
+        if (window.webkit && window.webkit.messageHandlers || !lte9 || idb) {
+          // WKWebView
+          this.browser.name = 'wkwebview';
+          cssClasses += 'is-safari is-wkwebview ';
+          this.browser.isWKWebView = function () {
+            return true;
+          };
+        }
+      }
+
       if (ua.indexOf('Chrome') !== -1) {
         cssClasses += 'is-chrome ';
         this.browser.name = 'chrome';
@@ -1063,6 +1179,7 @@ var Soho = (function (exports) {
       var nameOffset = void 0;
       var verOffset = void 0;
       var ix = void 0;
+      var browserVersionName = '';
 
       if ((verOffset = nUAgent.indexOf('Opera')) !== -1) {
         //eslint-disable-line
@@ -1089,6 +1206,9 @@ var Soho = (function (exports) {
         //eslint-disable-line
         browser = 'Chrome';
         version = nUAgent.substring(verOffset + 7);
+        if (nUAgent.indexOf('Edg') > -1) {
+          browserVersionName = 'Microsoft Edge';
+        }
       } else if ((verOffset = nUAgent.indexOf('Safari')) !== -1) {
         //eslint-disable-line
         browser = 'Safari';
@@ -1097,6 +1217,11 @@ var Soho = (function (exports) {
           //eslint-disable-line
           version = nUAgent.substring(verOffset + 8);
         }
+      } else if (this.browser.isWKWebView()) {
+        //eslint-disable-line
+        browser = 'WKWebView'; //eslint-disable-line
+        version = '';
+        majorVersion = '';
       } else if ((verOffset = nUAgent.indexOf('Firefox')) !== -1) {
         //eslint-disable-line
         browser = 'Firefox';
@@ -1163,11 +1288,12 @@ var Soho = (function (exports) {
 
       this.devicespecs = {
         currentBrowser: browser,
-        browserVersion: version,
+        browserVersion: version.trim(),
         browserMajorVersion: majorVersion,
         isMobile: mobile,
         os: os,
-        currentOSVersion: osVersion
+        currentOSVersion: osVersion,
+        browserVersionName: browserVersionName
       };
     },
 
@@ -1201,10 +1327,24 @@ var Soho = (function (exports) {
   };
 
   /**
+   * @returns {boolean} whether or not the current browser is MS Edge
+   */
+  Environment.browser.isEdge = function () {
+    return Environment.browser.name === 'edge';
+  };
+
+  /**
    * @returns {boolean} whether or not the current browser is IE11
    */
   Environment.browser.isIE11 = function () {
     return Environment.browser.name === 'ie' && Environment.browser.version === '11';
+  };
+
+  /**
+   * @returns {boolean} whether or not the current browser is Safari and includes wkWebView as safari
+   */
+  Environment.browser.isSafari = function () {
+    return Environment.browser.name === 'safari' || Environment.browser.name === 'wkwebview';
   };
 
   /**
@@ -1235,7 +1375,7 @@ var Soho = (function (exports) {
         this.element = element;
       }
 
-      var $el = $(element);
+      var $el = $(this.element);
       var isClick = false;
       var isFocused = false;
       var labelClicked = false;
@@ -2319,8 +2459,15 @@ var Soho = (function (exports) {
    * @param {HTMLElement} element the element to get selection
    * @param {number} startPos starting position of the text caret
    * @param {number} endPos ending position of the text caret
+   * @returns {void}
    */
   utils.safeSetSelection = function safeSetSelection(element, startPos, endPos) {
+    // If this text field doesn't support text caret selection, return out
+    var compatibleTypes = ['text', 'password', 'search', 'url', 'week', 'month'];
+    if (!(element instanceof HTMLInputElement) || compatibleTypes.indexOf(element.type) === -1) {
+      return;
+    }
+
     if (startPos && endPos === undefined) {
       endPos = startPos;
     }
@@ -2526,6 +2673,18 @@ var Soho = (function (exports) {
     outer.parentNode.removeChild(outer);
 
     return widthNoScroll - widthWithScroll;
+  };
+
+  var objectUtils = {};
+
+  /**
+   * Checks to see if an object has any identifiable properties beyond standard Object properties
+   * that can be used for comparison or evaluation.
+   * @param {object} obj the object to check.
+   * @returns {boolean} true if the object is empty, false if it contains properties.
+   */
+  objectUtils.isEmpty = function (obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
   };
 
   var stringUtils = {};
@@ -2761,6 +2920,12 @@ var Soho = (function (exports) {
     return number.toString().split('.')[1].length || 0;
   };
 
+  /* eslint-disable */
+  // Modified version of Amro Osama's code. From at https://github.com/kbwood/calendars/blob/master/src/js/jquery.calendars.ummalqura.js
+  var ummalquraData = [20, 50, 79, 109, 138, 168, 197, 227, 256, 286, 315, 345, 374, 404, 433, 463, 492, 522, 551, 581, 611, 641, 670, 700, 729, 759, 788, 818, 847, 877, 906, 936, 965, 995, 1024, 1054, 1083, 1113, 1142, 1172, 1201, 1231, 1260, 1290, 1320, 1350, 1379, 1409, 1438, 1468, 1497, 1527, 1556, 1586, 1615, 1645, 1674, 1704, 1733, 1763, 1792, 1822, 1851, 1881, 1910, 1940, 1969, 1999, 2028, 2058, 2087, 2117, 2146, 2176, 2205, 2235, 2264, 2294, 2323, 2353, 2383, 2413, 2442, 2472, 2501, 2531, 2560, 2590, 2619, 2649, 2678, 2708, 2737, 2767, 2796, 2826, 2855, 2885, 2914, 2944, 2973, 3003, 3032, 3062, 3091, 3121, 3150, 3180, 3209, 3239, 3268, 3298, 3327, 3357, 3386, 3416, 3446, 3476, 3505, 3535, 3564, 3594, 3623, 3653, 3682, 3712, 3741, 3771, 3800, 3830, 3859, 3889, 3918, 3948, 3977, 4007, 4036, 4066, 4095, 4125, 4155, 4185, 4214, 4244, 4273, 4303, 4332, 4362, 4391, 4421, 4450, 4480, 4509, 4539, 4568, 4598, 4627, 4657, 4686, 4716, 4745, 4775, 4804, 4834, 4863, 4893, 4922, 4952, 4981, 5011, 5040, 5070, 5099, 5129, 5158, 5188, 5218, 5248, 5277, 5307, 5336, 5366, 5395, 5425, 5454, 5484, 5513, 5543, 5572, 5602, 5631, 5661, 5690, 5720, 5749, 5779, 5808, 5838, 5867, 5897, 5926, 5956, 5985, 6015, 6044, 6074, 6103, 6133, 6162, 6192, 6221, 6251, 6281, 6311, 6340, 6370, 6399, 6429, 6458, 6488, 6517, 6547, 6576, 6606, 6635, 6665, 6694, 6724, 6753, 6783, 6812, 6842, 6871, 6901, 6930, 6960, 6989, 7019, 7048, 7078, 7107, 7137, 7166, 7196, 7225, 7255, 7284, 7314, 7344, 7374, 7403, 7433, 7462, 7492, 7521, 7551, 7580, 7610, 7639, 7669, 7698, 7728, 7757, 7787, 7816, 7846, 7875, 7905, 7934, 7964, 7993, 8023, 8053, 8083, 8112, 8142, 8171, 8201, 8230, 8260, 8289, 8319, 8348, 8378, 8407, 8437, 8466, 8496, 8525, 8555, 8584, 8614, 8643, 8673, 8702, 8732, 8761, 8791, 8821, 8850, 8880, 8909, 8938, 8968, 8997, 9027, 9056, 9086, 9115, 9145, 9175, 9205, 9234, 9264, 9293, 9322, 9352, 9381, 9410, 9440, 9470, 9499, 9529, 9559, 9589, 9618, 9648, 9677, 9706, 9736, 9765, 9794, 9824, 9853, 9883, 9913, 9943, 9972, 10002, 10032, 10061, 10090, 10120, 10149, 10178, 10208, 10237, 10267, 10297, 10326, 10356, 10386, 10415, 10445, 10474, 10504, 10533, 10562, 10592, 10621, 10651, 10680, 10710, 10740, 10770, 10799, 10829, 10858, 10888, 10917, 10947, 10976, 11005, 11035, 11064, 11094, 11124, 11153, 11183, 11213, 11242, 11272, 11301, 11331, 11360, 11389, 11419, 11448, 11478, 11507, 11537, 11567, 11596, 11626, 11655, 11685, 11715, 11744, 11774, 11803, 11832, 11862, 11891, 11921, 11950, 11980, 12010, 12039, 12069, 12099, 12128, 12158, 12187, 12216, 12246, 12275, 12304, 12334, 12364, 12393, 12423, 12453, 12483, 12512, 12542, 12571, 12600, 12630, 12659, 12688, 12718, 12747, 12777, 12807, 12837, 12866, 12896, 12926, 12955, 12984, 13014, 13043, 13072, 13102, 13131, 13161, 13191, 13220, 13250, 13280, 13310, 13339, 13368, 13398, 13427, 13456, 13486, 13515, 13545, 13574, 13604, 13634, 13664, 13693, 13723, 13752, 13782, 13811, 13840, 13870, 13899, 13929, 13958, 13988, 14018, 14047, 14077, 14107, 14136, 14166, 14195, 14224, 14254, 14283, 14313, 14342, 14372, 14401, 14431, 14461, 14490, 14520, 14550, 14579, 14609, 14638, 14667, 14697, 14726, 14756, 14785, 14815, 14844, 14874, 14904, 14933, 14963, 14993, 15021, 15051, 15081, 15110, 15140, 15169, 15199, 15228, 15258, 15287, 15317, 15347, 15377, 15406, 15436, 15465, 15494, 15524, 15553, 15582, 15612, 15641, 15671, 15701, 15731, 15760, 15790, 15820, 15849, 15878, 15908, 15937, 15966, 15996, 16025, 16055, 16085, 16114, 16144, 16174, 16204, 16233, 16262, 16292, 16321, 16350, 16380, 16409, 16439, 16468, 16498, 16528, 16558, 16587, 16617, 16646, 16676, 16705, 16734, 16764, 16793, 16823, 16852, 16882, 16912, 16941, 16971, 17001, 17030, 17060, 17089, 17118, 17148, 17177, 17207, 17236, 17266, 17295, 17325, 17355, 17384, 17414, 17444, 17473, 17502, 17532, 17561, 17591, 17620, 17650, 17679, 17709, 17738, 17768, 17798, 17827, 17857, 17886, 17916, 17945, 17975, 18004, 18034, 18063, 18093, 18122, 18152, 18181, 18211, 18241, 18270, 18300, 18330, 18359, 18388, 18418, 18447, 18476, 18506, 18535, 18565, 18595, 18625, 18654, 18684, 18714, 18743, 18772, 18802, 18831, 18860, 18890, 18919, 18949, 18979, 19008, 19038, 19068, 19098, 19127, 19156, 19186, 19215, 19244, 19274, 19303, 19333, 19362, 19392, 19422, 19452, 19481, 19511, 19540, 19570, 19599, 19628, 19658, 19687, 19717, 19746, 19776, 19806, 19836, 19865, 19895, 19924, 19954, 19983, 20012, 20042, 20071, 20101, 20130, 20160, 20190, 20219, 20249, 20279, 20308, 20338, 20367, 20396, 20426, 20455, 20485, 20514, 20544, 20573, 20603, 20633, 20662, 20692, 20721, 20751, 20780, 20810, 20839, 20869, 20898, 20928, 20957, 20987, 21016, 21046, 21076, 21105, 21135, 21164, 21194, 21223, 21253, 21282, 21312, 21341, 21371, 21400, 21430, 21459, 21489, 21519, 21548, 21578, 21607, 21637, 21666, 21696, 21725, 21754, 21784, 21813, 21843, 21873, 21902, 21932, 21962, 21991, 22021, 22050, 22080, 22109, 22138, 22168, 22197, 22227, 22256, 22286, 22316, 22346, 22375, 22405, 22434, 22464, 22493, 22522, 22552, 22581, 22611, 22640, 22670, 22700, 22730, 22759, 22789, 22818, 22848, 22877, 22906, 22936, 22965, 22994, 23024, 23054, 23083, 23113, 23143, 23173, 23202, 23232, 23261, 23290, 23320, 23349, 23379, 23408, 23438, 23467, 23497, 23527, 23556, 23586, 23616, 23645, 23674, 23704, 23733, 23763, 23792, 23822, 23851, 23881, 23910, 23940, 23970, 23999, 24029, 24058, 24088, 24117, 24147, 24176, 24206, 24235, 24265, 24294, 24324, 24353, 24383, 24413, 24442, 24472, 24501, 24531, 24560, 24590, 24619, 24648, 24678, 24707, 24737, 24767, 24796, 24826, 24856, 24885, 24915, 24944, 24974, 25003, 25032, 25062, 25091, 25121, 25150, 25180, 25210, 25240, 25269, 25299, 25328, 25358, 25387, 25416, 25446, 25475, 25505, 25534, 25564, 25594, 25624, 25653, 25683, 25712, 25742, 25771, 25800, 25830, 25859, 25888, 25918, 25948, 25977, 26007, 26037, 26067, 26096, 26126, 26155, 26184, 26214, 26243, 26272, 26302, 26332, 26361, 26391, 26421, 26451, 26480, 26510, 26539, 26568, 26598, 26627, 26656, 26686, 26715, 26745, 26775, 26805, 26834, 26864, 26893, 26923, 26952, 26982, 27011, 27041, 27070, 27099, 27129, 27159, 27188, 27218, 27248, 27277, 27307, 27336, 27366, 27395, 27425, 27454, 27484, 27513, 27542, 27572, 27602, 27631, 27661, 27691, 27720, 27750, 27779, 27809, 27838, 27868, 27897, 27926, 27956, 27985, 28015, 28045, 28074, 28104, 28134, 28163, 28193, 28222, 28252, 28281, 28310, 28340, 28369, 28399, 28428, 28458, 28488, 28517, 28547, 28577,
+  // From 1356
+  28607, 28636, 28665, 28695, 28724, 28754, 28783, 28813, 28843, 28872, 28901, 28931, 28960, 28990, 29019, 29049, 29078, 29108, 29137, 29167, 29196, 29226, 29255, 29285, 29315, 29345, 29375, 29404, 29434, 29463, 29492, 29522, 29551, 29580, 29610, 29640, 29669, 29699, 29729, 29759, 29788, 29818, 29847, 29876, 29906, 29935, 29964, 29994, 30023, 30053, 30082, 30112, 30141, 30171, 30200, 30230, 30259, 30289, 30318, 30348, 30378, 30408, 30437, 30467, 30496, 30526, 30555, 30585, 30614, 30644, 30673, 30703, 30732, 30762, 30791, 30821, 30850, 30880, 30909, 30939, 30968, 30998, 31027, 31057, 31086, 31116, 31145, 31175, 31204, 31234, 31263, 31293, 31322, 31352, 31381, 31411, 31441, 31471, 31500, 31530, 31559, 31589, 31618, 31648, 31676, 31706, 31736, 31766, 31795, 31825, 31854, 31884, 31913, 31943, 31972, 32002, 32031, 32061, 32090, 32120, 32150, 32180, 32209, 32239, 32268, 32298, 32327, 32357, 32386, 32416, 32445, 32475, 32504, 32534, 32563, 32593, 32622, 32652, 32681, 32711, 32740, 32770, 32799, 32829, 32858, 32888, 32917, 32947, 32976, 33006, 33035, 33065, 33094, 33124, 33153, 33183, 33213, 33243, 33272, 33302, 33331, 33361, 33390, 33420, 33450, 33479, 33509, 33539, 33568, 33598, 33627, 33657, 33686, 33716, 33745, 33775, 33804, 33834, 33863, 33893, 33922, 33952, 33981, 34011, 34040, 34069, 34099, 34128, 34158, 34187, 34217, 34247, 34277, 34306, 34336, 34365, 34395, 34424, 34454, 34483, 34512, 34542, 34571, 34601, 34631, 34660, 34690, 34719, 34749, 34778, 34808, 34837, 34867, 34896, 34926, 34955, 34985, 35015, 35044, 35074, 35103, 35133, 35162, 35192, 35222, 35251, 35280, 35310, 35340, 35370, 35399, 35429, 35458, 35488, 35517, 35547, 35576, 35605, 35635, 35665, 35694, 35723, 35753, 35782, 35811, 35841, 35871, 35901, 35930, 35960, 35989, 36019, 36048, 36078, 36107, 36136, 36166, 36195, 36225, 36254, 36284, 36314, 36343, 36373, 36403, 36433, 36462, 36492, 36521, 36551, 36580, 36610, 36639, 36669, 36698, 36728, 36757, 36786, 36816, 36845, 36875, 36904, 36934, 36963, 36993, 37022, 37052, 37081, 37111, 37141, 37170, 37200, 37229, 37259, 37288, 37318, 37347, 37377, 37406, 37436, 37465, 37495, 37524, 37554, 37584, 37613, 37643, 37672, 37701, 37731, 37760, 37790, 37819, 37849, 37878, 37908, 37938, 37967, 37997, 38027, 38056, 38085, 38115, 38144, 38174, 38203, 38233, 38262, 38292, 38322, 38351, 38381, 38410, 38440, 38469, 38499, 38528, 38558, 38587, 38617, 38646, 38676, 38705, 38735, 38764, 38794, 38823, 38853, 38882, 38912, 38941, 38971, 39001, 39030, 39059, 39089, 39118, 39148, 39178, 39208, 39237, 39267, 39297, 39326, 39355, 39385, 39414, 39444, 39473, 39503, 39532, 39562, 39592, 39621, 39650, 39680, 39709, 39739, 39768, 39798, 39827, 39857, 39886, 39916, 39946, 39975, 40005, 40035, 40064, 40094, 40123, 40153, 40182, 40212, 40241, 40271, 40300, 40330, 40359, 40389, 40418, 40448, 40477, 40507, 40536, 40566, 40595, 40625, 40655, 40685, 40714, 40744, 40773, 40803, 40832, 40862, 40892, 40921, 40951, 40980, 41009, 41039, 41068, 41098, 41127, 41157, 41186, 41216, 41245, 41275, 41304, 41334, 41364, 41393, 41422, 41452, 41481, 41511, 41540, 41570, 41599, 41629, 41658, 41688, 41718, 41748, 41777, 41807, 41836, 41865, 41894, 41924, 41953, 41983, 42012, 42042, 42072, 42102, 42131, 42161, 42190, 42220, 42249, 42279, 42308, 42337, 42367, 42397, 42426, 42456, 42485, 42515, 42545, 42574, 42604, 42633, 42662, 42692, 42721, 42751, 42780, 42810, 42839, 42869, 42899, 42929, 42958, 42988, 43017, 43046, 43076, 43105, 43135, 43164, 43194, 43223, 43253, 43283, 43312, 43342, 43371, 43401, 43430, 43460, 43489, 43519, 43548, 43578, 43607, 43637, 43666, 43696, 43726, 43755, 43785, 43814, 43844, 43873, 43903, 43932, 43962, 43991, 44021, 44050, 44080, 44109, 44139, 44169, 44198, 44228, 44258, 44287, 44317, 44346, 44375, 44405, 44434, 44464, 44493, 44523, 44553, 44582, 44612, 44641, 44671, 44700, 44730, 44759, 44788, 44818, 44847, 44877, 44906, 44936, 44966, 44996, 45025, 45055, 45084, 45114, 45143, 45172, 45202, 45231, 45261, 45290, 45320, 45350, 45380, 45409, 45439, 45468, 45498, 45527, 45556, 45586, 45615, 45644, 45674, 45704, 45733, 45763, 45793, 45823, 45852, 45882, 45911, 45940, 45970, 45999, 46028, 46058, 46088, 46117, 46147, 46177, 46206, 46236, 46265, 46295, 46324, 46354, 46383, 46413, 46442, 46472, 46501, 46531, 46560, 46590, 46620, 46649, 46679, 46708, 46738, 46767, 46797, 46826, 46856, 46885, 46915, 46944, 46974, 47003, 47033, 47063, 47092, 47122, 47151, 47181, 47210, 47240, 47269, 47298, 47328, 47357, 47387, 47417, 47446, 47476, 47506, 47535, 47565, 47594, 47624, 47653, 47682, 47712, 47741, 47771, 47800, 47830, 47860, 47890, 47919, 47949, 47978, 48008, 48037, 48066, 48096, 48125, 48155, 48184, 48214, 48244, 48273, 48303, 48333, 48362, 48392, 48421, 48450, 48480, 48509, 48538, 48568, 48598, 48627, 48657, 48687, 48717, 48746, 48776, 48805, 48834, 48864, 48893, 48922, 48952, 48982, 49011, 49041, 49071, 49100, 49130, 49160, 49189, 49218, 49248, 49277, 49306, 49336, 49365, 49395, 49425, 49455, 49484, 49514, 49543, 49573, 49602, 49632, 49661, 49690, 49720, 49749, 49779, 49809, 49838, 49868, 49898, 49927, 49957, 49986, 50016, 50045, 50075, 50104, 50133, 50163, 50192, 50222, 50252, 50281, 50311, 50340, 50370, 50400, 50429, 50459, 50488, 50518, 50547, 50576, 50606, 50635, 50665, 50694, 50724, 50754, 50784, 50813, 50843, 50872, 50902, 50931, 50960, 50990, 51019, 51049, 51078, 51108, 51138, 51167, 51197, 51227, 51256, 51286, 51315, 51345, 51374, 51403, 51433, 51462, 51492, 51522, 51552, 51582, 51611, 51641, 51670, 51699, 51729, 51758, 51787, 51816, 51846, 51876, 51906, 51936, 51965, 51995, 52025, 52054, 52083, 52113, 52142, 52171, 52200, 52230, 52260, 52290, 52319, 52349, 52379, 52408, 52438, 52467, 52497, 52526, 52555, 52585, 52614, 52644, 52673, 52703, 52733, 52762, 52792, 52822, 52851, 52881, 52910, 52939, 52969, 52998, 53028, 53057, 53087, 53116, 53146, 53176, 53205, 53235, 53264, 53294, 53324, 53353, 53383, 53412, 53441, 53471, 53500, 53530, 53559, 53589, 53619, 53648, 53678, 53708, 53737, 53767, 53796, 53825, 53855, 53884, 53914, 53943, 53973, 54003, 54032, 54062, 54092, 54121, 54151, 54180, 54209, 54239, 54268, 54297, 54327, 54357, 54387, 54416, 54446, 54476, 54505, 54535, 54564, 54593, 54623, 54652, 54681, 54711, 54741, 54770, 54800, 54830, 54859, 54889, 54919, 54948, 54977, 55007, 55036, 55066, 55095, 55125, 55154, 55184, 55213, 55243, 55273, 55302, 55332, 55361, 55391, 55420, 55450, 55479, 55508, 55538, 55567, 55597, 55627, 55657, 55686, 55716, 55745, 55775, 55804, 55834, 55863, 55892, 55922, 55951, 55981, 56011, 56040, 56070, 56100, 56129, 56159, 56188, 56218, 56247, 56276, 56306, 56335, 56365, 56394, 56424, 56454, 56483, 56513, 56543, 56572, 56601, 56631, 56660, 56690, 56719, 56749, 56778, 56808, 56837, 56867, 56897, 56926, 56956, 56985, 57015, 57044, 57074, 57103, 57133, 57162, 57192, 57221, 57251, 57280, 57310, 57340, 57369, 57399, 57429, 57458, 57487, 57517, 57546, 57576, 57605, 57634, 57664, 57694, 57723, 57753, 57783, 57813, 57842, 57871, 57901, 57930, 57959, 57989, 58018, 58048, 58077, 58107, 58137, 58167, 58196, 58226, 58255, 58285, 58314, 58343, 58373, 58402, 58432, 58461, 58491, 58521, 58551, 58580, 58610, 58639, 58669, 58698, 58727, 58757, 58786, 58816, 58845, 58875, 58905, 58934, 58964, 58994, 59023, 59053, 59082, 59111, 59141, 59170, 59200, 59229, 59259, 59288, 59318, 59348, 59377, 59407, 59436, 59466, 59495, 59525, 59554, 59584, 59613, 59643, 59672, 59702, 59731, 59761, 59791, 59820, 59850, 59879, 59909, 59939, 59968, 59997, 60027, 60056, 60086, 60115, 60145, 60174, 60204, 60234, 60264, 60293, 60323, 60352, 60381, 60411, 60440, 60469, 60499, 60528, 60558, 60588, 60618, 60647, 60677, 60707, 60736, 60765, 60795, 60824, 60853, 60883, 60912, 60942, 60972, 61002, 61031, 61061, 61090, 61120, 61149, 61179, 61208, 61237, 61267, 61296, 61326, 61356, 61385, 61415, 61445, 61474, 61504, 61533, 61563, 61592, 61621, 61651, 61680, 61710, 61739, 61769, 61799, 61828, 61858, 61888, 61917, 61947, 61976, 62006, 62035, 62064, 62094, 62123, 62153, 62182, 62212, 62242, 62271, 62301, 62331, 62360, 62390, 62419, 62448, 62478, 62507, 62537, 62566, 62596, 62625, 62655, 62685, 62715, 62744, 62774, 62803, 62832, 62862, 62891, 62921, 62950, 62980, 63009, 63039, 63069, 63099, 63128, 63157, 63187, 63216, 63246, 63275, 63305, 63334, 63363, 63393, 63423, 63453, 63482, 63512, 63541, 63571, 63600, 63630, 63659, 63689, 63718, 63747, 63777, 63807, 63836, 63866, 63895, 63925, 63955, 63984, 64014, 64043, 64073, 64102, 64131, 64161, 64190, 64220, 64249, 64279, 64309, 64339, 64368, 64398, 64427, 64457, 64486, 64515, 64545, 64574, 64603, 64633, 64663, 64692, 64722, 64752, 64782, 64811, 64841, 64870, 64899, 64929, 64958, 64987, 65017, 65047, 65076, 65106, 65136, 65166, 65195, 65225, 65254, 65283, 65313, 65342, 65371, 65401, 65431, 65460, 65490, 65520, 65549, 65579, 65608, 65638, 65667, 65697, 65726, 65755, 65785, 65815, 65844, 65874, 65903, 65933, 65963, 65992, 66022, 66051, 66081, 66110, 66140, 66169, 66199, 66228, 66258, 66287, 66317, 66346, 66376, 66405, 66435, 66465, 66494, 66524, 66553, 66583, 66612, 66641, 66671, 66700, 66730, 66760, 66789, 66819, 66849, 66878, 66908, 66937, 66967, 66996, 67025, 67055, 67084, 67114, 67143, 67173, 67203, 67233, 67262, 67292, 67321, 67351, 67380, 67409, 67439, 67468, 67497, 67527, 67557, 67587, 67617, 67646, 67676, 67705, 67735, 67764, 67793, 67823, 67852, 67882, 67911, 67941, 67971, 68000, 68030, 68060, 68089, 68119, 68148, 68177, 68207, 68236, 68266, 68295, 68325, 68354, 68384, 68414, 68443, 68473, 68502, 68532, 68561, 68591, 68620, 68650, 68679, 68708, 68738, 68768, 68797, 68827, 68857, 68886, 68916, 68946, 68975, 69004, 69034, 69063, 69092, 69122, 69152, 69181, 69211, 69240, 69270, 69300, 69330, 69359, 69388, 69418, 69447, 69476, 69506, 69535, 69565, 69595, 69624, 69654, 69684, 69713, 69743, 69772, 69802, 69831, 69861, 69890, 69919, 69949, 69978, 70008, 70038, 70067, 70097, 70126, 70156, 70186, 70215, 70245, 70274, 70303, 70333, 70362, 70392, 70421, 70451, 70481, 70510, 70540, 70570, 70599, 70629, 70658, 70687, 70717, 70746, 70776, 70805, 70835, 70864, 70894, 70924, 70954, 70983, 71013, 71042, 71071, 71101, 71130, 71159, 71189, 71218, 71248, 71278, 71308, 71337, 71367, 71397, 71426, 71455, 71485, 71514, 71543, 71573, 71602, 71632, 71662, 71691, 71721, 71751, 71781, 71810, 71839, 71869, 71898, 71927, 71957, 71986, 72016, 72046, 72075, 72105, 72135, 72164, 72194, 72223, 72253, 72282, 72311, 72341, 72370, 72400, 72429, 72459, 72489, 72518, 72548, 72577, 72607, 72637, 72666, 72695, 72725, 72754, 72784, 72813, 72843, 72872, 72902, 72931, 72961, 72991, 73020, 73050, 73080, 73109, 73139, 73168, 73197, 73227, 73256, 73286, 73315, 73345, 73375, 73404, 73434, 73464, 73493, 73523, 73552, 73581, 73611, 73640, 73669, 73699, 73729, 73758, 73788, 73818, 73848, 73877, 73907, 73936, 73965, 73995, 74024, 74053, 74083, 74113, 74142, 74172, 74202, 74231, 74261, 74291, 74320, 74349, 74379, 74408, 74437, 74467, 74497, 74526, 74556, 74585, 74615, 74645, 74675, 74704, 74733, 74763, 74792, 74822, 74851, 74881, 74910, 74940, 74969, 74999, 75029, 75058, 75088, 75117, 75147, 75176, 75206, 75235, 75264, 75294, 75323, 75353, 75383, 75412, 75442, 75472, 75501, 75531, 75560, 75590, 75619, 75648, 75678, 75707, 75737, 75766, 75796, 75826, 75856, 75885, 75915, 75944, 75974, 76003, 76032, 76062, 76091, 76121, 76150, 76180, 76210, 76239, 76269, 76299, 76328, 76358, 76387, 76416, 76446, 76475, 76505, 76534, 76564, 76593, 76623, 76653, 76682, 76712, 76741, 76771, 76801, 76830, 76859, 76889, 76918, 76948, 76977, 77007, 77036, 77066, 77096, 77125, 77155, 77185, 77214, 77243, 77273, 77302, 77332, 77361, 77390, 77420, 77450, 77479, 77509, 77539, 77569, 77598, 77627, 77657, 77686, 77715, 77745, 77774, 77804, 77833, 77863, 77893, 77923, 77952, 77982, 78011, 78041, 78070, 78099, 78129, 78158, 78188, 78217, 78247, 78277, 78307, 78336, 78366, 78395, 78425, 78454, 78483, 78513, 78542, 78572, 78601, 78631, 78661, 78690, 78720, 78750, 78779, 78808, 78838, 78867, 78897, 78926, 78956, 78985, 79015, 79044, 79074, 79104, 79133, 79163, 79192, 79222, 79251, 79281, 79310, 79340, 79369, 79399, 79428, 79458, 79487, 79517, 79546, 79576, 79606, 79635, 79665, 79695, 79724, 79753, 79783, 79812, 79841, 79871, 79900, 79930, 79960, 79990];
+
   /* eslint-disable no-nested-ternary, no-useless-escape */
 
   // If `SohoConfig` exists with a `culturesPath` property, use that path for retrieving
@@ -2798,6 +2963,7 @@ var Soho = (function (exports) {
     culturesPath: existingCulturePath,
     defaultLocales: [{ lang: 'af', default: 'af-ZA' }, { lang: 'ar', default: 'ar-EG' }, { lang: 'bg', default: 'bg-BG' }, { lang: 'cs', default: 'cs-CZ' }, { lang: 'da', default: 'da-DK' }, { lang: 'de', default: 'de-DE' }, { lang: 'el', default: 'el-GR' }, { lang: 'en', default: 'en-US' }, { lang: 'es', default: 'es-ES' }, { lang: 'et', default: 'et-EE' }, { lang: 'fi', default: 'fi-FI' }, { lang: 'fr', default: 'fr-FR' }, { lang: 'he', default: 'he-IL' }, { lang: 'hi', default: 'hi-IN' }, { lang: 'hr', default: 'hr-HR' }, { lang: 'hu', default: 'hu-HU' }, { lang: 'id', default: 'id-ID' }, { lang: 'it', default: 'it-IT' }, { lang: 'iw', default: 'he-IL' }, { lang: 'ja', default: 'ja-JP' }, { lang: 'ko', default: 'ko-KR' }, { lang: 'lt', default: 'lt-LT' }, { lang: 'lv', default: 'lv-LV' }, { lang: 'ms', default: 'ms-bn' }, { lang: 'nb', default: 'no-NO' }, { lang: 'nl', default: 'nl-NL' }, { lang: 'no', default: 'no-NO' }, { lang: 'pl', default: 'pl-PL' }, { lang: 'pt', default: 'pt-PT' }, { lang: 'ro', default: 'ro-RO' }, { lang: 'ru', default: 'ru-RU' }, { lang: 'sk', default: 'sk-SK' }, { lang: 'sl', default: 'sl-SI' }, { lang: 'sv', default: 'sv-SE' }, { lang: 'th', default: 'th-TH' }, { lang: 'tr', default: 'tr-TR' }, { lang: 'uk', default: 'uk-UA' }, { lang: 'vi', default: 'vi-VN' }, { lang: 'zh', default: 'zh-CN' }],
     supportedLocales: ['af-ZA', 'ar-EG', 'ar-SA', 'bg-BG', 'cs-CZ', 'da-DK', 'de-DE', 'el-GR', 'en-AU', 'en-GB', 'en-IN', 'en-NZ', 'en-US', 'en-ZA', 'es-AR', 'es-ES', 'es-419', 'es-MX', 'es-US', 'et-EE', 'fi-FI', 'fr-CA', 'fr-FR', 'he-IL', 'hi-IN', 'hr-HR', 'hu-HU', 'id-ID', 'it-IT', 'ja-JP', 'ko-KR', 'lt-LT', 'lv-LV', 'ms-bn', 'ms-my', 'nb-NO', 'nl-NL', 'no-NO', 'pl-PL', 'pt-BR', 'pt-PT', 'ro-RO', 'ru-RU', 'sk-SK', 'sl-SI', 'sv-SE', 'th-TH', 'tr-TR', 'uk-UA', 'vi-VN', 'zh-CN', 'zh-Hans', 'zh-Hant', 'zh-TW'],
+    translatedLocales: ['fr-CA', 'fr-FR'],
     defaultLocale: 'en-US',
     minify: minifyCultures,
 
@@ -2932,8 +3098,6 @@ var Soho = (function (exports) {
       }
 
       correctLanguage = this.remapLanguage(lang);
-
-      correctLanguage = this.defaultLocale.substr(0, 2);
       return correctLanguage;
     },
 
@@ -2982,17 +3146,43 @@ var Soho = (function (exports) {
           nativeName: data.nativeName || (langData ? langData.nativeName : ''),
           messages: data.messages || (langData ? langData.messages : {})
         };
+        this.languages[locale] = {
+          name: locale,
+          direction: data.direction || (langData ? langData.direction : ''),
+          nativeName: data.nativeName || (langData ? langData.nativeName : ''),
+          messages: data.messages || (langData ? langData.messages : {})
+        };
       } else if (!this.languages[lang] && !data.messages) {
-        var match = this.defaultLocales.filter(function (a) {
-          return a.lang === lang;
-        });
-        var parentLocale = match[0] || [{ default: 'en-US' }];
+        var parentLocale = this.parentLocale(locale);
         if (parentLocale.default && parentLocale.default !== locale && !this.cultures[parentLocale.default]) {
           this.appendLocaleScript(parentLocale.default);
         }
       }
     },
 
+
+    /**
+     * Find the parent locale (meaning shared translations), if it exists.
+     * @private
+     * @param {string} locale The locale we are checking.
+     * @returns {string} The parent locale.
+     */
+    parentLocale: function parentLocale(locale) {
+      var lang = locale.substr(0, 2);
+      var match = this.defaultLocales.filter(function (a) {
+        return a.lang === lang;
+      });
+      var parentLocale = match[0] || [{ default: 'en-US' }];
+
+      // fr-FR and fr-CA are different / do not have a default
+      if (this.translatedLocales.indexOf(locale) > -1) {
+        return { lang: 'fr', default: 'fr-CA' };
+      }
+      return parentLocale;
+    },
+
+
+    appendedLocales: [],
 
     /**
      * Append the local script to the page.
@@ -3008,6 +3198,12 @@ var Soho = (function (exports) {
 
       var script = document.createElement('script');
       var min = this.minify ? '.min' : '';
+      script.async = false;
+
+      if (this.appendedLocales.indexOf(locale) > -1) {
+        return;
+      }
+      this.appendedLocales.push(locale);
 
       if (!filename) {
         script.src = '' + (this.getCulturesPath() + locale) + min + '.js';
@@ -3024,6 +3220,10 @@ var Soho = (function (exports) {
           _this.setCurrentLocale(locale, _this.cultures[locale]);
           _this.setCurrentLocale(parentLocale, _this.cultures[parentLocale]);
           _this.dff[parentLocale].resolve(parentLocale);
+        }
+        if (parentLocale && _this.dff[locale] && _this.cultures[locale]) {
+          _this.setCurrentLocale(locale, _this.cultures[locale]);
+          _this.dff[locale].resolve(locale);
         }
         if (!isCurrent && !parentLocale && _this.dff[locale]) {
           _this.dff[locale].resolve(locale);
@@ -3059,21 +3259,17 @@ var Soho = (function (exports) {
         return this.dff.promise();
       }
 
-      if (locale && locale !== 'en-US' && !this.cultures['en-US']) {
-        this.appendLocaleScript('en-US', false);
+      if (!this.cultures['en-US']) {
+        this.appendLocaleScript('en-US', locale === 'en-US');
       }
 
-      var lang = locale.split('-')[0];
       var hasParentLocale = false;
-      var match = this.defaultLocales.filter(function (a) {
-        return a.lang === lang;
-      });
-      var parentLocale = match[0] || [{ default: 'en-US' }];
+      var parentLocale = this.parentLocale(locale);
       if (parentLocale.default && parentLocale.default !== locale && !this.cultures[parentLocale.default]) {
         hasParentLocale = true;
       }
 
-      if (!hasParentLocale && locale && !this.cultures[locale] && this.currentLocale.name !== locale) {
+      if (!hasParentLocale && locale && !this.cultures[locale] && this.currentLocale.name !== locale && locale !== 'en-US') {
         this.setCurrentLocale(locale);
         // Fetch the local and cache it
         this.appendLocaleScript(locale, true);
@@ -3081,7 +3277,9 @@ var Soho = (function (exports) {
 
       // Also load the default locale for that locale
       if (hasParentLocale) {
-        this.appendLocaleScript(parentLocale.default, false, locale);
+        if (parentLocale.default !== 'en-US') {
+          this.appendLocaleScript(parentLocale.default, false);
+        }
         this.appendLocaleScript(locale, false, parentLocale.default);
       }
 
@@ -3119,7 +3317,7 @@ var Soho = (function (exports) {
         this.appendLocaleScript('en-US', false);
       }
 
-      if (locale && !this.cultures[locale] && this.currentLocale.name !== locale) {
+      if (locale && !this.cultures[locale] && this.currentLocale.name !== locale && locale !== 'en-US') {
         this.appendLocaleScript(locale, false, false, filename);
       }
 
@@ -3185,9 +3383,26 @@ var Soho = (function (exports) {
       if (data) {
         this.currentLocale.data = data;
         this.currentLocale.dataName = name;
-        this.currentLanguage = this.languages[lang];
-        if (this.currentLanguage) {
+        this.currentLanguage = {};
+        this.currentLanguage.name = lang;
+
+        if (this.languages[lang]) {
+          this.currentLanguage = this.languages[lang];
           this.updateLanguageTag(name);
+        }
+
+        if (this.translatedLocales.indexOf(name) > -1) {
+          this.languages[lang].direction = data.direction;
+          this.languages[lang].messages = data.messages;
+          this.languages[lang].name = lang;
+          this.languages[lang].nativeName = data.nativeName;
+
+          this.languages[name] = {
+            direction: data.direction,
+            messages: data.messages,
+            name: name,
+            nativeName: data.nativeName
+          };
         }
       }
     },
@@ -3271,12 +3486,12 @@ var Soho = (function (exports) {
 
       if (cal && cal.conversions) {
         if (options.fromGregorian) {
-          var islamicParts = cal.conversions.fromGregorian(value);
+          var islamicParts = this.gregorianToUmalqura(value);
           day = islamicParts[2];
           month = islamicParts[1];
           year = islamicParts[0];
         } else if (options.toGregorian) {
-          var gregorianDate = cal.conversions.toGregorian(year, month, day);
+          var gregorianDate = this.umalquraToGregorian(year, month, day);
           day = gregorianDate.getDate();
           month = gregorianDate.getMonth();
           year = gregorianDate.getFullYear();
@@ -3312,7 +3527,7 @@ var Soho = (function (exports) {
       ret = ret.replace('H', hours);
       ret = ret.replace('mm', this.pad(mins, 2));
       ret = ret.replace('ss', this.pad(seconds, 2));
-      ret = ret.replace('SSS', this.pad(millis, 0));
+      ret = ret.replace('SSS', this.pad(millis, 3));
 
       // months
       ret = ret.replace('MMMM', cal ? cal.months.wide[month] : null); // full
@@ -3485,13 +3700,35 @@ var Soho = (function (exports) {
     * @param {number} number The number to convert
     * @param {string} locale The number to convert
     * @param {object} options The number to convert
+    * @param {string} groupSeparator If provided will replace with browser default character
     * @returns {string} The converted number.
     */
-    toLocaleString: function toLocaleString(number, locale, options) {
+    toLocaleString: function toLocaleString(number, locale, options, groupSeparator) {
       if (typeof number !== 'number') {
         return '';
       }
-      return number.toLocaleString(locale || Locale.currentLocale.name, options || undefined);
+      var args = { locale: locale || Locale.currentLocale.name, options: options || undefined };
+      var n = number.toLocaleString(args.locale, args.options);
+      if (!/undefined|null/.test(typeof groupSeparator === 'undefined' ? 'undefined' : _typeof(groupSeparator))) {
+        var gSeparator = this.getSeparator(args.locale, 'group');
+        n = n.replace(new RegExp(gSeparator, 'g'), groupSeparator.toString());
+      }
+      return n;
+    },
+
+
+    /**
+    * Find browser default separator for given locale
+    * @private
+    * @param {string} locale The locale
+    * @param {string} separatorType The separator type be found `group`|`decimal`
+    * @returns {string} The browser default separator character
+    */
+    getSeparator: function getSeparator(locale, separatorType) {
+      var number = 1000.1;
+      return Intl.NumberFormat(locale).formatToParts(number).find(function (part) {
+        return part.type === separatorType;
+      }).value;
     },
 
 
@@ -4059,9 +4296,6 @@ var Soho = (function (exports) {
       }
 
       if (typeof number === 'string') {
-        if (decimal !== '.') {
-          number = number.replace(decimal, '.');
-        }
         number = Locale.parseNumber(number);
       }
 
@@ -4438,6 +4672,107 @@ var Soho = (function (exports) {
 
 
     /**
+     * Convert gregorian to umalqura date.
+     * @param {object} date the date
+     * @returns {array} year, month, day, hours, minutes, seconds, milliseconds
+     */
+    gregorianToUmalqura: function gregorianToUmalqura(date) {
+      // fromGregorian
+      // Modified version of Amro Osama's code. From at https://github.com/kbwood/calendars/blob/master/src/js/jquery.calendars.ummalqura.js
+      if (typeof date.getMonth !== 'function') {
+        return null;
+      }
+
+      var getJd = function getJd(year, month, day) {
+        if (year < 0) {
+          year++;
+        }
+        if (month < 3) {
+          month += 12;
+          year--;
+        }
+        var a = Math.floor(year / 100);
+        var b = 2 - a + Math.floor(a / 4);
+        return Math.floor(365.25 * (year + 4716)) + Math.floor(30.6001 * (month + 1)) + day + b - 1524.5;
+      };
+      var jd = getJd(date.getFullYear(), date.getMonth() + 1, date.getDate());
+
+      var julianToUmalqura = function julianToUmalqura(julianDate) {
+        var mcjdn = julianDate - 2400000 + 0.5;
+        var index = 0;
+        for (var i = 0; i < ummalquraData.length; i++) {
+          if (ummalquraData[i] > mcjdn) {
+            break;
+          }
+          index++;
+        }
+        var lunation = index + 15292;
+        var ii = Math.floor((lunation - 1) / 12);
+        var year = ii + 1;
+        var month = lunation - 12 * ii;
+        var day = mcjdn - ummalquraData[index - 1] + 1;
+        return { year: year, month: month - 1, day: day };
+      };
+      var umalquraDate = julianToUmalqura(jd);
+
+      return [umalquraDate.year, umalquraDate.month, umalquraDate.day, date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()];
+    },
+
+
+    /**
+     * Convert umalqura to gregorian date.
+     * @param {number} year the year
+     * @param {number} month the month
+     * @param {number} day the day
+     * @returns {obgect} the date
+     */
+    umalquraToGregorian: function umalquraToGregorian(year, month, day) {
+      // toGregorian
+      // Modified version of Amro Osama's code. From at https://github.com/kbwood/calendars/blob/master/src/js/jquery.calendars.ummalqura.js
+      var isNumber = function isNumber(n) {
+        return typeof n === 'number' && !isNaN(n);
+      };
+      if (!isNumber(year) || !isNumber(month) || !isNumber(day)) {
+        return null;
+      }
+
+      var getJd = function getJd(y, m, d) {
+        var index = 12 * (y - 1) + m - 15292;
+        var mcjdn = d + ummalquraData[index - 1] - 1;
+        return mcjdn + 2400000 - 0.5;
+      };
+      var jd = getJd(year, month + 1, day);
+
+      var julianToGregorian = function julianToGregorian(julianDate) {
+        var z = Math.floor(julianDate + 0.5);
+        var a = Math.floor((z - 1867216.25) / 36524.25);
+        a = z + 1 + a - Math.floor(a / 4);
+        var b = a + 1524;
+        var c = Math.floor((b - 122.1) / 365.25);
+        var d = Math.floor(365.25 * c);
+        var e = Math.floor((b - d) / 30.6001);
+        var gday = b - d - Math.floor(e * 30.6001);
+        var gmonth = e - (e > 13.5 ? 13 : 1);
+        var gyear = c - (gmonth > 2.5 ? 4716 : 4715);
+        // No zero year
+        if (gyear <= 0) {
+          gyear--;
+        }
+        return { year: gyear, month: gmonth - 1, day: gday };
+      };
+      var gregorianDateObj = julianToGregorian(jd);
+
+      var gregorianDate = new Date();
+      gregorianDate.setFullYear(gregorianDateObj.year);
+      gregorianDate.setMonth(gregorianDateObj.month);
+      gregorianDate.setDate(gregorianDateObj.day);
+      gregorianDate.setHours(0, 0, 0, 0);
+
+      return gregorianDate;
+    },
+
+
+    /**
      * Modifies a specified list of icons by flipping them horizontally to make them
      * compatible for RTL-based locales.
      * @private
@@ -4484,16 +4819,24 @@ var Soho = (function (exports) {
    * Warns about a deprecated property/method via a console warning
    * @param {function|string} newMethod the new method to call
    * @param {function|string} oldMethod the name of the old method
+   * @param {string} [context=''] optional additional context
    * @returns {void}
    */
   function warnAboutDeprecation(newMethod, oldMethod) {
-    var newMethodName = methodName(newMethod);
-    var oldMethodName = methodName(oldMethod);
+    var context = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : '';
 
     if ((typeof console === 'undefined' ? 'undefined' : _typeof(console)) !== 'object') {
       return;
     }
-    console.warn('IDS Enterprise: "' + oldMethodName + '" is deprecated. Please use "' + newMethodName + '" instead.');
+
+    var newMethodName = methodName(newMethod);
+    var oldMethodName = methodName(oldMethod);
+    if (context.length) {
+      context = ' (' + context + ')';
+    }
+
+    // eslint-disable-next-line no-console
+    console.warn('IDS Enterprise' + context + ': "' + oldMethodName + '" is deprecated. Please use "' + newMethodName + '" instead.');
   }
 
   /**
@@ -4505,6 +4848,7 @@ var Soho = (function (exports) {
     if ((typeof console === 'undefined' ? 'undefined' : _typeof(console)) !== 'object') {
       return;
     }
+    // eslint-disable-next-line no-console
     console.warn('IDS Enterprise: "' + removedName + '" is deprecated and will be later removed. Please adjust your code accordingly.');
   }
 
@@ -6398,23 +6742,23 @@ var Soho = (function (exports) {
   		},
   		caution: {
   			name: "theme-color-status-caution",
-  			value: "#504100",
-  			paletteName: "#504100"
+  			value: "#ffd726",
+  			paletteName: "#ffd726"
   		},
   		danger: {
   			name: "theme-color-status-danger",
-  			value: "#861111",
-  			paletteName: "#861111"
+  			value: "#e84f4f",
+  			paletteName: "#e84f4f"
   		},
   		success: {
   			name: "theme-color-status-success",
-  			value: "#134D13",
-  			paletteName: "#134D13"
+  			value: "#80ce4d",
+  			paletteName: "#80ce4d"
   		},
   		warning: {
   			name: "theme-color-status-warning",
-  			value: "#683500",
-  			paletteName: "#683500"
+  			value: "#ff9426",
+  			paletteName: "#ff9426"
   		}
   	},
   	brand: {
@@ -6462,233 +6806,233 @@ var Soho = (function (exports) {
   		amber: {
   			"10": {
   				name: "theme-color-palette-amber-10",
-  				value: "#FDF0DD"
+  				value: "#FEF2E5"
   			},
   			"20": {
   				name: "theme-color-palette-amber-20",
-  				value: "#FCE6C5"
+  				value: "#FDDFBD"
   			},
   			"30": {
   				name: "theme-color-palette-amber-30",
-  				value: "#FFD48F"
+  				value: "#FCC888"
   			},
   			"40": {
   				name: "theme-color-palette-amber-40",
-  				value: "#FFC05E"
+  				value: "#FBAF50"
   			},
   			"50": {
   				name: "theme-color-palette-amber-50",
-  				value: "#FEA43E"
+  				value: "#FA9601"
   			},
   			"60": {
   				name: "theme-color-palette-amber-60",
-  				value: "#F78300"
+  				value: "#F98300"
   			},
   			"70": {
   				name: "theme-color-palette-amber-70",
-  				value: "#E07800"
+  				value: "#DF6F00"
   			},
   			"80": {
   				name: "theme-color-palette-amber-80",
-  				value: "#C45800"
+  				value: "#CD6200"
   			},
   			"90": {
   				name: "theme-color-palette-amber-90",
-  				value: "#9B3300"
+  				value: "#BB5500"
   			},
   			"100": {
   				name: "theme-color-palette-amber-100",
-  				value: "#802B00"
+  				value: "#A14100"
   			}
   		},
   		amethyst: {
   			"10": {
   				name: "theme-color-palette-amethyst-10",
-  				value: "#F0E8FC"
+  				value: "#F1EBFC"
   			},
   			"20": {
   				name: "theme-color-palette-amethyst-20",
-  				value: "#E1D1FA"
+  				value: "#DDCBF7"
   			},
   			"30": {
   				name: "theme-color-palette-amethyst-30",
-  				value: "#C1B3FF"
+  				value: "#C2A1F1"
   			},
   			"40": {
   				name: "theme-color-palette-amethyst-40",
-  				value: "#977FFF"
+  				value: "#A876EB"
   			},
   			"50": {
   				name: "theme-color-palette-amethyst-50",
-  				value: "#9668F3"
+  				value: "#8D4BE5"
   			},
   			"60": {
   				name: "theme-color-palette-amethyst-60",
-  				value: "#7834DD"
+  				value: "#7928E1"
   			},
   			"70": {
   				name: "theme-color-palette-amethyst-70",
-  				value: "#7025B6"
+  				value: "#6C23C9"
   			},
   			"80": {
   				name: "theme-color-palette-amethyst-80",
-  				value: "#60209D"
+  				value: "#591DA8"
   			},
   			"90": {
   				name: "theme-color-palette-amethyst-90",
-  				value: "#41166A"
+  				value: "#4E1A91"
   			},
   			"100": {
   				name: "theme-color-palette-amethyst-100",
-  				value: "#39135D"
+  				value: "#3B1470"
   			}
   		},
   		azure: {
   			"10": {
   				name: "theme-color-palette-azure-10",
-  				value: "#E1F3FE"
+  				value: "#E6F1FD"
   			},
   			"20": {
   				name: "theme-color-palette-azure-20",
-  				value: "#C9E9FD"
+  				value: "#BEDCFA"
   			},
   			"30": {
   				name: "theme-color-palette-azure-30",
-  				value: "#7BD3FE"
+  				value: "#8ABFF7"
   			},
   			"40": {
   				name: "theme-color-palette-azure-40",
-  				value: "#4AC1FE"
+  				value: "#55A3F3"
   			},
   			"50": {
   				name: "theme-color-palette-azure-50",
-  				value: "#3399FF"
+  				value: "#1C86EF"
   			},
   			"60": {
   				name: "theme-color-palette-azure-60",
-  				value: "#0075E9"
+  				value: "#0072ED"
   			},
   			"70": {
   				name: "theme-color-palette-azure-70",
-  				value: "#0563C2"
+  				value: "#0066D4"
   			},
   			"80": {
   				name: "theme-color-palette-azure-80",
-  				value: "#0053B1"
+  				value: "#0054B1"
   			},
   			"90": {
   				name: "theme-color-palette-azure-90",
-  				value: "#003C80"
+  				value: "#004A99"
   			},
   			"100": {
   				name: "theme-color-palette-azure-100",
-  				value: "#003066"
+  				value: "#003876"
   			}
   		},
   		emerald: {
   			"10": {
   				name: "theme-color-palette-emerald-10",
-  				value: "#E3F7EC"
+  				value: "#EBF9F1"
   			},
   			"20": {
   				name: "theme-color-palette-emerald-20",
-  				value: "#CFF2DF"
+  				value: "#CBEFDC"
   			},
   			"30": {
   				name: "theme-color-palette-emerald-30",
-  				value: "#B0F8C2"
+  				value: "#A1E4BF"
   			},
   			"40": {
   				name: "theme-color-palette-emerald-40",
-  				value: "#7FF39C"
+  				value: "#78D8A3"
   			},
   			"50": {
   				name: "theme-color-palette-emerald-50",
-  				value: "#67D599"
+  				value: "#4DCC86"
   			},
   			"60": {
   				name: "theme-color-palette-emerald-60",
-  				value: "#35C274"
+  				value: "#2AC371"
   			},
   			"70": {
   				name: "theme-color-palette-emerald-70",
-  				value: "#2A985D"
+  				value: "#25AF65"
   			},
   			"80": {
   				name: "theme-color-palette-emerald-80",
-  				value: "#0A834B"
+  				value: "#1F9254"
   			},
   			"90": {
   				name: "theme-color-palette-emerald-90",
-  				value: "#065531"
+  				value: "#1C7F49"
   			},
   			"100": {
   				name: "theme-color-palette-emerald-100",
-  				value: "#053E23"
+  				value: "#156138"
   			}
   		},
   		graphite: {
   			"10": {
   				name: "theme-color-palette-graphite-10",
-  				value: "#F7F7F7"
+  				value: "#EEEEEE"
   			},
   			"20": {
   				name: "theme-color-palette-graphite-20",
-  				value: "#EBEBEB"
+  				value: "#D3D3D3"
   			},
   			"30": {
   				name: "theme-color-palette-graphite-30",
-  				value: "#D1D1D1"
+  				value: "#B1B1B1"
   			},
   			"40": {
   				name: "theme-color-palette-graphite-40",
-  				value: "#BFBFBF"
+  				value: "#8F8F8F"
   			},
   			"50": {
   				name: "theme-color-palette-graphite-50",
-  				value: "#999999"
+  				value: "#6C6C6C"
   			},
   			"60": {
   				name: "theme-color-palette-graphite-60",
-  				value: "#808080"
+  				value: "#535353"
   			},
   			"70": {
   				name: "theme-color-palette-graphite-70",
-  				value: "#666666"
+  				value: "#4A4A4A"
   			},
   			"80": {
   				name: "theme-color-palette-graphite-80",
-  				value: "#545454"
+  				value: "#3E3E3E"
   			},
   			"90": {
   				name: "theme-color-palette-graphite-90",
-  				value: "#333333"
+  				value: "#363636"
   			},
   			"100": {
   				name: "theme-color-palette-graphite-100",
-  				value: "#262626"
+  				value: "#292929"
   			}
   		},
   		ruby: {
   			"10": {
   				name: "theme-color-palette-ruby-10",
-  				value: "#FCE8E8"
+  				value: "#FBE7E8"
   			},
   			"20": {
   				name: "theme-color-palette-ruby-20",
-  				value: "#FAD1D1"
+  				value: "#F5C3C4"
   			},
   			"30": {
   				name: "theme-color-palette-ruby-30",
-  				value: "#FFB3B8"
+  				value: "#EE9496"
   			},
   			"40": {
   				name: "theme-color-palette-ruby-40",
-  				value: "#FF7F88"
+  				value: "#E66467"
   			},
   			"50": {
   				name: "theme-color-palette-ruby-50",
-  				value: "#ED4548"
+  				value: "#DF3539"
   			},
   			"60": {
   				name: "theme-color-palette-ruby-60",
@@ -6696,103 +7040,103 @@ var Soho = (function (exports) {
   			},
   			"70": {
   				name: "theme-color-palette-ruby-70",
-  				value: "#CA0728"
+  				value: "#C31014"
   			},
   			"80": {
   				name: "theme-color-palette-ruby-80",
-  				value: "#AC1518"
+  				value: "#A30D11"
   			},
   			"90": {
   				name: "theme-color-palette-ruby-90",
-  				value: "#7B0F11"
+  				value: "#8D0B0E"
   			},
   			"100": {
   				name: "theme-color-palette-ruby-100",
-  				value: "#640C0E"
+  				value: "#6C080B"
   			}
   		},
   		slate: {
   			"10": {
   				name: "theme-color-palette-slate-10",
-  				value: "#F7F7F8"
+  				value: "#EFEFF0"
   			},
   			"20": {
   				name: "theme-color-palette-slate-20",
-  				value: "#E9E9EC"
+  				value: "#D7D7D8"
   			},
   			"30": {
   				name: "theme-color-palette-slate-30",
-  				value: "#E3E1E5"
+  				value: "#B7B7BA"
   			},
   			"40": {
   				name: "theme-color-palette-slate-40",
-  				value: "#D8D6DB"
+  				value: "#97979B"
   			},
   			"50": {
   				name: "theme-color-palette-slate-50",
-  				value: "#BEBBC3"
+  				value: "#77777C"
   			},
   			"60": {
   				name: "theme-color-palette-slate-60",
-  				value: "#98949E"
+  				value: "#606066"
   			},
   			"70": {
   				name: "theme-color-palette-slate-70",
-  				value: "#7A7481"
+  				value: "#56565B"
   			},
   			"80": {
   				name: "theme-color-palette-slate-80",
-  				value: "#5C5861"
+  				value: "#47474C"
   			},
   			"90": {
   				name: "theme-color-palette-slate-90",
-  				value: "#323036"
+  				value: "#3E3E42"
   			},
   			"100": {
   				name: "theme-color-palette-slate-100",
-  				value: "#252429"
+  				value: "#2F2F32"
   			}
   		},
   		turquoise: {
   			"10": {
   				name: "theme-color-palette-turquoise-10",
-  				value: "#E6FAF7"
+  				value: "#ECF8F8"
   			},
   			"20": {
   				name: "theme-color-palette-turquoise-20",
-  				value: "#D1F5F2"
+  				value: "#CFEEEE"
   			},
   			"30": {
   				name: "theme-color-palette-turquoise-30",
-  				value: "#A8F0E4"
+  				value: "#A8E1E1"
   			},
   			"40": {
   				name: "theme-color-palette-turquoise-40",
-  				value: "#79E7D5"
+  				value: "#82D4D4"
   			},
   			"50": {
   				name: "theme-color-palette-turquoise-50",
-  				value: "#78DDDD"
+  				value: "#5CC6C7"
   			},
   			"60": {
   				name: "theme-color-palette-turquoise-60",
-  				value: "#50D3D3"
+  				value: "#40BDBE"
   			},
   			"70": {
   				name: "theme-color-palette-turquoise-70",
-  				value: "#31C4C4"
+  				value: "#39A9AA"
   			},
   			"80": {
   				name: "theme-color-palette-turquoise-80",
-  				value: "#2EB3B8"
+  				value: "#2F8D8E"
   			},
   			"90": {
   				name: "theme-color-palette-turquoise-90",
-  				value: "#248B8F"
+  				value: "#297B7B"
   			},
   			"100": {
   				name: "theme-color-palette-turquoise-100",
-  				value: "#1F777A"
+  				value: "#1F5E5E"
   			}
   		},
   		white: {
@@ -6809,13 +7153,13 @@ var Soho = (function (exports) {
   	status: {
   		base: {
   			name: "theme-color-status-base",
-  			value: "#0563C2",
+  			value: "#0066D4",
   			paletteName: "{theme.color.brand.primary.alt.value}"
   		},
   		caution: {
   			name: "theme-color-status-caution",
-  			value: "#FFD100",
-  			paletteName: "#FFD100"
+  			value: "#FFD726",
+  			paletteName: "#FFD726"
   		},
   		danger: {
   			name: "theme-color-status-danger",
@@ -6824,28 +7168,28 @@ var Soho = (function (exports) {
   		},
   		success: {
   			name: "theme-color-status-success",
-  			value: "#35C274",
-  			paletteName: "#35C274"
+  			value: "#2AC371",
+  			paletteName: "#2AC371"
   		},
   		warning: {
   			name: "theme-color-status-warning",
-  			value: "#F78300",
-  			paletteName: "#F78300"
+  			value: "#F98300",
+  			paletteName: "#F98300"
   		}
   	},
   	brand: {
   		primary: {
   			lighter: {
   				name: "theme-color-brand-primary-lighter",
-  				value: "#4AC1FE"
+  				value: "#55A3F3"
   			},
   			base: {
   				name: "theme-color-brand-primary-base",
-  				value: "#0075E9"
+  				value: "#0072ED"
   			},
   			alt: {
   				name: "theme-color-brand-primary-alt",
-  				value: "#0563C2"
+  				value: "#0066D4"
   			},
   			contrast: {
   				name: "theme-color-brand-primary-contrast",
@@ -6855,19 +7199,19 @@ var Soho = (function (exports) {
   		secondary: {
   			lighter: {
   				name: "theme-color-brand-secondary-lighter",
-  				value: "#D8D6DB"
+  				value: "#97979B"
   			},
   			base: {
   				name: "theme-color-brand-secondary-base",
-  				value: "#98949E"
+  				value: "#606066"
   			},
   			alt: {
   				name: "theme-color-brand-secondary-alt",
-  				value: "#7A7481"
+  				value: "#56565B"
   			},
   			contrast: {
   				name: "theme-color-brand-secondary-contrast",
-  				value: "#323036"
+  				value: "#3E3E42"
   			}
   		}
   	}
@@ -6878,233 +7222,233 @@ var Soho = (function (exports) {
   		amber: {
   			"10": {
   				name: "theme-color-palette-amber-10",
-  				value: "#FDF0DD"
+  				value: "#FEF2E5"
   			},
   			"20": {
   				name: "theme-color-palette-amber-20",
-  				value: "#FCE6C5"
+  				value: "#FDDFBD"
   			},
   			"30": {
   				name: "theme-color-palette-amber-30",
-  				value: "#FFD48F"
+  				value: "#FCC888"
   			},
   			"40": {
   				name: "theme-color-palette-amber-40",
-  				value: "#FFC05E"
+  				value: "#FBAF50"
   			},
   			"50": {
   				name: "theme-color-palette-amber-50",
-  				value: "#FEA43E"
+  				value: "#FA9601"
   			},
   			"60": {
   				name: "theme-color-palette-amber-60",
-  				value: "#F78300"
+  				value: "#F98300"
   			},
   			"70": {
   				name: "theme-color-palette-amber-70",
-  				value: "#E07800"
+  				value: "#DF6F00"
   			},
   			"80": {
   				name: "theme-color-palette-amber-80",
-  				value: "#C45800"
+  				value: "#CD6200"
   			},
   			"90": {
   				name: "theme-color-palette-amber-90",
-  				value: "#9B3300"
+  				value: "#BB5500"
   			},
   			"100": {
   				name: "theme-color-palette-amber-100",
-  				value: "#802B00"
+  				value: "#A14100"
   			}
   		},
   		amethyst: {
   			"10": {
   				name: "theme-color-palette-amethyst-10",
-  				value: "#F0E8FC"
+  				value: "#F1EBFC"
   			},
   			"20": {
   				name: "theme-color-palette-amethyst-20",
-  				value: "#E1D1FA"
+  				value: "#DDCBF7"
   			},
   			"30": {
   				name: "theme-color-palette-amethyst-30",
-  				value: "#C1B3FF"
+  				value: "#C2A1F1"
   			},
   			"40": {
   				name: "theme-color-palette-amethyst-40",
-  				value: "#977FFF"
+  				value: "#A876EB"
   			},
   			"50": {
   				name: "theme-color-palette-amethyst-50",
-  				value: "#9668F3"
+  				value: "#8D4BE5"
   			},
   			"60": {
   				name: "theme-color-palette-amethyst-60",
-  				value: "#7834DD"
+  				value: "#7928E1"
   			},
   			"70": {
   				name: "theme-color-palette-amethyst-70",
-  				value: "#7025B6"
+  				value: "#6C23C9"
   			},
   			"80": {
   				name: "theme-color-palette-amethyst-80",
-  				value: "#60209D"
+  				value: "#591DA8"
   			},
   			"90": {
   				name: "theme-color-palette-amethyst-90",
-  				value: "#41166A"
+  				value: "#4E1A91"
   			},
   			"100": {
   				name: "theme-color-palette-amethyst-100",
-  				value: "#39135D"
+  				value: "#3B1470"
   			}
   		},
   		azure: {
   			"10": {
   				name: "theme-color-palette-azure-10",
-  				value: "#E1F3FE"
+  				value: "#E6F1FD"
   			},
   			"20": {
   				name: "theme-color-palette-azure-20",
-  				value: "#C9E9FD"
+  				value: "#BEDCFA"
   			},
   			"30": {
   				name: "theme-color-palette-azure-30",
-  				value: "#7BD3FE"
+  				value: "#8ABFF7"
   			},
   			"40": {
   				name: "theme-color-palette-azure-40",
-  				value: "#4AC1FE"
+  				value: "#55A3F3"
   			},
   			"50": {
   				name: "theme-color-palette-azure-50",
-  				value: "#3399FF"
+  				value: "#1C86EF"
   			},
   			"60": {
   				name: "theme-color-palette-azure-60",
-  				value: "#0075E9"
+  				value: "#0072ED"
   			},
   			"70": {
   				name: "theme-color-palette-azure-70",
-  				value: "#0563C2"
+  				value: "#0066D4"
   			},
   			"80": {
   				name: "theme-color-palette-azure-80",
-  				value: "#0053B1"
+  				value: "#0054B1"
   			},
   			"90": {
   				name: "theme-color-palette-azure-90",
-  				value: "#003C80"
+  				value: "#004A99"
   			},
   			"100": {
   				name: "theme-color-palette-azure-100",
-  				value: "#003066"
+  				value: "#003876"
   			}
   		},
   		emerald: {
   			"10": {
   				name: "theme-color-palette-emerald-10",
-  				value: "#E3F7EC"
+  				value: "#EBF9F1"
   			},
   			"20": {
   				name: "theme-color-palette-emerald-20",
-  				value: "#CFF2DF"
+  				value: "#CBEFDC"
   			},
   			"30": {
   				name: "theme-color-palette-emerald-30",
-  				value: "#B0F8C2"
+  				value: "#A1E4BF"
   			},
   			"40": {
   				name: "theme-color-palette-emerald-40",
-  				value: "#7FF39C"
+  				value: "#78D8A3"
   			},
   			"50": {
   				name: "theme-color-palette-emerald-50",
-  				value: "#67D599"
+  				value: "#4DCC86"
   			},
   			"60": {
   				name: "theme-color-palette-emerald-60",
-  				value: "#35C274"
+  				value: "#2AC371"
   			},
   			"70": {
   				name: "theme-color-palette-emerald-70",
-  				value: "#2A985D"
+  				value: "#25AF65"
   			},
   			"80": {
   				name: "theme-color-palette-emerald-80",
-  				value: "#0A834B"
+  				value: "#1F9254"
   			},
   			"90": {
   				name: "theme-color-palette-emerald-90",
-  				value: "#065531"
+  				value: "#1C7F49"
   			},
   			"100": {
   				name: "theme-color-palette-emerald-100",
-  				value: "#053E23"
+  				value: "#156138"
   			}
   		},
   		graphite: {
   			"10": {
   				name: "theme-color-palette-graphite-10",
-  				value: "#F7F7F7"
+  				value: "#EEEEEE"
   			},
   			"20": {
   				name: "theme-color-palette-graphite-20",
-  				value: "#EBEBEB"
+  				value: "#D3D3D3"
   			},
   			"30": {
   				name: "theme-color-palette-graphite-30",
-  				value: "#D1D1D1"
+  				value: "#B1B1B1"
   			},
   			"40": {
   				name: "theme-color-palette-graphite-40",
-  				value: "#BFBFBF"
+  				value: "#8F8F8F"
   			},
   			"50": {
   				name: "theme-color-palette-graphite-50",
-  				value: "#999999"
+  				value: "#6C6C6C"
   			},
   			"60": {
   				name: "theme-color-palette-graphite-60",
-  				value: "#808080"
+  				value: "#535353"
   			},
   			"70": {
   				name: "theme-color-palette-graphite-70",
-  				value: "#666666"
+  				value: "#4A4A4A"
   			},
   			"80": {
   				name: "theme-color-palette-graphite-80",
-  				value: "#545454"
+  				value: "#3E3E3E"
   			},
   			"90": {
   				name: "theme-color-palette-graphite-90",
-  				value: "#333333"
+  				value: "#363636"
   			},
   			"100": {
   				name: "theme-color-palette-graphite-100",
-  				value: "#262626"
+  				value: "#292929"
   			}
   		},
   		ruby: {
   			"10": {
   				name: "theme-color-palette-ruby-10",
-  				value: "#FCE8E8"
+  				value: "#FBE7E8"
   			},
   			"20": {
   				name: "theme-color-palette-ruby-20",
-  				value: "#FAD1D1"
+  				value: "#F5C3C4"
   			},
   			"30": {
   				name: "theme-color-palette-ruby-30",
-  				value: "#FFB3B8"
+  				value: "#EE9496"
   			},
   			"40": {
   				name: "theme-color-palette-ruby-40",
-  				value: "#FF7F88"
+  				value: "#E66467"
   			},
   			"50": {
   				name: "theme-color-palette-ruby-50",
-  				value: "#ED4548"
+  				value: "#DF3539"
   			},
   			"60": {
   				name: "theme-color-palette-ruby-60",
@@ -7112,103 +7456,103 @@ var Soho = (function (exports) {
   			},
   			"70": {
   				name: "theme-color-palette-ruby-70",
-  				value: "#CA0728"
+  				value: "#C31014"
   			},
   			"80": {
   				name: "theme-color-palette-ruby-80",
-  				value: "#AC1518"
+  				value: "#A30D11"
   			},
   			"90": {
   				name: "theme-color-palette-ruby-90",
-  				value: "#7B0F11"
+  				value: "#8D0B0E"
   			},
   			"100": {
   				name: "theme-color-palette-ruby-100",
-  				value: "#640C0E"
+  				value: "#6C080B"
   			}
   		},
   		slate: {
   			"10": {
   				name: "theme-color-palette-slate-10",
-  				value: "#F7F7F8"
+  				value: "#EFEFF0"
   			},
   			"20": {
   				name: "theme-color-palette-slate-20",
-  				value: "#E9E9EC"
+  				value: "#D7D7D8"
   			},
   			"30": {
   				name: "theme-color-palette-slate-30",
-  				value: "#E3E1E5"
+  				value: "#B7B7BA"
   			},
   			"40": {
   				name: "theme-color-palette-slate-40",
-  				value: "#D8D6DB"
+  				value: "#97979B"
   			},
   			"50": {
   				name: "theme-color-palette-slate-50",
-  				value: "#BEBBC3"
+  				value: "#77777C"
   			},
   			"60": {
   				name: "theme-color-palette-slate-60",
-  				value: "#98949E"
+  				value: "#606066"
   			},
   			"70": {
   				name: "theme-color-palette-slate-70",
-  				value: "#7A7481"
+  				value: "#56565B"
   			},
   			"80": {
   				name: "theme-color-palette-slate-80",
-  				value: "#5C5861"
+  				value: "#47474C"
   			},
   			"90": {
   				name: "theme-color-palette-slate-90",
-  				value: "#323036"
+  				value: "#3E3E42"
   			},
   			"100": {
   				name: "theme-color-palette-slate-100",
-  				value: "#252429"
+  				value: "#2F2F32"
   			}
   		},
   		turquoise: {
   			"10": {
   				name: "theme-color-palette-turquoise-10",
-  				value: "#E6FAF7"
+  				value: "#ECF8F8"
   			},
   			"20": {
   				name: "theme-color-palette-turquoise-20",
-  				value: "#D1F5F2"
+  				value: "#CFEEEE"
   			},
   			"30": {
   				name: "theme-color-palette-turquoise-30",
-  				value: "#A8F0E4"
+  				value: "#A8E1E1"
   			},
   			"40": {
   				name: "theme-color-palette-turquoise-40",
-  				value: "#79E7D5"
+  				value: "#82D4D4"
   			},
   			"50": {
   				name: "theme-color-palette-turquoise-50",
-  				value: "#78DDDD"
+  				value: "#5CC6C7"
   			},
   			"60": {
   				name: "theme-color-palette-turquoise-60",
-  				value: "#50D3D3"
+  				value: "#40BDBE"
   			},
   			"70": {
   				name: "theme-color-palette-turquoise-70",
-  				value: "#31C4C4"
+  				value: "#39A9AA"
   			},
   			"80": {
   				name: "theme-color-palette-turquoise-80",
-  				value: "#2EB3B8"
+  				value: "#2F8D8E"
   			},
   			"90": {
   				name: "theme-color-palette-turquoise-90",
-  				value: "#248B8F"
+  				value: "#297B7B"
   			},
   			"100": {
   				name: "theme-color-palette-turquoise-100",
-  				value: "#1F777A"
+  				value: "#1F5E5E"
   			}
   		},
   		white: {
@@ -7225,13 +7569,13 @@ var Soho = (function (exports) {
   	status: {
   		base: {
   			name: "theme-color-status-base",
-  			value: "#0075E9",
+  			value: "#0072ED",
   			paletteName: "{theme.color.brand.primary.base.value}"
   		},
   		caution: {
   			name: "theme-color-status-caution",
-  			value: "#FFD100",
-  			paletteName: "#FFD100"
+  			value: "#FFD726",
+  			paletteName: "#FFD726"
   		},
   		danger: {
   			name: "theme-color-status-danger",
@@ -7240,28 +7584,28 @@ var Soho = (function (exports) {
   		},
   		success: {
   			name: "theme-color-status-success",
-  			value: "#35C274",
-  			paletteName: "#35C274"
+  			value: "#2AC371",
+  			paletteName: "#2AC371"
   		},
   		warning: {
   			name: "theme-color-status-warning",
-  			value: "#F78300",
-  			paletteName: "#F78300"
+  			value: "#F98300",
+  			paletteName: "#F98300"
   		}
   	},
   	brand: {
   		primary: {
   			lighter: {
   				name: "theme-color-brand-primary-lighter",
-  				value: "#4AC1FE"
+  				value: "#55A3F3"
   			},
   			base: {
   				name: "theme-color-brand-primary-base",
-  				value: "#0075E9"
+  				value: "#0072ED"
   			},
   			alt: {
   				name: "theme-color-brand-primary-alt",
-  				value: "#0053B1"
+  				value: "#0066D4"
   			},
   			contrast: {
   				name: "theme-color-brand-primary-contrast",
@@ -7271,19 +7615,19 @@ var Soho = (function (exports) {
   		secondary: {
   			lighter: {
   				name: "theme-color-brand-secondary-lighter",
-  				value: "#D8D6DB"
+  				value: "#97979B"
   			},
   			base: {
   				name: "theme-color-brand-secondary-base",
-  				value: "#BEBBC3"
+  				value: "#606066"
   			},
   			alt: {
   				name: "theme-color-brand-secondary-alt",
-  				value: "#7A7481"
+  				value: "#56565B"
   			},
   			contrast: {
   				name: "theme-color-brand-secondary-contrast",
-  				value: "#323036"
+  				value: "#3E3E42"
   			}
   		}
   	}
@@ -7294,233 +7638,233 @@ var Soho = (function (exports) {
   		amber: {
   			"10": {
   				name: "theme-color-palette-amber-10",
-  				value: "#FDF0DD"
+  				value: "#FEF2E5"
   			},
   			"20": {
   				name: "theme-color-palette-amber-20",
-  				value: "#FCE6C5"
+  				value: "#FDDFBD"
   			},
   			"30": {
   				name: "theme-color-palette-amber-30",
-  				value: "#FFD48F"
+  				value: "#FCC888"
   			},
   			"40": {
   				name: "theme-color-palette-amber-40",
-  				value: "#FFC05E"
+  				value: "#FBAF50"
   			},
   			"50": {
   				name: "theme-color-palette-amber-50",
-  				value: "#FEA43E"
+  				value: "#FA9601"
   			},
   			"60": {
   				name: "theme-color-palette-amber-60",
-  				value: "#F78300"
+  				value: "#F98300"
   			},
   			"70": {
   				name: "theme-color-palette-amber-70",
-  				value: "#E07800"
+  				value: "#DF6F00"
   			},
   			"80": {
   				name: "theme-color-palette-amber-80",
-  				value: "#C45800"
+  				value: "#CD6200"
   			},
   			"90": {
   				name: "theme-color-palette-amber-90",
-  				value: "#9B3300"
+  				value: "#BB5500"
   			},
   			"100": {
   				name: "theme-color-palette-amber-100",
-  				value: "#802B00"
+  				value: "#A14100"
   			}
   		},
   		amethyst: {
   			"10": {
   				name: "theme-color-palette-amethyst-10",
-  				value: "#F0E8FC"
+  				value: "#F1EBFC"
   			},
   			"20": {
   				name: "theme-color-palette-amethyst-20",
-  				value: "#E1D1FA"
+  				value: "#DDCBF7"
   			},
   			"30": {
   				name: "theme-color-palette-amethyst-30",
-  				value: "#C1B3FF"
+  				value: "#C2A1F1"
   			},
   			"40": {
   				name: "theme-color-palette-amethyst-40",
-  				value: "#977FFF"
+  				value: "#A876EB"
   			},
   			"50": {
   				name: "theme-color-palette-amethyst-50",
-  				value: "#9668F3"
+  				value: "#8D4BE5"
   			},
   			"60": {
   				name: "theme-color-palette-amethyst-60",
-  				value: "#7834DD"
+  				value: "#7928E1"
   			},
   			"70": {
   				name: "theme-color-palette-amethyst-70",
-  				value: "#7025B6"
+  				value: "#6C23C9"
   			},
   			"80": {
   				name: "theme-color-palette-amethyst-80",
-  				value: "#60209D"
+  				value: "#591DA8"
   			},
   			"90": {
   				name: "theme-color-palette-amethyst-90",
-  				value: "#41166A"
+  				value: "#4E1A91"
   			},
   			"100": {
   				name: "theme-color-palette-amethyst-100",
-  				value: "#39135D"
+  				value: "#3B1470"
   			}
   		},
   		azure: {
   			"10": {
   				name: "theme-color-palette-azure-10",
-  				value: "#E1F3FE"
+  				value: "#E6F1FD"
   			},
   			"20": {
   				name: "theme-color-palette-azure-20",
-  				value: "#C9E9FD"
+  				value: "#BEDCFA"
   			},
   			"30": {
   				name: "theme-color-palette-azure-30",
-  				value: "#7BD3FE"
+  				value: "#8ABFF7"
   			},
   			"40": {
   				name: "theme-color-palette-azure-40",
-  				value: "#4AC1FE"
+  				value: "#55A3F3"
   			},
   			"50": {
   				name: "theme-color-palette-azure-50",
-  				value: "#3399FF"
+  				value: "#1C86EF"
   			},
   			"60": {
   				name: "theme-color-palette-azure-60",
-  				value: "#0075E9"
+  				value: "#0072ED"
   			},
   			"70": {
   				name: "theme-color-palette-azure-70",
-  				value: "#0563C2"
+  				value: "#0066D4"
   			},
   			"80": {
   				name: "theme-color-palette-azure-80",
-  				value: "#0053B1"
+  				value: "#0054B1"
   			},
   			"90": {
   				name: "theme-color-palette-azure-90",
-  				value: "#003C80"
+  				value: "#004A99"
   			},
   			"100": {
   				name: "theme-color-palette-azure-100",
-  				value: "#003066"
+  				value: "#003876"
   			}
   		},
   		emerald: {
   			"10": {
   				name: "theme-color-palette-emerald-10",
-  				value: "#E3F7EC"
+  				value: "#EBF9F1"
   			},
   			"20": {
   				name: "theme-color-palette-emerald-20",
-  				value: "#CFF2DF"
+  				value: "#CBEFDC"
   			},
   			"30": {
   				name: "theme-color-palette-emerald-30",
-  				value: "#B0F8C2"
+  				value: "#A1E4BF"
   			},
   			"40": {
   				name: "theme-color-palette-emerald-40",
-  				value: "#7FF39C"
+  				value: "#78D8A3"
   			},
   			"50": {
   				name: "theme-color-palette-emerald-50",
-  				value: "#67D599"
+  				value: "#4DCC86"
   			},
   			"60": {
   				name: "theme-color-palette-emerald-60",
-  				value: "#35C274"
+  				value: "#2AC371"
   			},
   			"70": {
   				name: "theme-color-palette-emerald-70",
-  				value: "#2A985D"
+  				value: "#25AF65"
   			},
   			"80": {
   				name: "theme-color-palette-emerald-80",
-  				value: "#0A834B"
+  				value: "#1F9254"
   			},
   			"90": {
   				name: "theme-color-palette-emerald-90",
-  				value: "#065531"
+  				value: "#1C7F49"
   			},
   			"100": {
   				name: "theme-color-palette-emerald-100",
-  				value: "#053E23"
+  				value: "#156138"
   			}
   		},
   		graphite: {
   			"10": {
   				name: "theme-color-palette-graphite-10",
-  				value: "#F7F7F7"
+  				value: "#EEEEEE"
   			},
   			"20": {
   				name: "theme-color-palette-graphite-20",
-  				value: "#EBEBEB"
+  				value: "#D3D3D3"
   			},
   			"30": {
   				name: "theme-color-palette-graphite-30",
-  				value: "#D1D1D1"
+  				value: "#B1B1B1"
   			},
   			"40": {
   				name: "theme-color-palette-graphite-40",
-  				value: "#BFBFBF"
+  				value: "#8F8F8F"
   			},
   			"50": {
   				name: "theme-color-palette-graphite-50",
-  				value: "#999999"
+  				value: "#6C6C6C"
   			},
   			"60": {
   				name: "theme-color-palette-graphite-60",
-  				value: "#808080"
+  				value: "#535353"
   			},
   			"70": {
   				name: "theme-color-palette-graphite-70",
-  				value: "#666666"
+  				value: "#4A4A4A"
   			},
   			"80": {
   				name: "theme-color-palette-graphite-80",
-  				value: "#545454"
+  				value: "#3E3E3E"
   			},
   			"90": {
   				name: "theme-color-palette-graphite-90",
-  				value: "#333333"
+  				value: "#363636"
   			},
   			"100": {
   				name: "theme-color-palette-graphite-100",
-  				value: "#262626"
+  				value: "#292929"
   			}
   		},
   		ruby: {
   			"10": {
   				name: "theme-color-palette-ruby-10",
-  				value: "#FCE8E8"
+  				value: "#FBE7E8"
   			},
   			"20": {
   				name: "theme-color-palette-ruby-20",
-  				value: "#FAD1D1"
+  				value: "#F5C3C4"
   			},
   			"30": {
   				name: "theme-color-palette-ruby-30",
-  				value: "#FFB3B8"
+  				value: "#EE9496"
   			},
   			"40": {
   				name: "theme-color-palette-ruby-40",
-  				value: "#FF7F88"
+  				value: "#E66467"
   			},
   			"50": {
   				name: "theme-color-palette-ruby-50",
-  				value: "#ED4548"
+  				value: "#DF3539"
   			},
   			"60": {
   				name: "theme-color-palette-ruby-60",
@@ -7528,103 +7872,103 @@ var Soho = (function (exports) {
   			},
   			"70": {
   				name: "theme-color-palette-ruby-70",
-  				value: "#CA0728"
+  				value: "#C31014"
   			},
   			"80": {
   				name: "theme-color-palette-ruby-80",
-  				value: "#AC1518"
+  				value: "#A30D11"
   			},
   			"90": {
   				name: "theme-color-palette-ruby-90",
-  				value: "#7B0F11"
+  				value: "#8D0B0E"
   			},
   			"100": {
   				name: "theme-color-palette-ruby-100",
-  				value: "#640C0E"
+  				value: "#6C080B"
   			}
   		},
   		slate: {
   			"10": {
   				name: "theme-color-palette-slate-10",
-  				value: "#F7F7F8"
+  				value: "#EFEFF0"
   			},
   			"20": {
   				name: "theme-color-palette-slate-20",
-  				value: "#E9E9EC"
+  				value: "#D7D7D8"
   			},
   			"30": {
   				name: "theme-color-palette-slate-30",
-  				value: "#E3E1E5"
+  				value: "#B7B7BA"
   			},
   			"40": {
   				name: "theme-color-palette-slate-40",
-  				value: "#D8D6DB"
+  				value: "#97979B"
   			},
   			"50": {
   				name: "theme-color-palette-slate-50",
-  				value: "#BEBBC3"
+  				value: "#77777C"
   			},
   			"60": {
   				name: "theme-color-palette-slate-60",
-  				value: "#98949E"
+  				value: "#606066"
   			},
   			"70": {
   				name: "theme-color-palette-slate-70",
-  				value: "#7A7481"
+  				value: "#56565B"
   			},
   			"80": {
   				name: "theme-color-palette-slate-80",
-  				value: "#5C5861"
+  				value: "#47474C"
   			},
   			"90": {
   				name: "theme-color-palette-slate-90",
-  				value: "#323036"
+  				value: "#3E3E42"
   			},
   			"100": {
   				name: "theme-color-palette-slate-100",
-  				value: "#252429"
+  				value: "#2F2F32"
   			}
   		},
   		turquoise: {
   			"10": {
   				name: "theme-color-palette-turquoise-10",
-  				value: "#E6FAF7"
+  				value: "#ECF8F8"
   			},
   			"20": {
   				name: "theme-color-palette-turquoise-20",
-  				value: "#D1F5F2"
+  				value: "#CFEEEE"
   			},
   			"30": {
   				name: "theme-color-palette-turquoise-30",
-  				value: "#A8F0E4"
+  				value: "#A8E1E1"
   			},
   			"40": {
   				name: "theme-color-palette-turquoise-40",
-  				value: "#79E7D5"
+  				value: "#82D4D4"
   			},
   			"50": {
   				name: "theme-color-palette-turquoise-50",
-  				value: "#78DDDD"
+  				value: "#5CC6C7"
   			},
   			"60": {
   				name: "theme-color-palette-turquoise-60",
-  				value: "#50D3D3"
+  				value: "#40BDBE"
   			},
   			"70": {
   				name: "theme-color-palette-turquoise-70",
-  				value: "#31C4C4"
+  				value: "#39A9AA"
   			},
   			"80": {
   				name: "theme-color-palette-turquoise-80",
-  				value: "#2EB3B8"
+  				value: "#2F8D8E"
   			},
   			"90": {
   				name: "theme-color-palette-turquoise-90",
-  				value: "#248B8F"
+  				value: "#297B7B"
   			},
   			"100": {
   				name: "theme-color-palette-turquoise-100",
-  				value: "#1F777A"
+  				value: "#1F5E5E"
   			}
   		},
   		white: {
@@ -7641,43 +7985,43 @@ var Soho = (function (exports) {
   	status: {
   		base: {
   			name: "theme-color-status-base",
-  			value: "#003C80",
-  			paletteName: "{theme.color.brand.primary.base.value}"
+  			value: "#003876",
+  			paletteName: "{theme.color.brand.primary.alt.value}"
   		},
   		caution: {
   			name: "theme-color-status-caution",
-  			value: "#5D4C00",
-  			paletteName: "#5D4C00"
+  			value: "#FFD726",
+  			paletteName: "#FFD726"
   		},
   		danger: {
   			name: "theme-color-status-danger",
-  			value: "#7B0F11",
-  			paletteName: "#7B0F11"
+  			value: "#DA1217",
+  			paletteName: "#DA1217"
   		},
   		success: {
   			name: "theme-color-status-success",
-  			value: "#065531",
-  			paletteName: "#065531"
+  			value: "#2AC371",
+  			paletteName: "#2AC371"
   		},
   		warning: {
   			name: "theme-color-status-warning",
-  			value: "#802B00",
-  			paletteName: "#802B00"
+  			value: "#F98300",
+  			paletteName: "#F98300"
   		}
   	},
   	brand: {
   		primary: {
   			lighter: {
   				name: "theme-color-brand-primary-lighter",
-  				value: "#4AC1FE"
+  				value: "#55A3F3"
   			},
   			base: {
   				name: "theme-color-brand-primary-base",
-  				value: "#003C80"
+  				value: "#004A99"
   			},
   			alt: {
   				name: "theme-color-brand-primary-alt",
-  				value: "#003066"
+  				value: "#003876"
   			},
   			contrast: {
   				name: "theme-color-brand-primary-contrast",
@@ -7687,19 +8031,19 @@ var Soho = (function (exports) {
   		secondary: {
   			lighter: {
   				name: "theme-color-brand-secondary-lighter",
-  				value: "#5C5861"
+  				value: "#47474C"
   			},
   			base: {
   				name: "theme-color-brand-secondary-base",
-  				value: "#323036"
+  				value: "#3E3E42"
   			},
   			alt: {
   				name: "theme-color-brand-secondary-alt",
-  				value: "#252429"
+  				value: "#2F2F32"
   			},
   			contrast: {
   				name: "theme-color-brand-secondary-contrast",
-  				value: "#323036"
+  				value: "#3E3E42"
   			}
   		}
   	}
@@ -7755,7 +8099,7 @@ var Soho = (function (exports) {
      * Get the colors used in the current theme that are reccomended for personalization
      * @returns {object} An object full of the colors with id, name abd hex value
      */
-    personalizationColors: function themeColors() {
+    personalizationColors: function personalizationColors() {
       var palette = this.themeColors().palette;
       var brand = this.themeColors().brand;
       var personalize = {};
@@ -7800,7 +8144,7 @@ var Soho = (function (exports) {
   };
 
   function personalizeStyles(colors) {
-    return '\n\n.tab-container.module-tabs.is-personalizable {\n  border-top: 1px solid ' + colors.darkest + ' !important;\n  border-bottom: 1px solid ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .tab:not(:first-child) {\n  border-left: 1px solid ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable {\n  background-color: ' + colors.darker + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.accordion.panel .accordion-header.is-selected {\n  background-color: ' + colors.lighter + ' !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.builder-header.is-personalizable{\n  background-color: ' + colors.lighter + ';\n}\n\n.header.is-personalizable {\n  background-color: ' + colors.base + ';\n}\n\n.header.is-personalizable .title {\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable h1 {\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable button:not(:disabled),\n.header.is-personalizable button:not(:disabled) .icon,\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable .header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable button:not(:disabled):hover,\n.header.is-personalizable button:not(:disabled):hover .icon,\n.header.is-personalizable button:not(:disabled):hover .app-header.icon > span,\n.header.is-personalizable .toolbar [class^=\'btn\']:hover:not([disabled]) {\n  color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\n.header.is-personalizable .go-button.is-personalizable {\n  background-color: ' + colors.lightest + ';\n  border-color:' + colors.lightest + ';\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab.is-selected:not(.is-disabled) {\n  color: ' + colors.contrast + ' !important;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled),\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)  {\n  color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\nhtml[class*="theme-uplift-"] .header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\nhtml[class*="theme-uplift-"] .is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  opacity: 1;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)::before {\n  background-color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .animated-bar {\n  background-color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .tab-list-container .tab.is-selected:not(.is-disabled):hover::before {\n  background-color: ' + colors.contrast + ' !important;\n}\n\n.subheader.is-personalizable .go-button.is-personalizable {\n  background-color: ' + colors.dark + ';\n  border-color: ' + colors.dark + ';\n  color: ' + colors.contrast + ';\n}\n\n.module-tabs.is-personalizable .tab-more {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more:hover {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-open {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield {\n  background-color: ' + colors.hover + ' !important;\n  border-bottom-color: ' + colors.hover + ' !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield-category-button {\n  background-color: ' + colors.hover + ' !important;\n  border-bottom-color: ' + colors.hover + ' !important;\n}\n\n.subheader.is-personalizable {\n  background-color: ' + colors.lighter + ' !important;\n}\n\n.builder .sidebar .header {\n  border-right: 1px solid ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab:hover {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.has-toolbar.is-personalizable .tab-list-container + .toolbar {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable [class^="btn"] {\n  background-color: transparent !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled {\n  background-color: ' + colors.darker + ' !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled > svg {\n  fill: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button:hover {\n  background-color: ' + colors.darker + ' !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > .searchfield {\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > svg {\n  fill: ' + colors.contrast + ' !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::before,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::before {\n  background-image: linear-gradient(to right, ' + colors.base + ' , ' + colorUtils.hexToRgba(colors.base, 0) + ') !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::after,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::after {\n  background-image: linear-gradient(to right, ' + colorUtils.hexToRgba(colors.base, 0) + ', ' + colors.base + ') !important;\n}\n\n.hero-widget.is-personalizable {\n  background-color: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .hero-bottom {\n  background-color: ' + colors.base + ';\n}\n\n.hero-widget.is-personalizable .hero-footer .hero-footer-nav li::before {\n  color: ' + colors.light + ';\n}\n\n.hero-widget.is-personalizable .chart-container .arc {\n  stroke: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .chart-container .bar {\n  stroke: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .chart-container.line-chart .dot {\n  stroke: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable {\n  background-color: ' + colors.lighter + ';\n  border-right: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable .application-menu-header {\n  background-color: ' + colors.lighter + ';\n  border-bottom-color: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable .application-menu-footer {\n  background-color: ' + colors.lighter + ';\n  border-top-color: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable button .icon,\n.application-menu.is-personalizable button span,\n.application-menu.is-personalizable .hyperlink {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable button:not(:disabled):hover .icon,\n.application-menu.is-personalizable button:not(:disabled):hover span,\n.application-menu.is-personalizable .hyperlink:hover {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .accordion.panel {\n  background-color: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .name-xl,\n.application-menu.is-personalizable .name,\n.application-menu.is-personalizable .accordion-heading {\n  color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header {\n  background-color: ' + colors.lighter + ' !important;\n  border: 1px solid transparent !important;\n  color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header .icon {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected .icon {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header:hover {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-focused:not(.hide-focus) {\n  border: 1px solid ' + colors.contrast + ' !important;\n  box-shadow: none !important;\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  border: 1px solid ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before,\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable button:focus:not(.hide-focus),\n.application-menu.is-personalizable .hyperlink:focus:not(.hide-focus)::after {\n  border-color: ' + colors.contrast + ' !important;\n  box-shadow: none !important;\n}\n\n.application-menu .application-menu-header button:hover,\n.application-menu .application-menu-footer button:hover {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion-header.has-filtered-children > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.has-filtered-children.is-focused {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield::placeholder {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .icon {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper.active .icon {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header {\n  background-color: ' + colors.base + ' !important;\n  border-top-color: transparent;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header:hover {\n  background-color: ' + colors.darkest + ' !important;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion-heading {\n  border-top-color: ' + colors.darkest + ';\n}\n\n.application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ' + colors.base + ';\n  border-bottom: none !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ' + colors.dark + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header {\n  background-color: transparent !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header:hover {\n  background-color: ' + colors.darkest + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header.is-selected {\n  background-color: ' + colors.darkest + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before {\n  background-color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: transparent !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded {\n  background-color: ' + colors.dark + ' !important;\n  color: ' + colors.subtext + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-selected {\n  background-color: ' + colors.darker + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded + .accordion-pane {\n  background-color: ' + colors.dark + ' !important;\n}\n\n.is-personalizable .personalize-header,\n.is-personalizable.tab-container {\n  background-color: ' + colors.base + ' !important;\n}\n\n.is-personalizable .personalize-subheader {\n  background-color: ' + colors.lighter + ' !important;\n}\n\n.is-personalizable .personalize-text {\n  color: ' + colors.contrast + ' !important;\n}\n\n.is-personalizable .personalize-actionable,\n.is-personalizable .personalize-actionable svg {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.is-personalizable .personalize-actionable:hover:not([disabled]),\n.is-personalizable .personalize-actionable:hover:not([disabled]) svg {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.is-personalizable .personalize-actionable.is-focused:not(.hide-focus),\n.is-personalizable .personalize-actionable:focus:not(.hide-focus) {\n  border-color: ' + colors.contrast + ';\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-actionable.hyperlink:focus:not(.hide-focus)::after {\n  border-color: ' + colors.contrast + ';\n  opacity: 1;\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-vertical-border {\n  border-color: ' + colors.light + ';\n}\n\n.is-personalizable .personalize-horizontal-bottom-border {\n  border-bottom: 1px solid ' + colors.darkest + ';\n}\n\n.is-personalizable .personalize-horizontal-top-border {\n  border-top: 1px solid: ' + colors.darkest + ';\n}\n\n.is-personalizable .personalize-chart-targeted .total.bar {\n  background-color: rgba(255, 255, 255, .8);\n}\n\n.is-personalizable .personalize-chart-targeted .chart-percent-text,\n.is-personalizable .personalize-chart-targeted .label {\n  color: ' + colors.text + ';\n}\n\n.is-personalizable .info-message,\n.is-personalizable .info-message .icon,\n.is-personalizable .info-message p {\n  color: ' + colors.text + ' !important;\n}\n\n.is-personalizable .personalize-actionable-disabled,\n.is-personalizable .personalize-actionable-disabled:hover {\n  opacity: .4 !important;\n  cursor: default;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .arc,\n.hero-widget.is-personalizable .hero-header .chart-container .bar,\n.hero-widget.is-personalizable .hero-header .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-content .chart-container .arc,\n.hero-widget.is-personalizable .hero-content .chart-container .bar,\n.hero-widget.is-personalizable .hero-content .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-footer .chart-container .arc,\n.hero-widget.is-personalizable .hero-footer .chart-container .bar,\n.hero-widget.is-personalizable .hero-footer .chart-container.line-chart .dot {\n    stroke: ' + colors.lighter + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container text,\n.hero-widget.is-personalizable .hero-content .chart-container text,\n.hero-widget.is-personalizable .hero-footer .chart-container text {\n    fill: ' + colors.text + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-content .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-footer .chart-container .chart-legend-item-text {\n  color: ' + colors.text + ';\n  fill: ' + colors.text + ';\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .axis path, .chart-container .axis line,\n.hero-widget.is-personalizable .hero-header .chart-container .axis .tick0 line {\n  stroke: ' + colors.subtext + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .title,\n.hero-widget.is-personalizable .hero-content .title,\n.hero-widget.is-personalizable .hero-footer .title {\n  color: ' + colors.subtext + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-content .btn-tertiary,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-header .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon\n {\n  color: ' + colors.subtext + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon\n {\n  color: ' + colors.text + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ' + colors.subtext + ',\n    0 0 2px 1px ' + colors.subtext + ';\n}\n\n.header.is-personalizable .toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.header.is-personalizable .flex-toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.subheader.is-personalizable .toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.subheader.is-personalizable .flex-toolbar [class^=\'btn\']:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ' + colors.subtext + ',\n    0 0 2px 1px ' + colors.subtext + ';\n}\n\n.tooltip.is-personalizable {\n  background-color: ' + colors.darkest + ';\n  border-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable .chart-swatch .swatch-row div {\n  border-bottom-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable,\n.tooltip.is-personalizable p,\n.tooltip.is-personalizable .chart-swatch .swatch-row span,\n.tooltip.is-personalizable .chart-swatch .swatch-row b {\n  -webkit-text-fill-color: ' + colors.tooltipText + ';\n  color: ' + colors.tooltipText + ';\n}\n.tooltip.is-personalizable.top .arrow::after {\n  border-top-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.right .arrow::after {\n  border-right-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.bottom .arrow::after {\n  border-bottom-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.left .arrow::after {\n  border-left-color: ' + colors.darkest + ';\n}\n\n    ';
+    return '\n\n.tab-container.module-tabs.is-personalizable {\n  border-top: 1px solid ' + colors.darkest + ' !important;\n  border-bottom: 1px solid ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .tab:not(:first-child) {\n  border-left: 1px solid ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable {\n  background-color: ' + colors.darker + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.accordion.panel .accordion-header.is-selected {\n  background-color: ' + colors.lighter + ' !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.builder-header.is-personalizable{\n  background-color: ' + colors.lighter + ';\n}\n\n.header.is-personalizable {\n  background-color: ' + colors.base + ';\n}\n\n.header.is-personalizable .title {\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable h1 {\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable button:not(:disabled),\n.header.is-personalizable button:not(:disabled) .icon,\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable .header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable button:not(:disabled):hover,\n.header.is-personalizable button:not(:disabled):hover .icon,\n.header.is-personalizable button:not(:disabled):hover .app-header.icon > span,\n.header.is-personalizable .toolbar [class^=\'btn\']:hover:not([disabled]) {\n  color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\n.header.is-personalizable .go-button.is-personalizable {\n  background-color: ' + colors.lightest + ';\n  border-color:' + colors.lightest + ';\n  color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab.is-selected:not(.is-disabled) {\n  color: ' + colors.contrast + ' !important;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  color: ' + colors.contrast + ' !important;\n  opacity: .8;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled),\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)  {\n  color: ' + colors.contrast + ' !important;\n  opacity: 1;\n}\n\nhtml[class*="theme-uplift-"] .header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\nhtml[class*="theme-uplift-"] .is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  opacity: 1;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)::before {\n  background-color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .animated-bar {\n  background-color: ' + colors.contrast + ';\n}\n\n.header.is-personalizable.has-tabs .tab-list-container .tab.is-selected:not(.is-disabled):hover::before {\n  background-color: ' + colors.contrast + ' !important;\n}\n\n.subheader.is-personalizable .go-button.is-personalizable {\n  background-color: ' + colors.dark + ';\n  border-color: ' + colors.dark + ';\n  color: ' + colors.contrast + ';\n}\n\n.module-tabs.is-personalizable .tab-more {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more:hover {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-open {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield {\n  background-color: ' + colors.hover + ' !important;\n  border-bottom-color: ' + colors.hover + ' !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield-category-button {\n  background-color: ' + colors.hover + ' !important;\n  border-bottom-color: ' + colors.hover + ' !important;\n}\n\n.subheader.is-personalizable {\n  background-color: ' + colors.lighter + ' !important;\n}\n\n.builder .sidebar .header {\n  border-right: 1px solid ' + colors.hover + ' !important;\n}\n\n.module-tabs.is-personalizable .tab:hover {\n  background-color: ' + colors.hover + ' !important;\n}\n\n.module-tabs.has-toolbar.is-personalizable .tab-list-container + .toolbar {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable [class^="btn"] {\n  background-color: transparent !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled {\n  background-color: ' + colors.darker + ' !important;\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled > svg {\n  fill: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button {\n  border-left-color: ' + colors.darkest + ' !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button:hover {\n  background-color: ' + colors.darker + ' !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > .searchfield {\n  color: ' + colors.contrast + ' !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > svg {\n  fill: ' + colors.contrast + ' !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::before,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::before {\n  background-image: linear-gradient(to right, ' + colors.base + ' , ' + colorUtils.hexToRgba(colors.base, 0) + ') !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::after,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::after {\n  background-image: linear-gradient(to right, ' + colorUtils.hexToRgba(colors.base, 0) + ', ' + colors.base + ') !important;\n}\n\n.hero-widget.is-personalizable {\n  background-color: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .hero-bottom {\n  background-color: ' + colors.base + ';\n}\n\n.hero-widget.is-personalizable .hero-footer .hero-footer-nav li::before {\n  color: ' + colors.light + ';\n}\n\n.hero-widget.is-personalizable .chart-container .arc {\n  stroke: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .chart-container .bar {\n  stroke: ' + colors.lighter + ';\n}\n\n.hero-widget.is-personalizable .chart-container.line-chart .dot {\n  stroke: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable {\n  background-color: ' + colors.lighter + ';\n  border-right: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable .application-menu-header {\n  background-color: ' + colors.lighter + ';\n  border-bottom-color: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable .application-menu-footer {\n  background-color: ' + colors.lighter + ';\n  border-top-color: ' + colors.light + ';\n}\n\n.application-menu.is-personalizable button .icon,\n.application-menu.is-personalizable button span,\n.application-menu.is-personalizable .hyperlink {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable button:not(:disabled):hover .icon,\n.application-menu.is-personalizable button:not(:disabled):hover span,\n.application-menu.is-personalizable .hyperlink:hover {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .accordion.panel {\n  background-color: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .name-xl,\n.application-menu.is-personalizable .name,\n.application-menu.is-personalizable .accordion-heading {\n  color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header {\n  background-color: ' + colors.lighter + ' !important;\n  border: 1px solid transparent !important;\n  color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header .icon {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected .icon {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header:hover {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-focused:not(.hide-focus) {\n  border: 1px solid ' + colors.contrast + ' !important;\n  box-shadow: none !important;\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  border: 1px solid ' + colors.lighter + ';\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before,\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ' + colors.contrast + ';\n}\n\n.application-menu.is-personalizable button:focus:not(.hide-focus),\n.application-menu.is-personalizable .hyperlink:focus:not(.hide-focus)::after {\n  border-color: ' + colors.contrast + ' !important;\n  box-shadow: none !important;\n}\n\n.application-menu .application-menu-header button:hover,\n.application-menu .application-menu-footer button:hover {\n  background-color: ' + colors.base + ' !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .accordion-header.has-filtered-children > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.has-filtered-children.is-focused {\n  color: ' + colors.contrast + ' !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield::placeholder {\n  color: ' + colors.contrast + ';\n  opacity: .5;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .icon {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper.active .icon {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header {\n  background-color: ' + colors.base + ' !important;\n  border-top-color: transparent;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header:hover {\n  background-color: ' + colors.darkest + ' !important;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion-heading {\n  border-top-color: ' + colors.darkest + ';\n}\n\n.application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ' + colors.base + ';\n  border-bottom: none !important;\n}\n\nhtml[dir=\'rtl\'] .application-menu.is-personalizable {\n  background-color: ' + colors.lighter + ';\n  border-left: ' + colors.light + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ' + colors.dark + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header {\n  background-color: transparent !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header:hover {\n  background-color: ' + colors.darkest + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header.is-selected {\n  background-color: ' + colors.darkest + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before {\n  background-color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: transparent !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  color: ' + colors.subtext + ';\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded {\n  background-color: ' + colors.dark + ' !important;\n  color: ' + colors.subtext + ' !important;\n}\n\nhtml[class*="theme-uplift"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-focused:not(.hide-focus):not(.is-expanded) {\n  border-color: ' + colors.contrast + ' !important;\n}\n\nhtml[class*="theme-uplift"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-focused.is-expanded {\n  border-color: transparent !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-selected::before {\n  background-color: ' + colors.darker + ' !important;\n  border-color: ' + colors.darker + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-focused::before {\n  border-color: ' + colors.contrast + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded + .accordion-pane {\n  background-color: ' + colors.dark + ' !important;\n}\n\nhtml[class*="theme-uplift-"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded:hover::before {\n  border-color: ' + colors.darkest + ' !important;\n  background-color: ' + colors.darkest + ' !important;\n}\n\n.is-personalizable .personalize-header,\n.is-personalizable.tab-container {\n  background-color: ' + colors.base + ' !important;\n}\n\n.is-personalizable .personalize-subheader {\n  background-color: ' + colors.lighter + ' !important;\n}\n\n.is-personalizable .personalize-text {\n  color: ' + colors.contrast + ' !important;\n}\n\n.is-personalizable .personalize-actionable,\n.is-personalizable .personalize-actionable svg {\n  color: ' + colors.contrast + ';\n  opacity: .8;\n}\n\n.is-personalizable .personalize-actionable:hover:not([disabled]),\n.is-personalizable .personalize-actionable:hover:not([disabled]) svg {\n  color: ' + colors.contrast + ';\n  opacity: 1;\n}\n\n.is-personalizable .personalize-actionable.is-focused:not(.hide-focus),\n.is-personalizable .personalize-actionable:focus:not(.hide-focus) {\n  border-color: ' + colors.contrast + ';\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-actionable.hyperlink:focus:not(.hide-focus)::after {\n  border-color: ' + colors.contrast + ';\n  opacity: 1;\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-vertical-border {\n  border-color: ' + colors.light + ';\n}\n\n.is-personalizable .personalize-horizontal-bottom-border {\n  border-bottom: 1px solid ' + colors.darkest + ';\n}\n\n.is-personalizable .personalize-horizontal-top-border {\n  border-top: 1px solid: ' + colors.darkest + ';\n}\n\n.is-personalizable .personalize-chart-targeted .total.bar {\n  background-color: rgba(255, 255, 255, .8);\n}\n\n.is-personalizable .personalize-chart-targeted .chart-percent-text,\n.is-personalizable .personalize-chart-targeted .label {\n  color: ' + colors.text + ';\n}\n\n.is-personalizable .info-message,\n.is-personalizable .info-message .icon,\n.is-personalizable .info-message p {\n  color: ' + colors.text + ' !important;\n}\n\n.is-personalizable .personalize-actionable-disabled,\n.is-personalizable .personalize-actionable-disabled:hover {\n  opacity: .4 !important;\n  cursor: default;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .arc,\n.hero-widget.is-personalizable .hero-header .chart-container .bar,\n.hero-widget.is-personalizable .hero-header .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-content .chart-container .arc,\n.hero-widget.is-personalizable .hero-content .chart-container .bar,\n.hero-widget.is-personalizable .hero-content .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-footer .chart-container .arc,\n.hero-widget.is-personalizable .hero-footer .chart-container .bar,\n.hero-widget.is-personalizable .hero-footer .chart-container.line-chart .dot {\n    stroke: ' + colors.lighter + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container text,\n.hero-widget.is-personalizable .hero-content .chart-container text,\n.hero-widget.is-personalizable .hero-footer .chart-container text {\n    fill: ' + colors.text + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-content .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-footer .chart-container .chart-legend-item-text {\n  color: ' + colors.text + ';\n  fill: ' + colors.text + ';\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .axis path, .chart-container .axis line,\n.hero-widget.is-personalizable .hero-header .chart-container .axis .tick0 line {\n  stroke: ' + colors.subtext + ' !important;\n}\n\n.hero-widget.is-personalizable .hero-header .title,\n.hero-widget.is-personalizable .hero-content .title,\n.hero-widget.is-personalizable .hero-footer .title {\n  color: ' + colors.subtext + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-content .btn-tertiary,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-header .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon\n {\n  color: ' + colors.subtext + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon\n {\n  color: ' + colors.text + ';\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ' + colors.subtext + ',\n    0 0 2px 1px ' + colors.subtext + ';\n}\n\n.header.is-personalizable .toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.header.is-personalizable .flex-toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.subheader.is-personalizable .toolbar [class^=\'btn\']:focus:not(.hide-focus),\n.subheader.is-personalizable .flex-toolbar [class^=\'btn\']:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ' + colors.subtext + ',\n    0 0 2px 1px ' + colors.subtext + ';\n}\n\n.tooltip.is-personalizable {\n  background-color: ' + colors.darkest + ';\n  border-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable .chart-swatch .swatch-row div {\n  border-bottom-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable,\n.tooltip.is-personalizable p,\n.tooltip.is-personalizable .chart-swatch .swatch-row span,\n.tooltip.is-personalizable .chart-swatch .swatch-row b {\n  color: ' + colors.tooltipText + ';\n}\n.tooltip.is-personalizable.top .arrow::after {\n  border-top-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.right .arrow::after {\n  border-right-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.bottom .arrow::after {\n  border-bottom-color: ' + colors.darkest + ';\n}\n.tooltip.is-personalizable.left .arrow::after {\n  border-left-color: ' + colors.darkest + ';\n}\n\n    ';
   }
 
   // Component name as referenced by jQuery/event namespace/etc
@@ -7943,14 +8287,14 @@ var Soho = (function (exports) {
 
       // Force to be light text on custom colors { color: ['soho', 'uplift'] }
       var forceToBeLightTextOn = {
-        amber: ['#db7726', '#9b3300'],
-        amethyst: ['#9279a6', '#7834dd'],
-        azure: ['#2578a9', '#0563c2'],
-        emerald: ['#56932e', '#0a834b'],
-        graphite: ['#5c5c5c', '#808080'],
-        ruby: ['#941e1e', '#7b0f11'],
-        slate: ['#50535a', '#98949e'],
-        turquoise: ['#206b62', '#248b8f']
+        amber: ['#db7726', '#bb5500'], // amber 09
+        amethyst: ['#9279a6', '#7834dd'], // amethyst 06
+        azure: ['#2578a9', '#0563c2'], // azure 07/08
+        emerald: ['#56932e', '#1f9254'], // emerald 08
+        graphite: ['#5c5c5c', '#808080'], // graphite 06
+        ruby: ['#941e1e', '#7b0f11'], // ruby 09
+        slate: ['#50535a', '#98949e'], // slate 06
+        turquoise: ['#206b62', '#297b7b'] // turquoise 09
       };
       var foundColor = false;
       var isDark = ('' + (colors.header || defaultColors.header)).toLowerCase();
@@ -8154,8 +8498,6 @@ var Soho = (function (exports) {
       // record state of theme in settings
       this.settings.theme = incomingTheme;
       theme.setTheme(incomingTheme);
-
-      $('body').trigger('resize');
     },
 
 
@@ -8210,6 +8552,7 @@ var Soho = (function (exports) {
         colors: this.settings.colors.header || this.settings.colors || theme.themeColors().brand.primary.alt.value,
         theme: incomingTheme || 'theme-soho-light'
       });
+      $('body').trigger('resize');
     },
 
 
@@ -10232,6 +10575,9 @@ var Soho = (function (exports) {
       if (target.is('.colorpicker-editor-button')) {
         target = target.find('.trigger .icon');
       }
+      if (target.is('.fontpicker')) {
+        target = target.find('.icon.icon-dropdown');
+      }
 
       // reset if we borked the target
       if (!target.length) {
@@ -10593,8 +10939,952 @@ var Soho = (function (exports) {
     };
   })();
 
+  // Component Name
+  var COMPONENT_NAME$5 = 'tooltip';
+
+  /**
+   * Tooltip and Popover Control
+   * @class Tooltip
+   * @constructor
+   *
+   * @param {htmlelement|jquery[]} element The component element.
+   * @param {object} [settings] The component settings.
+   * @param {string|function} [settings.content] Takes title attribute or feed content. Can be a string or jQuery markup.
+   * @param {object} [settings.offset={top: 10, left: 10}] How much room to leave.
+   * @param {string} [settings.placement='top'] Supports 'top'|'bottom'|'right'|'offset'.
+   * @param {string} [settings.trigger='hover'] Supports click and immediate and hover (and maybe in future focus).
+   * @param {string} [settings.title] Title for Infor Tips.
+   * @param {string} [settings.beforeShow] Call back for ajax tooltip.
+   * @param {string} [settings.popover] force it to be a popover (no content).
+   * @param {string} [settings.closebutton] Show X close button next to title in popover.
+   * @param {boolean} [settings.isError=false] Add error classes.
+   * @param {boolean} [settings.isErrorColor=false] Add error color only not description.
+   * @param {string} [settings.tooltipElement] ID selector for an alternate element to use to contain the tooltip classes.
+   * @param {object} [settings.parentElement] jQuery-wrapped element that gets.
+    passed to the 'place' behavior as the element to place the tooltip against.
+   * @param {boolean} [settings.keepOpen=false] Forces the tooltip to stay open in situations where it would normally close.
+   * @param {string} [settings.extraClass] Extra css class.
+   * @param {object} [settings.placementOpt] Placement options.
+   * @param {string} [settings.maxWidth] Toolip max width.
+   * @param {boolean} [settings.initializeContent] Init the content in the tooltip.
+   * @param {string} [settings.headerClass] If set this color will be used on the header (if a popover).
+   */
+
+  var TOOLTIP_DEFAULTS = {
+    content: null,
+    offset: { top: 10, left: 10 },
+    placement: 'top',
+    trigger: 'hover',
+    title: null,
+    beforeShow: null,
+    popover: null,
+    closebutton: null,
+    isError: false,
+    isErrorColor: false,
+    tooltipElement: null,
+    parentElement: null,
+    keepOpen: false,
+    extraClass: null,
+    placementOpts: {},
+    maxWidth: null,
+    initializeContent: true,
+    headerClass: null
+  };
+
+  function Tooltip(element, settings) {
+    this.settings = utils.mergeSettings(element, settings, TOOLTIP_DEFAULTS);
+    this.element = $(element);
+    this.init();
+  }
+
+  Tooltip.prototype = {
+
+    /**
+     * @returns {boolean} whether or not the tooltip/popover is currently showing
+     */
+    get visible() {
+      return DOM.hasClass(this.element[0], 'is-hidden') === false;
+    },
+
+    /**
+     * @returns {Popupmenu|undefined} if a Popupmenu API exists on the trigger element
+     */
+    get popupmenuAPI() {
+      return this.element.data('popupmenu');
+    },
+
+    /**
+     * Initializes the component
+     * @private
+     * @returns {void}
+     */
+    init: function init() {
+      this.uniqueId = utils.uniqueId(this.element, 'tooltip');
+      this.isTouch = Environment.features.touch;
+      this.setup();
+      this.appendTooltip();
+
+      // Initial Content Setting.
+      // Don't do this if we're using an "immediate" trigger because _setContent()_ is handled at
+      // display time in that case.
+      var shouldRender = this.settings.trigger !== 'immediate';
+      if (shouldRender) {
+        this.setContent(this.settings.content, true);
+      }
+
+      this.handleEvents();
+    },
+
+
+    /**
+     * Builds internal references
+     * @private
+     * @returns {void}
+     */
+    setup: function setup() {
+      // "this.activeElement" is the target element that the Tooltip will display itself against
+      this.activeElement = this.settings.parentElement instanceof $ && this.settings.parentElement.length ? this.settings.parentElement : this.element;
+
+      this.descriptionId = $('.tooltip-description').length + 1;
+      this.description = this.element.parent().find('.tooltip-description');
+      if (!this.description.length && this.settings.isError) {
+        this.description = $('<span id="tooltip-description-' + this.descriptionId + '" class="tooltip-description audible"></span>').insertAfter(this.element);
+      }
+
+      if (this.element.is('.dropdown, .multiselect')) {
+        this.activeElement = this.element.nextAll('.dropdown-wrapper:first').find('>.dropdown');
+      }
+
+      var titleAttr = this.element.attr('title');
+      if (!this.settings.popover && titleAttr && titleAttr.length || !this.settings.popover && this.settings.title) {
+        this.settings.content = this.settings.title ? this.settings.title : titleAttr;
+        this.element.removeAttr('title');
+      }
+
+      if (this.settings.trigger === 'hover' && this.isTouch) {
+        this.element.addClass('longpress-target');
+      }
+
+      this.isPopover = this.settings.content !== null && _typeof(this.settings.content) === 'object' || this.settings.popover === true;
+
+      this.settings.closebutton = !!(this.settings.closebutton || this.element.data('closebutton'));
+
+      if (this.element.data('extraClass') && this.element.data('extraClass').length) {
+        this.settings.extraClass = this.element.data('extraClass');
+      }
+
+      this.isRTL = Locale.isRTL();
+    },
+
+
+    /**
+     * Adds ARIA attributes on some elements for better accessiblity.
+     * @private
+     * @returns {void}
+     */
+    addAria: function addAria() {
+      if (!this.content) {
+        return;
+      }
+
+      this.description.text(this.content);
+      this.content = this.addClassToLinks(this.content, 'links-clickable');
+
+      if (!this.isPopover) {
+        this.element.removeAttr('title').attr('aria-describedby', this.description.attr('id'));
+      }
+
+      if (this.isPopover && this.settings.trigger === 'click') {
+        this.element.attr('aria-haspopup', true);
+      }
+    },
+
+
+    /**
+     * @param {jquery[]|string} content HTML or String-based content.
+     * @param {string} [thisClass] optional, additional CSS class that gets appeneded to any anchor tags inside of the content.
+     * @returns {string} the appended content
+     */
+    addClassToLinks: function addClassToLinks(content, thisClass) {
+      var isjQuery = content instanceof $ && content.length > 0;
+      if (isjQuery) {
+        return content;
+      }
+
+      var d = $('<div/>').html(content);
+      $('a', d).addClass(thisClass);
+      return d.html();
+    },
+
+
+    /**
+     * Gets a reference to the element being used for the tooltip and positions it in the correct spot on the page.
+     * @private
+     * @returns {void}
+     */
+    appendTooltip: function appendTooltip() {
+      this.tooltip = this.settings.tooltipElement ? $(this.settings.tooltipElement) : $('#tooltip');
+      if (!this.tooltip.length) {
+        var name = this.settings.tooltipElement ? this.settings.tooltipElement.substring(1, this.settings.tooltipElement.length) : 'tooltip';
+        this.tooltip = $('<div class="' + (this.isPopover ? 'popover' : 'tooltip') + ' bottom is-hidden" role="tooltip" id="' + name + '"><div class="arrow"></div><div class="tooltip-content"></div></div>');
+      }
+
+      this.tooltip.place({
+        container: this.scrollparent,
+        parent: this.activeElement,
+        placement: this.settings.placement,
+        strategy: 'flip'
+      });
+
+      this.setTargetContainer();
+    },
+
+
+    /**
+     * Sets up all event listeners for this component
+     * @private
+     * @returns {void}
+     */
+    handleEvents: function handleEvents() {
+      var self = this;
+      var delay = 400;
+      var timer = void 0;
+
+      function showOnTimer() {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          if (self.element.is(':visible')) {
+            self.show();
+          }
+        }, delay);
+      }
+
+      function hideOnTimer() {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          self.hide();
+        }, delay);
+      }
+
+      function showImmediately() {
+        clearTimeout(timer);
+        self.show();
+      }
+
+      function hideImmediately() {
+        clearTimeout(timer);
+        self.hide();
+      }
+
+      if (this.settings.trigger === 'hover' && !this.settings.isError) {
+        (this.element.is('.dropdown, .multiselect, span.longpress-target') ? this.activeElement : this.element).on('mouseenter.' + COMPONENT_NAME$5, function () {
+          if (self.isTouch) {
+            return;
+          }
+          showOnTimer();
+        }).on('mouseleave.' + COMPONENT_NAME$5, function () {
+          hideOnTimer();
+        }).on('click.' + COMPONENT_NAME$5, function () {
+          if (self.isTouch) {
+            return;
+          }
+          showImmediately();
+        }).on('longpress.' + COMPONENT_NAME$5, function () {
+          showImmediately();
+        }).on('updated.' + COMPONENT_NAME$5, function () {
+          self.updated();
+        });
+      }
+
+      function toggleTooltipDisplay() {
+        if (!self.visible) {
+          hideImmediately();
+        } else {
+          showImmediately();
+        }
+      }
+
+      if (this.settings.trigger === 'click') {
+        this.element.on('click.' + COMPONENT_NAME$5, function () {
+          toggleTooltipDisplay();
+        });
+      }
+
+      if (this.settings.trigger === 'immediate') {
+        timer = setTimeout(function () {
+          toggleTooltipDisplay();
+        }, 1);
+      }
+
+      var isFocusable = this.settings.trigger === 'focus';
+      if (isFocusable) {
+        this.element.on('focus.' + COMPONENT_NAME$5, function () {
+          showImmediately();
+        }).on('blur.' + COMPONENT_NAME$5, function () {
+          if (!self.settings.keepOpen) {
+            hideImmediately();
+          }
+        });
+      }
+
+      // Close the popup/tooltip on orientation changes (but not when keyboard is open)
+      $(window).on('orientationchange.' + COMPONENT_NAME$5, function () {
+        if (!self.visible) {
+          return;
+        }
+        hideImmediately();
+      }, false);
+    },
+
+
+    /**
+     * Sets the content used inside the Tooltip element.
+     * @private
+     * @param {jquery[]|string|function} content incoming content to be set
+     * @param {boolean} dontRender causes the tooltip to prevent a visual refresh
+      after changing its content, meaning it will keep the previous content visible until this tooltip is closed or manually re-drawn.
+     * @returns {boolean} whether or not the render was successful
+     */
+    setContent: function setContent(content, dontRender) {
+      var self = this;
+      var settingsContent = this.settings.content;
+      var noIncomingContent = content === undefined || content === null;
+      var noSettingsContent = settingsContent === undefined || settingsContent === null;
+
+      function doRender() {
+        if (dontRender === true) {
+          return;
+        }
+        self.addAria();
+        self.render();
+      }
+
+      // If all sources of content are undefined, just return false and don't show anything.
+      if (noIncomingContent && noSettingsContent) {
+        return false;
+      }
+
+      // If the settingsContent type is a function, we need to re-run that function
+      // to update the content.
+      // NOTE: If you need to use a function to generate content, understand that the
+      //  tooltip/popover will not cache your content for future reuse.  It will ALWAYS
+      //  override incoming content.
+      if (typeof settingsContent === 'function') {
+        content = settingsContent;
+      }
+
+      // Use the pre-set content if we have no incoming content
+      if (noIncomingContent) {
+        content = settingsContent;
+      }
+
+      // If the incoming/preset content is exactly the same as the stored content,
+      // don't continue with this step. Deep object comparison for jQuery objects
+      // is done further down the chain.
+      if (content === this.content) {
+        doRender();
+        return true;
+      }
+
+      // jQuery-wrapped elements don't get manipulated.
+      // Simply store the reference, render, and return.
+      if (content instanceof $ && content.length) {
+        this.content = content.addClass('hidden');
+        doRender();
+        return true;
+      }
+
+      // Handle setting of content based on its Object type.
+      // If type isn't handled, the tooltip will not display.
+      if (typeof content === 'string') {
+        if (!content.length) {
+          return false;
+        }
+
+        // Could be a translation definition
+        content = Locale.translate(content, { showAsUndefined: true }) || content;
+
+        // Could be an ID attribute.
+        // If it matches an element already on the page, grab that element's content
+        // and store the reference only.
+        if (content.indexOf('#') === 0) {
+          var contentCheck = $('' + content);
+          if (contentCheck.length) {
+            this.content = contentCheck;
+            doRender();
+            return true;
+          }
+          return false;
+        }
+
+        // functions
+      } else if (typeof content === 'function') {
+        var callbackResult = content.call(this.element);
+        if (!callbackResult || typeof callbackResult !== 'string' || !callbackResult.length) {
+          return false;
+        }
+        content = callbackResult;
+
+        // if type isn't handled, return false
+      } else {
+        return false;
+      }
+
+      // Store an internal copy of the processed content
+      this.content = xssUtils.sanitizeHTML(content);
+
+      // Wrap tooltip content in <p> tags if there isn't already one present.
+      // Only happens for non-jQuery markup.
+      this.content = '<p>' + this.content + '</p>';
+
+      doRender();
+      return true;
+    },
+
+
+    /**
+     * Renders internal content either as a Tooltip or Popover.
+     * @private
+     * @returns {void}
+     */
+    render: function render() {
+      if (this.isPopover) {
+        return this.renderPopover();
+      }
+      return this.renderTooltip();
+    },
+
+
+    /**
+     * Renders internal content as a Tooltip.
+     * @private
+     * @returns {void}
+     */
+    renderTooltip: function renderTooltip() {
+      var titleArea = this.tooltip[0].querySelectorAll('.tooltip-title')[0];
+      var contentArea = this.tooltip[0].querySelectorAll('.tooltip-content')[0];
+      var extraClass = this.settings.extraClass;
+      var content = this.content;
+      var tooltip = this.tooltip[0];
+      var classes = 'tooltip is-hidden';
+
+      if (extraClass) {
+        classes += ' ' + extraClass;
+      }
+      tooltip.setAttribute('class', classes);
+
+      if (titleArea) {
+        titleArea.style.display = 'none';
+      }
+
+      if (contentArea && contentArea.previousElementSibling && !contentArea.previousElementSibling.classList.contains('arrow')) {
+        contentArea.insertAdjacentHTML('beforebegin', '<div class="arrow"></div>');
+      }
+
+      var tooltipHTML = typeof this.content === 'string' ? content : content[0].innerHTML;
+      DOM.html(contentArea, tooltipHTML, '<div><p><span><ul><li><a><abbr><b><i><kbd><small><strong><sub><svg><use><br>');
+    },
+
+
+    /**
+     * Renders internal content as a Tooltip.
+     * @private
+     * @returns {void}
+     */
+    renderPopover: function renderPopover() {
+      var self = this;
+      var extraClass = this.settings.extraClass;
+      var contentArea = this.tooltip.find('.tooltip-content');
+      var title = this.tooltip[0].querySelector('.tooltip-title');
+      var content = this.content;
+      var classes = 'popover is-hidden';
+
+      if (extraClass) {
+        classes += ' ' + extraClass;
+      }
+
+      this.tooltip[0].setAttribute('class', classes);
+
+      var useHtml = Environment.browser.name === 'ie' && Environment.browser.isIE11() && content instanceof $ && content.length && this.settings.trigger === 'hover';
+
+      if (typeof content === 'string') {
+        content = $(content);
+        contentArea.html(content);
+        contentArea.find('.hidden').removeClass('hidden');
+      } else if (useHtml) {
+        var clone = content[0].cloneNode(true);
+        var id = clone.id;
+        if (id) {
+          clone.id = id + '-' + this.uniqueId;
+        }
+        contentArea.html(clone.outerHTML);
+      } else {
+        contentArea.html(content);
+      }
+
+      var popoverWidth = contentArea.width();
+
+      if (!this.settings.placementOpts) {
+        this.settings.placementOpts = {};
+      }
+
+      if (!this.settings.placementOpts.parent) {
+        this.settings.placementOpts.parent = this.element;
+      }
+
+      if (!useHtml) {
+        content[0].classList.remove('hidden');
+      }
+
+      contentArea[0].firstElementChild.classList.remove('hidden');
+
+      var parentWidth = this.settings.placementOpts.parent.width();
+
+      if (Locale.isRTL()) {
+        this.settings.placementOpts.parentXAlignment = parentWidth > popoverWidth ? 'left' : 'right';
+      } else {
+        this.settings.placementOpts.parentXAlignment = parentWidth > popoverWidth ? 'right' : 'left';
+      }
+
+      if (this.settings.title !== null) {
+        if (!title) {
+          var titleFrag = document.createDocumentFragment();
+          title = document.createElement('div');
+          DOM.html(title, this.settings.title, '*');
+          title.classList.add('tooltip-title');
+
+          if (this.settings.headerClass) {
+            DOM.addClass(title, this.settings.headerClass, 'filled');
+          }
+          titleFrag.appendChild(title);
+          this.tooltip[0].insertBefore(titleFrag, this.tooltip[0].firstChild);
+        } else {
+          title.style.display = '';
+          title.childNodes[0].nodeValue = this.settings.title;
+        }
+      } else if (title) {
+        title.style.display = 'none';
+      }
+
+      if (this.settings.closebutton && title && !title.firstElementChild) {
+        var closeBtnX = $('<button type="button" class="btn-icon l-pull-right btn-close">' + $.createIcon({ classes: ['icon-close'], icon: 'close' }) + '<span>Close</span>' + '</button>').on('click', function () {
+          self.hide(true);
+        });
+
+        title.appendChild(closeBtnX[0]);
+      }
+
+      if (this.settings.initializeContent) {
+        content.initialize();
+      }
+    },
+
+
+    /**
+     * Alias for _show()_.
+     * @private
+     * @returns {void}
+     */
+    open: function open() {
+      return this.show();
+    },
+
+
+    /**
+     * Causes the tooltip to become shown
+     * @param {object} newSettings an object containing changed settings that will be
+     *  applied to the Tooltip/Popover before it's displayed.
+     * @param {boolean} ajaxReturn causes an AJAX-powered Tooltip/Popover not to refresh.
+     */
+    show: function show(newSettings, ajaxReturn) {
+      var self = this;
+      this.isInPopup = false;
+
+      if (newSettings) {
+        this.settings = utils.mergeSettings(this.element[0], newSettings, this.settings);
+      }
+
+      // Don't open if this is an Actions Button with an open popupmenu
+      if (this.popupmenuAPI && this.popupmenuAPI.isOpen) {
+        return;
+      }
+
+      if (this.settings.beforeShow && !ajaxReturn) {
+        var response = function response(content) {
+          if (typeof content === 'boolean' && !content) {
+            return;
+          }
+          self.content = content;
+          self.show({ content: content }, true);
+        };
+
+        if (typeof this.settings.beforeShow === 'string') {
+          window[this.settings.beforeShow](response, this.element);
+          return;
+        }
+
+        this.settings.beforeShow(response, this.element);
+        return;
+      }
+
+      var okToShow = true;
+      okToShow = this.setContent(this.content);
+      if (okToShow === false) {
+        return;
+      }
+
+      /**
+       * Fires before show the tooltip.
+       *
+       * @event beforeshow
+       * @memberof Tooltip
+       * @property {object} event - The jquery event object
+       * @property {object} tooltip - instance
+       */
+      okToShow = this.element.triggerHandler('beforeshow', [this.tooltip]);
+      if (okToShow === false) {
+        return;
+      }
+
+      this.tooltip[0].removeAttribute('style');
+      this.tooltip[0].classList.add(this.settings.placement);
+
+      if (this.settings.isError || this.settings.isErrorColor) {
+        this.tooltip[0].classList.add('is-error');
+      }
+
+      this.position();
+      utils.fixSVGIcons(this.tooltip);
+      /**
+       * Fires on show the tooltip.
+       *
+       * @event show
+       * @memberof Tooltip
+       * @property {object} event - The jquery event object
+       * @property {object} tooltip - instance
+       */
+      this.element.trigger('show', [this.tooltip]);
+
+      var mouseUpEventName = this.isTouch ? 'touchend' : 'mouseup';
+
+      // Personalizable the toolbar
+      var isPersonalizable = self.element.closest('.is-personalizable').length > 0;
+      self.tooltip[0].classList[isPersonalizable ? 'add' : 'remove']('is-personalizable');
+
+      setTimeout(function () {
+        $(document).on(mouseUpEventName + '.' + COMPONENT_NAME$5 + '-' + self.uniqueId, function (e) {
+          var target = $(e.target);
+
+          if (self.settings.isError || self.settings.trigger === 'focus') {
+            return;
+          }
+
+          if (target.is(self.element) && target.is('svg.icon')) {
+            return;
+          }
+
+          if ($('#editor-popup').length && $('#colorpicker-menu').length) {
+            return;
+          }
+
+          if (target.closest('.popover').length === 0 && target.closest('.dropdown-list').length === 0) {
+            self.hide();
+          }
+
+          // Closes patepicker dialog closes when clicking on a parent popover
+          if (target.closest('.popover').length === 1 && target.closest('.popover').not('.monthview-popup').length && self.element.prev().is('.datepicker')) {
+            self.hide(e);
+          }
+        }).on('keydown.' + COMPONENT_NAME$5 + '-' + self.uniqueId, function (e) {
+          if (e.which === 27 || self.settings.isError) {
+            self.hide();
+          }
+        });
+
+        if (self.settings.isError && !self.element.is(':visible, .dropdown') && self.element.is('[aria-describedby]')) {
+          self.hide();
+        }
+
+        if (window.orientation === undefined) {
+          $('body').on('resize.' + COMPONENT_NAME$5, function () {
+            self.hide();
+          });
+        }
+
+        // Hide on Page scroll
+        $('body').on('scroll.' + COMPONENT_NAME$5, function () {
+          self.hide();
+        });
+
+        self.element.closest('.modal-body-wrapper').on('scroll.tooltip', function () {
+          self.hide();
+        });
+
+        self.element.closest('.scrollable').on('scroll.tooltip', function () {
+          self.hide();
+        });
+
+        self.element.closest('.datagrid-wrapper').on('scroll.tooltip', function () {
+          self.hide();
+        });
+
+        // Click to close
+        if (self.settings.isError) {
+          self.tooltip.on('click.' + COMPONENT_NAME$5, function () {
+            self.hide();
+          });
+        }
+        /**
+         * Fires after show the tooltip.
+         *
+         * @event aftershow
+         * @memberof Tooltip
+         * @property {object} event - The jquery event object
+         * @property {object} tooltip - instance
+         */
+        self.element.trigger('aftershow', [self.tooltip]);
+      }, 400);
+    },
+
+
+    /**
+     * Places the tooltip element itself in the correct DOM element.
+     * If the current element is inside a scrollable container, the tooltip element
+     *  goes as high as possible in the DOM structure.
+     * @returns {void}
+     */
+    setTargetContainer: function setTargetContainer() {
+      var targetContainer = $('body');
+
+      // adjust the tooltip if the element is being scrolled inside a scrollable DIV
+      this.scrollparent = this.element.closest('.page-container.scrollable');
+      if (this.scrollparent.length) {
+        targetContainer = this.scrollparent;
+      }
+
+      if (this.settings.parentElement) {
+        targetContainer = this.settings.parentElement;
+      }
+
+      // this.tooltip.detach().appendTo(targetContainer);
+      targetContainer[0].appendChild(this.tooltip[0]);
+    },
+
+
+    /**
+     * Placement behavior's "afterplace" handler.
+     * DO NOT USE FOR ADDITIONAL POSITIONING.
+     * @private
+     * @param {jquery.event} e custom `afterPlace` event
+     * @param {placementobject} placementObj object containing placement settings
+     * @returns {void}
+     */
+    handleAfterPlace: function handleAfterPlace(e, placementObj) {
+      this.tooltip.data('place').setArrowPosition(e, placementObj, this.tooltip);
+      this.tooltip.triggerHandler('tooltipafterplace', [placementObj]);
+    },
+
+
+    /**
+     * Resets the current position of the tooltip.
+     * @returns {this} component instance
+     */
+    position: function position() {
+      this.setTargetContainer();
+      this.tooltip[0].classList.remove('is-hidden');
+
+      var self = this;
+      var distance = this.isPopover ? 20 : 10;
+      var tooltipPlacementOpts = this.settings.placementOpts || {};
+      var windowW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      var windowH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      var rect = this.tooltip[0].getBoundingClientRect();
+      var opts = $.extend({}, {
+        x: 0,
+        y: distance,
+        container: this.scrollparent,
+        containerOffsetX: tooltipPlacementOpts.containerOffsetX || this.settings.offset.left,
+        containerOffsetY: tooltipPlacementOpts.containerOffsetY || this.settings.offset.top,
+        parent: tooltipPlacementOpts.parent || this.activeElement,
+        placement: tooltipPlacementOpts.placement || this.settings.placement,
+        strategies: ['flip', 'nudge']
+      }, tooltipPlacementOpts);
+
+      if (opts.placement === 'left' || opts.placement === 'right') {
+        opts.x = distance;
+        opts.y = 0;
+      }
+      if (rect.width >= windowW && /left|right/g.test(opts.placement)) {
+        this.tooltip[0].classList.add('no-arrow');
+      } else if (rect.height >= windowH && /top|bottom/g.test(opts.placement)) {
+        this.tooltip[0].classList.add('no-arrow');
+      } else {
+        this.tooltip[0].classList.remove('no-arrow');
+      }
+
+      this.tooltip.one('afterplace.tooltip', function (e, placementObj) {
+        self.handleAfterPlace(e, placementObj);
+      });
+
+      // Tool tip may be cleaned up on a modal or CAP
+      if (this.tooltip.data('place')) {
+        this.tooltip.data('place').place(opts);
+      } else {
+        this.tooltip.place(opts);
+        this.tooltip.data('place').place(opts);
+      }
+      return this;
+    },
+
+
+    /**
+     * Alias for _hide()_ that works with the global _closeChildren()_ method.
+     * @private
+     * @returns {void}
+     */
+    close: function close() {
+      return this.hide();
+    },
+
+
+    /**
+     * Hides the Tooltip/Popover
+     * @param {boolean} [force] Force the tooltip to hide no matter the settings.
+     * @returns {void}
+     */
+    hide: function hide(force) {
+      if (this.settings.keepOpen && !force || !this.visible) {
+        return;
+      }
+
+      if (this.isInPopup) {
+        this.settings.content.addClass('hidden');
+        return;
+      }
+
+      this.tooltip[0].classList.remove('is-personalizable');
+      this.tooltip[0].classList.add('is-hidden');
+      this.tooltip[0].style.left = '';
+      this.tooltip[0].style.top = '';
+      this.tooltip.find('.arrow').removeAttr('style');
+
+      this.detachOpenEvents();
+
+      if ($('.popover').not('.is-hidden').length === 0) {
+        $(document).off('mouseup.tooltip keydown.tooltip');
+        $('body').off('resize.tooltip');
+      }
+
+      /**
+       * Fires when hide the tooltip.
+       *
+       * @event hide
+       * @memberof Tooltip
+       * @property {object} event - The jquery event object
+       * @property {object} tooltip - instance
+       */
+      this.element.triggerHandler('hide', [this.tooltip]);
+    },
+
+
+    /**
+     * Causes the tooltip to store updated settings and re-render itself.
+     * @param {object} [settings] incoming settings
+     * @returns {this} component instance
+     */
+    updated: function updated(settings) {
+      if (settings) {
+        this.settings = utils.mergeSettings(this.element, settings, this.settings);
+      }
+
+      var self = this;
+      if (self.settings.trigger === 'immediate') {
+        setTimeout(function () {
+          self.show();
+        }, 100);
+      } else {
+        self.setContent();
+      }
+
+      return this;
+    },
+
+
+    /**
+     * Removes any events which would cause the tooltip/popover to re-open.
+     * @private
+     * @returns {void}
+     */
+    detachOpenEvents: function detachOpenEvents() {
+      this.tooltip.off('click.' + COMPONENT_NAME$5);
+
+      $(document).off(['keydown.' + COMPONENT_NAME$5 + '-' + self.uniqueId, 'mouseup.' + COMPONENT_NAME$5 + '-' + self.uniqueId, 'touchend.' + COMPONENT_NAME$5 + '-' + self.uniqueId].join(' '));
+
+      $('body').off(['resize.' + COMPONENT_NAME$5, 'scroll.' + COMPONENT_NAME$5].join(' '));
+
+      this.element.closest('.modal-body-wrapper').off('scroll.' + COMPONENT_NAME$5);
+      this.element.closest('.scrollable').off('scroll.' + COMPONENT_NAME$5);
+      this.element.closest('.datagrid-body').off('scroll.' + COMPONENT_NAME$5);
+    },
+
+
+    /**
+     * Tears down this component instance, removing all internal flags and unbinding events.
+     * @private
+     * @returns {this} component instance
+     */
+    teardown: function teardown() {
+      this.description.remove();
+      this.descriptionId = undefined;
+      this.activeElement = undefined;
+
+      this.element.removeAttr('aria-describedby').removeAttr('aria-haspopup');
+      if (!this.tooltip.hasClass('is-hidden')) {
+        this.hide();
+      }
+
+      if (this.tooltip && this.tooltip.data('place')) {
+        this.tooltip.data('place').destroy();
+      }
+
+      this.element.off(['mouseenter.' + COMPONENT_NAME$5, 'mouseleave.' + COMPONENT_NAME$5, 'longpress.' + COMPONENT_NAME$5, 'click.' + COMPONENT_NAME$5, 'updated.' + COMPONENT_NAME$5, 'focus.' + COMPONENT_NAME$5, 'blur.' + COMPONENT_NAME$5].join(' '));
+
+      this.detachOpenEvents();
+
+      $(window).off('orientationchange.' + COMPONENT_NAME$5);
+
+      return this;
+    },
+
+
+    /**
+     * Destroys this component instance
+     * @returns {void}
+     */
+    destroy: function destroy() {
+      this.teardown();
+      $.removeData(this.element[0], COMPONENT_NAME$5);
+    }
+  };
+
+  /**
+   * jQuery Component Wrapper for Tooltip/Popover
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+  $.fn.tooltip = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$5);
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$5, new Tooltip(this, settings));
+      }
+    });
+  };
+
   // The name of this component.
-  var COMPONENT_NAME$5 = 'button';
+  var COMPONENT_NAME$6 = 'button';
 
   /**
    * Soho Button Element
@@ -10804,7 +12094,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$5);
+      $.removeData(this.element[0], COMPONENT_NAME$6);
     }
   };
 
@@ -10815,16 +12105,16 @@ var Soho = (function (exports) {
    */
   $.fn.button = function jQueryButton(settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$5);
+      var instance = $.data(this, COMPONENT_NAME$6);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$5, new Button(this, settings));
+        instance = $.data(this, COMPONENT_NAME$6, new Button(this, settings));
       }
     });
   };
 
-  var COMPONENT_NAME$6 = 'hyperlink';
+  var COMPONENT_NAME$7 = 'hyperlink';
 
   /**
    * Soho component wrapper for Hyperlinks.
@@ -10900,14 +12190,14 @@ var Soho = (function (exports) {
    */
   $.fn.hyperlink = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$6);
+      var instance = $.data(this, COMPONENT_NAME$7);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$6, new Hyperlink(this, settings));
+        instance = $.data(this, COMPONENT_NAME$7, new Hyperlink(this, settings));
         instance.destroy = function destroy() {
           this.teardown();
-          $.removeData(this, COMPONENT_NAME$6);
+          $.removeData(this, COMPONENT_NAME$7);
         };
       }
     });
@@ -10994,9 +12284,16 @@ var Soho = (function (exports) {
     locale: '',
     requireDecimal: false,
     allowNegative: false,
-    allowLeadingZeroes: false,
+    allowLeadingZeros: false,
     integerLimit: null
   };
+
+  // Gets the number of leading zeros in a string representing a formatted number.
+  // @param {string} formattedStr the string to be checked
+  // @returns {number} containing the number of leading zeros.
+  function getLeadingZeros(formattedStr) {
+    return ('' + formattedStr).match(/^0*/)[0].length;
+  }
 
   // Converts a string representing a formatted number into a Number Mask.
   // @param {string} strNumber incoming string
@@ -11010,15 +12307,31 @@ var Soho = (function (exports) {
   // Adds thousands separators to the correct spot in a formatted number string.
   // @param {string} n - the string
   // @param {string} thousands - the thousands separator.
-  // @param {string} [locale] - if defined, uses a custom locale string for formatting
-  // @param {object} [options] - settings for `toLocaleString`
+  // @param {object} [options] - number mask function options.
+  // @param {object} [localeStringOpts] - settings for `toLocaleString`.
   // @returns {string} the incoming string formatted with a thousands separator.
   // http://stackoverflow.com/a/10899795/604296
-  function addThousandsSeparator(n, thousands, locale, options) {
+  function addThousandsSeparator(n, thousands, options, localeStringOpts) {
     if (n === '' || isNaN(n)) {
       return n;
     }
-    return Locale.toLocaleString(Number(n), locale, options);
+
+    var formatted = Locale.toLocaleString(Number(n), options.locale, localeStringOpts, thousands);
+
+    // `Number.toLocaleString` does not account for leading zeroes, so we have to put them
+    // back if we've configured this Mask to use them.
+    if (options && options.allowLeadingZeros && n.indexOf('0') === 0) {
+      var zeros = getLeadingZeros(n);
+      if (formatted.indexOf('0') === 0) {
+        formatted = formatted.substring(1);
+      }
+      while (zeros > 0) {
+        zeros -= 1;
+        formatted = '0' + formatted;
+      }
+    }
+
+    return formatted;
   }
 
   // Gets an array of Regex objects matching the number of digits present in a source string
@@ -11056,6 +12369,12 @@ var Soho = (function (exports) {
     options = utils.mergeSettings(undefined, options, DEFAULT_NUMBER_MASK_OPTIONS);
     if (!options.locale || !options.locale.length) {
       options.locale = Locale.currentLocale.name;
+    }
+    // Deprecated in v4.25.1
+    if (options.allowLeadingZeroes) {
+      warnAboutDeprecation('allowLeadingZeros', 'allowLeadingZeroes', 'Number Mask');
+      options.allowLeadingZeros = options.allowLeadingZeroes;
+      options.allowLeadingZeroes = undefined;
     }
 
     var PREFIX = options.prefix;
@@ -11111,7 +12430,7 @@ var Soho = (function (exports) {
 
       integer = integer.replace(masks.NON_DIGITS_REGEX, masks.EMPTY_STRING);
 
-      if (!options.allowLeadingZeroes) {
+      if (!options.allowLeadingZeros) {
         integer = integer.replace(/^0+(0$|[^0])/, '$1');
       }
 
@@ -11120,7 +12439,7 @@ var Soho = (function (exports) {
         style: 'decimal',
         useGrouping: true
       };
-      integer = options.allowThousandsSeparator ? addThousandsSeparator(integer, THOUSANDS, options.locale, localeOptions) : integer;
+      integer = options.allowThousandsSeparator ? addThousandsSeparator(integer, THOUSANDS, options, localeOptions) : integer;
 
       mask = convertToMask(integer);
 
@@ -12077,7 +13396,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle, new-cap */
 
   // The name of this component
-  var COMPONENT_NAME$7 = 'mask';
+  var COMPONENT_NAME$8 = 'mask';
 
   /**
    * Component Wrapper for input elements that gives them the ability to become "masked".
@@ -12113,7 +13432,7 @@ var Soho = (function (exports) {
    * @param {number} [settings.patternOptions.decimalLimit] [number masks only] defines the number of characters allowed after the decimal point.
    * @param {number} [settings.patternOptions.integerLimit] [number masks only] defines the number of characters allowed before the decimal point.
    * @param {boolean} [settings.patternOptions.allowNegative] [number masks only] allows a number to be negative (adds/retains a "minus" symbol at the beginning of the value)
-   * @param {boolean} [settings.patternOptions.allowLeadingZeroes] [number masks only] allows a zero be placed before a decimal or other numbers.
+   * @param {boolean} [settings.patternOptions.allowLeadingZeros] [number masks only] allows a zero be placed before a decimal or other numbers.
    * @param {string} [settings.placeholderChar='_'] If using the `settings.guide`, will be used as the placeholder
    *  for characters that are not yet typed.
    * @param {function} [settings.pipe] provides a way of adjusting the masked content, caret position,
@@ -12147,6 +13466,13 @@ var Soho = (function (exports) {
   }
 
   MaskInput.prototype = {
+
+    /**
+     * @returns {string} representing the Masked HTMLInputElement's type
+     */
+    get type() {
+      return this.element.type;
+    },
 
     /**
      * Initialization/things that need to be called on `updated()` in addition to initialization
@@ -12246,6 +13572,12 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var self = this;
 
+      // On change event
+      this.changeEventHandler = function () {
+        self.hasTriggeredChangeEvent = true;
+      };
+      this.element.addEventListener('change', this.changeEventHandler);
+
       // Store an initial value on focus
       this.focusEventHandler = function () {
         self.state.initialValue = self.element.value;
@@ -12253,13 +13585,19 @@ var Soho = (function (exports) {
       this.element.addEventListener('focus', this.focusEventHandler);
 
       // Handle all masking on the `input` event
-      this.inputEventHandler = function () {
-        return self.process();
+      this.inputEventHandler = function (e) {
+        self.hasTriggeredChangeEvent = false;
+        return self.process(e);
       };
       this.element.addEventListener('input', this.inputEventHandler);
 
       // Remove an initial value from the state object on blur
       this.blurEventHandler = function (e) {
+        if (this.processingJustHappenedOnInput === true) {
+          e.preventDefault();
+          return false;
+        }
+
         // Handle mask processing on blur, if settings allow.  Otherwise, return out.
         if (self.settings.processOnBlur) {
           if (self.element.readOnly) {
@@ -12270,13 +13608,14 @@ var Soho = (function (exports) {
           // in IE11 or Edge, change event doesn't fire for some unknown reason.
           // Added this for backwards compatility with this OS/Browser combo.
           // See http://jira.infor.com/browse/SOHO-6895
-          if (self._hasChangedValue() && self._isEdgeIE()) {
+          if (self._hasChangedValue() && (self._isEdgeIE() || !self.hasTriggeredChangeEvent)) {
             $(self.element).trigger('change');
+            self.hasTriggeredChangeEvent = true;
           }
         }
 
         delete self.state.initialValue;
-        return self.process();
+        return self.process(e);
       };
       this.element.addEventListener('blur', this.blurEventHandler);
 
@@ -12286,9 +13625,10 @@ var Soho = (function (exports) {
 
     /**
      * Main Process for conforming a mask against the API.
+     * @param {jQuery.Event} e the input/blur event
      * @returns {boolean} whether or not the mask process was successful
      */
-    process: function process() {
+    process: function process(e) {
       // If no pattern's defined, act as if no mask component is present.
       if (!this.settings.pattern) {
         return true;
@@ -12297,23 +13637,52 @@ var Soho = (function (exports) {
       // Get a reference to the desired Mask API (by default, the one setup
       // during Soho initialization).
       var api = this.mask;
+      var patternOptions = this.settings.patternOptions || {};
+
+      var definedDecimal = '.';
+      if (this.locale && this.locale.data && this.locale.data.numbers && this.locale.data.numbers.decimal) {
+        definedDecimal = this.locale.data.numbers.decimal;
+      }
+      if (patternOptions.symbols && patternOptions.symbols.decimal) {
+        definedDecimal = patternOptions.symbols.decimal;
+      }
+
       if (!api.pattern) {
         api.configure({
           pattern: this.settings.pattern,
-          patternOptions: this.settings.patternOptions
+          patternOptions: patternOptions
         });
       }
 
       // Get all necessary bits of data from the input field.
       var rawValue = this.element.value;
+      var numberInputCorrections = false;
 
-      // Don't continue if there was no change to the input field's value
+      if (e && e.type === 'input') {
+        // Number input fields operate differently than text-based input fields.
+        // If we're using a number input and the rawValue detected is empty, but the field contents are not,
+        // it's possible that a double decimal has been entered and not properly detected
+        // at the time the input event occurred.
+        if (e.inputType === 'insertText') {
+          if (rawValue === '') {
+            rawValue = this.state.previousMaskResult;
+            numberInputCorrections = true;
+          } else if (e.data === definedDecimal && rawValue.indexOf(definedDecimal) > -1) {
+            numberInputCorrections = true;
+          }
+        }
+      }
+
       if (rawValue === this.state.previousMaskResult) {
+        if (numberInputCorrections) {
+          this.element.value = '';
+          this.element.value = '' + rawValue;
+        }
         return false;
       }
 
-      var posBegin = this.element.selectionStart;
-      var posEnd = this.element.selectionEnd;
+      var posBegin = this.element.selectionStart || 0;
+      var posEnd = this.element.selectionEnd || 0;
 
       // On Android, the first character inserted into a field is automatically
       // selected when it shouldn't be. This snippet fixes that problem.
@@ -12355,7 +13724,6 @@ var Soho = (function (exports) {
 
       // Use the piped value, if applicable.
       var finalValue = processed.pipedValue ? processed.pipedValue : processed.conformedValue;
-      var patternOptions = this.settings.patternOptions;
       if (finalValue !== '' && patternOptions && patternOptions.suffix && finalValue.indexOf(patternOptions.suffix) < 0) {
         finalValue += this.settings.patternOptions.suffix;
       }
@@ -12388,12 +13756,18 @@ var Soho = (function (exports) {
       this.state.previousPlaceholder = processed.placeholder;
 
       // Set state of the input field
-      this.element.value = finalValue;
+      if (Environment.browser.name === 'firefox') {
+        if (this.element.value !== finalValue) {
+          this.element.value = finalValue;
+        }
+      } else {
+        this.element.value = finalValue;
+      }
       utils.safeSetSelection(this.element, processed.caretPos);
 
       // Return out if there was no visible change in the conformed result
       // (causes state not to change, events not to fire)
-      if (previousValue !== finalValue) {
+      if (previousValue === finalValue) {
         return false;
       }
 
@@ -12671,6 +14045,11 @@ var Soho = (function (exports) {
         delete this.blurEventHandler;
       }
 
+      if (this.changeEventHandler) {
+        this.element.removeEventListener('change', this.changeEventHandler);
+        delete this.changeEventHandler;
+      }
+
       return this;
     }
   };
@@ -12682,14 +14061,14 @@ var Soho = (function (exports) {
    */
   $.fn.maskinput = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$7);
+      var instance = $.data(this, COMPONENT_NAME$8);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$7, new MaskInput(this, settings));
+        instance = $.data(this, COMPONENT_NAME$8, new MaskInput(this, settings));
         instance.destroy = function () {
           this.teardown();
-          $.removeData(this.element, COMPONENT_NAME$7);
+          $.removeData(this.element, COMPONENT_NAME$8);
         };
       }
     });
@@ -12704,7 +14083,7 @@ var Soho = (function (exports) {
   $.fn.mask = $.fn.maskinput;
 
   // Component Name
-  var COMPONENT_NAME$8 = 'popupmenu';
+  var COMPONENT_NAME$9 = 'popupmenu';
 
   /**
    * Responsive Popup Menu Control aka Context Menu when doing a right click action.
@@ -12715,7 +14094,7 @@ var Soho = (function (exports) {
    * @param {string} [settings.trigger='click']  Action on which to trigger a menu can be: click, rightClick, immediate ect.
    * @param {boolean} [settings.autoFocus=true]  If false the focus will not focus the first list element. (At the cost of accessibility).
    * @param {boolean} [settings.mouseFocus=true]  If false the focus will not highlight the first list element. (At the cost of accessibility).
-   * @param {boolean} [settings.attachToBody=false]  If true the menu will be moved out to the body. To be used in certin overflow situations.
+   * @param {boolean} [settings.attachToBody=true]  If true the menu will be moved out to the body. If false, the menu HTML will remain adjacent to its trigger button. To be used in certin overflow situations.
    * @param {function} [settings.beforeOpen]  Callback that can be used for populating the contents of the menu.
    * @param {string} [settings.ariaListbox=false]   Switches aria to use listbox construct instead of menu construct (internal).
    * @param {string} [settings.eventObj]  Can pass in the event object so you can do a right click with immediate.
@@ -12739,7 +14118,7 @@ var Soho = (function (exports) {
     trigger: 'click',
     autoFocus: true,
     mouseFocus: true,
-    attachToBody: false,
+    attachToBody: true,
     removeOnDestroy: false,
     beforeOpen: null,
     ariaListbox: false,
@@ -12757,7 +14136,8 @@ var Soho = (function (exports) {
       y: 0
     },
     predefined: $(),
-    duplicateMenu: null
+    duplicateMenu: null,
+    stretchToWidestMenuItem: false
   };
 
   function PopupMenu(element, settings) {
@@ -12822,12 +14202,6 @@ var Soho = (function (exports) {
       if (this.settings.menuId) {
         this.settings.menu = this.settings.menuId;
         this.settings.menuId = undefined;
-      }
-
-      // Automatically set safari environments to be `attachToBody: true`
-      var isSafari = Environment.browser.name === 'safari';
-      if (isSafari) {
-        this.settings.attachToBody = true;
       }
 
       // keep track of how many popupmenus there are with an ID.
@@ -12973,7 +14347,8 @@ var Soho = (function (exports) {
 
       this.wrapper = this.menu.parent('.popupmenu-wrapper');
       if (!this.wrapper.length) {
-        this.wrapper = this.menu.wrap('<div class="popupmenu-wrapper"></div>');
+        this.menu.wrap('<div class="popupmenu-wrapper"></div>');
+        this.wrapper = this.menu.parent('.popupmenu-wrapper');
       }
 
       // Invoke all icons as icons
@@ -13003,9 +14378,24 @@ var Soho = (function (exports) {
         }
       });
 
-      // If the trigger element is a button with no border append arrow markup
+      // Some popupmenu components will contain an arrow that points to their
+      // triggering element, or a child of that element.
+      var doSetArrow = false;
       var containerClass = this.element.parent().attr('class');
-      if (this.element.hasClass('btn-menu') || this.element.hasClass('btn-actions') || this.element.hasClass('btn-icon') && this.element.find('use').attr('xlink:href') === '#icon-more' || this.settings.menu === 'colorpicker-menu' || this.element.closest('.toolbar').length > 0 || this.element.closest('.masthead').length > 0 || this.element.is('.searchfield-category-button') || containerClass && containerClass.indexOf('more') >= 0 || containerClass && containerClass.indexOf('btn-group') >= 0 || this.settings.showArrow) {
+
+      // `true` setting takes precedent over all else
+      if (this.settings.showArrow === true) {
+        doSetArrow = false;
+      } else if (this.settings.showArrow === null) {
+        var closestToolbar = this.element.closest('.toolbar');
+        var closestMasthead = this.element.closest('.masthead');
+
+        if (this.element.hasClass('btn-menu') || this.element.hasClass('btn-actions') || this.element.hasClass('btn-icon') && this.element.find('use').attr('xlink:href') === '#icon-more' || closestToolbar.length > 0 && !closestToolbar.is('.formatter-toolbar') || closestMasthead.length > 0 || this.settings.menu === 'colorpicker-menu' || this.element.is('.searchfield-category-button') || containerClass && containerClass.indexOf('more') >= 0 || containerClass && containerClass.indexOf('btn-group') >= 0) {
+          doSetArrow = true;
+        }
+      }
+
+      if (doSetArrow) {
         var arrow = $('<div class="arrow"></div>');
         var wrapper = this.menu.parent('.popupmenu-wrapper');
 
@@ -13015,7 +14405,7 @@ var Soho = (function (exports) {
       }
 
       // If inside of a ".field-short" container, make smaller
-      var addFieldShort = this.element.closest('.field-short').length;
+      var addFieldShort = this.element.closest('.field-short').length > 0 || this.element.closest('.form-layout-compact').length > 0;
       this.menu[addFieldShort ? 'addClass' : 'removeClass']('popupmenu-short');
 
       // If button is part of a header/masthead or a container using the "alternate"
@@ -13032,6 +14422,18 @@ var Soho = (function (exports) {
       // Unhide the menu markup, if hidden
       if (this.menu.is('.hidden')) {
         this.menu.removeClass('hidden');
+      }
+
+      // If `settings.stretchToWidestMenuItem` is true, the trigger element will be sized
+      // to match the size of the menu's largest item.
+      if (this.settings.stretchToWidestMenuItem) {
+        var btnStyle = window.getComputedStyle(this.element[0]);
+        var padding = 0;
+        if (btnStyle && btnStyle.getPropertyValue('padding-left')) {
+          padding = parseInt(btnStyle.getPropertyValue('padding-left'), 10) + parseInt(btnStyle.getPropertyValue('padding-right'), 10);
+        }
+
+        this.element.width(parseInt(this.getMaxMenuWidth(), 10) - padding);
       }
     },
 
@@ -13081,8 +14483,10 @@ var Soho = (function (exports) {
         if (settings.heading) {
           headingText += '<li class="heading">' + settings.heading + '</li>';
         }
-        if (settings.nextSectionSelect === 'single' || settings.nextSectionSelect === 'multiple') {
-          sectionSelectClass = ' ' + settings.nextSectionSelect;
+        if (settings.nextSectionSelect === 'single') {
+          sectionSelectClass = ' single-selectable-section';
+        } else if (settings.nextSectionSelect === 'multiple') {
+          sectionSelectClass = ' multi-selectable-section';
         }
 
         return stringUtils.stripWhitespace('\n        <li class="separator' + sectionSelectClass + '"></li>\n        ' + headingText + '\n      ');
@@ -13169,6 +14573,7 @@ var Soho = (function (exports) {
     toData: function toData(settings) {
       var data = {};
       var menu = [];
+      var self = this;
 
       settings = settings || {};
 
@@ -13191,11 +14596,8 @@ var Soho = (function (exports) {
       var hasIcons = settings.contextElement.hasClass('has-icons');
       data.hasIcons = hasIcons;
 
-      if (settings.noMenuWrap) {
-        data = menu;
-      } else {
-        data.menu = menu;
-      }
+      var singleSelectable = void 0;
+      var multiSelectable = void 0;
 
       function decodeListItem(item) {
         var li = $(item);
@@ -13211,9 +14613,11 @@ var Soho = (function (exports) {
           liData.separator = true;
 
           if (li.hasClass('single-selectable-section')) {
+            singleSelectable = true;
             liData.nextSectionSelect = 'single';
           }
           if (li.hasClass('multi-selectable-section')) {
+            multiSelectable = true;
             liData.nextSectionSelect = 'multiple';
           }
 
@@ -13241,10 +14645,26 @@ var Soho = (function (exports) {
           liData.icon = icon[0].querySelector('use').getAttribute('xlink:href').replace('#icon-', '');
         }
 
-        if (li.hasClass('is-selectable')) {
+        var notGloballySelectable = !singleSelectable && !multiSelectable;
+        var noSelectableSections = !self.hasSelectableSeparator(li);
+
+        /*
+        // Determine single/multi-select
+        if (li.hasClass('is-selectable') || li.hasClass('is-checked')) {
           liData.selectable = 'single';
         } else if (li.hasClass('is-multiselectable')) {
           liData.selectable = 'multiple';
+        }
+        */
+
+        // If selection isn't contained to a header, set it for the entire menu
+        if (liData.selectable && notGloballySelectable && noSelectableSections) {
+          if (liData.selectable === 'single') {
+            singleSelectable = true;
+          } else if (liData.selectable === 'multiple') {
+            multiSelectable = true;
+          }
+          data.selectable = liData.selectable;
         }
 
         var submenu = li.find('.popupmenu');
@@ -13270,6 +14690,12 @@ var Soho = (function (exports) {
         }
         menu.push(liData);
       });
+
+      if (settings.noMenuWrap) {
+        data = menu;
+      } else {
+        data.menu = menu;
+      }
 
       return data;
     },
@@ -13351,6 +14777,15 @@ var Soho = (function (exports) {
           if (DOM.hasClass(li, 'is-checked')) {
             a.setAttribute('role', 'menuitemcheckbox');
             a.setAttribute('aria-checked', true);
+
+            // Make all adjacent items selectable.
+            if (!self.hasSelectableSeparator(li)) {
+              var selectableClassName = 'is-selectable';
+              if (self.menu.is('.is-multiselectable')) {
+                selectableClassName = 'is-multiselectable';
+              }
+              self.getAdjacentSelectables(li).addClass(selectableClassName);
+            }
           }
 
           // is-not-checked
@@ -13866,7 +15301,7 @@ var Soho = (function (exports) {
       var href = anchor.attr('href');
       var selectionResult = [anchor];
 
-      if (!e && !anchor) {
+      if (!e && !anchor || !anchor.length) {
         return false;
       }
 
@@ -13885,7 +15320,7 @@ var Soho = (function (exports) {
         e.preventDefault();
       }
 
-      if (this.isInSelectableSection(anchor) || this.menu.hasClass('is-selectable') || this.menu.hasClass('is-multiselectable')) {
+      if (this.isSelectable(anchor.parent())) {
         selectionResult = this.select(anchor);
       }
 
@@ -14259,6 +15694,36 @@ var Soho = (function (exports) {
 
 
     /**
+     * Gets the width of the menu
+     * @returns {number} representing the width of the largest menu item.
+     */
+    getMaxMenuWidth: function getMaxMenuWidth() {
+      if (!(this.menu instanceof $)) {
+        return 0;
+      }
+
+      var wasOriginallyClosed = !this.isOpen;
+      if (wasOriginallyClosed) {
+        this.wrapper.css({
+          left: '-999999px'
+        });
+        this.menu.addClass('is-open');
+      }
+
+      var width = this.menu.width();
+
+      if (wasOriginallyClosed) {
+        this.wrapper.css({
+          left: ''
+        });
+        this.menu.removeClass('is-open');
+      }
+
+      return width;
+    },
+
+
+    /**
      * Opens the popupmenu, including repopulating data and setting up visual delays, if necessary.
      * @param {jQuery.Event} e the event that caused the menu to open
      * @param {boolean} ajaxReturn set to true if the open routine should not include a source call
@@ -14416,7 +15881,10 @@ var Soho = (function (exports) {
         });
 
         $('.scrollable, .modal.is-visible .modal-body-wrapper').on('scroll.popupmenu', function () {
-          self.close();
+          var delay = self.isInViewport(self.element[0]) ? 0 : 150;
+          setTimeout(function () {
+            self.close();
+          }, delay);
         });
 
         /**
@@ -14512,6 +15980,18 @@ var Soho = (function (exports) {
           self.element.triggerHandler('afteropen', [self.menu]);
         }, 1);
       }
+    },
+
+
+    /**
+     * Checks if given element is all in viewport
+     * @private
+     * @param {HTMLElement} elem an HTML element to check
+     * @returns {boolean} true if given element is all in viewport
+     */
+    isInViewport: function isInViewport(elem) {
+      var b = elem.getBoundingClientRect();
+      return b.top > 0 && b.left > 0 && b.bottom < (window.innerHeight || document.documentElement.clientHeight) && b.right < (window.innerWidth || document.documentElement.clientWidth);
     },
 
 
@@ -14712,14 +16192,14 @@ var Soho = (function (exports) {
       var returnObj = [anchor];
 
       // If the entire menu is "selectable", place the checkmark where it's supposed to go.
-      if (singleMenu || singleSection) {
+      if (parent.hasClass('is-selectable') || singleMenu || singleSection) {
         parent.prevUntil('.heading, .separator').add(parent.nextUntil('.heading, .separator')).removeClass('is-checked');
         parent.addClass('is-checked');
         returnObj.push('selected');
         return returnObj;
       }
 
-      if (multipleMenu || multipleSection) {
+      if (parent.hasClass('is-multiselectable') || multipleMenu || multipleSection) {
         if (parent.hasClass('is-checked')) {
           parent.removeClass('is-checked');
           returnObj.push('deselected');
@@ -14748,11 +16228,63 @@ var Soho = (function (exports) {
 
 
     /**
+     * Checks if a list item is selectable, single or multi.
+     * @param {HTMLElement} li an HTML List Item to check
+     * @returns {boolean} whether or not the element is selectable
+     */
+    isSelectable: function isSelectable(li) {
+      return $(li).is('.is-selectable, .is-multiselectable') || this.hasSelectableSeparator(li) || this.menu.hasClass('is-selectable') || this.menu.hasClass('is-multiselectable');
+    },
+
+
+    /**
+     * @private
+     * @param {HTMLElement} li an HTML List Item to check
+     * @returns {jQuery[]} element representing a menu item's adjacent selectable header, if applicable.
+     */
+    getSelectableSeparator: function getSelectableSeparator(li) {
+      return $(li).prevAll('.separator.single-selectable-section, .separator.multi-selectable-section').first();
+    },
+
+
+    /**
+     * @private
+     * @param {HTMLElement} li an HTML List Item to check
+     * @returns {boolean} whether or not a menu item has an adjacent selectable header.
+     */
+    hasSelectableSeparator: function hasSelectableSeparator(li) {
+      var sep = this.getSelectableSeparator(li);
+      return sep && sep.length;
+    },
+
+
+    /**
+     * Gets references to the adjacent menu items in a selectable section
+     * If there are no selectable sections defined, consider the entire menu
+     * as selectable (not including submenu items)
+     * @param {HTMLElement} li the list item being checked.
+     * @returns {jQuery[]} elements inside the selectable section.
+     */
+    getAdjacentSelectables: function getAdjacentSelectables(li) {
+      var sep = this.getSelectableSeparator(li);
+      var exclusions = ':not(.heading):not(.separator):not(.submenu)';
+
+      if (!sep || !sep.length) {
+        return $(li).parent().children('li' + exclusions);
+      }
+      return $(sep).nextUntil('.separator').filter(exclusions);
+    },
+
+
+    /**
      * Determines whether or not an anchor resides inside of a selectable Popupmenu section.
+     * @private
+     * @deprecated as of v4.24.x. Use `hasSelectableSeparator()` instead.
      * @param {jQuery[]} anchor the anchor tag being checked.
      * @returns {jQuery[]} elements inside the top-level menu that are selected.
      */
     isInSelectableSection: function isInSelectableSection(anchor) {
+      warnAboutDeprecation('hasSelectableSeparator()', 'isInSelectableSection()');
       var separator = anchor.parent().prevAll().filter('.separator').first();
       return separator.hasClass('multi-selectable-section') || separator.hasClass('single-selectable-section');
     },
@@ -14760,6 +16292,7 @@ var Soho = (function (exports) {
 
     /**
      * Determines whether or not an anchor resides inside of a single-selectable Popupmenu section.
+     * @private
      * @param {jQuery[]} anchor the anchor tag being checked.
      * @returns {jQuery[]} elements inside the top-level menu that are selected
      *  within a single-selectable section.
@@ -14771,6 +16304,7 @@ var Soho = (function (exports) {
 
     /**
      * Determines whether or not an anchor resides inside of a multi-selectable Popupmenu section.
+     * @private
      * @param {jQuery[]} anchor the anchor tag being checked.
      * @returns {jQuery[]} elements inside the top-level menu that are selected
      *  within a multi-selectable section.
@@ -15022,7 +16556,7 @@ var Soho = (function (exports) {
         delete this.menu;
       }
 
-      $.removeData(this.element[0], COMPONENT_NAME$8);
+      $.removeData(this.element[0], COMPONENT_NAME$9);
     }
   };
 
@@ -15033,16 +16567,16 @@ var Soho = (function (exports) {
    */
   $.fn.popupmenu = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$8);
+      var instance = $.data(this, COMPONENT_NAME$9);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$8, new PopupMenu(this, settings));
+        instance = $.data(this, COMPONENT_NAME$9, new PopupMenu(this, settings));
       }
     });
   };
 
-  var COMPONENT_NAME$9 = 'about';
+  var COMPONENT_NAME$a = 'about';
 
   /**
    * The About Dialog Component is displays information regarding the application.
@@ -15140,7 +16674,7 @@ var Soho = (function (exports) {
 
       if (this.settings.deviceSpecs) {
         var specs = this.getDeviceSpecs();
-        var text = '<span class="ds">' + Locale.translate('OperatingSystem') + ' : ' + Environment.devicespecs.os + ' ' + Environment.devicespecs.currentOSVersion + '</span><br>\n        <span class="platform">' + Locale.translate('Platform') + ' : ' + specs.os + '</span><br>\n        <span class="ds">' + Locale.translate('Mobile') + ' : ' + Environment.devicespecs.isMobile + '</span><br>\n        <span class="locale">' + Locale.translate('Locale') + ' : ' + specs.locale + '</span><br>\n        <span class="browser">' + Locale.translate('Browser') + ' : ' + Environment.devicespecs.currentBrowser + ' ' + Environment.devicespecs.browserMajorVersion + ' (' + Environment.devicespecs.browserVersion + ')</span><br>\n        <span class="cookiesEnabled">' + Locale.translate('CookiesEnabled') + ' : ' + specs.cookiesEnabled + '</span><br>\n        <span class="version">' + Locale.translate('Version') + ' : ' + $('html').attr('data-sohoxi-version') + '</span><br>';
+        var text = '<span class="ds">' + Locale.translate('OperatingSystem') + ' : ' + Environment.devicespecs.os.replace(Environment.devicespecs.currentOSVersion, '') + ' ' + Environment.devicespecs.currentOSVersion + '</span><br>\n        <span class="platform">' + Locale.translate('Platform') + ' : ' + specs.os + '</span><br>\n        <span class="ds">' + Locale.translate('Mobile') + ' : ' + Environment.devicespecs.isMobile + '</span><br>\n        <span class="locale">' + Locale.translate('Locale') + ' : ' + Locale.currentLocale.name + '</span><br>\n        <span class="locale">' + Locale.translate('Language') + ' : ' + Locale.currentLanguage.name + '</span><br>\n        <span class="browser">' + Locale.translate('Browser') + ' :' + (' ' + Environment.devicespecs.browserVersionName) + ' ' + Environment.devicespecs.currentBrowser + ' (' + Environment.devicespecs.browserVersion + ')</span><br>\n        <span class="locale">' + Locale.translate('BrowserLanguage') + ' : ' + specs.locale + '</span><br>\n        <span class="cookiesEnabled">' + Locale.translate('CookiesEnabled') + ' : ' + specs.cookiesEnabled + '</span><br>\n        <span class="version">' + Locale.translate('Version') + ' : ' + $('html').attr('data-sohoxi-version') + '</span><br>';
 
         $('<p></p>').html(text).appendTo(body);
       }
@@ -15262,7 +16796,7 @@ var Soho = (function (exports) {
       this.element.off('open.about');
 
       if (this.element.length > 0) {
-        $.removeData(this.element[0], COMPONENT_NAME$9);
+        $.removeData(this.element[0], COMPONENT_NAME$a);
       }
     },
 
@@ -15314,11 +16848,11 @@ var Soho = (function (exports) {
    */
   $.fn.about = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$9);
+      var instance = $.data(this, COMPONENT_NAME$a);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$9, new About(this, settings));
+        instance = $.data(this, COMPONENT_NAME$a, new About(this, settings));
       }
     });
   };
@@ -15493,7 +17027,7 @@ var Soho = (function (exports) {
   /* eslint-disable consistent-return */
 
   // Component Name
-  var COMPONENT_NAME$a = 'accordion';
+  var COMPONENT_NAME$b = 'accordion';
 
   // Expander Button Display Modes
   // In some cases, expander buttons can be all "plus-minus" icons, or all "chevron" icons.
@@ -15742,6 +17276,17 @@ var Soho = (function (exports) {
         var header = pane.prev('.accordion-header');
 
         header.children('a').attr({ 'aria-haspopup': 'true', role: 'button' });
+
+        // double-check the contents of the pane. If all children are filtered out,
+        // label this at the top level
+        var children = pane.children();
+        var allChildrenFiltered = true;
+        children.each(function (i, child) {
+          if ($(child).is('.accordion-header') && !$(child).hasClass('filtered')) {
+            allChildrenFiltered = false;
+          }
+        });
+        pane[allChildrenFiltered ? 'addClass' : 'removeClass']('all-children-filtered');
 
         if (!self.isExpanded(header)) {
           pane.data('ignore-animation-once', true);
@@ -16243,6 +17788,13 @@ var Soho = (function (exports) {
       }
 
       function continueExpand() {
+        // Don't try to expand any further if this header has no associated accordion pane.
+        // NOTE: We re-check for the pane's existence here because it may have been loaded via AJAX.
+        pane = header.next('.accordion-pane');
+        if (!pane || !pane.length) {
+          return dfd.reject();
+        }
+
         // Change the expander button into "collapse" mode
         var expander = header.children('.btn');
         if (expander.length) {
@@ -16308,13 +17860,9 @@ var Soho = (function (exports) {
         }
 
         if (pane.hasClass('no-transition')) {
-          for (var i = 0; i < pane.length; i++) {
-            pane[i].style.display = 'block';
-            pane[i].style.height = 'auto';
-          }
           handleAfterExpand();
         } else {
-          pane.one('animateopencomplete', handleAfterExpand).css('display', 'block').animateOpen();
+          pane.one('animateopencomplete', handleAfterExpand).animateOpen();
         }
       }
 
@@ -16417,8 +17965,6 @@ var Soho = (function (exports) {
         if (e) {
           e.stopPropagation();
         }
-        pane[0].style.display = 'none';
-        pane[0].style.height = '0px';
         pane.triggerHandler('aftercollapse', [a]);
         self.element.trigger('aftercollapse', [a]);
         dfd.resolve();
@@ -16744,14 +18290,12 @@ var Soho = (function (exports) {
       var self = this;
 
       if (doReset) {
-        var collapsePromise = this.collapseAll();
-        this.headers.removeClass('filtered has-filtered-children hide-focus');
+        this.headers.removeClass('filtered has-filtered-children hide-focus is-expanded');
+        this.panes.removeClass('all-children-filtered is-expanded').removeAttr('style');
 
-        $.when(collapsePromise).then(function () {
-          _this3.currentlyFiltered = $();
-          _this3.build(undefined, true);
-          _this3.filter(headers);
-        });
+        this.currentlyFiltered = $();
+        this.build(undefined, true);
+        this.filter(headers);
         return;
       }
 
@@ -17140,11 +18684,11 @@ var Soho = (function (exports) {
    */
   $.fn.accordion = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$a);
+      var instance = $.data(this, COMPONENT_NAME$b);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$a, new Accordion(this, settings));
+        instance = $.data(this, COMPONENT_NAME$b, new Accordion(this, settings));
       }
     });
   };
@@ -17837,7 +19381,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-nested-ternary, prefer-template */
 
   // The Name of this components
-  var COMPONENT_NAME$b = 'autocomplete';
+  var COMPONENT_NAME$c = 'autocomplete';
 
   /*
    * Default Autocomplete Result Item Template.  This can be modified to add data points that
@@ -18169,14 +19713,14 @@ var Soho = (function (exports) {
 
       if (!this.previouslyOpened) {
         // Overrides the 'click' listener attached by the Popupmenu plugin
-        self.list.on('touchend.' + COMPONENT_NAME$b + ' click.' + COMPONENT_NAME$b, 'a', function (e) {
+        self.list.on('touchend.' + COMPONENT_NAME$c + ' click.' + COMPONENT_NAME$c, 'a', function (e) {
           self.select(e);
-        }).on('focusout.' + COMPONENT_NAME$b, function () {
+        }).on('focusout.' + COMPONENT_NAME$c, function () {
           self.checkActiveElement();
         });
 
         // Highlight anchors on focus
-        var all = self.list.find('a').on('focus.' + COMPONENT_NAME$b + ' touchend.' + COMPONENT_NAME$b, function () {
+        var all = self.list.find('a').on('focus.' + COMPONENT_NAME$c + ' touchend.' + COMPONENT_NAME$c, function () {
           self.highlight($(this), all);
         });
 
@@ -18212,8 +19756,8 @@ var Soho = (function (exports) {
     },
     closeList: function closeList(dontClosePopup) {
       // Remove events
-      this.list.off(['click.' + COMPONENT_NAME$b, 'touchend.' + COMPONENT_NAME$b, 'focusout.' + COMPONENT_NAME$b].join(' '));
-      this.list.find('a').off('focus.' + COMPONENT_NAME$b + ' touchend.' + COMPONENT_NAME$b);
+      this.list.off(['click.' + COMPONENT_NAME$c, 'touchend.' + COMPONENT_NAME$c, 'focusout.' + COMPONENT_NAME$c].join(' '));
+      this.list.find('a').off('focus.' + COMPONENT_NAME$c + ' touchend.' + COMPONENT_NAME$c);
 
       this.element.trigger('listclose');
 
@@ -18699,7 +20243,7 @@ var Soho = (function (exports) {
         popup.destroy();
       }
 
-      this.element.off(['focus.' + COMPONENT_NAME$b, 'focusout.' + COMPONENT_NAME$b, 'input.' + COMPONENT_NAME$b, 'keydown.' + COMPONENT_NAME$b, 'listopen.' + COMPONENT_NAME$b, 'requestend.' + COMPONENT_NAME$b, 'resetfilter.' + COMPONENT_NAME$b, 'updated.' + COMPONENT_NAME$b].join(' '));
+      this.element.off(['focus.' + COMPONENT_NAME$c, 'focusout.' + COMPONENT_NAME$c, 'input.' + COMPONENT_NAME$c, 'keydown.' + COMPONENT_NAME$c, 'listopen.' + COMPONENT_NAME$c, 'requestend.' + COMPONENT_NAME$c, 'resetfilter.' + COMPONENT_NAME$c, 'updated.' + COMPONENT_NAME$c].join(' '));
       return this;
     },
 
@@ -18710,7 +20254,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$b);
+      $.removeData(this.element[0], COMPONENT_NAME$c);
     },
 
 
@@ -18723,15 +20267,15 @@ var Soho = (function (exports) {
       // similar code as dropdown but close enough to be dry
       var self = this;
 
-      this.element.on('updated.' + COMPONENT_NAME$b, function () {
+      this.element.on('updated.' + COMPONENT_NAME$c, function () {
         self.updated();
-      }).on('keydown.' + COMPONENT_NAME$b, function (e) {
+      }).on('keydown.' + COMPONENT_NAME$c, function (e) {
         self.handleAutocompleteKeydown(e);
-      }).on('input.' + COMPONENT_NAME$b, function (e) {
+      }).on('input.' + COMPONENT_NAME$c, function (e) {
         self.handleAutocompleteInput(e);
-      }).on('focus.' + COMPONENT_NAME$b, function () {
+      }).on('focus.' + COMPONENT_NAME$c, function () {
         self.handleAutocompleteFocus();
-      }).on('focusout.' + COMPONENT_NAME$b, function () {
+      }).on('focusout.' + COMPONENT_NAME$c, function () {
         self.checkActiveElement();
       })
       /**
@@ -18741,7 +20285,7 @@ var Soho = (function (exports) {
       * @param {object} event - The jquery event object
       * @param {object} ui - The dialog object
       */
-      .on('listopen.' + COMPONENT_NAME$b, function () {
+      .on('listopen.' + COMPONENT_NAME$c, function () {
         self.handleAfterListOpen();
       })
       /**
@@ -18751,7 +20295,7 @@ var Soho = (function (exports) {
       * @memberof Autocomplete
       * @param {object} event - The jquery event object
       */
-      .on('resetfilter.' + COMPONENT_NAME$b, function () {
+      .on('resetfilter.' + COMPONENT_NAME$c, function () {
         self.resetFilters();
       });
     }
@@ -18764,7 +20308,7 @@ var Soho = (function (exports) {
    */
   $.fn.autocomplete = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$b);
+      var instance = $.data(this, COMPONENT_NAME$c);
 
       // NOTE: This is modified due to a conflict between a legacy Soho attribute, `data-autocomplete`,
       // having the same value as jQuery's `$.data('autocomplete')`.
@@ -18773,9 +20317,9 @@ var Soho = (function (exports) {
         var modifiedSettings = utils.extend({}, settings, {
           source: stringSource || settings.source
         });
-        instance = $.data(this, COMPONENT_NAME$b, new Autocomplete(this, modifiedSettings));
+        instance = $.data(this, COMPONENT_NAME$c, new Autocomplete(this, modifiedSettings));
       } else if (!instance) {
-        instance = $.data(this, COMPONENT_NAME$b, new Autocomplete(this, settings));
+        instance = $.data(this, COMPONENT_NAME$c, new Autocomplete(this, settings));
       } else {
         instance.updated(settings);
       }
@@ -18783,7 +20327,7 @@ var Soho = (function (exports) {
   };
 
   // Name of this component
-  var COMPONENT_NAME$c = 'searchfield';
+  var COMPONENT_NAME$d = 'searchfield';
 
   // Types of collapse modes
   var SEARCHFIELD_COLLAPSE_MODES = [false, 'mobile', true];
@@ -18987,7 +20531,7 @@ var Soho = (function (exports) {
     build: function build() {
       // Used for managing events that are bound to $(document)
       if (!this.id) {
-        this.id = utils.uniqueId(this.element, COMPONENT_NAME$c);
+        this.id = utils.uniqueId(this.element, COMPONENT_NAME$d);
       }
 
       this.label = this.element.prev('label, .label');
@@ -19180,6 +20724,7 @@ var Soho = (function (exports) {
 
       if (this.settings.clearable) {
         this.element.clearable();
+        this.wrapper.addClass('has-close-icon-button');
         this.xButton = this.wrapper.children('.icon.close');
       }
 
@@ -19434,49 +20979,6 @@ var Soho = (function (exports) {
       return this.settings.showGoButton && this.goButton && this.goButton.length;
     },
 
-
-    /**
-    * Fires when the searchfield is focused.
-    * @event focusin
-    * @memberof ToolbarSearchfield
-    * @property {object} event - The jquery event object
-    * /
-    /**
-    * Fires when a key is pressed inside of the searchfield.
-    * @event keydown
-    * @memberof ToolbarSearchfield
-    * @property {object} event - The jquery event object
-    */
-    /**
-    *  Fires when a `collapse` event is triggered externally on the searchfield.
-    * @event collapse
-    * @memberof ToolbarSearchfield
-    * @property {object} event - The jquery event object
-    */
-    /**
-    *  Fires when a `beforeopen` event is triggered on the searchfield's optional categories menubutton.
-    * @event beforeopen
-    * @memberof ToolbarSearchfield
-    * @property {object} event - The jquery event object
-    */
-    /**
-    * Fires when a `navigate` event is triggered on the searchfield's parent toolbar.
-    * @event navigate
-    * @memberof ToolbarSearchfield
-    * @property {object} event - The jquery event object
-    */
-    /**
-    * Fires when a `keydown` event is triggered at the `document` level.
-    * @event keydown
-    * @memberof ToolbarSearchfield
-    * @property {object} event - The jquery event object
-    */
-    /**
-     * Fires when a `resize` event is triggered at the `body` level.
-     * @event resize
-     * @memberof ToolbarSearchfield
-     * @property {object} event - The jquery event object
-     */
 
     /**
      * Sets up the event-listening structure for this component instance.
@@ -20316,6 +21818,13 @@ var Soho = (function (exports) {
      * @param  {object} anchor the link object
      */
     handleCategorySelected: function handleCategorySelected(e, anchor) {
+      /**
+       * Fires when the searchfield has become collapsed.
+       * @event selected
+       * @memberof SearchField
+       * @type {object}
+       * @property {object} event - The jquery event object
+       */
       this.element.trigger('selected', [anchor]);
 
       // Only change the text and searchfield size if we can
@@ -20535,6 +22044,13 @@ var Soho = (function (exports) {
           eventArgs.push(containerSizeSetters);
         }
 
+        /**
+         * Fires before the searchfield is expanded.
+         * @event beforeexpand
+         * @memberof SearchField
+         * @type {object}
+         * @property {object} event - The jquery event object
+         */
         self.element.trigger('beforeexpand');
         $(self.toolbarParent).triggerHandler('recalculate-buttons', eventArgs);
 
@@ -20544,7 +22060,16 @@ var Soho = (function (exports) {
           // TODO: make this work without an empty function
           timeoutCallback: function timeoutCallback() {
             $(self.toolbarParent).triggerHandler('recalculate-buttons', eventArgs);
+
+            /**
+             * Fires when the searchfield has become expanded.
+             * @event expanded
+             * @memberof SearchField
+             * @type {object}
+             * @property {object} event - The jquery event object
+             */
             self.element.trigger('expanded');
+
             delete self.isExpanding;
             self.isExpanded = true;
 
@@ -20598,6 +22123,13 @@ var Soho = (function (exports) {
           self.categoryButton.data('popupmenu').close(false, true);
         }
 
+        /**
+         * Fires before the searchfield is collapsed.
+         * @event beforecollapse
+         * @memberof SearchField
+         * @type {object}
+         * @property {object} event - The jquery event object
+         */
         self.element.trigger('beforecollapse');
 
         delete self.isExpanded;
@@ -20610,6 +22142,14 @@ var Soho = (function (exports) {
           timeoutCallback: function timeoutCallback() {
             delete self.isCollapsing;
             $(self.toolbarParent).triggerHandler('recalculate-buttons');
+
+            /**
+             * Fires when the searchfield has become collapsed.
+             * @event collapsed
+             * @memberof SearchField
+             * @type {object}
+             * @property {object} event - The jquery event object
+             */
             self.element.trigger('collapsed');
             resolve();
           }
@@ -20649,6 +22189,14 @@ var Soho = (function (exports) {
 
       // Collapse followed by a special event trigger (gets picked up by Flex Toolbar)
       this.collapse().then(function () {
+        /**
+         * Fires when the searchfield has become collapsed.
+         * @event collapsed-responsive
+         * @memberof SearchField
+         * @type {object}
+         * @property {object} event - The jquery event object
+         * @property {number} dir - The direction in which the Flex Toolbar has navigated (can be 0 to stay, or 1 to navigate forward)
+         */
         self.wrapper.trigger('collapsed-responsive', [dir]);
       });
     },
@@ -20808,7 +22356,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$c);
+      $.removeData(this.element[0], COMPONENT_NAME$d);
     }
   };
 
@@ -20820,11 +22368,11 @@ var Soho = (function (exports) {
   $.fn.searchfield = function (settings) {
     return this.each(function () {
       // Normal invoke setup
-      var instance = $.data(this, COMPONENT_NAME$c);
+      var instance = $.data(this, COMPONENT_NAME$d);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$c, new SearchField(this, settings));
+        instance = $.data(this, COMPONENT_NAME$d, new SearchField(this, settings));
       }
     });
   };
@@ -20832,7 +22380,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle, prefer-arrow-callback */
 
   // Name of the component in this file.
-  var COMPONENT_NAME$d = 'applicationmenu';
+  var COMPONENT_NAME$e = 'applicationmenu';
 
   /**
    * The Application Menu provides access to all the functions, pages, and forms in an application.
@@ -20865,6 +22413,16 @@ var Soho = (function (exports) {
 
   // Plugin Methods
   ApplicationMenu.prototype = {
+
+    /**
+     * @returns {SearchField|undefined} an IDS SearchField API, if one exists.
+     */
+    get searchfieldAPI() {
+      if (!this.searchfield || !this.searchfield.length) {
+        return undefined;
+      }
+      return this.searchfield.data('searchfield');
+    },
 
     /**
      * Initialize the plugin.
@@ -20957,11 +22515,17 @@ var Soho = (function (exports) {
             return item;
           },
           clearResultsCallback: function clearResultsCallback() {
-            self.accordionAPI.unfilter();
+            if (self.searchfieldAPI && !self.searchfieldAPI.isFocused) {
+              self.accordionAPI.unfilter();
+            }
           },
           displayResultsCallback: function displayResultsCallback(results, done) {
             return self.filterResultsCallback(results, done);
           }
+        });
+
+        this.searchfield.on('cleared.' + COMPONENT_NAME$e, function () {
+          self.accordionAPI.unfilter();
         });
       }
 
@@ -21534,7 +23098,7 @@ var Soho = (function (exports) {
       }
 
       if (this.searchfield && this.searchfield.length) {
-        this.searchfield.off('input.applicationmenu');
+        this.searchfield.off(['input.applicationmenu', 'cleared.' + COMPONENT_NAME$e].join(' '));
         var sfAPI = this.searchfield.data('searchfield');
         if (sfAPI) {
           sfAPI.destroy();
@@ -21569,7 +23133,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$d);
+      $.removeData(this.element[0], COMPONENT_NAME$e);
     },
 
 
@@ -21657,18 +23221,18 @@ var Soho = (function (exports) {
    */
   $.fn.applicationmenu = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$d);
+      var instance = $.data(this, COMPONENT_NAME$e);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$d, new ApplicationMenu(this, settings));
+        instance = $.data(this, COMPONENT_NAME$e, new ApplicationMenu(this, settings));
       }
       return instance;
     });
   };
 
   // Settings and Options
-  var COMPONENT_NAME$e = 'blockgrid';
+  var COMPONENT_NAME$f = 'blockgrid';
 
   /**
    * Component Name - Does this and that.
@@ -21747,7 +23311,7 @@ var Soho = (function (exports) {
 
       var self = this;
 
-      this.element.on('click.' + COMPONENT_NAME$e, '.block', function (e) {
+      this.element.on('click.' + COMPONENT_NAME$f, '.block', function (e) {
         var activeBlock = $(e.currentTarget);
         var target = $(e.target);
         var isCheckbox = target.is('.checkbox-label') || target.is('.checkbox');
@@ -21760,17 +23324,17 @@ var Soho = (function (exports) {
         e.preventDefault();
       });
 
-      this.element.on('focus.' + COMPONENT_NAME$e, '.checkbox', function (e) {
+      this.element.on('focus.' + COMPONENT_NAME$f, '.checkbox', function (e) {
         var block = $(e.currentTarget).parent();
         block.addClass('has-focus');
       });
 
-      this.element.on('blur.' + COMPONENT_NAME$e, '.checkbox', function (e) {
+      this.element.on('blur.' + COMPONENT_NAME$f, '.checkbox', function (e) {
         var block = $(e.currentTarget).parent();
         block.removeClass('has-focus');
       });
 
-      this.element.on('keypress.' + COMPONENT_NAME$e, '.block', function (e) {
+      this.element.on('keypress.' + COMPONENT_NAME$f, '.block', function (e) {
         if (e.which !== 32) {
           return;
         }
@@ -21779,15 +23343,15 @@ var Soho = (function (exports) {
         self.selectBlock(activeBlock, false);
       });
 
-      this.element.on('updated.' + COMPONENT_NAME$e, function () {
+      this.element.on('updated.' + COMPONENT_NAME$f, function () {
         self.updated();
       });
 
       if (this.pagerAPI) {
-        this.element.on('page.' + COMPONENT_NAME$e, function () {
+        this.element.on('page.' + COMPONENT_NAME$f, function () {
           _this.previousFocusedElement = true;
           _this.build();
-        }).on('pagesizechange.' + COMPONENT_NAME$e, function () {
+        }).on('pagesizechange.' + COMPONENT_NAME$f, function () {
           _this.previousFocusedElement = true;
           _this.build();
         });
@@ -22015,8 +23579,8 @@ var Soho = (function (exports) {
      * @private
      */
     teardown: function teardown() {
-      this.element.off('updated.' + COMPONENT_NAME$e);
-      this.element.off('click.' + COMPONENT_NAME$e);
+      this.element.off('updated.' + COMPONENT_NAME$f);
+      this.element.off('click.' + COMPONENT_NAME$f);
 
       this.element.empty();
       this.selectedRows = [];
@@ -22029,7 +23593,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$e);
+      $.removeData(this.element[0], COMPONENT_NAME$f);
     }
   };
 
@@ -22040,17 +23604,17 @@ var Soho = (function (exports) {
    */
   $.fn.blockgrid = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$e);
+      var instance = $.data(this, COMPONENT_NAME$f);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$e, new Blockgrid(this, settings));
+        instance = $.data(this, COMPONENT_NAME$f, new Blockgrid(this, settings));
       }
     });
   };
 
   // The Name of this component.
-  var COMPONENT_NAME$f = 'busyindicator';
+  var COMPONENT_NAME$g = 'busyindicator';
 
   /**
    * A Busy Indicator notifies the user that the system is processing a request, and that they must
@@ -22485,7 +24049,7 @@ var Soho = (function (exports) {
       this.removeScrollParent();
       this.close(true);
       this.element.off('start.busyindicator complete.busyindicator afterstart.busyindicator aftercomplete.busyindicator updated.busyindicator');
-      $.removeData(this.element[0], COMPONENT_NAME$f);
+      $.removeData(this.element[0], COMPONENT_NAME$g);
     },
     handleEvents: function handleEvents() {
       var _this2 = this;
@@ -22538,11 +24102,11 @@ var Soho = (function (exports) {
    */
   $.fn.busyindicator = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$f);
+      var instance = $.data(this, COMPONENT_NAME$g);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$f, new BusyIndicator(this, settings));
+        instance = $.data(this, COMPONENT_NAME$g, new BusyIndicator(this, settings));
       }
     });
   };
@@ -22658,17 +24222,19 @@ var Soho = (function (exports) {
    */
   charts.colorRange = function () {
     var palette = theme.themeColors().palette;
-    return [palette.azure['70'].value, palette.turquoise['30'].value, palette.amethyst['30'].value, palette.graphite['60'].value, palette.amber['50'].value, palette.emerald['60'].value, palette.ruby['60'].value, palette.azure['30'].value, palette.amber['90'].value, palette.turquoise['80'].value, palette.ruby['20'].value, palette.graphite['50'].value, palette.emerald['50'].value, palette.azure['50'].value, palette.amethyst['80'].value, palette.emerald['30'].value, palette.turquoise['50'].value, palette.amber['70'].value, palette.graphite['20'].value, palette.azure['20'].value, palette.emerald['100'].value, palette.amethyst['20'].value];
+    if (theme.uplift) {
+      return [palette.azure['80'].value, palette.turquoise['40'].value, palette.amethyst['60'].value, palette.graphite['40'].value, palette.amber['40'].value, palette.emerald['70'].value, palette.ruby['60'].value, palette.azure['30'].value, palette.amber['70'].value, palette.graphite['60'].value, palette.turquoise['60'].value, palette.emerald['90'].value, palette.amethyst['30'].value, palette.azure['50'].value, palette.ruby['30'].value, palette.amethyst['80'].value, palette.emerald['30'].value, palette.turquoise['80'].value, palette.graphite['20'].value, palette.amber['90'].value];
+    }
+
+    return [palette.azure['70'].value, palette.turquoise['30'].value, palette.amethyst['30'].value, palette.graphite['60'].value, palette.amber['50'].value, palette.emerald['60'].value, palette.ruby['60'].value, palette.azure['30'].value, palette.amber['90'].value, palette.turquoise['80'].value, palette.ruby['20'].value, palette.graphite['50'].value, palette.emerald['50'].value, palette.azure['50'].value, palette.amethyst['80'].value, palette.emerald['30'].value, palette.turquoise['50'].value, palette.amber['70'].value, palette.graphite['20'].value, palette.azure['20'].value];
   };
 
-  charts.colorNameRange = ['azure07', 'turquoise03', 'amethyst03', 'graphite06', 'amber05', 'emerald06', 'ruby06', 'azure03', 'amber09', 'turquoise08', 'ruby02', 'graphite05', 'emerald05', 'amethyst03', 'azure05', 'amethyst08', 'emerald03', 'turquoise06', 'amber07', 'graphite02'];
-
-  /**
-   * The colors as an array for placement
-   * @param {number} idx The color index
-   * @returns {function} A d3 range of colors.
-   */
-  charts.colorNames = typeof d3 !== 'undefined' ? d3.scaleOrdinal().range(charts.colorNameRange) : [];
+  charts.colorNameRange = function () {
+    if (theme.uplift) {
+      return ['azure08', 'turquoise04', 'amethyst06', 'graphite04', 'amber04', 'emerald07', 'ruby06', 'azure03', 'amber07', 'graphite06', 'turquoise06', 'emerald09', 'amethyst03', 'azure05', 'ruby03', 'amethyst08', 'emerald03', 'turquoise08', 'graphite02', 'amber09'];
+    }
+    return ['azure07', 'turquoise03', 'amethyst03', 'graphite06', 'amber05', 'emerald06', 'ruby06', 'azure03', 'amber09', 'turquoise08', 'ruby02', 'graphite05', 'emerald05', 'amethyst03', 'azure05', 'amethyst08', 'emerald03', 'turquoise06', 'amber07', 'graphite02'];
+  };
 
   /**
    * Calculate and return the correct color to use. Fx
@@ -22710,7 +24276,7 @@ var Soho = (function (exports) {
       return themeColors[i];
     }
     if (/^(bar-single|column-single)$/.test(chartType)) {
-      return theme.themeColors().palette.azure['80'].value;
+      return themeColors[0];
     }
     if (/^(bar|bar-stacked|bar-grouped|bar-normalized|line|scatterplot|column-stacked|column-grouped|column-positive-negative)$/.test(chartType)) {
       return themeColors[i];
@@ -22746,13 +24312,13 @@ var Soho = (function (exports) {
 
     // Some configuration by specific chart types
     if (/^(pie|donut)$/.test(chartType)) {
-      return this.colorNameRange[i];
+      return this.colorNameRange()[i];
     }
     if (/^(bar-single|column-single)$/.test(chartType)) {
-      return 'azure08';
+      return this.colorNameRange()[0];
     }
     if (/^(bar|bar-stacked|bar-grouped|bar-normalized|line|scatterplot|column-stacked|column-grouped|column-positive-negative)$/.test(chartType)) {
-      return this.colorNames(i);
+      return this.colorNameRange()[i];
     }
 
     return '';
@@ -23417,7 +24983,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-loop-func */
 
   // Settings and Options
-  var COMPONENT_NAME$g = 'bullet';
+  var COMPONENT_NAME$h = 'bullet';
 
   /**
    * A bullet graph is a variation of a bar graph developed by Stephen Few.
@@ -23433,7 +24999,7 @@ var Soho = (function (exports) {
    */
   var BULLET_DEFAULTS = {
     dataset: [],
-    animate: true,
+    animate: false,
     redrawOnResize: true
   };
 
@@ -23506,7 +25072,7 @@ var Soho = (function (exports) {
       }
 
       var _loop = function _loop(i) {
-        var duration = _this.settings.animate ? 600 : 0;
+        var duration = _this.settings.animate ? 400 : 0;
         var barHeight = 20;
         var self = _this;
         var rowData = chartData.data[i];
@@ -23641,7 +25207,7 @@ var Soho = (function (exports) {
         var diff = (markers[0] > measures[0] ? '-' : '+') + Math.abs(markers[0] - measures[0]);
 
         if (Math.abs(markers[0] - measures[0]) !== 0) {
-          marker.enter().append('text').attr('class', 'inverse').attr('text-anchor', 'middle').attr('y', barHeight / 2 + 4).attr('dx',  '20px').attr('x', 0).text(diff).merge(marker).transition().duration(duration).attr('x', function () {
+          marker.enter().append('text').attr('class', 'inverse').attr('text-anchor', 'middle').attr('y', barHeight / 2 + 4).attr('dx', charts.isRTL ? '-20px' : '20px').attr('x', 0).text(diff).merge(marker).transition().duration(duration).attr('x', function () {
             var total = 0;
 
             g.selectAll('.measure').each(function (d) {
@@ -23657,7 +25223,7 @@ var Soho = (function (exports) {
               }
             });
 
-            return  total;
+            return charts.isRTL ? -total : total;
           }).style('opacity', 1);
         }
 
@@ -23679,6 +25245,10 @@ var Soho = (function (exports) {
         tickEnter.transition().duration(duration).attr('transform', function (d) {
           return 'translate(' + x1(d) + ',0)';
         }).style('opacity', 1);
+
+        if (charts.isRTL && charts.isIE) {
+          svg.selectAll('text').attr('transform', 'scale(-1, 1)');
+        }
       };
 
       for (var i = 0; i < chartData.data.length; i++) {
@@ -23792,7 +25362,7 @@ var Soho = (function (exports) {
       charts.removeTooltip();
       if (this.element) {
         this.element.empty().removeClass('bullet-chart');
-        $.removeData(this.element[0], COMPONENT_NAME$g);
+        $.removeData(this.element[0], COMPONENT_NAME$h);
         $.removeData(this.element[0], 'chart');
       }
     }
@@ -23801,7 +25371,7 @@ var Soho = (function (exports) {
   // Other Shared Imports
 
   // Settings and Options
-  var COMPONENT_NAME$h = 'completion-chart';
+  var COMPONENT_NAME$i = 'completion-chart';
 
   /**
   * A completion chart shows completion over a target value. Usually used to show progress as a percentage.
@@ -24160,7 +25730,7 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this2 = this;
 
-      this.element.on('updated.' + COMPONENT_NAME$h, function () {
+      this.element.on('updated.' + COMPONENT_NAME$i, function () {
         _this2.updated();
       });
 
@@ -24192,7 +25762,7 @@ var Soho = (function (exports) {
      * @private
      */
     teardown: function teardown() {
-      this.element.off('updated.' + COMPONENT_NAME$h);
+      this.element.off('updated.' + COMPONENT_NAME$i);
       return this;
     },
 
@@ -24205,7 +25775,7 @@ var Soho = (function (exports) {
       this.element.empty().removeClass('completion-chart');
       charts.removeTooltip();
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$h);
+      $.removeData(this.element[0], COMPONENT_NAME$i);
       $.removeData(this.element[0], 'chart');
     }
   };
@@ -24213,12 +25783,12 @@ var Soho = (function (exports) {
   /* eslint-disable no-nested-ternary, prefer-arrow-callback */
 
   // Settings and Options
-  var COMPONENT_NAME$i = 'sparkline';
+  var COMPONENT_NAME$j = 'sparkline';
 
   // The Component Defaults
   var SPARKLINE_DEFAULTS = {
     dataset: [],
-    colors: ['#1D5F8A', '#999999', '#bdbdbd', '#d8d8d8'],
+    colors: null,
     isDots: false,
     isPeakDot: false,
     isMinMax: false,
@@ -24253,6 +25823,14 @@ var Soho = (function (exports) {
      * @returns {object} The sparkline prototype for chaining.
      */
     init: function init() {
+      if (!this.settings.colors) {
+        var palette = theme.themeColors().palette;
+        this.settings.colors = [];
+        this.settings.colors[0] = palette.azure[theme.uplift ? '80' : '70'].value;
+        this.settings.colors[1] = palette.graphite['40'].value;
+        this.settings.colors[2] = palette.graphite['30'].value;
+        this.settings.colors[3] = palette.graphite['20'].value;
+      }
       this.namespace = utils.uniqueId({ classList: [this.settings.type, 'chart'] });
       this.sparklineColors = d3.scaleOrdinal().range(this.settings.colors);
 
@@ -24330,10 +25908,10 @@ var Soho = (function (exports) {
 
         svg.append('g').attr('class', 'medianrange').attr('transform', function () {
           return 'translate(' + minWidth + ',' + top + ')';
-        }).append('rect').attr('width', maxWidth).attr('height', bot).style('fill', '#d8d8d8').on('mouseenter.' + self.namespace, function () {
+        }).append('rect').attr('width', maxWidth).attr('height', bot).style('opacity', '0.06').on('mouseenter.' + self.namespace, function () {
           var rect = this.getBoundingClientRect();
           var content = '<p class="sparkline-tooltip">' + // eslint-disable-line
-          Locale.translate('Median') + '<b>' + median + '</b><br>' + Locale.translate('Range') + '<b>' + range + '</b>' + (self.settings.isPeakDot ? '<br>' + Locale.translate('Peak') + '<b>' + max + '</b>' : '') + '</p>'; // eslint-disable-line
+          Locale.translate('Median') + ': <b>' + median + '</b><br>' + Locale.translate('Range') + ': <b>' + range + '</b>' + (self.settings.isPeakDot ? '<br>' + Locale.translate('Peak') + ': <b>' + max + '</b>' : '') + '</p>'; // eslint-disable-line
 
           var show = function show() {
             var size = charts.tooltipSize(content);
@@ -24487,8 +26065,8 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this = this;
 
-      this.element.on('updated.' + COMPONENT_NAME$i, function () {
-        _this.updated();
+      this.element.on('updated.' + COMPONENT_NAME$j, function (e, settings) {
+        _this.updated(settings);
       });
 
       if (this.settings.redrawOnResize) {
@@ -24535,9 +26113,9 @@ var Soho = (function (exports) {
      * @returns {object} The api for chaining.
      */
     updated: function updated(settings) {
-      var type = settings.type || this.settings.type;
-      this.settings = settings;
-      this.settings.type = type;
+      if (settings) {
+        this.settings = utils.mergeSettings(this.element[0], settings, this.settings);
+      }
       this.element.empty();
 
       return this.teardown().init();
@@ -24579,7 +26157,7 @@ var Soho = (function (exports) {
       charts.removeTooltip();
       if (this.element) {
         this.element.empty().removeClass('sparkline');
-        $.removeData(this.element[0], COMPONENT_NAME$i);
+        $.removeData(this.element[0], COMPONENT_NAME$j);
         $.removeData(this.element[0], 'chart');
       }
     }
@@ -24588,7 +26166,7 @@ var Soho = (function (exports) {
   /* eslint-disable consistent-return */
 
   // The name of this component
-  var COMPONENT_NAME$j = 'emptymessage';
+  var COMPONENT_NAME$k = 'emptymessage';
 
   /**
   * The Empty Message is a message with an icon that can be used when no data is present.
@@ -24648,7 +26226,7 @@ var Soho = (function (exports) {
         $('' + ('<div class="empty-actions">' + '<button type="button" class="btn-secondary hide-focus ') + opts.button.cssClass + '" id="' + opts.button.id + '">' + ('<span>' + opts.button.text + '</span>') + '</button>' + '</div>').appendTo(this.element);
 
         if (opts.button.click) {
-          this.element.on('click', opts.button.click);
+          this.element.on('click', 'button', opts.button.click);
         }
       }
 
@@ -24674,19 +26252,20 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     destroy: function destroy() {
-      $.removeData(this.element[0], COMPONENT_NAME$j);
+      $.removeData(this.element[0], COMPONENT_NAME$k);
       this.element.empty();
+      this.element.removeClass('empty-message');
     }
   };
 
   // Empty Message jQuery wrapper
   $.fn.emptymessage = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$j);
+      var instance = $.data(this, COMPONENT_NAME$k);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$j, new EmptyMessage(this, settings));
+        instance = $.data(this, COMPONENT_NAME$k, new EmptyMessage(this, settings));
       }
     });
   };
@@ -24694,7 +26273,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-nested-ternary, prefer-arrow-callback */
 
   // Settings and Options
-  var COMPONENT_NAME$k = 'line';
+  var COMPONENT_NAME$l = 'line';
 
   /**
    * A line chart or line graph is a type of chart which displays information as a series of data
@@ -25499,7 +27078,7 @@ var Soho = (function (exports) {
       charts.removeTooltip();
       if (this.element) {
         this.element.empty().removeClass('line-chart');
-        $.removeData(this.element[0], COMPONENT_NAME$k);
+        $.removeData(this.element[0], COMPONENT_NAME$l);
         $.removeData(this.element[0], 'chart');
       }
     }
@@ -25508,7 +27087,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-nested-ternary, prefer-arrow-callback */
 
   // Settings and Options
-  var COMPONENT_NAME$l = 'column';
+  var COMPONENT_NAME$m = 'column';
 
   /**
   * A column chart displays a series as a set of vertical bars that are grouped by category.
@@ -26308,6 +27887,15 @@ var Soho = (function (exports) {
         });
       }
 
+      if (charts.isRTL && charts.isIE) {
+        svg.selectAll('text').attr('transform', 'scale(-1, 1)');
+        svg.selectAll('.y.axis text').style('text-anchor', 'start');
+
+        if (isPositiveNegative) {
+          svg.selectAll('.negative-value').style('text-anchor', 'end');
+        }
+      }
+
       // Set y-axix tick css class
       svg.selectAll('.y.axis .tick').attr('class', function (d) {
         return 'tick' + (d === 0 ? ' tick0' : '');
@@ -26618,7 +28206,7 @@ var Soho = (function (exports) {
       charts.removeTooltip();
       if (this.element) {
         this.element.empty().removeClass('column-chart');
-        $.removeData(this.element[0], COMPONENT_NAME$l);
+        $.removeData(this.element[0], COMPONENT_NAME$m);
         $.removeData(this.element[0], 'chart');
       }
     }
@@ -26627,7 +28215,7 @@ var Soho = (function (exports) {
   // Other Shared Imports
 
   // Settings and Options
-  var COMPONENT_NAME$m = 'bar';
+  var COMPONENT_NAME$n = 'bar';
 
   /**
    * A bar chart or bar graph is a chart or graph that presents categorical data with rectangular bars
@@ -27546,7 +29134,7 @@ var Soho = (function (exports) {
       charts.removeTooltip();
       if (this.element) {
         this.element.empty().removeClass('bar-chart');
-        $.removeData(this.element[0], COMPONENT_NAME$m);
+        $.removeData(this.element[0], COMPONENT_NAME$n);
         $.removeData(this.element[0], 'chart');
       }
     }
@@ -27555,7 +29143,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-nested-ternary, prefer-arrow-callback */
 
   // Settings and Options
-  var COMPONENT_NAME$n = 'pie';
+  var COMPONENT_NAME$o = 'pie';
 
   /**
    * A pie chart (or a circle chart) is a circular statistical graphic which is divided
@@ -28333,7 +29921,7 @@ var Soho = (function (exports) {
       charts.removeTooltip();
       if (this.element) {
         this.element.empty().removeClass('pie-chart');
-        $.removeData(this.element[0], COMPONENT_NAME$n);
+        $.removeData(this.element[0], COMPONENT_NAME$o);
         $.removeData(this.element[0], 'chart');
       }
     }
@@ -28342,7 +29930,7 @@ var Soho = (function (exports) {
   // Shared Imports
 
   // Settings and Options
-  var COMPONENT_NAME$o = 'radar';
+  var COMPONENT_NAME$p = 'radar';
 
   // Default Radar Options
   var RADAR_DEFAULTS = {
@@ -28949,7 +30537,7 @@ var Soho = (function (exports) {
       charts.removeTooltip();
       if (this.element) {
         this.element.empty().removeClass('radar-chart');
-        $.removeData(this.element[0], COMPONENT_NAME$o);
+        $.removeData(this.element[0], COMPONENT_NAME$p);
         $.removeData(this.element[0], 'radar');
       }
     }
@@ -28976,70 +30564,70 @@ var Soho = (function (exports) {
             return this;
           }
           var chartComponent = new CompletionChart(this, settings);
-          this.data(COMPONENT_NAME$h, chartComponent);
+          this.data(COMPONENT_NAME$i, chartComponent);
           this.data('chart', chartComponent); // Compatibility
           this.data(settings.type, chartComponent); // Compatibility
           break;
         }
       case 'bullet':
         {
-          instance = this.data(COMPONENT_NAME$g);
+          instance = this.data(COMPONENT_NAME$h);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent = new Bullet(this, settings);
-          this.data(COMPONENT_NAME$g, _chartComponent);
+          this.data(COMPONENT_NAME$h, _chartComponent);
           this.data('chart', _chartComponent); // Compatibility
           break;
         }
       case 'radar':
         {
-          instance = this.data(COMPONENT_NAME$o);
+          instance = this.data(COMPONENT_NAME$p);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent2 = new Radar(this, settings);
-          this.data(COMPONENT_NAME$o, _chartComponent2);
+          this.data(COMPONENT_NAME$p, _chartComponent2);
           this.data('chart', _chartComponent2); // Compatibility
           break;
         }
       case 'sparkline':
         {
-          instance = this.data(COMPONENT_NAME$i);
+          instance = this.data(COMPONENT_NAME$j);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent3 = new Sparkline(this, settings);
-          this.data(COMPONENT_NAME$i, _chartComponent3);
+          this.data(COMPONENT_NAME$j, _chartComponent3);
           this.data('chart', _chartComponent3); // Compatibility
           break;
         }
       case 'sparkline-dots':
         {
           settings.isDots = true;
-          instance = this.data(COMPONENT_NAME$i);
+          instance = this.data(COMPONENT_NAME$j);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent4 = new Sparkline(this, settings);
-          this.data(COMPONENT_NAME$i, _chartComponent4);
+          this.data(COMPONENT_NAME$j, _chartComponent4);
           this.data('chart', _chartComponent4); // Compatibility
           break;
         }
       case 'sparkline-peak':
         {
           settings.isPeakDot = true;
-          instance = this.data(COMPONENT_NAME$i);
+          instance = this.data(COMPONENT_NAME$j);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent5 = new Sparkline(this, settings);
-          this.data(COMPONENT_NAME$i, _chartComponent5);
+          this.data(COMPONENT_NAME$j, _chartComponent5);
           this.data('chart', _chartComponent5); // Compatibility
           break;
         }
@@ -29047,39 +30635,39 @@ var Soho = (function (exports) {
         {
           settings.isPeakDot = true;
           settings.isDots = true;
-          instance = this.data(COMPONENT_NAME$i);
+          instance = this.data(COMPONENT_NAME$j);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent6 = new Sparkline(this, settings);
-          this.data(COMPONENT_NAME$i, _chartComponent6);
+          this.data(COMPONENT_NAME$j, _chartComponent6);
           this.data('chart', _chartComponent6); // Compatibility
           break;
         }
       case 'sparkline-minmax':
         {
           settings.isMinMax = true;
-          instance = this.data(COMPONENT_NAME$i);
+          instance = this.data(COMPONENT_NAME$j);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent7 = new Sparkline(this, settings);
-          this.data(COMPONENT_NAME$i, _chartComponent7);
+          this.data(COMPONENT_NAME$j, _chartComponent7);
           this.data('chart', _chartComponent7); // Compatibility
           break;
         }
       case 'sparkline-medianrange':
         {
           settings.isMedianRange = true;
-          instance = this.data(COMPONENT_NAME$i);
+          instance = this.data(COMPONENT_NAME$j);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent8 = new Sparkline(this, settings);
-          this.data(COMPONENT_NAME$i, _chartComponent8);
+          this.data(COMPONENT_NAME$j, _chartComponent8);
           this.data('chart', _chartComponent8); // Compatibility
           break;
         }
@@ -29087,64 +30675,64 @@ var Soho = (function (exports) {
         {
           settings.isMedianRange = true;
           settings.isPeakDot = true;
-          instance = this.data(COMPONENT_NAME$i);
+          instance = this.data(COMPONENT_NAME$j);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent9 = new Sparkline(this, settings);
-          this.data(COMPONENT_NAME$i, _chartComponent9);
+          this.data(COMPONENT_NAME$j, _chartComponent9);
           this.data('chart', _chartComponent9); // Compatibility
           break;
         }
       case 'line':
         {
-          instance = this.data(COMPONENT_NAME$k);
+          instance = this.data(COMPONENT_NAME$l);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent10 = new Line(this, settings);
-          this.data(COMPONENT_NAME$k, _chartComponent10);
+          this.data(COMPONENT_NAME$l, _chartComponent10);
           this.data('chart', _chartComponent10); // Compatibility
           break;
         }
       case 'area':
         {
           settings.isArea = true;
-          instance = this.data(COMPONENT_NAME$k);
+          instance = this.data(COMPONENT_NAME$l);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent11 = new Line(this, settings);
-          this.data(COMPONENT_NAME$k, _chartComponent11);
+          this.data(COMPONENT_NAME$l, _chartComponent11);
           this.data('chart', _chartComponent11); // Compatibility
           break;
         }
       case 'bubble':
         {
           settings.isBubble = true;
-          instance = this.data(COMPONENT_NAME$k);
+          instance = this.data(COMPONENT_NAME$l);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent12 = new Line(this, settings);
-          this.data(COMPONENT_NAME$k, _chartComponent12);
+          this.data(COMPONENT_NAME$l, _chartComponent12);
           this.data('chart', _chartComponent12); // Compatibility
           break;
         }
       case 'scatterplot':
         {
           settings.isScatterPlot = true;
-          instance = this.data(COMPONENT_NAME$k);
+          instance = this.data(COMPONENT_NAME$l);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent13 = new Line(this, settings);
-          this.data(COMPONENT_NAME$k, _chartComponent13);
+          this.data(COMPONENT_NAME$l, _chartComponent13);
           this.data('chart', _chartComponent13); // Compatibility
           break;
         }
@@ -29153,65 +30741,65 @@ var Soho = (function (exports) {
       case 'positive-negative':
       case 'column-positive-negative':
         {
-          instance = this.data(COMPONENT_NAME$l);
+          instance = this.data(COMPONENT_NAME$m);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent14 = new Column(this, settings);
-          this.data(COMPONENT_NAME$l, _chartComponent14);
+          this.data(COMPONENT_NAME$m, _chartComponent14);
           this.data('chart', _chartComponent14); // Compatibility
           break;
         }
       case 'column-stacked':
         {
           settings.isStacked = true;
-          instance = this.data(COMPONENT_NAME$l);
+          instance = this.data(COMPONENT_NAME$m);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent15 = new Column(this, settings);
-          this.data(COMPONENT_NAME$l, _chartComponent15);
+          this.data(COMPONENT_NAME$m, _chartComponent15);
           this.data('chart', _chartComponent15); // Compatibility
           break;
         }
       case 'bar':
         {
           settings.isStacked = true;
-          instance = this.data(COMPONENT_NAME$m);
+          instance = this.data(COMPONENT_NAME$n);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent16 = new Bar(this, settings);
-          this.data(COMPONENT_NAME$m, _chartComponent16);
+          this.data(COMPONENT_NAME$n, _chartComponent16);
           this.data('chart', _chartComponent16); // Compatibility
           break;
         }
       case 'bar-stacked':
         {
           settings.isStacked = true;
-          instance = this.data(COMPONENT_NAME$m);
+          instance = this.data(COMPONENT_NAME$n);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent17 = new Bar(this, settings);
-          this.data(COMPONENT_NAME$m, _chartComponent17);
+          this.data(COMPONENT_NAME$n, _chartComponent17);
           this.data('chart', _chartComponent17); // Compatibility
           break;
         }
       case 'bar-normalized':
         {
           settings.isNormalized = true;
-          instance = this.data(COMPONENT_NAME$m);
+          instance = this.data(COMPONENT_NAME$n);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent18 = new Bar(this, settings);
-          this.data(COMPONENT_NAME$m, _chartComponent18);
+          this.data(COMPONENT_NAME$n, _chartComponent18);
           this.data('chart', _chartComponent18); // Compatibility
           break;
         }
@@ -29219,38 +30807,38 @@ var Soho = (function (exports) {
         {
           settings.isStacked = false;
           settings.isGrouped = true;
-          instance = this.data(COMPONENT_NAME$m);
-          if (instance) {
-            instance.updated(settings);
-            return this;
-          }
-          var _chartComponent19 = new Bar(this, settings);
-          this.data(COMPONENT_NAME$m, _chartComponent19);
-          this.data('chart', _chartComponent19); // Compatibility
-          break;
-        }
-      case 'pie':
-        {
           instance = this.data(COMPONENT_NAME$n);
           if (instance) {
             instance.updated(settings);
             return this;
           }
+          var _chartComponent19 = new Bar(this, settings);
+          this.data(COMPONENT_NAME$n, _chartComponent19);
+          this.data('chart', _chartComponent19); // Compatibility
+          break;
+        }
+      case 'pie':
+        {
+          instance = this.data(COMPONENT_NAME$o);
+          if (instance) {
+            instance.updated(settings);
+            return this;
+          }
           var _chartComponent20 = new Pie(this, settings);
-          this.data(COMPONENT_NAME$n, _chartComponent20);
+          this.data(COMPONENT_NAME$o, _chartComponent20);
           this.data('chart', _chartComponent20); // Compatibility
           break;
         }
       case 'donut':
         {
           settings.isDonut = true;
-          instance = this.data(COMPONENT_NAME$n);
+          instance = this.data(COMPONENT_NAME$o);
           if (instance) {
             instance.updated(settings);
             return this;
           }
           var _chartComponent21 = new Pie(this, settings);
-          this.data(COMPONENT_NAME$n, _chartComponent21);
+          this.data(COMPONENT_NAME$o, _chartComponent21);
           this.data('chart', _chartComponent21); // Compatibility
           break;
         }
@@ -29507,7 +31095,7 @@ var Soho = (function (exports) {
    //eslint-disable-line
 
   // Default Settings
-  var COMPONENT_NAME$p = 'calendartoolbar';
+  var COMPONENT_NAME$q = 'calendartoolbar';
 
   /**
    * The Calendar Toolbar Displays a toolbar above calendars and week views.
@@ -29758,18 +31346,19 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$p);
+      $.removeData(this.element[0], COMPONENT_NAME$q);
     }
   };
 
   // Settings and Options
-  var COMPONENT_NAME$q = 'monthview';
+  var COMPONENT_NAME$r = 'monthview';
 
   var COMPONENT_NAME_DEFAULTS = {
     locale: null,
     language: null,
     month: new Date().getMonth(),
     year: new Date().getFullYear(),
+    day: new Date().getDate(),
     activeDate: null,
     activeDateIslamic: null,
     isPopup: false,
@@ -29783,7 +31372,7 @@ var Soho = (function (exports) {
       isEnable: false,
       restrictMonths: false
     },
-    legend: [{ name: 'Public Holiday', color: '#76B051', dates: [] }, { name: 'Weekends', color: '#EFA836', dayOfWeek: [] }],
+    legend: [{ name: 'Public Holiday', color: 'azure06', dates: [] }, { name: 'Weekends', color: 'turquoise06', dayOfWeek: [] }],
     hideDays: false, // TODO
     showMonthYearPicker: true,
     yearsAhead: 5,
@@ -29816,6 +31405,7 @@ var Soho = (function (exports) {
    * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale will be used or the passed locale will be used.
    * @param {number} [settings.month] The month to show.
    * @param {number} [settings.year] The year to show.
+   * @param {number} [settings.day] The initial selected day to show.
    * @param {number} [settings.activeDate] The date to highlight as selected/today.
    * @param {number} [settings.activeDateIslamic] The date to highlight as selected/today (as an array for islamic)
    * @param {number} [settings.isPopup] Is it in a popup (datepicker using it)
@@ -30008,6 +31598,8 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     showMonth: function showMonth(month, year) {
+      var _this3 = this;
+
       var self = this;
       var s = this.settings;
       var now = new Date();
@@ -30022,14 +31614,14 @@ var Soho = (function (exports) {
       if (this.isIslamic) {
         if (!s.activeDateIslamic) {
           var gregorianDate = new Date();
-          this.todayDateIslamic = this.conversions.fromGregorian(gregorianDate);
+          this.todayDateIslamic = Locale.gregorianToUmalqura(gregorianDate);
           s.activeDateIslamic = [];
           s.activeDateIslamic[0] = this.todayDateIslamic[0];
           s.activeDateIslamic[1] = this.todayDateIslamic[1];
           s.activeDateIslamic[2] = this.todayDateIslamic[2];
           year = s.activeDateIslamic[0];
           month = s.activeDateIslamic[1];
-          elementDate = this.conversions.fromGregorian(now);
+          elementDate = Locale.gregorianToUmalqura(now);
         } else {
           elementDate = s.activeDateIslamic;
         }
@@ -30057,7 +31649,7 @@ var Soho = (function (exports) {
         this.currentDate.setMonth(month);
       }
 
-      this.currentDay = this.currentDay || now.getDate();
+      this.currentDay = this.currentDay || this.settings.day;
       if (!this.currentCalendar || !this.currentCalendar.days) {
         this.currentCalendar = Locale.calendar();
       }
@@ -30201,7 +31793,7 @@ var Soho = (function (exports) {
 
       if (!foundSelected && !s.range.useRange) {
         var firstDay = self.dayMap.filter(function (d) {
-          return d.key === stringUtils.padDate(year, month, 1);
+          return d.key === stringUtils.padDate(year, month, _this3.settings.day);
         });
         if (firstDay.length) {
           setSelected(firstDay[0].elem, false);
@@ -30219,7 +31811,7 @@ var Soho = (function (exports) {
       if (!this.currentDate) {
         if (this.isIslamic) {
           this.currentIslamicDate = [this.currentYear, this.currentMonth, this.currentDay];
-          this.currentDate = this.conversions.toGregorian(this.currentYear, this.currentMonth, this.currentDay);
+          this.currentDate = Locale.umalquraToGregorian(this.currentYear, this.currentMonth, this.currentDay);
         } else {
           this.currentDate = new Date(this.currentYear, this.currentMonth, this.currentDay);
         }
@@ -30322,7 +31914,7 @@ var Soho = (function (exports) {
      */
     firstDayOfMonth: function firstDayOfMonth(year, month) {
       if (this.isIslamic) {
-        var firstDay = this.conversions.toGregorian(year, month, 1);
+        var firstDay = Locale.umalquraToGregorian(year, month, 1);
         return firstDay === null ? 1 : firstDay.getDay();
       }
       return new Date(year, month, 1).getDay();
@@ -30402,7 +31994,7 @@ var Soho = (function (exports) {
       var s = this.settings;
       var min = new Date(s.disable.minDate).setHours(0, 0, 0, 0);
       var max = new Date(s.disable.maxDate).setHours(0, 0, 0, 0);
-      var d2 = this.isIslamic ? this.conversions.toGregorian(year, month, date) : new Date(year, month, date);
+      var d2 = this.isIslamic ? Locale.umalquraToGregorian(year, month, date) : new Date(year, month, date);
 
       if (!d2) {
         return false;
@@ -30475,11 +32067,15 @@ var Soho = (function (exports) {
       }
 
       var hex = this.getLegendColor(year, month, date);
-
       elem[0].style.backgroundColor = '';
       elem.off('mouseenter.legend mouseleave.legend');
 
       if (hex) {
+        if (hex.indexOf('#') === -1) {
+          var name = hex.replace(/[0-9]/g, '');
+          var number = hex.substr(hex.length - 2, 2) * 10;
+          hex = theme.themeColors().palette[name][number].value;
+        }
         // set color on elem at .3 of provided color as per design
         elem.addClass('is-colored');
         elem[0].style.backgroundColor = colorUtils.hexToRgba(hex, 0.3);
@@ -30492,10 +32088,12 @@ var Soho = (function (exports) {
           var thisElem = $(this);
           thisElem[0].style.backgroundColor = hoverColor;
           thisElem.find('span')[0].style.backgroundColor = 'transparent';
+          thisElem.find('.day-text')[0].style.backgroundColor = 'transparent';
         }).on('mouseleave.legend', function () {
           var thisElem = $(this);
           thisElem[0].style.backgroundColor = normalColor;
           thisElem.find('span')[0].style.backgroundColor = '';
+          thisElem.find('.day-text')[0].style.backgroundColor = '';
         });
       }
     },
@@ -30549,13 +32147,13 @@ var Soho = (function (exports) {
      * @private
      */
     handleEvents: function handleEvents() {
-      var _this3 = this;
+      var _this4 = this;
 
       var self = this;
       var s = this.settings;
 
-      this.element.off('updated.' + COMPONENT_NAME$q).on('updated.' + COMPONENT_NAME$q, function () {
-        _this3.updated();
+      this.element.off('updated.' + COMPONENT_NAME$r).on('updated.' + COMPONENT_NAME$r, function () {
+        _this4.updated();
       });
 
       // Change Month Events
@@ -30607,14 +32205,14 @@ var Soho = (function (exports) {
 
       if (this.calendarToolbarEl) {
         this.calendarToolbarEl.off('change-date.monthview').on('change-date.monthview', function (e, args) {
-          if (args.isToday && _this3.settings.isPopup) {
+          if (args.isToday && _this4.settings.isPopup) {
             return;
           }
           if (args.isToday) {
-            _this3.setToday();
+            _this4.setToday();
             return;
           }
-          _this3.selectDay(args.selectedDate, false, true);
+          _this4.selectDay(args.selectedDate, false, true);
         });
       }
 
@@ -30622,12 +32220,12 @@ var Soho = (function (exports) {
       if (s.selectable) {
         this.element.addClass('is-selectable').off('click.monthview-day').on('click.monthview-day', 'td', function (e) {
           var key = e.currentTarget.getAttribute('data-key');
-          _this3.lastClickedKey = key;
+          _this4.lastClickedKey = key;
 
           if (e.currentTarget.classList.contains('is-disabled')) {
             return;
           }
-          _this3.selectDay(key, false, true);
+          _this4.selectDay(key, false, true);
         });
       }
 
@@ -30642,11 +32240,11 @@ var Soho = (function (exports) {
      * @returns {object} The component for chaining.
      */
     handleMonthYearPane: function handleMonthYearPane() {
-      var _this4 = this;
+      var _this5 = this;
 
       var s = this.settings;
       var appendYear = function appendYear(upDown) {
-        var yearContainer = _this4.monthYearPane[0].querySelector('.picklist.is-year');
+        var yearContainer = _this5.monthYearPane[0].querySelector('.picklist.is-year');
         var yearList = yearContainer.children;
         var year = yearList[upDown === 'up' ? 1 : yearList.length - 2].querySelector('a').getAttribute('data-year');
         var nextYear = parseInt(year, 10) + (upDown === 'up' ? -1 : 1);
@@ -30664,7 +32262,7 @@ var Soho = (function (exports) {
         yearContainer.insertBefore(li, yearList[upDown === 'up' ? 1 : yearList.length - 1]);
 
         // Set selected
-        if (!_this4.monthYearPane[0].querySelector('.picklist.is-year li.is-selected')) {
+        if (!_this5.monthYearPane[0].querySelector('.picklist.is-year li.is-selected')) {
           DOM.addClass(li, 'is-selected');
           a.setAttribute('tabindex', '0');
         }
@@ -30691,7 +32289,7 @@ var Soho = (function (exports) {
       });
 
       var selectPicklistItem = function selectPicklistItem(target, cssClass) {
-        var selectedElem = _this4.monthYearPane[0].querySelector('.picklist.' + cssClass + ' .is-selected');
+        var selectedElem = _this5.monthYearPane[0].querySelector('.picklist.' + cssClass + ' .is-selected');
         DOM.removeClass(selectedElem, 'is-selected');
         selectedElem.querySelector('a').setAttribute('tabindex', '-1');
 
@@ -30705,7 +32303,7 @@ var Soho = (function (exports) {
       // cssClass: target option `is-month` or `is-year`
       var setMonthYearPane = function setMonthYearPane(target, cssClass) {
         var elem = function elem(sel) {
-          return _this4.monthYearPane[0].querySelector('.is-' + sel + ' .is-selected a');
+          return _this5.monthYearPane[0].querySelector('.is-' + sel + ' .is-selected a');
         };
         var d = cssClass === 'is-month' ? {
           month: parseInt(target.getAttribute('data-month'), 10),
@@ -30716,17 +32314,17 @@ var Soho = (function (exports) {
         };
 
         if (!s.range.useRange) {
-          _this4.currentMonth = d.month;
-          _this4.currentDate.setMonth(_this4.currentMonth);
-          _this4.currentYear = d.year;
-          _this4.currentDate.setFullYear(_this4.currentYear);
-          d.month = _this4.currentMonth;
-          d.year = _this4.currentYear;
+          _this5.currentMonth = d.month;
+          _this5.currentDate.setMonth(_this5.currentMonth);
+          _this5.currentYear = d.year;
+          _this5.currentDate.setFullYear(_this5.currentYear);
+          d.month = _this5.currentMonth;
+          d.year = _this5.currentYear;
         }
 
         selectPicklistItem(target, cssClass);
-        if (_this4.element.hasClass(cssClass + 'only')) {
-          _this4.monthYearPane.parent().find('button.is-select-month').click();
+        if (_this5.element.hasClass(cssClass + 'only')) {
+          _this5.monthYearPane.parent().find('button.is-select-month').click();
         }
       };
 
@@ -30762,31 +32360,31 @@ var Soho = (function (exports) {
       this.monthYearPane.on('expand.monthviewpane', function () {
         // Disable the main page buttons for tabbing
         if (!s.hideDays) {
-          _this4.element.find('.btn-icon, td.is-selected').attr('disabled', 'true');
-          _this4.element.find('td.is-selected').removeAttr('tabindex');
+          _this5.element.find('.btn-icon, td.is-selected').attr('disabled', 'true');
+          _this5.element.find('td.is-selected').removeAttr('tabindex');
           // Set the height
-          _this4.monthYearPane.find('.content').css('height', _this4.header.parent().height() - _this4.header.height() - 55); // 45 is the footer height
+          _this5.monthYearPane.find('.content').css('height', _this5.header.parent().height() - _this5.header.height() - 55); // 45 is the footer height
           // Rename some buttons
-          _this4.element.find('.hyperlink.today').hide();
-          _this4.element.find('.is-select').removeClass('is-select').addClass('is-select-month-pane');
-          _this4.element.find('.is-cancel').removeClass('is-cancel').addClass('is-cancel-month-pane').text(Locale.translate('Cancel', { locale: _this4.locale.name, language: _this4.language }));
+          _this5.element.find('.hyperlink.today').hide();
+          _this5.element.find('.is-select').removeClass('is-select').addClass('is-select-month-pane');
+          _this5.element.find('.is-cancel').removeClass('is-cancel').addClass('is-cancel-month-pane').text(Locale.translate('Cancel', { locale: _this5.locale.name, language: _this5.language }));
         }
         // Focus the month
         setTimeout(function () {
-          var selectedMonth = _this4.monthYearPane.find('.is-month .is-selected a');
+          var selectedMonth = _this5.monthYearPane.find('.is-month .is-selected a');
           selectedMonth.focus();
-          if (_this4.monthYearPane.parent().hasClass('is-yearonly')) {
-            _this4.monthYearPane.find('.is-year .is-selected a').focus();
+          if (_this5.monthYearPane.parent().hasClass('is-yearonly')) {
+            _this5.monthYearPane.find('.is-year .is-selected a').focus();
           }
         });
       }).on('collapse.monthviewpane', function () {
         // Enable it all again
         if (!s.hideDays) {
-          _this4.element.find('.btn-icon').removeAttr('disabled');
-          _this4.element.find('td.is-selected').attr('tabindex', '0');
-          _this4.element.find('.hyperlink.today').show();
-          _this4.element.find('.is-select-month-pane').addClass('is-select').removeClass('is-select-month-pane');
-          _this4.element.find('.is-cancel-month-pane').addClass('is-cancel').removeClass('is-cancel-month-pane').text(Locale.translate('Clear', { locale: _this4.locale.name, language: _this4.language }));
+          _this5.element.find('.btn-icon').removeAttr('disabled');
+          _this5.element.find('td.is-selected').attr('tabindex', '0');
+          _this5.element.find('.hyperlink.today').show();
+          _this5.element.find('.is-select-month-pane').addClass('is-select').removeClass('is-select-month-pane');
+          _this5.element.find('.is-cancel-month-pane').addClass('is-cancel').removeClass('is-cancel-month-pane').text(Locale.translate('Clear', { locale: _this5.locale.name, language: _this5.language }));
         }
       });
 
@@ -30848,7 +32446,7 @@ var Soho = (function (exports) {
     */
     selectDay: function selectDay(date, closePopup, insertDate) {
       if (this.isIslamic && typeof date !== 'string') {
-        this.currentIslamicDate = this.currentCalendar.conversions.fromGregorian(date);
+        this.currentIslamicDate = Locale.gregorianToUmalqura(date);
         date = stringUtils.padDate(this.currentIslamicDate[0], this.currentIslamicDate[1], this.currentIslamicDate[2]);
       }
 
@@ -30865,7 +32463,7 @@ var Soho = (function (exports) {
 
       if (this.isIslamic) {
         this.currentIslamicDate = date;
-        this.currentDate = this.conversions.toGregorian(year, month, day);
+        this.currentDate = Locale.umalquraToGregorian(year, month, day);
       } else {
         this.currentDate = new Date(year, month, day);
       }
@@ -30925,14 +32523,14 @@ var Soho = (function (exports) {
      * @private
      */
     handleKeys: function handleKeys() {
-      var _this5 = this;
+      var _this6 = this;
 
       var s = this.settings;
 
       this.element.off('keydown.monthview').on('keydown.monthview', '.monthview-table', function (e) {
         var key = e.keyCode || e.charCode || 0;
         var cell = $(e.target);
-        var allCell = _this5.days.find('td:visible');
+        var allCell = _this6.days.find('td:visible');
         var allCellLength = allCell.length;
         var idx = null;
         var selector = null;
@@ -30940,13 +32538,13 @@ var Soho = (function (exports) {
         var minDate = new Date(s.disable.minDate);
         var maxDate = new Date(s.disable.maxDate);
         var resetRange = function resetRange() {
-          if (_this5.datepickerApi && s.range.useRange && s.range.first && s.range.first.date && s.range.second && s.range.second.date) {
-            _this5.datepickerApi.resetRange({ isData: true });
+          if (_this6.datepickerApi && s.range.useRange && s.range.first && s.range.first.date && s.range.second && s.range.second.date) {
+            _this6.datepickerApi.resetRange({ isData: true });
           }
         };
 
-        if (_this5.settings.onKeyDown) {
-          var callbackResult = _this5.settings.onKeyDown({ e: e, key: key, cell: cell, node: _this5.element });
+        if (_this6.settings.onKeyDown) {
+          var callbackResult = _this6.settings.onKeyDown({ e: e, key: key, cell: cell, node: _this6.element });
           if (callbackResult === false) {
             e.stopPropagation();
             e.preventDefault();
@@ -30962,20 +32560,20 @@ var Soho = (function (exports) {
             selector = allCell.eq(idx);
             if (idx < allCellLength) {
               resetRange();
-              _this5.setRangeOnCell(selector.is('.is-selected') ? null : selector);
-              _this5.setRangeSelBeforeFirstSel(selector);
-              _this5.activeTabindex(selector, true);
+              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
+              _this6.setRangeSelBeforeFirstSel(selector);
+              _this6.activeTabindex(selector, true);
             }
           } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this5.currentDate.getMonth() < maxDate.getMonth()) {
-              _this5.currentDate.setDate(_this5.currentDate.getDate() + 7);
-            } else if (maxDate.getDate() - 1 >= _this5.currentDate.getDate() + 7) {
-              _this5.currentDate.setDate(_this5.currentDate.getDate() + 7);
+            if (_this6.currentDate.getMonth() < maxDate.getMonth()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() + 7);
+            } else if (maxDate.getDate() - 1 >= _this6.currentDate.getDate() + 7) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() + 7);
             }
-            _this5.selectDay(_this5.currentDate, false, false);
+            _this6.selectDay(_this6.currentDate, false, false);
           } else {
-            _this5.currentDate.setDate(_this5.currentDate.getDate() + 7);
-            _this5.selectDay(_this5.currentDate, false, false);
+            _this6.currentDate.setDate(_this6.currentDate.getDate() + 7);
+            _this6.selectDay(_this6.currentDate, false, false);
           }
         }
 
@@ -30987,20 +32585,20 @@ var Soho = (function (exports) {
             selector = allCell.eq(idx);
             if (idx > -1) {
               resetRange();
-              _this5.setRangeOnCell(selector.is('.is-selected') ? null : selector);
-              _this5.setRangeSelBeforeFirstSel(selector);
-              _this5.activeTabindex(selector, true);
+              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
+              _this6.setRangeSelBeforeFirstSel(selector);
+              _this6.activeTabindex(selector, true);
             }
           } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this5.currentDate.getMonth() > minDate.getMonth()) {
-              _this5.currentDate.setDate(_this5.currentDate.getDate() - 7);
-            } else if (minDate.getDate() + 1 <= _this5.currentDate.getDate() - 7) {
-              _this5.currentDate.setDate(_this5.currentDate.getDate() - 7);
+            if (_this6.currentDate.getMonth() > minDate.getMonth()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() - 7);
+            } else if (minDate.getDate() + 1 <= _this6.currentDate.getDate() - 7) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() - 7);
             }
-            _this5.selectDay(_this5.currentDate, false, false);
+            _this6.selectDay(_this6.currentDate, false, false);
           } else {
-            _this5.currentDate.setDate(_this5.currentDate.getDate() - 7);
-            _this5.selectDay(_this5.currentDate, false, false);
+            _this6.currentDate.setDate(_this6.currentDate.getDate() - 7);
+            _this6.selectDay(_this6.currentDate, false, false);
           }
         }
 
@@ -31012,20 +32610,20 @@ var Soho = (function (exports) {
             selector = allCell.eq(idx);
             if (idx > -1) {
               resetRange();
-              _this5.setRangeOnCell(selector.is('.is-selected') ? null : selector);
-              _this5.setRangeSelBeforeFirstSel(selector);
-              _this5.activeTabindex(selector, true);
+              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
+              _this6.setRangeSelBeforeFirstSel(selector);
+              _this6.activeTabindex(selector, true);
             }
           } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this5.currentDate.getMonth() > minDate.getMonth()) {
-              _this5.currentDate.setDate(_this5.currentDate.getDate() - 1);
-            } else if (minDate.getDate() + 1 !== _this5.currentDate.getDate()) {
-              _this5.currentDate.setDate(_this5.currentDate.getDate() - 1);
+            if (_this6.currentDate.getMonth() > minDate.getMonth()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() - 1);
+            } else if (minDate.getDate() + 1 !== _this6.currentDate.getDate()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() - 1);
             }
-            _this5.selectDay(_this5.currentDate, false, false);
+            _this6.selectDay(_this6.currentDate, false, false);
           } else {
-            _this5.currentDate.setDate(_this5.currentDate.getDate() - 1);
-            _this5.selectDay(_this5.currentDate, false, false);
+            _this6.currentDate.setDate(_this6.currentDate.getDate() - 1);
+            _this6.selectDay(_this6.currentDate, false, false);
           }
         }
 
@@ -31037,20 +32635,20 @@ var Soho = (function (exports) {
             selector = allCell.eq(idx);
             if (idx < allCellLength) {
               resetRange();
-              _this5.setRangeOnCell(selector.is('.is-selected') ? null : selector);
-              _this5.setRangeSelBeforeFirstSel(selector);
-              _this5.activeTabindex(selector, true);
+              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
+              _this6.setRangeSelBeforeFirstSel(selector);
+              _this6.activeTabindex(selector, true);
             }
           } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this5.currentDate.getMonth() < maxDate.getMonth()) {
-              _this5.currentDate.setDate(_this5.currentDate.getDate() + 1);
-            } else if (maxDate.getDate() - 1 !== _this5.currentDate.getDate()) {
-              _this5.currentDate.setDate(_this5.currentDate.getDate() + 1);
+            if (_this6.currentDate.getMonth() < maxDate.getMonth()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() + 1);
+            } else if (maxDate.getDate() - 1 !== _this6.currentDate.getDate()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() + 1);
             }
-            _this5.selectDay(_this5.currentDate, false, false);
+            _this6.selectDay(_this6.currentDate, false, false);
           } else {
-            _this5.currentDate.setDate(_this5.currentDate.getDate() + 1);
-            _this5.selectDay(_this5.currentDate, false, false);
+            _this6.currentDate.setDate(_this6.currentDate.getDate() + 1);
+            _this6.selectDay(_this6.currentDate, false, false);
           }
         }
 
@@ -31059,13 +32657,13 @@ var Soho = (function (exports) {
           handled = true;
           resetRange();
           if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (minDate.getMonth() !== _this5.currentDate.getMonth()) {
-              _this5.currentDate.setMonth(_this5.currentDate.getMonth() - 1);
-              _this5.selectDay(_this5.currentDate, false, false);
+            if (minDate.getMonth() !== _this6.currentDate.getMonth()) {
+              _this6.currentDate.setMonth(_this6.currentDate.getMonth() - 1);
+              _this6.selectDay(_this6.currentDate, false, false);
             }
           } else {
-            _this5.currentDate.setMonth(_this5.currentDate.getMonth() - 1);
-            _this5.selectDay(_this5.currentDate, false, false);
+            _this6.currentDate.setMonth(_this6.currentDate.getMonth() - 1);
+            _this6.selectDay(_this6.currentDate, false, false);
           }
         }
 
@@ -31074,13 +32672,13 @@ var Soho = (function (exports) {
           handled = true;
           resetRange();
           if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this5.currentDate.getMonth() !== maxDate.getMonth()) {
-              _this5.currentDate.setMonth(_this5.currentDate.getMonth() + 1);
-              _this5.selectDay(_this5.currentDate, false, false);
+            if (_this6.currentDate.getMonth() !== maxDate.getMonth()) {
+              _this6.currentDate.setMonth(_this6.currentDate.getMonth() + 1);
+              _this6.selectDay(_this6.currentDate, false, false);
             }
           } else {
-            _this5.currentDate.setMonth(_this5.currentDate.getMonth() + 1);
-            _this5.selectDay(_this5.currentDate, false, false);
+            _this6.currentDate.setMonth(_this6.currentDate.getMonth() + 1);
+            _this6.selectDay(_this6.currentDate, false, false);
           }
         }
 
@@ -31088,27 +32686,27 @@ var Soho = (function (exports) {
         if (key === 33 && e.ctrlKey) {
           handled = true;
           resetRange();
-          _this5.currentDate.setFullYear(_this5.currentDate.getFullYear() - 1);
-          _this5.selectDay(_this5.currentDate, false, false);
+          _this6.currentDate.setFullYear(_this6.currentDate.getFullYear() - 1);
+          _this6.selectDay(_this6.currentDate, false, false);
         }
 
         // ctrl + Page Down Selects Same Day next Year
         if (key === 34 && e.ctrlKey) {
           handled = true;
           resetRange();
-          _this5.currentDate.setFullYear(_this5.currentDate.getFullYear() + 1);
-          _this5.selectDay(_this5.currentDate, false, false);
+          _this6.currentDate.setFullYear(_this6.currentDate.getFullYear() + 1);
+          _this6.selectDay(_this6.currentDate, false, false);
         }
 
         // Home Moves to Start of the month
         if (key === 36) {
           handled = true;
-          var d = _this5.currentDate;
+          var d = _this6.currentDate;
           var firstDay = void 0;
           resetRange();
 
           if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (minDate.getMonth() !== _this5.currentDate.getMonth()) {
+            if (minDate.getMonth() !== _this6.currentDate.getMonth()) {
               firstDay = new Date(d.getFullYear(), d.getMonth(), 1);
             } else {
               firstDay = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate());
@@ -31118,22 +32716,22 @@ var Soho = (function (exports) {
             firstDay = new Date(d.getFullYear(), d.getMonth(), 1);
           }
 
-          _this5.currentDate = firstDay;
-          if (_this5.isIslamic) {
-            _this5.currentIslamicDate = _this5.conversions.fromGregorian(_this5.currentDate);
+          _this6.currentDate = firstDay;
+          if (_this6.isIslamic) {
+            _this6.currentIslamicDate = Locale.gregorianToUmalqura(_this6.currentDate);
           }
-          _this5.selectDay(_this5.currentDate, false, false);
+          _this6.selectDay(_this6.currentDate, false, false);
         }
 
         // End Moves to End of the month
         if (key === 35) {
           handled = true;
-          var _d = _this5.currentDate;
+          var _d = _this6.currentDate;
           var lastDay = void 0;
           resetRange();
 
           if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this5.currentDate.getMonth() !== maxDate.getMonth()) {
+            if (_this6.currentDate.getMonth() !== maxDate.getMonth()) {
               lastDay = new Date(_d.getFullYear(), _d.getMonth() + 1, 0);
             } else {
               lastDay = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
@@ -31143,24 +32741,24 @@ var Soho = (function (exports) {
             lastDay = new Date(_d.getFullYear(), _d.getMonth() + 1, 0);
           }
 
-          _this5.currentDate = lastDay;
-          if (_this5.isIslamic) {
-            _this5.currentIslamicDate = _this5.conversions.fromGregorian(_this5.currentDate);
+          _this6.currentDate = lastDay;
+          if (_this6.isIslamic) {
+            _this6.currentIslamicDate = Locale.gregorianToUmalqura(_this6.currentDate);
           }
-          _this5.selectDay(_this5.currentDate, false, false);
+          _this6.selectDay(_this6.currentDate, false, false);
         }
 
         // 't' selects today
         if (key === 84) {
-          if (s.range.useRange && _this5.datepickerApi) {
+          if (s.range.useRange && _this6.datepickerApi) {
             resetRange();
             var keepFocus = !(s.range.first && s.range.first.date && (!s.range.second || s.range.second && !s.range.second.date));
-            _this5.datepickerApi.setToday(keepFocus);
-            if (!keepFocus && _this5.datepickerApi && typeof _this5.datepickerApi.closeCalendar === 'function') {
-              _this5.datepickerApi.closeCalendar();
+            _this6.datepickerApi.setToday(keepFocus);
+            if (!keepFocus && _this6.datepickerApi && typeof _this6.datepickerApi.closeCalendar === 'function') {
+              _this6.datepickerApi.closeCalendar();
             }
           } else {
-            _this5.setToday();
+            _this6.setToday();
           }
           handled = true;
         }
@@ -31175,16 +32773,16 @@ var Soho = (function (exports) {
             cell.focus().trigger('click');
             return false;
           }
-          var _d2 = _this5.getCellDate(cell);
+          var _d2 = _this6.getCellDate(cell);
 
-          if (_this5.isIslamic) {
-            _this5.currentIslamicDate = [_d2.year, _d2.month, _d2.day];
-            _this5.currentDate = _this5.conversions.toGregorian(_this5.currentIslamicDate[0], _this5.currentIslamicDate[1], _this5.currentIslamicDate[2]);
+          if (_this6.isIslamic) {
+            _this6.currentIslamicDate = [_d2.year, _d2.month, _d2.day];
+            _this6.currentDate = Locale.umalquraToGregorian(_this6.currentIslamicDate[0], _this6.currentIslamicDate[1], _this6.currentIslamicDate[2]);
           } else {
-            _this5.currentDate = new Date(_d2.year, _d2.month, _d2.day);
+            _this6.currentDate = new Date(_d2.year, _d2.month, _d2.day);
           }
 
-          _this5.selectDay(_this5.currentDate, true, true);
+          _this6.selectDay(_this6.currentDate, true, true);
         }
 
         if (handled) {
@@ -31248,7 +32846,15 @@ var Soho = (function (exports) {
 
       for (var i = 0; i < s.legend.length; i++) {
         var series = s.legend[i];
-        var item = '' + ('<div class="monthview-legend-item">\n          <span class="monthview-legend-swatch" style="background-color: ' + colorUtils.hexToRgba(series.color, 0.3) + '"></span>\n          <span class="monthview-legend-text">' + series.name + '</span>\n        </div>');
+        var hex = series.color;
+
+        if (hex.indexOf('#') === -1) {
+          var name = hex.replace(/[0-9]/g, '');
+          var number = hex.substr(hex.length - 2, 2) * 10;
+          hex = theme.themeColors().palette[name][number].value;
+        }
+
+        var item = '' + ('<div class="monthview-legend-item">\n          <span class="monthview-legend-swatch" style="background-color: ' + colorUtils.hexToRgba(hex, 0.3) + '"></span>\n          <span class="monthview-legend-text">' + series.name + '</span>\n        </div>');
 
         this.legend.append(item);
       }
@@ -31311,14 +32917,14 @@ var Soho = (function (exports) {
      * @returns {object} before/after difference to given date
      */
     getDifferenceToDate: function getDifferenceToDate(date, days, includeDisabled) {
-      var _this6 = this;
+      var _this7 = this;
 
       var difference = {};
       var move = function move(d, daystomove, isNext) {
         d = new Date(d);
         while (daystomove > 0) {
           d.setDate(d.getDate() + (isNext ? 1 : -1));
-          if (includeDisabled || !includeDisabled && !_this6.isDateDisabled(d.getFullYear(), d.getMonth(), d.getDate())) {
+          if (includeDisabled || !includeDisabled && !_this7.isDateDisabled(d.getFullYear(), d.getMonth(), d.getDate())) {
             daystomove--;
             difference[isNext ? 'after' : 'before'] = new Date(d);
           }
@@ -31541,13 +33147,13 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.teardown();
       this.element.empty();
-      $.removeData(this.element[0], COMPONENT_NAME$q);
+      $.removeData(this.element[0], COMPONENT_NAME$r);
       return this;
     }
   };
 
   // Settings and Options
-  var COMPONENT_NAME$r = 'weekview';
+  var COMPONENT_NAME$s = 'weekview';
 
   var COMPONENT_NAME_DEFAULTS$1 = {
     eventTypes: [{ id: 'example', label: 'Example', color: 'emerald07', checked: true, click: function click() {} }],
@@ -32170,11 +33776,11 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this6 = this;
 
-      this.element.off('updated.' + COMPONENT_NAME$r).on('updated.' + COMPONENT_NAME$r, function () {
+      this.element.off('updated.' + COMPONENT_NAME$s).on('updated.' + COMPONENT_NAME$s, function () {
         _this6.updated();
       });
 
-      this.element.off('change-date.' + COMPONENT_NAME$r).on('change-date.' + COMPONENT_NAME$r, function (e, args) {
+      this.element.off('change-date.' + COMPONENT_NAME$s).on('change-date.' + COMPONENT_NAME$s, function (e, args) {
         var startDate = args.isToday ? new Date() : args.selectedDate;
 
         if (_this6.isDayView) {
@@ -32191,11 +33797,11 @@ var Soho = (function (exports) {
         _this6.showWeek(_this6.settings.startDate, _this6.settings.endDate);
       });
 
-      this.element.off('change-next.' + COMPONENT_NAME$r).on('change-next.' + COMPONENT_NAME$r, function () {
+      this.element.off('change-next.' + COMPONENT_NAME$s).on('change-next.' + COMPONENT_NAME$s, function () {
         _this6.advanceDays(true);
       });
 
-      this.element.off('change-prev.' + COMPONENT_NAME$r).on('change-prev.' + COMPONENT_NAME$r, function () {
+      this.element.off('change-prev.' + COMPONENT_NAME$s).on('change-prev.' + COMPONENT_NAME$s, function () {
         _this6.advanceDays(false);
       });
 
@@ -32228,11 +33834,11 @@ var Soho = (function (exports) {
         _this6.element.trigger(eventName, { settings: _this6.settings, event: eventData[0] });
       };
 
-      this.element.off('click.' + COMPONENT_NAME$r).on('click.' + COMPONENT_NAME$r, '.calendar-event', function (e) {
+      this.element.off('click.' + COMPONENT_NAME$s).on('click.' + COMPONENT_NAME$s, '.calendar-event', function (e) {
         fireEvent(e.currentTarget, 'eventclick');
       });
 
-      this.element.off('dblclick.' + COMPONENT_NAME$r).on('dblclick.' + COMPONENT_NAME$r, '.calendar-event', function (e) {
+      this.element.off('dblclick.' + COMPONENT_NAME$s).on('dblclick.' + COMPONENT_NAME$s, '.calendar-event', function (e) {
         fireEvent(e.currentTarget, 'eventdblclick');
       });
       return this;
@@ -32361,7 +33967,7 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.teardown();
       this.element.empty();
-      $.removeData(this.element[0], COMPONENT_NAME$r);
+      $.removeData(this.element[0], COMPONENT_NAME$s);
       return this;
     }
   };
@@ -32369,7 +33975,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle, no-nested-ternary */
 
   // Settings and Options
-  var COMPONENT_NAME$s = 'calendar';
+  var COMPONENT_NAME$t = 'calendar';
 
   var COMPONENT_NAME_DEFAULTS$2 = {
     eventTypes: [{ id: 'example', label: 'Example', color: 'emerald07', checked: true, click: function click() {} }],
@@ -32378,6 +33984,7 @@ var Soho = (function (exports) {
     language: null,
     month: new Date().getMonth(),
     year: new Date().getFullYear(),
+    day: new Date().getDate(),
     showViewChanger: true,
     onRenderMonth: null,
     template: null,
@@ -32413,8 +34020,9 @@ var Soho = (function (exports) {
    * @param {array} [settings.events] An array of objects with data for the events.
    * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
    * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale will be used or the passed locale will be used.
-   * @param {array} [settings.month] Initial month to show.
    * @param {array} [settings.year] Initial year to show.
+   * @param {array} [settings.month] Initial month to show.
+   * @param {number} [settings.day] The initial selected day to show.
    * @param {array} [settings.upcomingEventDays=14] How many days in advance should we show in the upcoming events pane.
    * @param {boolean} [settings.showViewChanger] If false the dropdown to change views will not be shown.
    * @param {function} [settings.onRenderMonth] Fires when a month is rendered, allowing you to pass back events or event types to show.
@@ -32527,7 +34135,7 @@ var Soho = (function (exports) {
       var eventTypeMarkup = '';
       for (var i = 0; i < this.settings.eventTypes.length; i++) {
         var eventType = this.settings.eventTypes[i];
-        eventTypeMarkup += '<input type="checkbox" class="checkbox ' + eventType.color + '07" name="' + eventType.id + '" id="' + eventType.id + '" checked="' + (eventType.checked ? 'true' : 'false') + '" ' + (eventType.disabled ? 'disabled="true"' : '') + ' />\n        <label for="' + eventType.id + '" class="checkbox-label">' + (eventType.translationKey ? Locale.translate(eventType.translationKey, { locale: this.locale.name, language: this.language }) : eventType.label) + '</label><br/>';
+        eventTypeMarkup += '<input type="checkbox" class="checkbox ' + eventType.color + '07" name="' + eventType.id + '" id="' + eventType.id + '" ' + (eventType.checked ? 'checked="true"' : '') + ' ' + (eventType.disabled ? 'disabled="true"' : '') + ' />\n        <label for="' + eventType.id + '" class="checkbox-label">' + (eventType.translationKey ? Locale.translate(eventType.translationKey, { locale: this.locale.name, language: this.language }) : eventType.label) + '</label><br/>';
       }
       this.eventTypeContainer.innerHTML = eventTypeMarkup;
       return this;
@@ -32561,6 +34169,7 @@ var Soho = (function (exports) {
         locale: this.settings.locale,
         month: this.settings.month,
         year: this.settings.year,
+        day: this.settings.day,
         eventTooltip: this.eventTooltip,
         iconTooltip: this.iconTooltip,
         showToday: this.settings.showToday,
@@ -32615,7 +34224,9 @@ var Soho = (function (exports) {
         endHour: this.settings.weekViewSettings.endHour,
         showToday: this.settings.showToday,
         showViewChanger: this.settings.showViewChanger,
-        onChangeView: this.onChangeToWeekDay
+        onChangeView: this.onChangeToWeekDay,
+        eventTooltip: this.settings.eventTooltip,
+        iconTooltip: this.settings.iconTooltip
       });
       this.weekViewHeader = document.querySelector('.calendar .calendar-weekview .monthview-header');
 
@@ -33090,12 +34701,12 @@ var Soho = (function (exports) {
 
       var self = this;
 
-      this.element.off('updated.' + COMPONENT_NAME$s).on('updated.' + COMPONENT_NAME$s, function () {
+      this.element.off('updated.' + COMPONENT_NAME$t).on('updated.' + COMPONENT_NAME$t, function () {
         _this5.updated();
       });
 
       this.isSwitchingMonth = false;
-      this.element.off('monthrendered.' + COMPONENT_NAME$s).on('monthrendered.' + COMPONENT_NAME$s, function (e, args) {
+      this.element.off('monthrendered.' + COMPONENT_NAME$t).on('monthrendered.' + COMPONENT_NAME$t, function (e, args) {
         _this5.isSwitchingMonth = true;
         if (_this5.modalVisible()) {
           _this5.removeModal();
@@ -33109,20 +34720,20 @@ var Soho = (function (exports) {
         }, 500);
       });
 
-      this.element.off('change.' + COMPONENT_NAME$s).on('change.' + COMPONENT_NAME$s, '.checkbox', function () {
+      this.element.off('change.' + COMPONENT_NAME$t).on('change.' + COMPONENT_NAME$t, '.checkbox', function () {
         _this5.renderAllEvents(true);
       });
 
-      $(this.monthViewContainer).off('selected.' + COMPONENT_NAME$s).on('selected.' + COMPONENT_NAME$s, function () {
+      $(this.monthViewContainer).off('selected.' + COMPONENT_NAME$t).on('selected.' + COMPONENT_NAME$t, function () {
         _this5.renderSelectedEventDetails();
       });
 
-      this.element.off('click.' + COMPONENT_NAME$s + '-upcoming').on('click.' + COMPONENT_NAME$s + '-upcoming', '.calendar-upcoming-event', function (e) {
+      this.element.off('click.' + COMPONENT_NAME$t + '-upcoming').on('click.' + COMPONENT_NAME$t + '-upcoming', '.calendar-upcoming-event', function (e) {
         var key = e.currentTarget.getAttribute('data-key');
         _this5.renderDay(key);
       });
 
-      this.element.off('contextmenu.' + COMPONENT_NAME$s).on('contextmenu.' + COMPONENT_NAME$s, '.calendar-event', function (e) {
+      this.element.off('contextmenu.' + COMPONENT_NAME$t).on('contextmenu.' + COMPONENT_NAME$t, '.calendar-event', function (e) {
         e.stopPropagation();
         var hasMenu = function hasMenu() {
           return self.settings.menuId && $('#' + self.settings.menuId).length > 0;
@@ -33183,7 +34794,7 @@ var Soho = (function (exports) {
       var timer = 0;
       var delay = 100;
       var prevent = false;
-      this.element.off('click.' + COMPONENT_NAME$s + '-event').on('click.' + COMPONENT_NAME$s + '-event', '.calendar-event', function (e) {
+      this.element.off('click.' + COMPONENT_NAME$t + '-event').on('click.' + COMPONENT_NAME$t + '-event', '.calendar-event', function (e) {
         timer = setTimeout(function () {
           if (!prevent) {
             var eventId = e.currentTarget.getAttribute('data-id');
@@ -33213,7 +34824,7 @@ var Soho = (function (exports) {
         }, delay);
       });
 
-      this.element.off('dblclick.' + COMPONENT_NAME$s + '-event').on('dblclick.' + COMPONENT_NAME$s + '-event', '.calendar-event', function (e) {
+      this.element.off('dblclick.' + COMPONENT_NAME$t + '-event').on('dblclick.' + COMPONENT_NAME$t + '-event', '.calendar-event', function (e) {
         clearTimeout(timer);
         prevent = true;
         var eventId = e.currentTarget.getAttribute('data-id');
@@ -33234,7 +34845,7 @@ var Soho = (function (exports) {
         _this5.element.trigger('eventdblclick', { month: _this5.settings.month, year: _this5.settings.year, event: eventData[0] });
       });
 
-      this.element.off('dblclick.' + COMPONENT_NAME$s).on('dblclick.' + COMPONENT_NAME$s, 'td', function (e) {
+      this.element.off('dblclick.' + COMPONENT_NAME$t).on('dblclick.' + COMPONENT_NAME$t, 'td', function (e) {
         // throw this case out or you can click the wrong day
         if (_this5.isSwitchingMonth || _this5.modalVisible()) {
           return;
@@ -33719,7 +35330,7 @@ var Soho = (function (exports) {
       }
       this.removeModal();
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$s);
+      $.removeData(this.element[0], COMPONENT_NAME$t);
       return this;
     }
   };
@@ -33731,17 +35342,17 @@ var Soho = (function (exports) {
    */
   $.fn.calendar = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$s);
+      var instance = $.data(this, COMPONENT_NAME$t);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$s, new Calendar(this, settings));
+        instance = $.data(this, COMPONENT_NAME$t, new Calendar(this, settings));
       }
     });
   };
 
   // Default Settings
-  var COMPONENT_NAME$t = 'circlepager';
+  var COMPONENT_NAME$u = 'circlepager';
 
   /**
    * The Circle Pager Displays content in a sliding carousel and has paging buttons.
@@ -34162,7 +35773,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$t);
+      $.removeData(this.element[0], COMPONENT_NAME$u);
     },
 
 
@@ -34316,11 +35927,11 @@ var Soho = (function (exports) {
    */
   $.fn.circlepager = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$t);
+      var instance = $.data(this, COMPONENT_NAME$u);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$t, new CirclePager(this, settings));
+        instance = $.data(this, COMPONENT_NAME$u, new CirclePager(this, settings));
       }
     });
   };
@@ -34332,17 +35943,17 @@ var Soho = (function (exports) {
    */
   $.fn.calendartoolbar = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$p);
+      var instance = $.data(this, COMPONENT_NAME$q);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$p, new CalendarToolbar(this, settings));
+        instance = $.data(this, COMPONENT_NAME$q, new CalendarToolbar(this, settings));
       }
     });
   };
 
   // Default Settings
-  var COMPONENT_NAME$u = 'colorpicker';
+  var COMPONENT_NAME$v = 'colorpicker';
 
   /**
    * The ColorPicker Component is a trigger field with a listing colors that can be selected.
@@ -34360,6 +35971,7 @@ var Soho = (function (exports) {
    * @param {boolean} [settings.colorOnly=false] If true the field will be shrunk to only show the color portion.
    * @param {boolean} [settings.clearable=true] If true will add clearable option.
    * @param {string} [settings.clearableText] The text to show in tooltip.
+   * @param {object} [settings.popupmenuSettings] optional Popupmenu settings that will supersede the defaults.
    */
   var COLORPICKER_DEFAULTS = {
     // Theme key: MUST match with theme file name (ie: [filename: 'light-theme.css' -> 'light-theme'])
@@ -34391,7 +36003,8 @@ var Soho = (function (exports) {
     uppercase: true,
     colorOnly: false,
     clearable: true,
-    clearableText: null
+    clearableText: null,
+    popupmenuSettings: {}
   };
 
   function ColorPicker(element, settings) {
@@ -34551,7 +36164,7 @@ var Soho = (function (exports) {
       if (this.element[0].style && this.element[0].style.width) {
         var w = parseInt(this.element[0].style.width, 10);
         this.container.css({ width: w });
-        this.element.css({ width: w - 2 - this.swatch.width() });
+        this.element.css({ width: w - 4 - this.swatch.width() });
       }
     },
 
@@ -34608,7 +36221,7 @@ var Soho = (function (exports) {
       // Append Color Menu
       menu = this.updateColorMenu();
 
-      var popupmenuOpts = {
+      var popupmenuOpts = utils.extend({}, {
         ariaListbox: true,
         menuId: 'colorpicker-menu',
         trigger: 'immediate',
@@ -34623,7 +36236,7 @@ var Soho = (function (exports) {
           x: 0,
           y: 10
         }
-      };
+      }, this.settings.popupmenuSettings);
 
       // Show Menu
       this.element.popupmenu(popupmenuOpts).on('open.colorpicker', function () {
@@ -34948,10 +36561,10 @@ var Soho = (function (exports) {
       return this.init();
     },
     teardown: function teardown() {
-      this.element.off(['keypress.' + COMPONENT_NAME$u, 'keyup.' + COMPONENT_NAME$u, 'blur.' + COMPONENT_NAME$u, 'openlist.' + COMPONENT_NAME$u, 'change.' + COMPONENT_NAME$u, 'paste.' + COMPONENT_NAME$u].join(' '));
+      this.element.off(['keypress.' + COMPONENT_NAME$v, 'keyup.' + COMPONENT_NAME$v, 'blur.' + COMPONENT_NAME$v, 'openlist.' + COMPONENT_NAME$v, 'change.' + COMPONENT_NAME$v, 'paste.' + COMPONENT_NAME$v].join(' '));
 
       if (this.swatch && this.swatch.length) {
-        this.swatch.off('click.' + COMPONENT_NAME$u);
+        this.swatch.off('click.' + COMPONENT_NAME$v);
         this.swatch.remove();
         delete this.swatch;
       }
@@ -34982,7 +36595,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$u);
+      $.removeData(this.element[0], COMPONENT_NAME$v);
       return this;
     },
 
@@ -35048,16 +36661,16 @@ var Soho = (function (exports) {
    */
   $.fn.colorpicker = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$u);
+      var instance = $.data(this, COMPONENT_NAME$v);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$u, new ColorPicker(this, settings));
+        instance = $.data(this, COMPONENT_NAME$v, new ColorPicker(this, settings));
       }
     });
   };
 
-  var COMPONENT_NAME$v = 'expandablearea';
+  var COMPONENT_NAME$w = 'expandablearea';
 
   /**
   * An expandable pane / area.
@@ -35396,7 +37009,7 @@ var Soho = (function (exports) {
       this.header.off();
       this.header.removeAttr('aria-controls').removeAttr('aria-expanded').removeAttr('id');
       this.content.removeAttr('id').removeClass('no-transition');
-      $.removeData(this.element[0], COMPONENT_NAME$v);
+      $.removeData(this.element[0], COMPONENT_NAME$w);
     },
 
 
@@ -35431,17 +37044,17 @@ var Soho = (function (exports) {
 
   $.fn.expandablearea = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$v);
+      var instance = $.data(this, COMPONENT_NAME$w);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$v, new ExpandableArea(this, settings));
+        instance = $.data(this, COMPONENT_NAME$w, new ExpandableArea(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$w = 'compositeform';
+  var COMPONENT_NAME$x = 'compositeform';
 
   /**
   * CompositeForm is a specialized responsive form component.
@@ -35526,11 +37139,11 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var self = this;
 
-      $('body').off('resize.' + COMPONENT_NAME$w).on('resize.' + COMPONENT_NAME$w, function (e) {
+      $('body').off('resize.' + COMPONENT_NAME$x).on('resize.' + COMPONENT_NAME$x, function (e) {
         self.checkResponsive(e);
       });
 
-      this.element.on('updated.' + COMPONENT_NAME$w, function () {
+      this.element.on('updated.' + COMPONENT_NAME$x, function () {
         self.updated();
       });
 
@@ -35540,7 +37153,7 @@ var Soho = (function (exports) {
       }
 
       if (this.hasSummary) {
-        this.expandableArea.on('expand.' + COMPONENT_NAME$w, changeExpanderText).on('collapse.' + COMPONENT_NAME$w, changeExpanderText);
+        this.expandableArea.on('expand.' + COMPONENT_NAME$x, changeExpanderText).on('collapse.' + COMPONENT_NAME$x, changeExpanderText);
       }
 
       return this;
@@ -35611,11 +37224,11 @@ var Soho = (function (exports) {
      * @returns {object} The component API for chaining.
      */
     teardown: function teardown() {
-      $('body').off('resize.' + COMPONENT_NAME$w);
-      this.element.off('updated.' + COMPONENT_NAME$w);
+      $('body').off('resize.' + COMPONENT_NAME$x);
+      this.element.off('updated.' + COMPONENT_NAME$x);
 
       if (this.hasSummary) {
-        this.expandableArea.off('expand.' + COMPONENT_NAME$w + ' collapse.' + COMPONENT_NAME$w);
+        this.expandableArea.off('expand.' + COMPONENT_NAME$x + ' collapse.' + COMPONENT_NAME$x);
       }
 
       return this;
@@ -35628,7 +37241,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$w);
+      $.removeData(this.element[0], COMPONENT_NAME$x);
     }
   };
 
@@ -35639,16 +37252,16 @@ var Soho = (function (exports) {
    */
   $.fn.compositeform = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$w);
+      var instance = $.data(this, COMPONENT_NAME$x);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$w, new CompositeForm(this, settings));
+        instance = $.data(this, COMPONENT_NAME$x, new CompositeForm(this, settings));
       }
     });
   };
 
-  var COMPONENT_NAME$x = 'contextualactionpanel';
+  var COMPONENT_NAME$y = 'contextualactionpanel';
 
   /**
   * A more complex modal for complex in page interactions.
@@ -36151,7 +37764,7 @@ var Soho = (function (exports) {
       if (this.modalAPI && this.modalAPI.isOpen) {
         this.modalAPI.close(true);
       }
-      $.removeData(this.element[0], COMPONENT_NAME$x);
+      $.removeData(this.element[0], COMPONENT_NAME$y);
     }
   };
 
@@ -36162,943 +37775,11 @@ var Soho = (function (exports) {
    */
   $.fn.contextualactionpanel = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$x);
-      if (instance) {
-        instance.updated(settings);
-      } else {
-        instance = $.data(this, COMPONENT_NAME$x, new ContextualActionPanel(this, settings));
-      }
-    });
-  };
-
-  // Component Name
-  var COMPONENT_NAME$y = 'tooltip';
-
-  /**
-   * Tooltip and Popover Control
-   * @class Tooltip
-   * @constructor
-   *
-   * @param {htmlelement|jquery[]} element The component element.
-   * @param {object} [settings] The component settings.
-   * @param {string|function} [settings.content] Takes title attribute or feed content. Can be a string or jQuery markup.
-   * @param {object} [settings.offset={top: 10, left: 10}] How much room to leave.
-   * @param {string} [settings.placement='top'] Supports 'top'|'bottom'|'right'|'offset'.
-   * @param {string} [settings.trigger='hover'] Supports click and immediate and hover (and maybe in future focus).
-   * @param {string} [settings.title] Title for Infor Tips.
-   * @param {string} [settings.beforeShow] Call back for ajax tooltip.
-   * @param {string} [settings.popover] force it to be a popover (no content).
-   * @param {string} [settings.closebutton] Show X close button next to title in popover.
-   * @param {boolean} [settings.isError=false] Add error classes.
-   * @param {boolean} [settings.isErrorColor=false] Add error color only not description.
-   * @param {string} [settings.tooltipElement] ID selector for an alternate element to use to contain the tooltip classes.
-   * @param {object} [settings.parentElement] jQuery-wrapped element that gets.
-    passed to the 'place' behavior as the element to place the tooltip against.
-   * @param {boolean} [settings.keepOpen=false] Forces the tooltip to stay open in situations where it would normally close.
-   * @param {string} [settings.extraClass] Extra css class.
-   * @param {object} [settings.placementOpt] Placement options.
-   * @param {string} [settings.maxWidth] Toolip max width.
-   * @param {boolean} [settings.initializeContent] Init the content in the tooltip.
-   * @param {string} [settings.headerClass] If set this color will be used on the header (if a popover).
-   */
-
-  var TOOLTIP_DEFAULTS = {
-    content: null,
-    offset: { top: 10, left: 10 },
-    placement: 'top',
-    trigger: 'hover',
-    title: null,
-    beforeShow: null,
-    popover: null,
-    closebutton: null,
-    isError: false,
-    isErrorColor: false,
-    tooltipElement: null,
-    parentElement: null,
-    keepOpen: false,
-    extraClass: null,
-    placementOpts: {},
-    maxWidth: null,
-    initializeContent: true,
-    headerClass: null
-  };
-
-  function Tooltip(element, settings) {
-    this.settings = utils.mergeSettings(element, settings, TOOLTIP_DEFAULTS);
-    this.element = $(element);
-    this.init();
-  }
-
-  Tooltip.prototype = {
-
-    /**
-     * @returns {boolean} whether or not the tooltip/popover is currently showing
-     */
-    get visible() {
-      return DOM.hasClass(this.element[0], 'is-hidden') === false;
-    },
-
-    /**
-     * @returns {Popupmenu|undefined} if a Popupmenu API exists on the trigger element
-     */
-    get popupmenuAPI() {
-      return this.element.data('popupmenu');
-    },
-
-    /**
-     * Initializes the component
-     * @private
-     * @returns {void}
-     */
-    init: function init() {
-      this.uniqueId = utils.uniqueId(this.element, 'tooltip');
-      this.isTouch = Environment.features.touch;
-      this.setup();
-      this.appendTooltip();
-
-      // Initial Content Setting.
-      // Don't do this if we're using an "immediate" trigger because _setContent()_ is handled at
-      // display time in that case.
-      var shouldRender = this.settings.trigger !== 'immediate';
-      if (shouldRender) {
-        this.setContent(this.settings.content, true);
-      }
-
-      this.handleEvents();
-    },
-
-
-    /**
-     * Builds internal references
-     * @private
-     * @returns {void}
-     */
-    setup: function setup() {
-      // "this.activeElement" is the target element that the Tooltip will display itself against
-      this.activeElement = this.settings.parentElement instanceof $ && this.settings.parentElement.length ? this.settings.parentElement : this.element;
-
-      this.descriptionId = $('.tooltip-description').length + 1;
-      this.description = this.element.parent().find('.tooltip-description');
-      if (!this.description.length && this.settings.isError) {
-        this.description = $('<span id="tooltip-description-' + this.descriptionId + '" class="tooltip-description audible"></span>').insertAfter(this.element);
-      }
-
-      if (this.element.is('.dropdown, .multiselect')) {
-        this.activeElement = this.element.nextAll('.dropdown-wrapper:first').find('>.dropdown');
-      }
-
-      var titleAttr = this.element.attr('title');
-      if (!this.settings.popover && titleAttr && titleAttr.length || !this.settings.popover && this.settings.title) {
-        this.settings.content = this.settings.title ? this.settings.title : titleAttr;
-        this.element.removeAttr('title');
-      }
-
-      if (this.settings.trigger === 'hover' && this.isTouch) {
-        this.element.addClass('longpress-target');
-      }
-
-      this.isPopover = this.settings.content !== null && _typeof(this.settings.content) === 'object' || this.settings.popover === true;
-
-      this.settings.closebutton = !!(this.settings.closebutton || this.element.data('closebutton'));
-
-      if (this.element.data('extraClass') && this.element.data('extraClass').length) {
-        this.settings.extraClass = this.element.data('extraClass');
-      }
-
-      this.isRTL = Locale.isRTL();
-    },
-
-
-    /**
-     * Adds ARIA attributes on some elements for better accessiblity.
-     * @private
-     * @returns {void}
-     */
-    addAria: function addAria() {
-      if (!this.content) {
-        return;
-      }
-
-      this.description.text(this.content);
-      this.content = this.addClassToLinks(this.content, 'links-clickable');
-
-      if (!this.isPopover) {
-        this.element.removeAttr('title').attr('aria-describedby', this.description.attr('id'));
-      }
-
-      if (this.isPopover && this.settings.trigger === 'click') {
-        this.element.attr('aria-haspopup', true);
-      }
-    },
-
-
-    /**
-     * @param {jquery[]|string} content HTML or String-based content.
-     * @param {string} [thisClass] optional, additional CSS class that gets appeneded to any anchor tags inside of the content.
-     * @returns {string} the appended content
-     */
-    addClassToLinks: function addClassToLinks(content, thisClass) {
-      var isjQuery = content instanceof $ && content.length > 0;
-      if (isjQuery) {
-        return content;
-      }
-
-      var d = $('<div/>').html(content);
-      $('a', d).addClass(thisClass);
-      return d.html();
-    },
-
-
-    /**
-     * Gets a reference to the element being used for the tooltip and positions it in the correct spot on the page.
-     * @private
-     * @returns {void}
-     */
-    appendTooltip: function appendTooltip() {
-      this.tooltip = this.settings.tooltipElement ? $(this.settings.tooltipElement) : $('#tooltip');
-      if (!this.tooltip.length) {
-        var name = this.settings.tooltipElement ? this.settings.tooltipElement.substring(1, this.settings.tooltipElement.length) : 'tooltip';
-        this.tooltip = $('<div class="' + (this.isPopover ? 'popover' : 'tooltip') + ' bottom is-hidden" role="tooltip" id="' + name + '"><div class="arrow"></div><div class="tooltip-content"></div></div>');
-      }
-
-      this.tooltip.place({
-        container: this.scrollparent,
-        parent: this.activeElement,
-        placement: this.settings.placement,
-        strategy: 'flip'
-      });
-
-      this.setTargetContainer();
-    },
-
-
-    /**
-     * Sets up all event listeners for this component
-     * @private
-     * @returns {void}
-     */
-    handleEvents: function handleEvents() {
-      var self = this;
-      var delay = 400;
-      var timer = void 0;
-
-      function showOnTimer() {
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-          if (self.element.is(':visible')) {
-            self.show();
-          }
-        }, delay);
-      }
-
-      function hideOnTimer() {
-        clearTimeout(timer);
-        timer = setTimeout(function () {
-          self.hide();
-        }, delay);
-      }
-
-      function showImmediately() {
-        clearTimeout(timer);
-        self.show();
-      }
-
-      function hideImmediately() {
-        clearTimeout(timer);
-        self.hide();
-      }
-
-      if (this.settings.trigger === 'hover' && !this.settings.isError) {
-        (this.element.is('.dropdown, .multiselect, span.longpress-target') ? this.activeElement : this.element).on('mouseenter.' + COMPONENT_NAME$y, function () {
-          if (self.isTouch) {
-            return;
-          }
-          showOnTimer();
-        }).on('mouseleave.' + COMPONENT_NAME$y, function () {
-          hideOnTimer();
-        }).on('click.' + COMPONENT_NAME$y, function () {
-          if (self.isTouch) {
-            return;
-          }
-          showImmediately();
-        }).on('longpress.' + COMPONENT_NAME$y, function () {
-          showImmediately();
-        }).on('updated.' + COMPONENT_NAME$y, function () {
-          self.updated();
-        });
-      }
-
-      function toggleTooltipDisplay() {
-        if (!self.visible) {
-          hideImmediately();
-        } else {
-          showImmediately();
-        }
-      }
-
-      if (this.settings.trigger === 'click') {
-        this.element.on('click.' + COMPONENT_NAME$y, function () {
-          toggleTooltipDisplay();
-        });
-      }
-
-      if (this.settings.trigger === 'immediate') {
-        timer = setTimeout(function () {
-          toggleTooltipDisplay();
-        }, 1);
-      }
-
-      var isFocusable = this.settings.trigger === 'focus';
-      if (isFocusable) {
-        this.element.on('focus.' + COMPONENT_NAME$y, function () {
-          showImmediately();
-        }).on('blur.' + COMPONENT_NAME$y, function () {
-          if (!self.settings.keepOpen) {
-            hideImmediately();
-          }
-        });
-      }
-
-      // Close the popup/tooltip on orientation changes (but not when keyboard is open)
-      $(window).on('orientationchange.' + COMPONENT_NAME$y, function () {
-        if (!self.visible) {
-          return;
-        }
-        hideImmediately();
-      }, false);
-    },
-
-
-    /**
-     * Sets the content used inside the Tooltip element.
-     * @private
-     * @param {jquery[]|string|function} content incoming content to be set
-     * @param {boolean} dontRender causes the tooltip to prevent a visual refresh
-      after changing its content, meaning it will keep the previous content visible until this tooltip is closed or manually re-drawn.
-     * @returns {boolean} whether or not the render was successful
-     */
-    setContent: function setContent(content, dontRender) {
-      var self = this;
-      var settingsContent = this.settings.content;
-      var noIncomingContent = content === undefined || content === null;
-      var noSettingsContent = settingsContent === undefined || settingsContent === null;
-
-      function doRender() {
-        if (dontRender === true) {
-          return;
-        }
-        self.addAria();
-        self.render();
-      }
-
-      // If all sources of content are undefined, just return false and don't show anything.
-      if (noIncomingContent && noSettingsContent) {
-        return false;
-      }
-
-      // If the settingsContent type is a function, we need to re-run that function
-      // to update the content.
-      // NOTE: If you need to use a function to generate content, understand that the
-      //  tooltip/popover will not cache your content for future reuse.  It will ALWAYS
-      //  override incoming content.
-      if (typeof settingsContent === 'function') {
-        content = settingsContent;
-      }
-
-      // Use the pre-set content if we have no incoming content
-      if (noIncomingContent) {
-        content = settingsContent;
-      }
-
-      // If the incoming/preset content is exactly the same as the stored content,
-      // don't continue with this step. Deep object comparison for jQuery objects
-      // is done further down the chain.
-      if (content === this.content) {
-        doRender();
-        return true;
-      }
-
-      // jQuery-wrapped elements don't get manipulated.
-      // Simply store the reference, render, and return.
-      if (content instanceof $ && content.length) {
-        this.content = content.addClass('hidden');
-        doRender();
-        return true;
-      }
-
-      // Handle setting of content based on its Object type.
-      // If type isn't handled, the tooltip will not display.
-      if (typeof content === 'string') {
-        if (!content.length) {
-          return false;
-        }
-
-        // Could be a translation definition
-        content = Locale.translate(content, { showAsUndefined: true }) || content;
-
-        // Could be an ID attribute.
-        // If it matches an element already on the page, grab that element's content
-        // and store the reference only.
-        if (content.indexOf('#') === 0) {
-          var contentCheck = $('' + content);
-          if (contentCheck.length) {
-            this.content = contentCheck;
-            doRender();
-            return true;
-          }
-          return false;
-        }
-
-        // functions
-      } else if (typeof content === 'function') {
-        var callbackResult = content.call(this.element);
-        if (!callbackResult || typeof callbackResult !== 'string' || !callbackResult.length) {
-          return false;
-        }
-        content = callbackResult;
-
-        // if type isn't handled, return false
-      } else {
-        return false;
-      }
-
-      // Store an internal copy of the processed content
-      this.content = xssUtils.sanitizeHTML(content);
-
-      // Wrap tooltip content in <p> tags if there isn't already one present.
-      // Only happens for non-jQuery markup.
-      this.content = '<p>' + this.content + '</p>';
-
-      doRender();
-      return true;
-    },
-
-
-    /**
-     * Renders internal content either as a Tooltip or Popover.
-     * @private
-     * @returns {void}
-     */
-    render: function render() {
-      if (this.isPopover) {
-        return this.renderPopover();
-      }
-      return this.renderTooltip();
-    },
-
-
-    /**
-     * Renders internal content as a Tooltip.
-     * @private
-     * @returns {void}
-     */
-    renderTooltip: function renderTooltip() {
-      var titleArea = this.tooltip[0].querySelectorAll('.tooltip-title')[0];
-      var contentArea = this.tooltip[0].querySelectorAll('.tooltip-content')[0];
-      var extraClass = this.settings.extraClass;
-      var content = this.content;
-      var tooltip = this.tooltip[0];
-      var classes = 'tooltip is-hidden';
-
-      if (extraClass) {
-        classes += ' ' + extraClass;
-      }
-      tooltip.setAttribute('class', classes);
-
-      if (titleArea) {
-        titleArea.style.display = 'none';
-      }
-
-      if (contentArea && contentArea.previousElementSibling && !contentArea.previousElementSibling.classList.contains('arrow')) {
-        contentArea.insertAdjacentHTML('beforebegin', '<div class="arrow"></div>');
-      }
-
-      var tooltipHTML = typeof this.content === 'string' ? content : content[0].innerHTML;
-      DOM.html(contentArea, tooltipHTML, '<div><p><span><ul><li><a><abbr><b><i><kbd><small><strong><sub><svg><use><br>');
-    },
-
-
-    /**
-     * Renders internal content as a Tooltip.
-     * @private
-     * @returns {void}
-     */
-    renderPopover: function renderPopover() {
-      var self = this;
-      var extraClass = this.settings.extraClass;
-      var contentArea = this.tooltip.find('.tooltip-content');
-      var title = this.tooltip[0].querySelector('.tooltip-title');
-      var content = this.content;
-      var classes = 'popover is-hidden';
-
-      if (extraClass) {
-        classes += ' ' + extraClass;
-      }
-
-      this.tooltip[0].setAttribute('class', classes);
-
-      if (typeof content === 'string') {
-        content = $(content);
-        contentArea.html(content);
-        contentArea.find('.hidden').removeClass('hidden');
-      } else {
-        contentArea.html(content);
-      }
-
-      var popoverWidth = contentArea.width();
-
-      if (!this.settings.placementOpts) {
-        this.settings.placementOpts = {};
-      }
-
-      if (!this.settings.placementOpts.parent) {
-        this.settings.placementOpts.parent = this.element;
-      }
-
-      content[0].classList.remove('hidden');
-      contentArea[0].firstElementChild.classList.remove('hidden');
-
-      var parentWidth = this.settings.placementOpts.parent.width();
-
-      if (Locale.isRTL()) {
-        this.settings.placementOpts.parentXAlignment = parentWidth > popoverWidth ? 'left' : 'right';
-      } else {
-        this.settings.placementOpts.parentXAlignment = parentWidth > popoverWidth ? 'right' : 'left';
-      }
-
-      if (this.settings.title !== null) {
-        if (!title) {
-          var titleFrag = document.createDocumentFragment();
-          title = document.createElement('div');
-          DOM.html(title, this.settings.title, '*');
-          title.classList.add('tooltip-title');
-
-          if (this.settings.headerClass) {
-            DOM.addClass(title, this.settings.headerClass, 'filled');
-          }
-          titleFrag.appendChild(title);
-          this.tooltip[0].insertBefore(titleFrag, this.tooltip[0].firstChild);
-        } else {
-          title.style.display = '';
-          title.childNodes[0].nodeValue = this.settings.title;
-        }
-      } else if (title) {
-        title.style.display = 'none';
-      }
-
-      if (this.settings.closebutton && title && !title.firstElementChild) {
-        var closeBtnX = $('<button type="button" class="btn-icon l-pull-right btn-close">' + $.createIcon({ classes: ['icon-close'], icon: 'close' }) + '<span>Close</span>' + '</button>').on('click', function () {
-          self.hide(true);
-        });
-
-        title.appendChild(closeBtnX[0]);
-      }
-
-      if (this.settings.initializeContent) {
-        content.initialize();
-      }
-    },
-
-
-    /**
-     * Alias for _show()_.
-     * @private
-     * @returns {void}
-     */
-    open: function open() {
-      return this.show();
-    },
-
-
-    /**
-     * Causes the tooltip to become shown
-     * @param {object} newSettings an object containing changed settings that will be
-     *  applied to the Tooltip/Popover before it's displayed.
-     * @param {boolean} ajaxReturn causes an AJAX-powered Tooltip/Popover not to refresh.
-     */
-    show: function show(newSettings, ajaxReturn) {
-      var self = this;
-      this.isInPopup = false;
-
-      if (newSettings) {
-        this.settings = utils.mergeSettings(this.element[0], newSettings, this.settings);
-      }
-
-      // Don't open if this is an Actions Button with an open popupmenu
-      if (this.popupmenuAPI && this.popupmenuAPI.isOpen) {
-        return;
-      }
-
-      if (this.settings.beforeShow && !ajaxReturn) {
-        var response = function response(content) {
-          if (typeof content === 'boolean' && !content) {
-            return;
-          }
-          self.content = content;
-          self.show({ content: content }, true);
-        };
-
-        if (typeof this.settings.beforeShow === 'string') {
-          window[this.settings.beforeShow](response, this.element);
-          return;
-        }
-
-        this.settings.beforeShow(response, this.element);
-        return;
-      }
-
-      var okToShow = true;
-      okToShow = this.setContent(this.content);
-      if (okToShow === false) {
-        return;
-      }
-
-      /**
-       * Fires before show the tooltip.
-       *
-       * @event beforeshow
-       * @memberof Tooltip
-       * @property {object} event - The jquery event object
-       * @property {object} tooltip - instance
-       */
-      okToShow = this.element.triggerHandler('beforeshow', [this.tooltip]);
-      if (okToShow === false) {
-        return;
-      }
-
-      this.tooltip[0].removeAttribute('style');
-      this.tooltip[0].classList.add(this.settings.placement);
-
-      if (this.settings.isError || this.settings.isErrorColor) {
-        this.tooltip[0].classList.add('is-error');
-      }
-
-      this.position();
-      utils.fixSVGIcons(this.tooltip);
-      /**
-       * Fires on show the tooltip.
-       *
-       * @event show
-       * @memberof Tooltip
-       * @property {object} event - The jquery event object
-       * @property {object} tooltip - instance
-       */
-      this.element.trigger('show', [this.tooltip]);
-
-      var mouseUpEventName = this.isTouch ? 'touchend' : 'mouseup';
-
-      // Personalizable the toolbar
-      var isPersonalizable = self.element.closest('.is-personalizable').length > 0;
-      self.tooltip[0].classList[isPersonalizable ? 'add' : 'remove']('is-personalizable');
-
-      setTimeout(function () {
-        $(document).on(mouseUpEventName + '.' + COMPONENT_NAME$y + '-' + self.uniqueId, function (e) {
-          var target = $(e.target);
-
-          if (self.settings.isError || self.settings.trigger === 'focus') {
-            return;
-          }
-
-          if (target.is(self.element) && target.is('svg.icon')) {
-            return;
-          }
-
-          if ($('#editor-popup').length && $('#colorpicker-menu').length) {
-            return;
-          }
-
-          if (target.closest('.popover').length === 0 && target.closest('.dropdown-list').length === 0) {
-            self.hide();
-          }
-
-          // Closes patepicker dialog closes when clicking on a parent popover
-          if (target.closest('.popover').length === 1 && target.closest('.popover').not('.monthview-popup').length && self.element.prev().is('.datepicker')) {
-            self.hide(e);
-          }
-        }).on('keydown.' + COMPONENT_NAME$y + '-' + self.uniqueId, function (e) {
-          if (e.which === 27 || self.settings.isError) {
-            self.hide();
-          }
-        });
-
-        if (self.settings.isError && !self.element.is(':visible, .dropdown') && self.element.is('[aria-describedby]')) {
-          self.hide();
-        }
-
-        if (window.orientation === undefined) {
-          $('body').on('resize.' + COMPONENT_NAME$y, function () {
-            self.hide();
-          });
-        }
-
-        // Hide on Page scroll
-        $('body').on('scroll.' + COMPONENT_NAME$y, function () {
-          self.hide();
-        });
-
-        self.element.closest('.modal-body-wrapper').on('scroll.tooltip', function () {
-          self.hide();
-        });
-
-        self.element.closest('.scrollable').on('scroll.tooltip', function () {
-          self.hide();
-        });
-
-        self.element.closest('.datagrid-body').on('scroll.tooltip', function () {
-          self.hide();
-        });
-
-        // Click to close
-        if (self.settings.isError) {
-          self.tooltip.on('click.' + COMPONENT_NAME$y, function () {
-            self.hide();
-          });
-        }
-        /**
-         * Fires after show the tooltip.
-         *
-         * @event aftershow
-         * @memberof Tooltip
-         * @property {object} event - The jquery event object
-         * @property {object} tooltip - instance
-         */
-        self.element.trigger('aftershow', [self.tooltip]);
-      }, 400);
-    },
-
-
-    /**
-     * Places the tooltip element itself in the correct DOM element.
-     * If the current element is inside a scrollable container, the tooltip element
-     *  goes as high as possible in the DOM structure.
-     * @returns {void}
-     */
-    setTargetContainer: function setTargetContainer() {
-      var targetContainer = $('body');
-
-      // adjust the tooltip if the element is being scrolled inside a scrollable DIV
-      this.scrollparent = this.element.closest('.page-container.scrollable');
-      if (this.scrollparent.length) {
-        targetContainer = this.scrollparent;
-      }
-
-      if (this.settings.parentElement) {
-        targetContainer = this.settings.parentElement;
-      }
-
-      // this.tooltip.detach().appendTo(targetContainer);
-      targetContainer[0].appendChild(this.tooltip[0]);
-    },
-
-
-    /**
-     * Placement behavior's "afterplace" handler.
-     * DO NOT USE FOR ADDITIONAL POSITIONING.
-     * @private
-     * @param {jquery.event} e custom `afterPlace` event
-     * @param {placementobject} placementObj object containing placement settings
-     * @returns {void}
-     */
-    handleAfterPlace: function handleAfterPlace(e, placementObj) {
-      this.tooltip.data('place').setArrowPosition(e, placementObj, this.tooltip);
-      this.tooltip.triggerHandler('tooltipafterplace', [placementObj]);
-    },
-
-
-    /**
-     * Resets the current position of the tooltip.
-     * @returns {this} component instance
-     */
-    position: function position() {
-      this.setTargetContainer();
-      this.tooltip[0].classList.remove('is-hidden');
-
-      var self = this;
-      var distance = this.isPopover ? 20 : 10;
-      var tooltipPlacementOpts = this.settings.placementOpts || {};
-      var windowW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-      var windowH = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-      var rect = this.tooltip[0].getBoundingClientRect();
-      var opts = $.extend({}, {
-        x: 0,
-        y: distance,
-        container: this.scrollparent,
-        containerOffsetX: tooltipPlacementOpts.containerOffsetX || this.settings.offset.left,
-        containerOffsetY: tooltipPlacementOpts.containerOffsetY || this.settings.offset.top,
-        parent: tooltipPlacementOpts.parent || this.activeElement,
-        placement: tooltipPlacementOpts.placement || this.settings.placement,
-        strategies: ['flip', 'nudge']
-      }, tooltipPlacementOpts);
-
-      if (opts.placement === 'left' || opts.placement === 'right') {
-        opts.x = distance;
-        opts.y = 0;
-      }
-      if (rect.width >= windowW && /left|right/g.test(opts.placement)) {
-        this.tooltip[0].classList.add('no-arrow');
-      } else if (rect.height >= windowH && /top|bottom/g.test(opts.placement)) {
-        this.tooltip[0].classList.add('no-arrow');
-      } else {
-        this.tooltip[0].classList.remove('no-arrow');
-      }
-
-      this.tooltip.one('afterplace.tooltip', function (e, placementObj) {
-        self.handleAfterPlace(e, placementObj);
-      });
-
-      // Tool tip may be cleaned up on a modal or CAP
-      if (this.tooltip.data('place')) {
-        this.tooltip.data('place').place(opts);
-      } else {
-        this.tooltip.place(opts);
-        this.tooltip.data('place').place(opts);
-      }
-      return this;
-    },
-
-
-    /**
-     * Alias for _hide()_ that works with the global _closeChildren()_ method.
-     * @private
-     * @returns {void}
-     */
-    close: function close() {
-      return this.hide();
-    },
-
-
-    /**
-     * Hides the Tooltip/Popover
-     * @param {boolean} [force] Force the tooltip to hide no matter the settings.
-     * @returns {void}
-     */
-    hide: function hide(force) {
-      if (this.settings.keepOpen && !force || !this.visible) {
-        return;
-      }
-
-      if (this.isInPopup) {
-        this.settings.content.addClass('hidden');
-        return;
-      }
-
-      this.tooltip[0].classList.remove('is-personalizable');
-      this.tooltip[0].classList.add('is-hidden');
-      this.tooltip[0].style.left = '';
-      this.tooltip[0].style.top = '';
-      this.tooltip.find('.arrow').removeAttr('style');
-
-      this.detachOpenEvents();
-
-      if ($('.popover').not('.is-hidden').length === 0) {
-        $(document).off('mouseup.tooltip keydown.tooltip');
-        $('body').off('resize.tooltip');
-      }
-
-      /**
-       * Fires when hide the tooltip.
-       *
-       * @event hide
-       * @memberof Tooltip
-       * @property {object} event - The jquery event object
-       * @property {object} tooltip - instance
-       */
-      this.element.triggerHandler('hide', [this.tooltip]);
-    },
-
-
-    /**
-     * Causes the tooltip to store updated settings and re-render itself.
-     * @param {object} [settings] incoming settings
-     * @returns {this} component instance
-     */
-    updated: function updated(settings) {
-      if (settings) {
-        this.settings = utils.mergeSettings(this.element, settings, this.settings);
-      }
-
-      var self = this;
-      if (self.settings.trigger === 'immediate') {
-        setTimeout(function () {
-          self.show();
-        }, 100);
-      } else {
-        self.setContent();
-      }
-
-      return this;
-    },
-
-
-    /**
-     * Removes any events which would cause the tooltip/popover to re-open.
-     * @private
-     * @returns {void}
-     */
-    detachOpenEvents: function detachOpenEvents() {
-      this.tooltip.off('click.' + COMPONENT_NAME$y);
-
-      $(document).off(['keydown.' + COMPONENT_NAME$y + '-' + self.uniqueId, 'mouseup.' + COMPONENT_NAME$y + '-' + self.uniqueId, 'touchend.' + COMPONENT_NAME$y + '-' + self.uniqueId].join(' '));
-
-      $('body').off(['resize.' + COMPONENT_NAME$y, 'scroll.' + COMPONENT_NAME$y].join(' '));
-
-      this.element.closest('.modal-body-wrapper').off('scroll.' + COMPONENT_NAME$y);
-      this.element.closest('.scrollable').off('scroll.' + COMPONENT_NAME$y);
-      this.element.closest('.datagrid-body').off('scroll.' + COMPONENT_NAME$y);
-    },
-
-
-    /**
-     * Tears down this component instance, removing all internal flags and unbinding events.
-     * @private
-     * @returns {this} component instance
-     */
-    teardown: function teardown() {
-      this.description.remove();
-      this.descriptionId = undefined;
-      this.activeElement = undefined;
-
-      this.element.removeAttr('aria-describedby').removeAttr('aria-haspopup');
-      if (!this.tooltip.hasClass('is-hidden')) {
-        this.hide();
-      }
-
-      if (this.tooltip && this.tooltip.data('place')) {
-        this.tooltip.data('place').destroy();
-      }
-
-      this.element.off(['mouseenter.' + COMPONENT_NAME$y, 'mouseleave.' + COMPONENT_NAME$y, 'longpress.' + COMPONENT_NAME$y, 'click.' + COMPONENT_NAME$y, 'updated.' + COMPONENT_NAME$y, 'focus.' + COMPONENT_NAME$y, 'blur.' + COMPONENT_NAME$y].join(' '));
-
-      this.detachOpenEvents();
-
-      $(window).off('orientationchange.' + COMPONENT_NAME$y);
-
-      return this;
-    },
-
-
-    /**
-     * Destroys this component instance
-     * @returns {void}
-     */
-    destroy: function destroy() {
-      this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$y);
-    }
-  };
-
-  /**
-   * jQuery Component Wrapper for Tooltip/Popover
-   * @param {object} [settings] incoming settings
-   * @returns {jQuery[]} elements being acted on
-   */
-  $.fn.tooltip = function (settings) {
-    return this.each(function () {
       var instance = $.data(this, COMPONENT_NAME$y);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$y, new Tooltip(this, settings));
+        instance = $.data(this, COMPONENT_NAME$y, new ContextualActionPanel(this, settings));
       }
     });
   };
@@ -37107,8 +37788,733 @@ var Soho = (function (exports) {
   // Simply setup the Popover to be the same thing as the Tooltip.
   $.fn.popover = $.fn.tooltip;
 
+  // Component Name
+  var COMPONENT_NAME$z = 'tag';
+
+  // Tag style states
+  var tagStyles = ['default', 'neutral', 'secondary', 'error', 'alert', 'good', 'info'];
+
+  // Default Tag Options
+  var TAG_DEFAULTS = {
+    audibleContent: undefined,
+    clickable: false,
+    clickHandler: undefined,
+    content: ' ',
+    disabled: false,
+    dismissible: false,
+    dismissHandler: undefined,
+    href: undefined,
+    id: undefined,
+    parent: undefined,
+    style: tagStyles[0],
+    value: undefined
+  };
+
+  /**
+   * Implements functionality on tag objects, such as dismissable, hyperlink, disable, and more.
+   * @class Tag
+   * @param {string} element The element representing a Tag.
+   * @param {string} [settings=object] The Tag component's desired settings.
+   * @param {string} [settings.audibleContent=undefined] if defined, will contain screen-reading only content for tags that will be read out upon focus/click.
+   * @param {boolean} [settings.clickable=false] if true, allows click/focus functionality on this tag and turns it into an HTMLAnchorElement.
+   * @param {function} [settings.clickHandler=undefined] a callback function that will occur on click. Passes this tag's component instance as an argument.
+   * @param {string} settings.content the Tag's visible text content
+   * @param {boolean} [settings.disabled=false] if true, causes the tag to become disabled when settings are updated.
+   * @param {boolean} [settings.dismissible=false] if true, creates an "X" button on the tag, and allows it to be dismissed from the page by click or keyboard command (Alt+Del)
+   * @param {function} [settings.dismissHandler=undefined] a callback function that will occur when the tag is dismissed. Passes this tag's component instance as an argument.
+   * @param {string} [settings.href=undefined] if provded when `settings.clickable` is true, allows this tag to link out to another page.
+   * @param {string} [settings.id=undefined] sets an HTML `id` attribute on this tag.
+   * @param {HTMLElement} [settings.parent=undefined] if defined, creates a reference to a parent node that can be used for operations like removal, or to check a parent's TagList component instance.
+   * @param {string} [settings.style='default'] optionally creates a different visual style on this tag, such as "error", "alert", "good", "info", or "secondary"
+   * @param {string} [settings.value=undefined] if provided, creates a hidden "value" against this tag that can represent properties in corresponding components.  This correlation is user-defined.
+   */
+  function Tag(element, settings) {
+    this.settings = utils.mergeSettings(element, settings, TAG_DEFAULTS);
+
+    // Normalize the element type
+    var span = void 0;
+    if (!(element instanceof HTMLElement)) {
+      // If no element or the wrong element exists, we just create it from scratch.
+      // If a valid element was passed in, we "replace" it in the DOM.
+      // Otherwise, it's up to the implementing dev to place/insert the tag.
+      span = document.createElement('span');
+      span.classList.add('tag');
+      if (this.settings && this.settings.parent instanceof HTMLElement) {
+        this.settings.parent.appendChild(span);
+      }
+      if (typeof this.settings.id === 'string' && this.settings.id.length) {
+        span.id = this.settings.id;
+        delete this.settings.id;
+      }
+    } else if (element.querySelector('.tag-content')) {
+      // The tag is fully formed and doesn't need modification
+      span = element;
+    } else {
+      // Create the internal bit of tag content
+      span = document.createElement('span');
+      span.className += '' + element.className;
+      if (element.id && element.id.length) {
+        span.id = element.id;
+        element.removeAttribute('id');
+      } else if (typeof this.settings.id === 'string' && this.settings.id.length) {
+        span.id = this.settings.id;
+        delete this.settings.id;
+      }
+      element.insertAdjacentElement('beforebegin', span);
+      span.appendChild(element);
+      span.classList.add('tag');
+      element.className = '';
+      element.classList.add('tag-content');
+    }
+
+    // Move the audible content around, if applicable
+    if (element) {
+      var audibleContent = element.querySelector('.audible');
+      if (audibleContent) {
+        span.insertAdjacentElement('afterbegin', audibleContent);
+      }
+    }
+    this.element = span;
+
+    // Use the element to change settings object, if applicable
+    this.getSettingsFromElement();
+
+    this.init();
+  }
+
+  // Tag Methods
+  Tag.prototype = {
+
+    /**
+     * @private
+     * @returns {void}
+     */
+    init: function init() {
+      this.render();
+      this.handleEvents();
+    },
+
+
+    /**
+     * @returns {HTMLElement|undefined} the element that contains the Tag's text copy
+     */
+    get contentElement() {
+      return this.element.querySelector('.tag-content');
+    },
+
+    /**
+     * Renders the contents of this tag on its base element.
+     * @returns {void}
+     */
+    render: function render() {
+      var elemClasses = this.element.classList;
+      var elemClassArr = utils.getArrayFromList(this.element.classList);
+      var currentState = this.settings.style;
+
+      // Update "style" class on the top-level element
+      elemClassArr.forEach(function (cssClass) {
+        if (tagStyles.indexOf(cssClass) > -1) {
+          elemClasses.remove(cssClass);
+        }
+      });
+      if (this.element.className.indexOf(currentState) === -1 && currentState !== 'default') {
+        elemClasses.add(currentState);
+      }
+
+      // Disabled
+      if (this.settings.disabled) {
+        elemClasses.add('is-disabled');
+      }
+
+      // Auduble content
+      var audibleContent = '';
+      if (this.settings.audibleContent) {
+        audibleContent = '<span class="audible">' + xssUtils.stripHTML(this.settings.audibleContent) + '</span>';
+      }
+
+      // Content Area (can just be text, or a hyperlink)
+      var contentTagType = 'span';
+      var href = '';
+      var linkableBtn = '';
+      var tabIndex = '';
+      var hasHref = this.settings.href && this.settings.href.length;
+      if (hasHref || this.originallyAnchor) {
+        contentTagType = 'a';
+        if (this.settings.disabled) {
+          tabIndex = ' tabIndex="-1"';
+        }
+      }
+      if (hasHref) {
+        href = ' href="' + this.settings.href + '"';
+      }
+      if (this.settings.clickable || typeof this.settings.clickHandler === 'function') {
+        elemClasses.add('is-linkable');
+        linkableBtn = '<button class="linkable-btn" focusable="false" tabIndex="-1">\n        ' + $.createIcon('caret-right') + '\n      </button>';
+      }
+      var content = '<' + contentTagType + ' class="tag-content"' + href + tabIndex + '>' + xssUtils.sanitizeHTML(this.settings.content) + '</' + contentTagType + '>';
+
+      // Dismissible Button
+      var dismissibleBtn = '';
+      if (this.settings.dismissible) {
+        elemClasses.add('is-dismissible');
+        dismissibleBtn = '<button class="dismissible-btn" focusable="false" tabIndex="-1">\n        ' + $.createIcon('close') + '\n        <span class="audible">' + Locale.translate('Close') + '</span>\n      </button>';
+      }
+
+      // Do the render!
+      this.element.innerHTML = '' + audibleContent + content + linkableBtn + dismissibleBtn;
+
+      // Setup the HideFocus behavior
+      $(this.element).hideFocus();
+    },
+
+
+    /**
+     * @returns {HTMLElement} containing a reference to a dismissible button on a tag, if applicable.
+     */
+    get dismissibleBtn() {
+      return this.element.querySelector('.dismissible-btn');
+    },
+
+    /**
+     * Backwards compatability method for tags that were previously defined by markup.
+     * This will take an existing DOM element representing a tag, and rectify internal settings
+     * to match the element's state.
+     * @private
+     * @returns {void}
+     */
+    getSettingsFromElement: function getSettingsFromElement() {
+      // Style State
+      var elemClasses = this.element.className;
+      var styleState = '';
+      tagStyles.forEach(function (style) {
+        if (elemClasses.indexOf(style) > -1) {
+          styleState = style;
+        }
+      });
+      if (styleState) {
+        this.settings.style = styleState;
+      }
+
+      // Disabled State
+      this.settings.disabled = this.disabled;
+
+      // Dismissible State
+      var dismissibleBtn = this.dismissibleBtn;
+      var hasDismissibleCss = this.element.className.indexOf('is-dismissible') > -1;
+      if (dismissibleBtn || hasDismissibleCss) {
+        this.settings.dismissible = true;
+      }
+
+      // Hyperlink State, href, show/hide the "clickable" icon
+      var hyperlink = this.element.querySelector('a');
+      var hasHyperlinkCss = this.element.className.indexOf('is-linkable') > -1;
+      var hasLinkableIcon = this.element.querySelector('.linkable-btn');
+      if (hyperlink || hasHyperlinkCss || hasLinkableIcon) {
+        this.originallyAnchor = true;
+        var href = hyperlink.getAttribute('href');
+        if (href && href.length) {
+          href = xssUtils.stripTags(href);
+          this.settings.href = href;
+        }
+      }
+      if (hasHyperlinkCss || hasLinkableIcon) {
+        this.settings.clickable = true;
+      }
+
+      // Audible content
+      var audibleContent = this.element.querySelector('.audible');
+      if (audibleContent instanceof HTMLElement) {
+        this.settings.audibleContent = xssUtils.stripHTML(audibleContent.innerText);
+      }
+
+      // Text Content
+      var contentElem = this.contentElement;
+      if (contentElem) {
+        this.settings.content = xssUtils.sanitizeHTML(contentElem.innerText);
+      }
+    },
+
+
+    /**
+     * Remove the tag from the DOM
+     * @returns {void}
+     */
+    remove: function remove() {
+      var thisNode = this.element;
+      var parentNode = thisNode.parentNode;
+      if (this.settings.parentAPI) {
+        parentNode = this.settings.parentAPI.element;
+      }
+
+      /**
+      * Fires before tag remove.
+      *
+      * @event beforetagremove
+      * @memberof Tag
+      * @type {object}
+      * @property {object} event - The jquery event object
+      * @property {object} The event used for removing and element
+      */
+      $(parentNode).triggerHandler('beforetagremove', [this]);
+
+      this.destroy();
+      thisNode.remove();
+
+      /**
+      * Fires after tag remove.
+      *
+      * @event aftertagremove
+      * @memberof Tag
+      * @type {object}
+      * @property {object} event - The jquery event object
+      */
+      $(parentNode).triggerHandler('aftertagremove', [this]);
+    },
+
+
+    /**
+     * Glorified way to remove a tag with an extra callback, and a check for disabled
+     * @param {jQuery.Event} [e] the event that triggered dismissal, if applicable.
+     * @returns {void}
+     */
+    dismiss: function dismiss(e) {
+      if (this.disabled) {
+        return;
+      }
+
+      this.remove(e);
+      if (typeof this.settings.dismissHandler === 'function') {
+        this.settings.dismissHandler(this);
+      }
+
+      // If a keypress is dismissing the tag from a taglist,
+      // find the previous tag in the chain and focus it.
+      var parentAPI = this.settings.parentAPI;
+      if (parentAPI) {
+        parentAPI.focusPreviousElement(this.element);
+      }
+    },
+
+
+    /**
+     * @returns {boolean} whether or not this component is currently disabled
+     */
+    get disabled() {
+      return this.element.className.indexOf('is-disabled') > -1;
+    },
+
+    /**
+     * Disables the tag.
+     * @returns {void}
+     */
+    disable: function disable() {
+      if (this.disabled) {
+        return;
+      }
+      if (this.contentElement.tagName === 'A') {
+        this.contentElement.tabIndex = -1;
+      }
+      this.settings.disabled = true;
+      this.element.classList.add('is-disabled');
+    },
+
+
+    /**
+     * Enables the tag.
+     * @returns {void}
+     */
+    enable: function enable() {
+      if (!this.disabled) {
+        return;
+      }
+      if (this.contentElement.tagName === 'A') {
+        this.contentElement.tabIndex = 0;
+      }
+      this.settings.disabled = false;
+      this.element.classList.remove('is-disabled');
+    },
+
+
+    /**
+     * Removes event bindings from the instance.
+     * @private
+     * @returns {Tag} This component's API.
+     */
+    teardown: function teardown() {
+      var $element = $(this.element);
+      $element.off(['focusin.tag', 'focusout.tag', 'keydown.tag', 'click.tag'].join(' '));
+
+      // Remove the dismissible btn
+      var dismissibleBtn = this.dismissibleBtn;
+      if (dismissibleBtn) {
+        dismissibleBtn.parentNode.removeChild(dismissibleBtn);
+      }
+
+      var hideFocusAPI = $element.data('hidefocus');
+      if (hideFocusAPI && typeof hideFocusAPI.destroy === 'function') {
+        hideFocusAPI.destroy();
+      }
+
+      return this;
+    },
+
+
+    /**
+     * Resync the UI and Settings.
+     * @param {object} [settings] representing updated component settings.
+     * @returns {Tag} This component's API.
+     */
+    updated: function updated(settings) {
+      if (typeof settings !== 'undefined') {
+        this.settings = utils.mergeSettings(this.element, settings, TAG_DEFAULTS);
+      }
+      return this.teardown().init();
+    },
+
+
+    /**
+     * Destroy this component instance and remove the link from its base element.
+     * @returns {void}
+     */
+    destroy: function destroy() {
+      this.teardown();
+      $.removeData(this.element, COMPONENT_NAME$z);
+    },
+
+
+    /**
+     * Attach Events used by the Control
+     * @private
+     * @returns {void}
+     */
+    handleEvents: function handleEvents() {
+      var _this = this;
+
+      // Standard events
+      $(this.element).on('focusin.tag', function () {
+        _this.element.classList.add('is-focused');
+      }).on('focusout.tag', function () {
+        _this.element.classList.remove('is-focused');
+      });
+
+      // Handle clicks on tags, and setup a callback, if applicable.
+      var self = this;
+      $(this.element).on('click.tag', 'a, .linkable-btn', function (e) {
+        var handlerResult = void 0;
+        if (typeof self.settings.clickHandler === 'function') {
+          handlerResult = self.settings.clickHandler(self);
+        }
+
+        if (handlerResult === false || self.settings.href && self.settings.href === '#') {
+          e.preventDefault();
+          return false;
+        }
+        return true;
+      });
+
+      // Dismissible Tag events
+      if (this.settings.dismissible) {
+        /**
+         * Fires when the tag is clicked (if enabled).
+         * @event click
+         * @memberof Tag
+         * @type {object}
+         * @property {object} e - The jquery event object
+         */
+        $(this.element).on('click.tag', '.dismissible-btn', function (e) {
+          _this.dismiss(e);
+        });
+
+        /**
+        * Fires when the tag is focused.
+        * @event keydown
+        * @memberof Tag
+        * @type {object}
+        * @property {object} e - The jquery event object
+        */
+        $(this.element).on('keydown.tag', 'a', function (e) {
+          if (e.keyCode === 8) {
+            // Backspace
+            _this.dismiss(e);
+          }
+        });
+      }
+    }
+  };
+
+  // Component Name
+  var COMPONENT_NAME$A = 'taglist';
+
+  // Default Tag Options
+  var TAG_LIST_DEFAULTS = {
+    tags: []
+  };
+
+  /**
+  * Creates a collection of Tag Components and controls their rendering/value setting process.
+  * @class Tag
+  * @param {string} element The component element.
+  * @param {string} settings The component settings.
+  */
+  function TagList(element, settings) {
+    var _this = this;
+
+    if (!(element instanceof HTMLElement)) {
+      throw new Error('TagList base element must be defined');
+    }
+
+    this.settings = utils.mergeSettings(element, settings, TAG_LIST_DEFAULTS);
+    this.element = element;
+
+    var tags = utils.getArrayFromList(this.element.querySelectorAll('.tag'));
+    if (tags.length) {
+      this.settings.tags = [];
+      tags.forEach(function (tag) {
+        _this.settings.tags.push(new Tag(tag));
+      });
+    }
+
+    this.init();
+  }
+
+  TagList.prototype = {
+
+    /**
+     * @returns {number} representing the number of tags in the list.
+     */
+    get length() {
+      return this.tags.length;
+    },
+
+    /**
+     * @returns {array<HTMLElement>} containing a list of HTMLElement objects representing
+     * the current list of tags.
+     */
+    get elements() {
+      return this.tags.map(function (tag) {
+        return tag.element;
+      });
+    },
+
+    /**
+     * Initialize the collection
+     * @private
+     * @returns {void}
+     */
+    init: function init() {
+      var _this2 = this;
+
+      // Build tags list
+      this.tags = [];
+      if (Array.isArray(this.settings.tags)) {
+        this.settings.tags.forEach(function (tag) {
+          _this2.add(tag);
+        });
+      }
+      this.render();
+    },
+
+
+    /**
+     * Given an object representation of a Tag, returns a string containing a key to use for
+     * comparisons when checking if one Tag is equivalent to another
+     * @private
+     * @param {object} tagObj an object representation of a Tag
+     * @returns {string} containing the name of the property to use.
+     */
+    getTargetProp: function getTargetProp() {
+
+      var targetProp = 'content';
+
+      return targetProp;
+    },
+
+
+    /**
+     * Adds a new tag to the collection
+     * @param {Tag|object} tagObj an incoming Tag Component instance, or object representing tag data.
+     * @returns {Tag|array<Tag>} the newly formed tag object.
+     */
+    add: function add(tagObj) {
+      var _this3 = this;
+
+      var tag = void 0;
+      if (!tagObj) {
+        throw new Error('No object was provided');
+      }
+      // Re-run this function on each item in an array
+      if (Array.isArray(tagObj)) {
+        var tags = [];
+        tagObj.forEach(function (thisTagObj) {
+          tags.push(_this3.add(thisTagObj));
+        });
+        return tags;
+      }
+      if (objectUtils.isEmpty(tagObj)) {
+        throw new Error('Provided object has no unique keys to use for creation of a Tag.');
+      }
+
+      if (!(tagObj instanceof Tag)) {
+        tagObj.parent = this.element;
+        tagObj.parentAPI = this;
+        tag = new Tag(undefined, tagObj);
+      } else {
+        tag = tagObj;
+        tagObj.settings.parentAPI = this;
+      }
+
+      if (this.tags.indexOf(tag) === -1) {
+        this.tags.push(tag);
+      }
+
+      return tag;
+    },
+
+
+    /**
+     * Removes a tag from the collection.
+     * @param {Tag|object} tagObj an incoming Tag Component instance, or object representing tag data.
+     * @param {boolean} [doDestroy=false] if true, calls `Tag.prototype.remove()` and removes the tag from the DOM.
+     * @returns {Tag|undefined} a reference to the removed tag, if one has been removed. Returns undefined if no tags
+     * have been removed.
+     */
+    remove: function remove(tagObj, doDestroy) {
+      if (tagObj instanceof Tag) {
+        tagObj = tagObj.settings;
+      }
+
+      // Figure out the property to use when checking for a match.
+      var targetProp = this.getTargetProp(tagObj);
+
+      // Filter out matching result(s) from the current tags array.
+      var removedTag = void 0;
+      var updatedTagsList = this.tags.filter(function (tag) {
+        var settings = tag.settings;
+        if (settings[targetProp] !== tagObj[targetProp]) {
+          removedTag = tag;
+          return false;
+        }
+        return true;
+      });
+
+      // Update the internal list of tags if we've removed one.
+      if (updatedTagsList.length < this.tags.length) {
+        this.tags = updatedTagsList;
+      }
+
+      // Destroy the tag, if applicable
+      if (doDestroy) {
+        removedTag.remove();
+      }
+
+      return removedTag;
+    },
+
+
+    /**
+     * Removes all tags from this tag list.
+     * @returns {void}
+     */
+    removeAll: function removeAll() {
+      this.tags.forEach(function (tag) {
+        tag.remove();
+      });
+      this.tags = [];
+    },
+
+
+    /**
+     * Renders all Tags contained by the internal tag list.
+     * @returns {void}
+     */
+    render: function render() {
+      this.tags.forEach(function (tag) {
+        tag.render();
+      });
+      this.element.classList[this.tags.length ? 'remove' : 'add']('empty');
+    },
+
+
+    /**
+     * Focuses a tag in the taglist by referencing its Index within the `.tag-list` element.
+     * @param {number} [tagIndex=0] the index of the tag within the tag list
+     * @returns {HTMLElement} the element that will be focused
+     */
+    focusByIndex: function focusByIndex() {
+      var tagIndex = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+      var elems = this.elements;
+      var min = 0;
+      var max = elems.length;
+      if (tagIndex < min) {
+        tagIndex = min;
+      }
+      if (tagIndex > max) {
+        tagIndex = max;
+      }
+      var targetElem = elems[tagIndex];
+      var targetAnchor = targetElem.querySelector('a');
+      if (targetAnchor) {
+        targetAnchor.focus();
+      }
+      return targetElem;
+    },
+
+
+    /**
+     * Focuses a tag in the taglist by referencing its Element.
+     * @param {HTMLElement} element the element that will be focused
+     * @returns {HTMLElement} the element that will be focused
+     */
+    focusPreviousElement: function focusPreviousElement(element) {
+      if (!(element instanceof HTMLElement)) {
+        throw new Error(element + ' is not an HTMLElement');
+      }
+      var index = this.elements.indexOf(element);
+      var hasElem = index > -1;
+      if (!hasElem) {
+        throw new Error(element + ' does not exist within this TagList');
+      }
+      return this.focusByIndex(index - 1);
+    },
+
+
+    /**
+     * Updates the component with new settings
+     * @param {object} [settings] if provided, updates the settings on this component instance
+     * @returns {void}
+     */
+    updated: function updated(settings) {
+      if (settings) {
+        this.settings = utils.mergeSettings(this.element, settings, this.settings);
+        if (Array.isArray(settings.tags)) {
+          this.settings.tags = settings.tags;
+        }
+      }
+      this.removeAll();
+      this.init();
+    },
+
+
+    /**
+     * Destroys this component instance
+     * @returns {void}
+     */
+    destroy: function destroy() {
+      this.tags.forEach(function (tag) {
+        tag.remove();
+      });
+      delete this.tags;
+
+      var $api = $(this.element).data(COMPONENT_NAME$A);
+      if ($api) {
+        $.removeData(this.element, COMPONENT_NAME$A);
+      }
+    }
+  };
+
   // Name of this component.
-  var COMPONENT_NAME$z = 'dropdown';
+  var COMPONENT_NAME$B = 'dropdown';
 
   // Dropdown Settings and Options
   var moveSelectedOpts = ['none', 'all', 'group'];
@@ -37126,6 +38532,8 @@ var Soho = (function (exports) {
   * in the Search Input field in the open combo box
   * @param {boolean} [settings.showEmptyGroupHeaders = false]  If true, displays optgroup headers in the list
   * even if no selectable options are present underneath.
+  * @param {boolean} [settings.showSelectAll] if true, shows a `Select All` option at the top of a multiselect.
+  * @param {boolean} [settings.showTags] if true, replaces the text-based pseudo-element in the page with a dismissible, tag-based display.
   * @param {boolean} [settings.source]  A function that can do an ajax call.
   * @param {boolean} [settings.sourceArguments = {}]  If a source method is defined, this flexible object can be
   * passed into the source method, and augmented with parameters specific to the implementation.
@@ -37138,6 +38546,7 @@ var Soho = (function (exports) {
   * Fx 300 for the 300 px size fields. Default is size of the largest data.
   * @param {object} [settings.placementOpts = null]  Gets passed to this control's Place behavior
   * @param {function} [settings.onKeyDown = null]  Allows you to hook into the onKeyDown. If you do you can access the keydown event data. And optionally return false to cancel the keyDown action.
+  * @param {object} [settings.tagSettings] if defined, passes along 'clickHandler' and 'dismissHandler' functions to any Tags in the Taglist
   */
   var DROPDOWN_DEFAULTS = {
     closeOnSelect: true,
@@ -37149,7 +38558,8 @@ var Soho = (function (exports) {
     multiple: false, // Turns the dropdown into a multiple selection box
     noSearch: false,
     showEmptyGroupHeaders: false,
-    showSelectAll: false, // (Multiselect) shows an item the top of the list labeled "select all".
+    showSelectAll: false,
+    showTags: false,
     source: undefined,
     sourceArguments: {},
     reload: reloadSourceStyles[0],
@@ -37157,7 +38567,8 @@ var Soho = (function (exports) {
     delay: 300,
     maxWidth: null,
     placementOpts: null,
-    onKeyDown: null
+    onKeyDown: null,
+    tagSettings: {}
   };
 
   function Dropdown(element, settings) {
@@ -37218,7 +38629,25 @@ var Soho = (function (exports) {
      * @returns {boolean} whether or not this Dropdown component is a "short" field.
      */
     get isShortField() {
-      return this.element.closest('.field-short').length > 0;
+      return this.element.closest('.field-short').length > 0 || this.element.closest('.form-layout-compact').length > 0;
+    },
+
+    /**
+     * @returns {array} a list of currently selected options' values.
+     */
+    get selectedValues() {
+      return this.selectedOptions.map(function (opt) {
+        return opt.value;
+      });
+    },
+
+    /**
+     * @returns {array} a list of selected options from inside this component's base element.
+     */
+    get selectedOptions() {
+      return utils.getArrayFromList(this.element[0].querySelectorAll('option')).filter(function (opt) {
+        return opt.selected;
+      });
     },
 
     /**
@@ -37342,11 +38771,10 @@ var Soho = (function (exports) {
         this.element.prop('multiple', true);
       }
 
-      // Add the internal hash for typeahead filtering, if applicable
-      if (this.settings.reload === 'typeahead') {
-        this.selectedValues = [];
-      } else {
-        delete this.selectedValues;
+      // Create a taglist, if applicable
+      if (this.settings.showTags) {
+        this.pseudoElem[0].classList.add('has-tags');
+        this.renderTagList();
       }
 
       var dataSource = this.element.attr('data-source');
@@ -37433,6 +38861,63 @@ var Soho = (function (exports) {
       this.element.triggerHandler('rendered');
 
       return this.handleEvents();
+    },
+
+
+    /**
+     * Updates/Renders the TagList
+     * @private
+     * @returns {void}
+     */
+    renderTagList: function renderTagList() {
+      var self = this;
+      function dismissHandler(tag) {
+        // Run a dismissHandler, if defined
+        if (self.settings.dismissHandler) {
+          self.settings.dismissHandler(tag);
+        }
+
+        var targets = self.selectedOptions.filter(function (el) {
+          var optionValue = xssUtils.stripHTML(el.value);
+          return optionValue === tag.settings.value;
+        });
+        if (targets.length) {
+          self.deselect(targets[0]);
+        }
+        self.tagListAPI.element.classList[self.selectedOptions.length ? 'remove' : 'add']('empty');
+        if (self.isOpen()) {
+          self.updateList();
+        }
+      }
+
+      var tags = this.toTagData();
+      tags.forEach(function (tag) {
+        tag.dismissHandler = dismissHandler;
+        if (self.settings.clickHandler) {
+          tag.clickHandler = self.settings.clickHandler;
+        }
+        if (self.isDisabled()) {
+          tag.disabled = true;
+        }
+      });
+
+      var span = this.pseudoElem.children('span')[0];
+      if (!this.tagListAPI) {
+        this.tagListAPI = new TagList(span, {
+          tags: tags
+        });
+        span.classList.add('tag-list');
+      } else {
+        this.tagListAPI.updated({
+          tags: tags
+        });
+      }
+
+      this.tagListAPI.element.classList[this.selectedOptions.length ? 'remove' : 'add']('empty');
+
+      if (this.isOpen()) {
+        this.position();
+      }
     },
 
 
@@ -37956,28 +39441,36 @@ var Soho = (function (exports) {
       var opts = this.element.find('option:selected');
       var text = this.getOptionText(opts);
 
+      // Clear Text
       if (opts.hasClass('clear')) {
         text = '';
       }
 
-      if (this.settings.empty && opts.length === 0) {
-        var _span = this.pseudoElem.find('span').first();
-        DOM.html(_span, '<span class="audible">' + this.label.text() + ' </span>', '<div><p><span><ul><li><a><abbr><b><i><kbd><small><strong><sub><svg><use><br>');
-        _span = $('#' + this.element.attr('id')).next().find('span').first();
-        DOM.html(_span, '<span class="audible">' + this.label.text() + ' </span>', '<div><p><span><ul><li><a><abbr><b><i><kbd><small><strong><sub><svg><use><br>');
-        this.setPlaceholder(text);
-        return;
-      }
+      // Displays the tags/text on the pseudo-element
+      if (this.settings.showTags && this.tagListAPI) {
+        // Render tags
+        this.renderTagList();
+      } else {
+        // If empty, render an accessibility message
+        if (this.settings.empty && opts.length === 0) {
+          var _span = this.pseudoElem.find('span').first();
+          DOM.html(_span, '<span class="audible">' + this.label.text() + ' </span>', '<div><p><span><ul><li><a><abbr><b><i><kbd><small><strong><sub><svg><use><br>');
+          _span = $('#' + this.element.attr('id')).next().find('span').first();
+          DOM.html(_span, '<span class="audible">' + this.label.text() + ' </span>', '<div><p><span><ul><li><a><abbr><b><i><kbd><small><strong><sub><svg><use><br>');
+          this.setPlaceholder(text);
+          return;
+        }
 
-      // Displays the text on the pseudo-element
-      var maxlength = this.element.attr('maxlength');
-      if (maxlength) {
-        text = text.substr(0, maxlength);
-      }
-      text = text.trim();
-      var span = this.pseudoElem.find('span');
-      if (span.length > 0) {
-        span[0].innerHTML = '<span class="audible">' + this.label.text() + ' </span>' + xssUtils.escapeHTML(text);
+        // Render text
+        var maxlength = this.element.attr('maxlength');
+        if (maxlength) {
+          text = text.substr(0, maxlength);
+        }
+        text = text.trim();
+        var span = this.pseudoElem.find('span');
+        if (span.length > 0) {
+          span[0].innerHTML = '<span class="audible">' + this.label.text() + ' </span>' + xssUtils.escapeHTML(text);
+        }
       }
 
       this.setPlaceholder(text);
@@ -38095,14 +39588,14 @@ var Soho = (function (exports) {
         this.searchKeyMode = false;
       }
 
-      this.searchInput.on('keydown.' + COMPONENT_NAME$z, function (e) {
+      this.searchInput.on('keydown.' + COMPONENT_NAME$B, function (e) {
         var searchInput = $(_this3);
         if (!_this3.ignoreKeys(searchInput, e)) {
           return false;
         }
 
         return _this3.handleKeyDown(searchInput, e);
-      }).on('input.' + COMPONENT_NAME$z, function (e) {
+      }).on('input.' + COMPONENT_NAME$B, function (e) {
         _this3.isFiltering = true;
         _this3.handleAutoComplete(e);
       });
@@ -38392,6 +39885,7 @@ var Soho = (function (exports) {
 
               if (options.length && selectedIndex > -1) {
                 // store the current selection
+                // selectValue
                 self.selectOption(this.correctValue($(options[selectedIndex])));
               }
 
@@ -38662,6 +40156,11 @@ var Soho = (function (exports) {
         input = this.searchInput;
       }
 
+      if (this.currentlyScrolledPos) {
+        this.listUl.scrollTop(this.currentlyScrolledPos);
+        delete this.currentlyScrolledPos;
+      }
+
       if (useSearchInput && input && (input.hasClass('is-readonly') || input.prop('readonly') === true)) {
         return;
       }
@@ -38774,14 +40273,9 @@ var Soho = (function (exports) {
       var current = this.previousActiveDescendant ? this.list.find('.dropdown-option[data-val="' + this.previousActiveDescendant.replace(/"/g, '/quot/') + '"]') : this.list.find('.is-selected');
       var self = this;
       var threshold = 10;
-      var isEmpty = true;
       var pos = void 0;
 
       this.touchPrevented = false;
-
-      if (current.length > 0) {
-        isEmpty = true;
-      }
 
       // Close any other drop downs.
       $('select').each(function () {
@@ -38821,6 +40315,9 @@ var Soho = (function (exports) {
       this.pseudoElem.attr('aria-expanded', 'true').addClass('is-open');
 
       this.searchInput.attr('aria-activedescendant', current.children('a').attr('id'));
+      if (this.settings.showTags) {
+        this.list.find('.trigger').find('.icon').attr('class', 'icon search').changeIcon('search');
+      }
 
       // In a grid cell
       this.isInGrid = this.pseudoElem.closest('.datagrid-row').length === 1;
@@ -38851,15 +40348,12 @@ var Soho = (function (exports) {
 
       // Set the contents of the search input.
       // If we've got a stored typeahead
-      if (this.filterTerm) {
+      if (typeof this.filterTerm === 'string' && this.filterTerm.length > 0) {
         this.searchInput.val(this.filterTerm);
-      } else {
-        var span = this.pseudoElem.find('span:not(.audible)').contents().eq(1);
-        if (span.length === 0) {
-          span = this.pseudoElem.find('span:not(.audible)');
-        }
-        var fieldValue = span.text().trim();
-        this.searchInput.val(fieldValue);
+      } else if (!this.settings.showTags) {
+        var selectedOpts = $(this.selectedOptions);
+        var text = this.getOptionText(selectedOpts);
+        this.searchInput.val(text);
       }
 
       var noScroll = this.settings.multiple;
@@ -38869,10 +40363,6 @@ var Soho = (function (exports) {
         setTimeout(function () {
           self.listUl.scrollTop(0);
         }, 0);
-      }
-
-      if (!this.settings.multiple && !isEmpty) {
-        this.searchInput.val(current.find('a').text());
       }
 
       this.handleSearchEvents();
@@ -39104,12 +40594,15 @@ var Soho = (function (exports) {
       positionOpts.parent = parentElement;
       positionOpts.useParentWidth = useParentWidth;
 
-      // use negative height of the pseudoElem to get the Dropdown list to overlap the input.
-      var isRetina = window.devicePixelRatio > 1;
-      var isChrome = Environment.browser.name === 'chrome';
+      // Use negative height of the pseudoElem to get the Dropdown list to overlap the input.
+      // Ignore this for Tag List Display and always position below/above the field.
+      if (!this.settings.showTags) {
+        var isRetina = window.devicePixelRatio > 1;
+        var isChrome = Environment.browser.name === 'chrome';
+        positionOpts.y = -(parseInt(parentElement[0].clientHeight, 10) + parseInt(parentElementStyle.borderTopWidth, 10) + parseInt(parentElementStyle.borderBottomWidth, 10) - (!isChrome && isRetina ? 1 : 0));
+        positionOpts.x = 0;
+      }
 
-      positionOpts.y = -(parseInt(parentElement[0].clientHeight, 10) + parseInt(parentElementStyle.borderTopWidth, 10) + parseInt(parentElementStyle.borderBottomWidth, 10) - (!isChrome && isRetina ? 1 : 0));
-      positionOpts.x = 0;
       if (self.settings.placementOpts && self.settings.placementOpts.x) {
         positionOpts.x = self.settings.placementOpts.x;
       }
@@ -39241,7 +40734,7 @@ var Soho = (function (exports) {
       this.searchKeyMode = false;
       this.setDisplayedValues();
 
-      this.searchInput.off(['input.' + COMPONENT_NAME$z, 'keydown.' + COMPONENT_NAME$z].join(' '));
+      this.searchInput.off(['input.' + COMPONENT_NAME$B, 'keydown.' + COMPONENT_NAME$B].join(' '));
 
       // Destroy any tooltip items
       this.listUl.find('.has-tooltip').each(function () {
@@ -39251,13 +40744,13 @@ var Soho = (function (exports) {
         }
       });
 
-      this.list.off(['click.' + COMPONENT_NAME$z, 'touchmove.' + COMPONENT_NAME$z, 'touchend.' + COMPONENT_NAME$z, 'touchcancel.' + COMPONENT_NAME$z, 'mousewheel.' + COMPONENT_NAME$z, 'mouseenter.' + COMPONENT_NAME$z].join(' ')).remove();
+      this.list.off(['click.' + COMPONENT_NAME$B, 'touchmove.' + COMPONENT_NAME$B, 'touchend.' + COMPONENT_NAME$B, 'touchcancel.' + COMPONENT_NAME$B, 'mousewheel.' + COMPONENT_NAME$B, 'mouseenter.' + COMPONENT_NAME$B].join(' ')).remove();
 
       this.pseudoElem.removeClass('is-open').removeAttr('aria-expanded');
 
       this.searchInput.removeAttr('aria-activedescendant');
 
-      $(document).off(['click.' + COMPONENT_NAME$z, 'scroll.' + COMPONENT_NAME$z, 'touchstart.' + COMPONENT_NAME$z, 'touchmove.' + COMPONENT_NAME$z, 'touchend.' + COMPONENT_NAME$z, 'touchcancel.' + COMPONENT_NAME$z].join(' '));
+      $(document).off(['click.' + COMPONENT_NAME$B, 'scroll.' + COMPONENT_NAME$B, 'touchstart.' + COMPONENT_NAME$B, 'touchmove.' + COMPONENT_NAME$B, 'touchend.' + COMPONENT_NAME$B, 'touchcancel.' + COMPONENT_NAME$B].join(' '));
 
       var modalScroll = $('.modal.is-visible .modal-body-wrapper');
       var parentScroll = this.element.closest('.scrollable').length ? this.element.closest('.scrollable') : $(document);
@@ -39431,6 +40924,28 @@ var Soho = (function (exports) {
 
 
     /**
+     * Renders a Dropdown/Multiselect item based on its corresponding <option> element's state
+     * @private
+     * @param {HTMLOptionElement} optionEl the option element
+     * @returns {void}
+     */
+    renderListItem: function renderListItem(optionEl) {
+      var optionVal = optionEl.value;
+      var selected = optionEl.selected;
+      var li = this.listUl.find('li[data-val="' + optionVal + '"]');
+
+      if (selected) {
+        li[0].classList.add('is-selected');
+        li[0].setAttribute('aria-selected', true);
+        return;
+      }
+
+      li[0].classList.remove('is-selected');
+      li[0].removeAttribute('aria-selected');
+    },
+
+
+    /**
      * Toggle all selection for items.
      * @private
      * @param {boolean} doSelectAll true to select and false will clear selection for all items.
@@ -39522,6 +41037,7 @@ var Soho = (function (exports) {
      * @private
      * @param {object} option - the incoming li option
      * @param {boolean} noTrigger - if true, causes the 'selected' and 'change' events not to
+     * @returns {void}
      * fire on the list item.
      */
     selectOption: function selectOption(option, noTrigger) {
@@ -39530,6 +41046,7 @@ var Soho = (function (exports) {
       }
       var li = void 0;
 
+      // Discovers a `<option>` incoming item from its corresponding Dropdown List item's `data-val` attribute.
       if (option.is('li')) {
         li = option;
         option = this.element.find('option[value="' + option.attr('data-val') + '"]');
@@ -39541,97 +41058,61 @@ var Soho = (function (exports) {
             return $(this).text() === li.attr('data-val');
           });
         }
-      }
 
-      var value = option.val();
-      if (!option) {
-        return;
-      }
-
-      if (!li && typeof value === 'string') {
-        value = value.replace(/"/g, '/quot/');
-        li = this.listUl.find('li[data-val="' + value + '"]');
-      }
-
-      if (option.hasClass('is-disabled') || option.is(':disabled')) {
-        return;
+        if (option.prop('disabled')) {
+          return;
+        }
       }
 
       var optionVal = option.val();
-      var val = this.element.val();
-      var text = '';
-      var trimmed = '';
-      var clearSelection = false;
 
-      if (this.settings.reload === 'typeahead') {
-        val = this.selectedValues || [];
+      if (typeof option === 'string') {
+        li = this.listUl.find('li[data-val="' + option + '"]');
+        optionVal = option;
+        option = this.element.find('option[value="' + optionVal + '"]');
+      } else if (typeof optionVal === 'string') {
+        optionVal = optionVal.replace(/"/g, '/quot/');
+        li = this.listUl.find('li[data-val="' + optionVal + '"]');
       }
 
-      // Sets to false if the option is being removed from a multi-select instead of added
       var isAdded = true;
+      var currentValue = this.selectedValues;
+      var clearSelection = false;
 
       if (option.hasClass('clear') || !li) {
         clearSelection = true;
       }
 
+      // If in single-select mode, or forcing a clear, unset all selections.
+      if (clearSelection) {
+        this.deselectAll();
+      }
+
+      // In a multi-select setting, it's possible for deselection to happen instead of selection.
       if (this.settings.multiple) {
-        // Working with a select multiple allows for the "de-selection" of items in the list
-        if (!val) {
-          val = [];
+        if (!Array.isArray(currentValue)) {
+          currentValue = [currentValue];
         }
-        if ($.inArray(optionVal, val) !== -1) {
-          val = $.grep(val, function (optionValue) {
-            return optionValue !== optionVal;
-          });
-          li.removeClass('is-selected').removeAttr('aria-selected');
-          this.previousActiveDescendant = undefined;
+        if (currentValue.indexOf(optionVal) > -1) {
           isAdded = false;
-        } else {
-          if (!isNaN(this.settings.maxSelected) && //eslint-disable-line
-          this.element.find('option:selected').length >= this.settings.maxSelected) {
-            return;
-          }
-
-          val = typeof val === 'string' ? [val] : val;
-          val.push(optionVal);
-          li.addClass('is-selected').attr('aria-selected', 'true');
-          this.previousActiveDescendant = option.val();
         }
+      }
 
-        var newOptions = this.element.find('option').filter(function () {
-          return $.inArray($(this)[0].value, val) !== -1;
-        });
-        text = this.getOptionText(newOptions);
+      if (isAdded) {
+        this.select(option[0]);
+        this.previousActiveDescendant = optionVal;
       } else {
-        // Working with a single select
-        val = optionVal;
-        this.listUl.find('li.is-selected').removeClass('is-selected').removeAttr('aria-selected');
-        if (!clearSelection) {
-          li.addClass('is-selected').attr('aria-selected', 'true');
-        }
-        this.previousActiveDescendant = option.val();
-        text = option.text();
+        this.deselect(option[0]);
+        this.previousActiveDescendant = undefined;
       }
 
-      if (!clearSelection) {
-        this.element.find('option').each(function () {
-          //eslint-disable-line
-          if (this.value === optionVal) {
-            $(this).prop('selected', true);
-            return false;
-          }
-        });
+      var listScrollTop = this.listUl[0].scrollTop;
+      if (listScrollTop > 0) {
+        this.currentlyScrolledPos = listScrollTop;
       }
 
-      if (this.element.attr('maxlength')) {
-        trimmed = text.substr(0, this.element.attr('maxlength'));
-        this.pseudoElem.find('span').text(trimmed);
-        this.searchInput.val(trimmed);
-      }
-
-      // Set the new value on the <select>
-      this.selectedValues = val;
-      this.element.val(val);
+      this.renderListItem(option[0]);
+      this.setDisplayedValues();
       this.updateItemIcon(option);
 
       /**
@@ -39645,13 +41126,6 @@ var Soho = (function (exports) {
         this.element.trigger('change').triggerHandler('selected', [option, isAdded]);
         this.toggleTooltip();
       }
-
-      /**
-      * Fires after the value in the input is changed by user interaction.
-      * @event input
-      * @memberof Dropdown
-      * @property {object} event The jquery event object
-      */
 
       // If multiselect, reset the menu to the unfiltered mode
       if (this.settings.multiple) {
@@ -39675,8 +41149,31 @@ var Soho = (function (exports) {
 
 
     /**
-     * Select an option by the value.
+     * Selects an option element directly.
+     * @param {HTMLOptionElement} optionEl the option to be deselected
+     * @returns {void}
+     */
+    select: function select(optionEl) {
+      if (!optionEl || !(optionEl instanceof HTMLOptionElement)) {
+        return;
+      }
+
+      // If this is a multselect, never allow more items to be selected than
+      // defined by settings.
+      if (this.settings.multiple) {
+        if (this.selectedValues.length >= this.settings.maxSelected) {
+          return;
+        }
+      }
+
+      optionEl.selected = true;
+    },
+
+
+    /**
+     * Select an option by its value.
      * @param {string} value - A string containing the value to look for. (Case insensitive)
+     * @returns {void}
      */
     selectValue: function selectValue(value) {
       if (typeof value !== 'string') {
@@ -39688,9 +41185,55 @@ var Soho = (function (exports) {
         return;
       }
 
-      this.element.find('option:selected').prop('selected', false);
-      option.prop('selected', true);
-      this.updated();
+      this.select(option[0]);
+    },
+
+
+    /**
+     * Deselects an option element directly.
+     * @param {HTMLOptionElement} optionEl the option to be deselected
+     * @returns {void}
+     */
+    deselect: function deselect(optionEl) {
+      if (!optionEl || !(optionEl instanceof HTMLOptionElement)) {
+        return;
+      }
+
+      optionEl.selected = false;
+    },
+
+
+    /**
+     * Deselect an option by its value.
+     * @param {string} value - A string containing the value to look for. (Case insensitive)
+     * @returns {void}
+     */
+    deselectValue: function deselectValue(value) {
+      if (typeof value !== 'string') {
+        return;
+      }
+
+      var option = this.element.find('option[value="' + value + '"]');
+      if (!option || !option.length) {
+        return;
+      }
+
+      this.deselect(option[0]);
+    },
+
+
+    /**
+     * Deselects all <select> options.
+     * @returns {void}
+     */
+    deselectAll: function deselectAll() {
+      var _this5 = this;
+
+      var allOptions = this.element.find('option');
+      allOptions.each(function (option) {
+        $(option).prop('selected', false);
+        _this5.deselectValue(option);
+      });
     },
 
 
@@ -39835,7 +41378,8 @@ var Soho = (function (exports) {
             textContent = option.label;
           }
 
-          var selectedValues = self.selectedValues && self.selectedValues.indexOf(val) > -1;
+          var selectedValues = self.selectedValues;
+          var hasSelectedValues = selectedValues.indexOf(val) > -1;
           if (self.settings.multiple) {
             val.forEach(function (value) {
               if (value === option.value) {
@@ -39843,7 +41387,7 @@ var Soho = (function (exports) {
                 selected = ' selected';
               }
             });
-          } else if (option.value === val || selectedValues) {
+          } else if (option.value === val || hasSelectedValues) {
             option.selected = true;
             selected = ' selected';
           }
@@ -40008,6 +41552,32 @@ var Soho = (function (exports) {
 
 
     /**
+     * Gets a data-representation of the currently-selected Multiselect items in a format
+     * compatible with the TagList component.
+     * @returns {array} containing JSON-compatible data representing a collection of tags
+     */
+    toTagData: function toTagData() {
+      var tagData = [];
+      var componentID = this.element[0].id;
+      if (!componentID) {
+        componentID = utils.uniqueId(this.element[0], this.element[0].className);
+      }
+
+      this.selectedOptions.forEach(function (opt) {
+        tagData.push({
+          content: opt.innerText.trim(),
+          dismissible: true,
+          href: '#',
+          id: componentID + '-tag-' + opt.value,
+          style: 'secondary',
+          value: opt.value
+        });
+      });
+      return tagData;
+    },
+
+
+    /**
      * Disable the input element.
      */
     disable: function disable() {
@@ -40019,6 +41589,10 @@ var Soho = (function (exports) {
 
       this.pseudoElem.addClass('is-disabled').removeClass('is-readonly').attr('tabindex', '-1').prop('readonly', false).prop('disabled', true);
       this.closeList('cancel');
+
+      if (this.settings.showTags) {
+        this.pseudoElem.find('.tag').addClass('is-disabled');
+      }
     },
 
 
@@ -40037,6 +41611,10 @@ var Soho = (function (exports) {
     enable: function enable() {
       this.element.prop('disabled', false).prop('readonly', false);
       this.pseudoElem.prop('disabled', false).prop('readonly', false).attr('tabindex', '0').removeClass('is-disabled').removeClass('is-readonly');
+
+      if (this.settings.showTags) {
+        this.pseudoElem.find('.tag').removeClass('is-disabled');
+      }
     },
 
 
@@ -40098,14 +41676,15 @@ var Soho = (function (exports) {
      * Tear down events and restore to original state.
      */
     destroy: function destroy() {
-      if (this.selectedValues) {
-        delete this.selectedValues;
-      }
       if (this.placeholder) {
         delete this.placeholder;
       }
 
-      $.removeData(this.element[0], COMPONENT_NAME$z);
+      if (this.currentlyScrolledPos) {
+        delete this.currentlyScrolledPos;
+      }
+
+      $.removeData(this.element[0], COMPONENT_NAME$B);
       this.closeList('cancel');
       this.pseudoElem.off().remove();
       this.icon.remove();
@@ -40128,12 +41707,12 @@ var Soho = (function (exports) {
      * @private
      */
     handleEvents: function handleEvents() {
-      var _this5 = this;
+      var _this6 = this;
 
       var self = this;
 
       this.pseudoElem.on('keydown.dropdown', function (e) {
-        return _this5.handlePseudoElemKeydown(e);
+        return _this6.handlePseudoElemKeydown(e);
       }).on('click.dropdown', function (e) {
         // landmark would like the click event to bubble up if ctrl and shift are pressed
         if (!(e.originalEvent.ctrlKey && e.originalEvent.shiftKey)) {
@@ -40141,6 +41720,16 @@ var Soho = (function (exports) {
         }
       }).on('mouseup.dropdown', function (e) {
         if (e.button === 2) {
+          return;
+        }
+
+        // If the element clicked is a tag, ignore and let the tag handle it.
+        var containedByTag = $(e.target).parents('.tag').length > 0;
+        var isTag = false;
+        if (e.target instanceof HTMLElement && typeof e.target.className === 'string') {
+          isTag = e.target.classList.contains('tag');
+        }
+        if (isTag || containedByTag) {
           return;
         }
         self.toggle();
@@ -40181,17 +41770,17 @@ var Soho = (function (exports) {
   $.fn.dropdown = function (settings) {
     // Keep the Chaining and Init the Controls or Settings
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$z);
+      var instance = $.data(this, COMPONENT_NAME$B);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$z, new Dropdown(this, settings));
+        instance = $.data(this, COMPONENT_NAME$B, new Dropdown(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$A = 'timepicker';
+  var COMPONENT_NAME$C = 'timepicker';
 
   // Timepicker Modes
   var TIMEPICKER_MODES = ['standard', 'range'];
@@ -41284,7 +42873,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$A);
+      $.removeData(this.element[0], COMPONENT_NAME$C);
     },
 
 
@@ -41318,11 +42907,11 @@ var Soho = (function (exports) {
    */
   $.fn.timepicker = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$A);
+      var instance = $.data(this, COMPONENT_NAME$C);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$A, new TimePicker(this, settings));
+        instance = $.data(this, COMPONENT_NAME$C, new TimePicker(this, settings));
       }
     });
   };
@@ -41495,7 +43084,7 @@ var Soho = (function (exports) {
             dateObj = Locale.parseDate(dateObj, format);
           }
           if (datepickerApi && datepickerApi.isIslamic && dateObj instanceof Date) {
-            dateObj = datepickerApi.conversions.toGregorian(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
+            dateObj = Locale.umalquraToGregorian(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate());
           }
           var d2 = options.useUTC ? Locale.dateToUTC(dateObj) : dateObj;
 
@@ -41762,7 +43351,7 @@ var Soho = (function (exports) {
   var Validation = new ValidationRules();
 
   // Component Name
-  var COMPONENT_NAME$B = 'toast';
+  var COMPONENT_NAME$D = 'toast';
 
   // Default Component Settings
   var TOAST_DEFAULTS = {
@@ -41774,7 +43363,8 @@ var Soho = (function (exports) {
     timeout: 6000,
     allowLink: false,
     draggable: false,
-    savePosition: false
+    savePosition: false,
+    uniqueId: null
   };
 
   /**
@@ -41794,6 +43384,7 @@ var Soho = (function (exports) {
    * @param {boolean} [settings.allowLink = false] if true, allows user to put links in the toast message.
    * @param {boolean} [settings.draggable = false] if true, allows user to drag/drop the toast container.
    * @param {boolean} [settings.savePosition] Save positon to local storage.
+   * @param {string} [settings.uniqueId] A uniqueId to save positon to local storage, so same saved positon can be use for whole app.
    */
   function Toast(element, settings) {
     this.element = $(element);
@@ -41820,18 +43411,21 @@ var Soho = (function (exports) {
      */
     show: function show() {
       var self = this;
-      var s = self.settings;
+      var s = this.settings;
       var maxHideTime = parseFloat(math.convertDelayToFPS(s.timeout));
-      var message = s.allowLink ? xssUtils.stripTags(s.message, '<a>') : xssUtils.stripHTML(s.message);
+      var message = s.allowLink ? xssUtils.stripTags(s.message, '<a><br><p>') : xssUtils.stripHTML(s.message);
       var isPausePlay = false;
       var percentage = 100;
-      var container = $('#toast-container');
+
+      this.uniqueId = s.uniqueid ? this.generateUniqueId('usersettings-position') : '';
+
+      var container = $('#toast-container' + this.uniqueId);
       var toast = $('\n      <div class="toast">\n        <span class="toast-title">' + xssUtils.stripHTML(s.title) + '</span>\n        <span class="toast-message">' + message + '</span>\n      </div>');
       var closeBtn = $('\n      <button type="button" class="btn-icon btn-close" title="' + Locale.translate('Close') + '" aria-hidden="true">\n        ' + $.createIcon('close') + '\n        <span class="audible">' + Locale.translate('Close') + '</span>\n      </button>\n    ');
       var progress = $('<div class="toast-progress"></div>');
 
       if (!container.length) {
-        container = $('<div id="toast-container" class="toast-container" aria-relevant="additions" aria-live="polite"></div>').appendTo('body');
+        container = $('<div id="toast-container' + this.uniqueId + '" class="toast-container" aria-relevant="additions" aria-live="polite"></div>').appendTo('body');
       }
 
       container.removeClass('toast-top-left toast-top-right toast-bottom-right toast-bottom-left').addClass('toast-' + s.position.replace(' ', '-'));
@@ -42007,7 +43601,7 @@ var Soho = (function (exports) {
 
       var doc = $(document);
       doc.off('mouseup.toast').on('mouseup.toast', function (e) {
-        if ($('#toast-container .toast').length === 1) {
+        if ($('#toast-container' + _this.uniqueId + ' .toast').length === 1) {
           var dragApi = container.data('drag');
           if (dragApi && typeof dragApi.getElementsFromPoint === 'function') {
             var args = { dragApi: dragApi, x: e.pageX, y: e.pageY };
@@ -42017,7 +43611,7 @@ var Soho = (function (exports) {
           }
         }
       }).off('touchend.toast').on('touchend.toast', function (e) {
-        if ($('#toast-container .toast').length === 1) {
+        if ($('#toast-container' + _this.uniqueId + ' .toast').length === 1) {
           var dragApi = container.data('drag');
           if (dragApi && typeof dragApi.getElementsFromPoint === 'function') {
             var orig = e.originalEvent;
@@ -42050,7 +43644,7 @@ var Soho = (function (exports) {
       }
 
       // Save position to local storage
-      localStorage[this.uniqueId('usersettings-position')] = JSON.stringify(pos);
+      localStorage[this.uniqueId] = JSON.stringify(pos);
 
       /**
       * Fires after settings are changed in some way
@@ -42075,7 +43669,7 @@ var Soho = (function (exports) {
         return null;
       }
 
-      var lsPosition = localStorage[this.uniqueId('usersettings-position')];
+      var lsPosition = localStorage[this.uniqueId];
       return lsPosition ? JSON.parse(lsPosition) : null;
     },
 
@@ -42104,10 +43698,9 @@ var Soho = (function (exports) {
     * @param {object} suffix Add this string to make the id more unique
     * @returns {string} The unique id.
     */
-    uniqueId: function uniqueId(suffix) {
+    generateUniqueId: function generateUniqueId(suffix) {
       suffix = suffix === undefined || suffix === null ? '' : suffix;
-      var uniqueid = 'toast-' + window.location.pathname.split('/').pop().replace(/\.xhtml|\.shtml|\.html|\.htm|\.aspx|\.asp|\.jspx|\.jsp|\.php/g, '').replace(/[^-\w]+/g, '').replace(/\./g, '-').replace(/ /g, '-').replace(/%20/g, '-') + '-' + suffix;
-
+      var uniqueid = 'toast-' + (this.settings.uniqueid || '') + '-' + suffix;
       return uniqueid.replace(/--/g, '-').replace(/-$/g, '');
     },
 
@@ -42150,7 +43743,7 @@ var Soho = (function (exports) {
 
       var removeCallback = function removeCallback() {
         toast.remove();
-        var canDestroy = !$('#toast-container .toast').length;
+        var canDestroy = !$('#toast-container' + _this2.uniqueId + ' .toast').length;
         if (canDestroy) {
           _this2.destroy();
         }
@@ -42196,7 +43789,7 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       var _this3 = this;
 
-      var container = $('#toast-container');
+      var container = $('#toast-container' + this.uniqueId);
       if (container[0]) {
         var toasts = [].slice.call(container[0].querySelectorAll('.toast'));
         toasts.forEach(function (toast) {
@@ -42206,7 +43799,8 @@ var Soho = (function (exports) {
       }
       $(document).off('keydown.toast keyup.toast mouseup.toast touchend.toast');
       container.remove();
-      $.removeData(this.element[0], COMPONENT_NAME$B);
+      delete this.uniqueId;
+      $.removeData(this.element[0], COMPONENT_NAME$D);
     }
   };
 
@@ -42217,17 +43811,17 @@ var Soho = (function (exports) {
    */
   $.fn.toast = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$B);
+      var instance = $.data(this, COMPONENT_NAME$D);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$B, new Toast(this, settings));
+        instance = $.data(this, COMPONENT_NAME$D, new Toast(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$C = 'Validator';
+  var COMPONENT_NAME$E = 'Validator';
 
   /**
    * Validation Message Defaults
@@ -43135,10 +44729,12 @@ var Soho = (function (exports) {
       rule.icon = rule.icon || validationType.icon;
 
       var markup = void 0;
+      var icon = theme.currentTheme.id && theme.currentTheme.id.indexOf('uplift') > -1 ? validationType.type + '-alert' : '' + validationType.type;
+
       if (rule.type === 'icon') {
         markup = '' + ('<div class="custom-icon-message" data-rule-id="' + (rule.id || rule.message) + '">\n          ' + $.createIcon({ classes: ['icon-custom'], icon: rule.icon }) + '\n          <pre class="audible">\n            ' + Locale.translate(validationType.titleMessageID) + '\n          </pre>\n          <p class="message-text">' + rule.message + '</p>\n        </div>');
       } else {
-        markup = '' + ('<div class="' + validationType.type + '-message" data-rule-id="' + (rule.id || rule.message) + '">\n          ' + $.createIcon({ classes: ['icon-' + validationType.type], icon: validationType.type }) + '\n          <pre class="audible">\n            ' + Locale.translate(validationType.titleMessageID) + '\n          </pre>\n          <p class="message-text">' + rule.message + '</p>\n        </div>');
+        markup = '' + ('<div class="' + validationType.type + '-message" data-rule-id="' + (rule.id || rule.message) + '">\n          ' + $.createIcon({ classes: ['icon-' + validationType.type], icon: icon }) + '\n          <pre class="audible">\n            ' + Locale.translate(validationType.titleMessageID) + '\n          </pre>\n          <p class="message-text">' + rule.message + '</p>\n        </div>');
       }
 
       if (!isHelpMessage) {
@@ -43480,9 +45076,9 @@ var Soho = (function (exports) {
    */
   $.fn.addMessage = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$C);
+      var instance = $.data(this, COMPONENT_NAME$E);
       if (!instance) {
-        instance = $.data(this, COMPONENT_NAME$C, new Validator(this, settings));
+        instance = $.data(this, COMPONENT_NAME$E, new Validator(this, settings));
       }
 
       var rule = {
@@ -43528,9 +45124,9 @@ var Soho = (function (exports) {
     }
 
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$C);
+      var instance = $.data(this, COMPONENT_NAME$E);
       if (!instance) {
-        instance = $.data(this, COMPONENT_NAME$C, new Validator(this, settings));
+        instance = $.data(this, COMPONENT_NAME$E, new Validator(this, settings));
       }
 
       var field = $(this);
@@ -43545,7 +45141,7 @@ var Soho = (function (exports) {
       }
       instance.setIconOnParent(field, settings.type);
 
-      $.removeData(this, COMPONENT_NAME$C);
+      $.removeData(this, COMPONENT_NAME$E);
     });
   };
 
@@ -43629,7 +45225,7 @@ var Soho = (function (exports) {
   };
 
   // Component Name
-  var COMPONENT_NAME$D = 'datepicker';
+  var COMPONENT_NAME$F = 'datepicker';
 
   /**
    * A component to support date entry.
@@ -43723,9 +45319,8 @@ var Soho = (function (exports) {
     yearsAhead: 5,
     yearsBack: 4,
     legend: [
-    // Legend Build up example
-    // Color in level 6 - http://usmvvwdev53:424/controls/colors
-    { name: 'Public Holiday', color: '#76B051', dates: [] }, { name: 'Weekends', color: '#EFA836', dayOfWeek: [] }],
+    // Legend Build up exampleazure07
+    { name: 'Public Holiday', color: 'azure06', dates: [] }, { name: 'Weekends', color: 'turquoise06', dayOfWeek: [] }],
     range: {
       useRange: false, // true - if datepicker using range dates
       start: '', // Start date '03/05/2018'
@@ -44227,7 +45822,7 @@ var Soho = (function (exports) {
       this.todayDay = this.todayDate.getDate();
 
       if (this.isIslamic) {
-        this.todayDateIslamic = this.conversions.fromGregorian(this.todayDate);
+        this.todayDateIslamic = Locale.gregorianToUmalqura(this.todayDate);
         this.todayYear = this.todayDateIslamic[0];
         this.todayMonth = this.todayDateIslamic[1];
         this.todayDay = this.todayDateIslamic[2];
@@ -44236,7 +45831,7 @@ var Soho = (function (exports) {
       this.settings.month = this.currentMonth;
       this.settings.year = this.currentYear;
       if (this.isIslamic) {
-        this.settings.activeDateIslamic = this.activeDate instanceof Date ? this.conversions.fromGregorian(this.activeDate) : this.activeDate;
+        this.settings.activeDateIslamic = this.activeDate instanceof Date ? Locale.gregorianToUmalqura(this.activeDate) : this.activeDate;
       }
 
       if (this.settings.onOpenCalendar) {
@@ -44246,7 +45841,7 @@ var Soho = (function (exports) {
         this.settings.year = this.settings.activeDate.getFullYear();
 
         if (this.isIslamic) {
-          this.settings.activeDateIslamic = this.conversions.fromGregorian(this.settings.activeDate);
+          this.settings.activeDateIslamic = Locale.gregorianToUmalqura(this.settings.activeDate);
         }
       } else {
         this.settings.activeDate = this.currentDate || this.todayDate;
@@ -44465,7 +46060,7 @@ var Soho = (function (exports) {
             self.currentYear = year;
             self.currentMonth = month;
             self.currentDay = day;
-            self.currentDate = self.conversions.toGregorian(year, month, day);
+            self.currentDate = Locale.umalquraToGregorian(year, month, day);
           }
 
           if (s.range.useRange) {
@@ -44544,7 +46139,7 @@ var Soho = (function (exports) {
         self.currentYear = year;
         self.currentMonth = month;
         self.currentDay = day;
-        self.currentDate = self.conversions.toGregorian(year, month, day);
+        self.currentDate = Locale.umalquraToGregorian(year, month, day);
       }
 
       self.insertDate(self.isIslamic ? self.currentDateIslamic : self.currentDate);
@@ -44759,7 +46354,7 @@ var Soho = (function (exports) {
 
       if (date instanceof Array) {
         this.currentIslamicDate = date;
-        this.currentDate = this.conversions.toGregorian(date[0], date[1], date[2]);
+        this.currentDate = Locale.umalquraToGregorian(date[0], date[1], date[2]);
       }
 
       if (s.range.useRange) {
@@ -45078,9 +46673,9 @@ var Soho = (function (exports) {
           locale: this.locale.name
         });
         if (islamicValue instanceof Date) {
-          gregorianValue = this.conversions.toGregorian(islamicValue.getFullYear(), islamicValue.getMonth(), islamicValue.getDate());
+          gregorianValue = Locale.umalquraToGregorian(islamicValue.getFullYear(), islamicValue.getMonth(), islamicValue.getDate());
         } else if (islamicValue instanceof Array) {
-          gregorianValue = this.conversions.toGregorian(islamicValue[0], islamicValue[1], islamicValue[2]);
+          gregorianValue = Locale.umalquraToGregorian(islamicValue[0], islamicValue[1], islamicValue[2]);
         }
       }
       var getSelectedDay = function getSelectedDay() {
@@ -45118,7 +46713,7 @@ var Soho = (function (exports) {
       }
 
       if (this.isIslamic) {
-        this.currentDateIslamic = this.conversions.fromGregorian(this.currentDate);
+        this.currentDateIslamic = Locale.gregorianToUmalqura(this.currentDate);
         this.currentYear = this.currentDateIslamic[0];
         this.currentMonth = this.currentDateIslamic[1];
         this.currentDay = this.currentDateIslamic[2];
@@ -45228,7 +46823,7 @@ var Soho = (function (exports) {
       }
 
       if (this.isIslamic) {
-        var islamicDateParts = this.conversions.fromGregorian(this.currentDate);
+        var islamicDateParts = Locale.gregorianToUmalqura(this.currentDate);
         this.currentDateIslamic = islamicDateParts;
       }
 
@@ -45422,7 +47017,7 @@ var Soho = (function (exports) {
       this.closeCalendar();
       this.teardown();
       if (this.element[0]) {
-        $.removeData(this.element[0], COMPONENT_NAME$D);
+        $.removeData(this.element[0], COMPONENT_NAME$F);
       }
     },
 
@@ -45471,18 +47066,1315 @@ var Soho = (function (exports) {
    */
   $.fn.datepicker = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$D);
+      var instance = $.data(this, COMPONENT_NAME$F);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$D, new DatePicker(this, settings));
+        instance = $.data(this, COMPONENT_NAME$F, new DatePicker(this, settings));
       }
     });
   };
 
+  // Valid supported tagNames for applying fonts.
+  var validTagNames = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'pre', 'code', 'div'];
+
+  /**
+   * Defines a style that can be used inside a Fontpicker component
+   * @class FontPickerStyle
+   * @param {string} id a unique identifying string for this Fontpicker style. This value should be unique when compared to other styles within the same fontpicker.
+   * @param {string} displayName the human-readable name for the Fontpicker style.
+   * @param {string} [tagName='p'] a string representing a valid HTML tag to use for this style. Defaults to "span".
+   * @param {string} [className=''] a string containing a valid CSS class selector to append to the tag.
+   * @param {CSSStyleDeclaration} [styleProps] valid CSS props to add to the fontpicker style.
+   */
+  function FontPickerStyle(id, displayName) {
+    var tagName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'p';
+    var className = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : '';
+    var styleProps = arguments[4];
+
+    // 'id' is required.
+    if (!id || typeof id !== 'string' || !displayName.length) {
+      throw new Error('"id" property must be defined and unique.');
+    }
+    this.id = id;
+
+    // `displayName` is required.
+    if (!displayName || typeof displayName !== 'string' || !displayName.length) {
+      throw new Error('"displayName" property must be defined.');
+    }
+    this.displayName = displayName;
+
+    // `tagName` is required, but defaults to `p`
+    tagName = tagName.toLowerCase();
+    if (validTagNames.indexOf(tagName) === -1) {
+      tagName = 'p';
+    }
+    this.tagName = tagName;
+
+    if (typeof className === 'string' && className.length) {
+      this.className = className;
+    }
+
+    if (styleProps instanceof CSSStyleDeclaration) {
+      this.styleProps = styleProps;
+    }
+
+    return this;
+  }
+
+  FontPickerStyle.prototype = {
+
+    /**
+     * @param {string} content text content to be styled.
+     * @returns {string} containing the content surrounded in this style's format.
+     */
+    render: function render(content) {
+      // Sanitize incoming content
+      content = xssUtils.stripHTML(content);
+
+      return '<' + this.tagName + '>' + content + '</' + this.tagName + '>';
+    }
+  };
+
+  // Component Name
+  var COMPONENT_NAME$G = 'fontpicker';
+
+  // Default Settings
+  // NOTE: new settings are created at runtime to avoid retention of state on FontPickerStyle objects
+  function fontpickerSettingsFactory() {
+    return {
+      popupmenuSettings: {
+        offset: {
+          y: 10
+        }
+      },
+      styles: [new FontPickerStyle('default', Locale.translate('FontPickerNormal')), new FontPickerStyle('header1', Locale.translate('FontPickerHeader').replace('{0}', '1'), 'h3'), new FontPickerStyle('header2', Locale.translate('FontPickerHeader').replace('{0}', '2'), 'h4')]
+    };
+  }
+
+  /**
+   * Fontpicker Component
+   * @class FontPicker
+   * @param {string} element The plugin element for the constuctor
+   * @param {string} [settings] The settings element.
+   */
+  function FontPicker(element, settings) {
+    if (!(element instanceof HTMLElement)) {
+      throw new Error('Property "element" is not an HTMLElement type');
+    }
+
+    this.settings = utils.mergeSettings(element, settings, fontpickerSettingsFactory());
+    if (settings && Array.isArray(settings.styles)) {
+      this.settings.styles = settings.styles;
+    }
+
+    this.element = element;
+
+    this.init();
+  }
+
+  // Plugin Methods
+  FontPicker.prototype = {
+
+    /**
+     * @returns {Popupmenu|undefined} the Popupmenu API for the picker, if applicable.
+     */
+    get menuAPI() {
+      var api = $(this.element).data('popupmenu');
+      if (!api) {
+        return undefined;
+      }
+      return api;
+    },
+
+    /**
+     * @returns {FontPickerStyle} currently selected font
+     */
+    get selected() {
+      var selected = void 0;
+      this.settings.styles.forEach(function (style) {
+        if (style.selected) {
+          selected = style;
+        }
+      });
+      if (!selected) {
+        this.settings.styles[0].selected = true;
+        return this.settings.styles[0];
+      }
+      return selected;
+    },
+
+    /**
+     * Gets a reference to a FontPickerStyle object defined within this component, targeted by its ID.
+     * @param {string} id an id representing a font style within this fontpicker's selections.
+     * @returns {FontPickerStyle} a font style within this component's selections by its unique ID.
+     */
+    getStyleById: function getStyleById(id) {
+      var targetStyle = void 0;
+      this.settings.styles.forEach(function (style) {
+        if (style.id === id) {
+          targetStyle = style;
+        }
+      });
+
+      if (!targetStyle) {
+        throw new Error('No FontPickerStyle available with id "' + id + '"');
+      }
+      return targetStyle;
+    },
+
+
+    /**
+     * Gets a reference to a FontPickerStyle object defined within this component, targeted by its Tag Name.
+     * @param {string} tagName an id representing a font style within this fontpicker's selections.
+     * @returns {FontPickerStyle} a font style within this component's selections by its unique ID.
+     */
+    getStyleByTagName: function getStyleByTagName(tagName) {
+      var targetStyle = void 0;
+      this.settings.styles.forEach(function (style) {
+        if (style.tagName === tagName) {
+          targetStyle = style;
+        }
+      });
+
+      if (!targetStyle) {
+        throw new Error('No FontPickerStyle available with tagName "' + tagName + '"');
+      }
+      return targetStyle;
+    },
+
+
+    get disabled() {
+      return this.trueDisabled;
+    },
+
+    /**
+     * @param {boolean} bool whether or not to disable this component
+     * @returns {void}
+     */
+    set disabled(bool) {
+      this.trueDisabled = bool;
+      if (bool === true) {
+        this.element.disabled = true;
+        return;
+      }
+      this.element.disabled = false;
+    },
+
+    /**
+     * @returns {array} of tagNames currently supported by this fontpicker
+     */
+    get supportedTagNames() {
+      var tagNames = [];
+      this.settings.styles.forEach(function (style) {
+        tagNames.push(style.tagName);
+      });
+      return tagNames;
+    },
+
+    /**
+     * Do initialization, build up and / or add events ect.
+     * @returns {object} The Component prototype, useful for chaining.
+     */
+    init: function init() {
+      // Ensure we have an array for this, otherwise reset to default.
+      if (!Array.isArray(this.settings.styles) || !this.settings.styles.length) {
+        this.settings.styles = fontpickerSettingsFactory().styles;
+      }
+
+      // Do initialization. Build or Events ect
+      return this.build().handleEvents();
+    },
+
+
+    /**
+     * Add any needed markup to the component.
+     * @returns {object} The Component prototype, useful for chaining.
+     * @private
+     */
+    build: function build() {
+      var $element = $(this.element);
+
+      // Invoke button
+      var ddIcon = this.element.querySelector('svg.icon.icon-dropdown');
+      if (!ddIcon) {
+        ddIcon = $.createIcon({ icon: 'dropdown', classes: ['icon-dropdown'] });
+        this.element.insertAdjacentHTML('beforeend', ddIcon);
+      }
+      this.ddIcon = this.element.querySelector('svg.icon.icon-dropdown');
+      $element.button();
+
+      // Invoke menu
+      var $menu = $element.next('.popupmenu');
+      if (!$menu || !$menu.length) {
+        $menu = $('<ul class="popupmenu fontpicker-menu"></ul>').insertAfter(this.element);
+      }
+      $menu.html(this.buildMenuHTML());
+
+      var menuSettings = utils.extend({}, this.settings.popupmenuSettings, {
+        menu: $menu,
+        stretchToWidestMenuItem: true
+      });
+      $element.popupmenu(menuSettings);
+
+      // Set initial state
+      this.render();
+
+      return this;
+    },
+
+
+    /**
+     * Renders the button's display.
+     * @private
+     * @returns {void}
+     */
+    render: function render() {
+      var selected = this.selected;
+      var spanElem = this.element.querySelector('span');
+
+      $(spanElem).html(selected.displayName);
+    },
+
+
+    /**
+     * @private
+     * Builds the Fontpicker's Popupmenu HTML
+     * @returns {string} representing the Popupmenu's HTML.
+     */
+    buildMenuHTML: function buildMenuHTML() {
+      var menuHTML = '';
+
+      this.settings.styles.forEach(function (style) {
+        var itemRender = style.render(style.displayName);
+
+        menuHTML += '<li class="fontpicker-style">\n        <a href="#" data-val="' + style.id + '">' + itemRender + '</a>\n      </li>';
+      });
+
+      return '' + menuHTML;
+    },
+
+
+    /**
+     * Sets up event handlers for this component and its sub-elements.
+     * @returns {object} The Component prototype, useful for chaining.
+     * @private
+     */
+    handleEvents: function handleEvents() {
+      var _this = this;
+
+      var self = this;
+
+      $(this.element).on('selected.' + COMPONENT_NAME$G, function (e, selectedItem) {
+        var val = selectedItem.attr('data-val');
+        _this.select(val);
+      }).on('updated.' + COMPONENT_NAME$G, function (e, settings) {
+        self.updated(settings);
+      });
+
+      return this;
+    },
+
+
+    /**
+     * Selects a font from the list
+     * @param {string|FontPickerStyle} id either an ID string, or a direct reference to a FontPickerStyle
+     * @param {boolean} preventEvent whether or not to fire an event to annouce the selection change.  In some cases, this method is called directly by a parent component, which may have been responsible for the change by other means.
+     * @returns {void}
+     */
+    select: function select(id, preventEvent) {
+      if (!id || typeof id !== 'string' && !(id instanceof FontPickerStyle)) {
+        throw new Error('"id" property must be defined in order to select.');
+      }
+
+      // If this is not a FontPickerStyle, assume a string type and attempt to get via ID.
+      var style = void 0;
+      if (!(id instanceof FontPickerStyle)) {
+        style = this.getStyleById(id);
+      } else {
+        style = id;
+      }
+
+      // Deselect all other styles except for this one.
+      this.settings.styles.forEach(function (thisStyle) {
+        thisStyle.selected = false;
+      });
+      style.selected = true;
+
+      // Update the button's visuals
+      this.render(style);
+
+      // Notify externally
+      if (!preventEvent) {
+        $(this.element).triggerHandler('font-selected', [style]);
+      }
+    },
+
+
+    /**
+     * Handle updated settings and values.
+     * @param {object} [settings=undefined] optional incoming fontpicker settings
+     * @returns {object} [description]
+     */
+    updated: function updated(settings) {
+      if (typeof settings !== 'undefined') {
+        var incomingStyles = void 0;
+        if (Array.isArray(settings.styles)) {
+          incomingStyles = settings.styles;
+        }
+
+        this.settings = utils.mergeSettings(this.element, settings, this.settings);
+
+        if (incomingStyles) {
+          this.settings.styles = incomingStyles;
+        }
+      }
+
+      return this.teardown().init();
+    },
+
+
+    /**
+     * Simple Teardown - remove events & rebuildable markup.
+     * @returns {object} The Component prototype, useful for chaining.
+     */
+    teardown: function teardown() {
+      // Remove icon
+      var ddIcon = this.element.querySelector('svg.icon.icon-dropdown');
+      ddIcon.parentNode.removeChild(ddIcon);
+
+      // Destroy sub-components
+      var menuAPI = this.menuAPI;
+      if (menuAPI && typeof menuAPI.destroy === 'function') {
+        menuAPI.destroy();
+      }
+      var buttonAPI = $(this.element).data('button');
+      if (buttonAPI && typeof buttonAPI.destroy === 'function') {
+        buttonAPI.destroy();
+      }
+
+      // Remove events
+      $(this.element).off(['selected.' + COMPONENT_NAME$G, 'updated.' + COMPONENT_NAME$G].join(' '));
+
+      return this;
+    },
+
+
+    /**
+     * Completely removes this component instance from its base element.
+     * @returns {void}
+     */
+    destroy: function destroy() {
+      this.teardown();
+      $.removeData(this.element, COMPONENT_NAME$G);
+    }
+  };
+
+  // Component Name
+  var COMPONENT_NAME$H = 'toolbarflexitem';
+
+  // Filters out buttons located inside of Searchfield wrappers.
+  // Only `input` elements should be picked up by the item detector.
+  function buttonFilter(elem) {
+    var searchfieldWrapper = $(elem).parents('.searchfield-wrapper, .toolbar-searchfield-wrapper');
+    return !searchfieldWrapper.length;
+  }
+
+  // Filters out hyperlinks that are part of menu/action button components
+  function hyperlinkFilter(elem) {
+    if (elem.nodeName !== 'A') {
+      throw new Error('Unspecified error occured');
+    }
+
+    var wrapped = $(elem);
+    return wrapped.parents('.popupmenu').length < 1;
+  }
+
+  // Toolbar Focusable Element Selectors.
+  // Any of these element/class types are valid toolbar items.
+  // TODO: Designate between "button" and "menu button"
+  var TOOLBAR_ELEMENTS = [{ type: 'button', selector: 'button:not(.btn-menu):not(.btn-actions):not(.colorpicker-editor-button), input[type="button"]:not(.btn-menu):not(.btn-actions):not(.colorpicker-editor-button)', filter: buttonFilter }, { type: 'menubutton', selector: '.btn-menu' }, { type: 'actionbutton', selector: '.btn-actions' }, { type: 'colorpicker', selector: '.colorpicker-editor-button' }, { type: 'hyperlink', selector: 'a[href]', filter: hyperlinkFilter }, { type: 'checkbox', selector: 'input[type="checkbox"]' }, { type: 'radio', selector: 'input[type="radio"]' }, { type: 'searchfield', selector: '.searchfield' }, { type: 'toolbarsearchfield', selector: '.toolbarsearchfield' // temporary
+  }];
+
+  // Mappings from toolbar item type to component API
+  var TOOLBAR_COMPONENT_APIS = {
+    actionbutton: 'popupmenu',
+    colorpicker: 'colorpicker',
+    menubutton: 'popupmenu',
+    hyperlink: 'hyperlink',
+    searchfield: 'searchfield',
+    toolbarsearchfield: 'searchfield'
+  };
+
+  /**
+   * Default Settings
+   * @namespace
+   */
+  var TOOLBAR_FLEX_ITEM_DEFAULTS = {
+    disabled: false,
+    readOnly: false,
+    hidden: false,
+    componentSettings: undefined,
+    allowTabs: false
+  };
+
+  /**
+   * Gets the type of Toolbar Item that an element represents.
+   * @param {HTMLElement} element being checked for a toolbar item.
+   * @returns {string} representing the type
+   */
+  function getToolbarItemType(element) {
+    var type = false;
+    TOOLBAR_ELEMENTS.forEach(function (elemObj) {
+      if (!$(element).is(elemObj.selector)) {
+        return;
+      }
+      if (typeof elemObj.filter === 'function' && !elemObj.filter(element)) {
+        return;
+      }
+      type = elemObj.type;
+    });
+
+    if (!type) {
+      throw new Error('Element ' + element + ' is not a valid Toolbar Item Type.');
+    }
+
+    return type;
+  }
+
+  /**
+   * Toolbar Item Wrapper Component
+   * @constructor
+   * @param {HTMLElement} element the base element
+   * @param {object} [settings] incoming settings
+   */
+  function ToolbarFlexItem(element, settings) {
+    this.element = element;
+    this.settings = utils.mergeSettings(this.element, settings, TOOLBAR_FLEX_ITEM_DEFAULTS);
+
+    this.init();
+  }
+
+  ToolbarFlexItem.prototype = {
+
+    /**
+     * @property {string} type used to determine the type of toolbar item.  Certain toolbar item types
+     *  have certain special properties.
+     * @property {HTMLElement} section the parent toolbar section that this item is housed in.
+     * @property {HTMLElement} toolbar the parent toolbar's base element.
+     */
+    type: undefined,
+
+    /**
+     * @property {boolean} a different type to check if the object is a ToolbarFlexItem.
+     */
+    isToolbarFlexItem: true,
+
+    /**
+     * @private
+     * @returns {void}
+     */
+    init: function init() {
+      // internal flags
+      this.type = getToolbarItemType(this.element);
+      this.section = this.element.parentElement;
+      this.toolbar = this.section.parentElement;
+      this.trueSelected = false;
+    },
+
+
+    /**
+     * @returns {boolean} whether or not the toolbar item is currently able to be focused, based
+     *  on its `disabled`, `overflowed`, and `visible` properties.
+     */
+    get focusable() {
+      if (this.disabled === true) {
+        return false;
+      }
+      if (this.type === 'searchfield') {
+        return true;
+      }
+      if (this.type === 'actionbutton' && this.hasNoOverflowedItems === true) {
+        return false;
+      }
+      if (this.overflowed === true) {
+        return false;
+      }
+
+      return this.visible;
+    },
+
+    /**
+     * @returns {boolean} whether or not the toolbar item is the one that will currently be focused
+     */
+    get focused() {
+      return this.element.tabIndex === 0;
+    },
+
+    /**
+     * @param {boolean} boolean, if provided, sets a focused state on the toolbar item.
+     * @returns {void}
+     */
+    set focused(boolean) {
+      if (boolean) {
+        this.element.tabIndex = 0;
+        return;
+      }
+      this.element.tabIndex = -1;
+    },
+
+    /**
+     * @returns {boolean} whether or not the Toolbar item is selected.
+     */
+    get selected() {
+      return this.trueSelected;
+    },
+
+    /**
+     * @param {boolean} boolean, if provided, sets a selected state on the toolbar item.
+     * @returns {void}
+     */
+    set selected(boolean) {
+      if (boolean) {
+        this.trueSelected = true;
+        this.element.classList.add('is-selected');
+        this.triggerSelectedEvent();
+
+        if (this.selectedAnchor) {
+          delete this.selectedAnchor;
+        }
+        return;
+      }
+      this.trueSelected = false;
+      this.element.classList.remove('is-selected');
+    },
+
+    /**
+     * Retrieves an item's main Soho Component instance.
+     * @returns {object} Soho Component instance, if applicable
+     */
+    get componentAPI() {
+      var $element = $(this.element);
+      var componentType = TOOLBAR_COMPONENT_APIS[this.type];
+
+      if (!componentType) {
+        return undefined;
+      }
+
+      return $element.data(componentType);
+    },
+
+    /**
+     * @returns {ToolbarFlex} the parent toolbar API
+     */
+    get toolbarAPI() {
+      if (this.settings.toolbarAPI) {
+        return this.settings.toolbarAPI;
+      }
+      return $(this.toolbar).data('toolbar-flex');
+    },
+
+    /**
+     * @fires selected
+     * @returns {void}
+     */
+    triggerSelectedEvent: function triggerSelectedEvent() {
+      // Searchfields and Colorpickers aren't "selectable" in the same way actionable
+      // items are, so they shouldn't fire the "selected" event.
+      var disallowedTypes = ['colorpicker', 'searchfield', 'toolbarsearchfield'];
+      if (disallowedTypes.indexOf(this.type) > -1) {
+        return;
+      }
+
+      var eventArgs = [this];
+
+      // MenuButton types pass the currently-selected anchor
+      var selectedAnchorTypes = ['menubutton', 'actionbutton'];
+      if (selectedAnchorTypes.indexOf(this.type) > -1 && this.selectedAnchor) {
+        eventArgs.push(this.selectedAnchor);
+      }
+
+      $(this.element).trigger('selected', eventArgs);
+    },
+
+
+    /**
+     * Causes the toolbar item to become visible.
+     * @returns {void}
+     */
+    show: function show() {
+      this.visible = true;
+    },
+
+
+    /**
+     * Causes the toolbar item to become hidden.
+     * @returns {void}
+     */
+    hide: function hide() {
+      this.visible = false;
+    },
+
+
+    /**
+     * Toggles the Toolbar item's visiblity.
+     * @param {boolean} boolean whether or not the `hidden` class should be set.
+     */
+    set visible(boolean) {
+      // NOTE: Temporary until Searchfield handles this better internally.
+      var isSearchfield = this.type === 'searchfield' || this.type === 'toolbarsearchfield';
+
+      if (boolean) {
+        if (isSearchfield) {
+          this.element.parentNode.classList.remove('hidden');
+        }
+        this.element.classList.remove('hidden');
+        return;
+      }
+
+      if (isSearchfield) {
+        this.element.parentNode.classList.add('hidden');
+      }
+      this.element.classList.add('hidden');
+    },
+
+    /**
+     * @returns {boolean} whether or not the Toolbar Item is visible.
+     */
+    get visible() {
+      return this.element.className.indexOf('hidden') === -1;
+    },
+
+    /**
+     * @returns {void}
+     */
+    enable: function enable() {
+      this.disabled = false;
+      if (this.hasReadOnly) {
+        this.readOnly = false;
+      }
+    },
+
+
+    /**
+     * @returns {boolean} whether or not the element is disabled
+     */
+    get disabled() {
+      return this.element.disabled;
+    },
+
+    /**
+     * @param {boolean} boolean, if provided, sets a disabled state on the toolbar item.
+     * @returns {void}
+     */
+    set disabled(boolean) {
+      if (boolean) {
+        this.element.disabled = true;
+        this.element.setAttribute('aria-disabled', true);
+        this.element.readOnly = false;
+        return;
+      }
+
+      this.element.disabled = false;
+      this.element.removeAttribute('aria-disabled');
+    },
+
+    /**
+     * @returns {boolean} whether or not `readOnly` as a property exists on this HTMLElement type.
+     */
+    get hasReadOnly() {
+      return 'readOnly' in this.element;
+    },
+
+    /**
+     * @returns {boolean} element's readOnly prop
+     */
+    get readOnly() {
+      if (!this.hasReadOnly) {
+        return false;
+      }
+      return this.element.readOnly;
+    },
+
+    /**
+     * @param {boolean} boolean, if provided, sets a readOnly state on the toolbar item, if possible.
+     * @returns {void}
+     */
+    set readOnly(boolean) {
+      if (!this.hasReadOnly) {
+        return;
+      }
+
+      if (boolean) {
+        this.disabled = false;
+        this.element.disabled = false;
+        this.element.readOnly = true;
+        return;
+      }
+
+      this.element.readOnly = false;
+    },
+
+    /**
+     * @returns {boolean} whether or not the item is pushed into overflow by the boundaries
+     *  of its container element.
+     */
+    get overflowed() {
+      var isRTL = Environment.rtl;
+      var elemRect = this.element.getBoundingClientRect();
+      var sectionRect = this.section.getBoundingClientRect();
+
+      if (isRTL) {
+        return elemRect.left < sectionRect.left;
+      }
+      return elemRect.right > sectionRect.right;
+    },
+
+    /**
+     * @param {boolean} isTrue whether or not the more actions menu has overflowed items, causing it to become displayed
+     * @returns {void}
+     */
+    set hasNoOverflowedItems(isTrue) {
+      if (this.type !== 'actionbutton' || !this.componentAPI) {
+        return;
+      }
+
+      var popupmenuLength = this.componentAPI.toData({ noMenuWrap: true }).length;
+      var menuIsEmpty = popupmenuLength - this.predefinedItems.length < 1;
+
+      if (isTrue && menuIsEmpty) {
+        this.element.classList.add('no-overflowed-items');
+        this.trueHasNoOverflowedItems = true;
+
+        if (this.focused) {
+          this.toolbarAPI.focusedItem = this;
+          this.toolbarAPI.navigate(-1, undefined);
+        }
+        return;
+      }
+      this.trueHasNoOverflowedItems = false;
+      this.element.classList.remove('no-overflowed-items');
+    },
+
+    /**
+     *
+     */
+    get hasNoOverflowedItems() {
+      if (!this.componentAPI) {
+        return true;
+      }
+      return this.trueHasNoOverflowedItems;
+    },
+
+    /**
+     * Sets up all event listeners for this element.
+     * @returns {void}
+     */
+    handleEvents: function handleEvents() {
+      var _this = this;
+
+      var self = this;
+      var $element = $(this.element);
+
+      var popupmenuConsumers = ['menubutton', 'actionbutton', 'colorpicker'];
+      if (popupmenuConsumers.indexOf(this.type) > -1) {
+        // Listen to the Popupmenu's selected event
+        $element.on('selected.' + COMPONENT_NAME$H, function (e, anchor) {
+          if (_this.selectedAnchor) {
+            return;
+          }
+
+          e.stopPropagation();
+
+          if (_this.type === 'actionbutton') {
+            var li = $(anchor).parent();
+            var itemLink = li.data('originalButton');
+            var itemLinkAPI = $(itemLink).data('toolbarflexitem');
+            var elementLink = void 0;
+
+            if (li.parents('ul').length > 1) {
+              elementLink = li.data('original-menu-element');
+              itemLink = li.parents('li').last().data('originalButton');
+              itemLinkAPI = $(itemLink).data('toolbarflexitem');
+            }
+
+            // If this item is linked to another toolbar item, trigger its `selected` event instead
+            // of the one on the item in this menu.
+            if (itemLinkAPI) {
+              if (elementLink) {
+                e.preventDefault();
+                itemLinkAPI.selectedAnchor = $(elementLink).children('a');
+              } else {
+                // case of a menu button overflowed into more actions
+                itemLinkAPI.selectedAnchor = anchor;
+              }
+              itemLinkAPI.selected = true;
+              return;
+            }
+          }
+
+          self.selectedAnchor = anchor;
+          self.selected = true;
+        });
+      }
+
+      if (this.type === 'actionbutton') {
+        $element.on('beforeopen.' + COMPONENT_NAME$H, this.handleActionButtonBeforeOpen.bind(this));
+        $('body').off('resize.' + COMPONENT_NAME$H).on('resize.' + COMPONENT_NAME$H, this.handleActionButtonResize.bind(this));
+      }
+
+      if (!this.settings.allowTabs) {
+        $element.on('focus.' + COMPONENT_NAME$H, this.handleFocus.bind(this));
+      }
+    },
+
+
+    /**
+     * If this element is an Action Button, this listener runs before its popupmenu is opened
+     * To determine which elements need to be shown/hidden.
+     * @private
+     * @returns {void}
+     */
+    handleActionButtonBeforeOpen: function handleActionButtonBeforeOpen() {
+      this.refreshMoreActionsMenu();
+    },
+
+
+    /**
+     * If this element is an Action Button, this listener runs whenever Soho's custom resize event
+     * on the `<body>` tag fires, to determine which elements need to be shown/hidden.
+     * @private
+     * @returns {void}
+     */
+    handleActionButtonResize: function handleActionButtonResize() {
+      this.refreshMoreActionsMenu();
+    },
+
+
+    /**
+     * @private
+     * @param {FocusEvent} e `focus`
+     * @returns {void}
+     */
+    handleFocus: function handleFocus(e) {
+      if (e.target && e.target === this.element) {
+        this.toolbarAPI.focusedItem = this;
+      }
+    },
+
+
+    /**
+     * Renders extra markup or anything else needed on the toolbar item
+     * @returns {void}
+     */
+    render: function render() {
+      // eslint-disable-next-line
+      this.disabled = this.disabled;
+      if (this.hasReadOnly) {
+        // eslint-disable-next-line
+        this.readonly = this.readonly;
+      }
+
+      // Setup component APIs, if applicable.
+      // NOTE: Soho Initializer doesn't invoke these automatically, by nature of the
+      // base elements existing inside the Flex Toolbar.
+      var $element = $(this.element);
+      var componentType = TOOLBAR_COMPONENT_APIS[this.type];
+      if (componentType) {
+        var api = $element.data(componentType);
+        if (!api) {
+          $element[componentType](this.settings.componentSettings);
+        } else {
+          api.updated(this.settings.componentSettings);
+        }
+      }
+
+      // Action Buttons need more stuff
+      if (this.type === 'actionbutton') {
+        this.renderMoreActionsMenu();
+        this.refreshMoreActionsMenu();
+      }
+
+      this.handleEvents();
+    },
+
+
+    /**
+     * Uses data from Toolbar Items to build Toolbar-linked, pre-defined items for the More Actions menu.
+     * NOTE: This method only runs when this toolbar item is a "More Actions" button
+     * @private
+     * @returns {void}
+     */
+    renderMoreActionsMenu: function renderMoreActionsMenu() {
+      var menuAPI = this.componentAPI;
+      if (!menuAPI || !this.toolbarAPI) {
+        return;
+      }
+
+      // If the menu doesn't already exist, pre-define it.
+      var $menu = menuAPI.menu;
+      if (!$menu || !$menu.length) {
+        $menu = $('<ul class="popupmenu"></ul>').insertAfter(this.element);
+      }
+
+      this.teardownPredefinedItems();
+
+      // Get Popupmenu data equivalent of the current set of Toolbar items.
+      // Menu item data is scrubbed for IDs that would otherwise be duplicated
+      function removeMenuIds(item, isSubmenu) {
+        if (item.menuId) {
+          delete item.menuId;
+        }
+        var menuTarget = isSubmenu ? 'submenu' : 'menu';
+        if (Array.isArray(item[menuTarget])) {
+          item[menuTarget].forEach(function (subitem) {
+            removeMenuIds(subitem, true);
+          });
+        }
+      }
+      var data = this.toolbarAPI.toPopupmenuData();
+      removeMenuIds(data);
+
+      // Add Toolbar Items as predefined items to the Popupmenu.
+      var menuItems = $(menuAPI.renderItem(data));
+      this.predefinedItems = menuItems;
+      this.linkToolbarItems(data);
+
+      // Notify the Popupmenu of predefined items
+      $menu.prepend(this.predefinedItems);
+      menuAPI.updated({
+        menu: $menu,
+        predefined: menuItems
+      });
+
+      this.menuRendered = true;
+    },
+
+
+    /**
+     * Refreshes the state of menu items in a "More Actions" menu that were constructed by the Flex Toolbar.
+     * @private
+     * @returns {void}
+     */
+    refreshMoreActionsMenu: function refreshMoreActionsMenu() {
+      if (this.type !== 'actionbutton') {
+        return;
+      }
+
+      var menuAPI = this.componentAPI;
+      if (!menuAPI || !this.toolbarAPI || menuAPI.isOpen) {
+        return;
+      }
+
+      this.hasNoOverflowedItems = true;
+
+      // If there are toolbar items, but no predefined items, render the more-actions menu
+      if (!menuAPI.settings.beforeOpen && (!this.predefinedItems || !this.predefinedItems.length) && this.toolbarAPI.items.length) {
+        this.renderMoreActionsMenu();
+      }
+
+      var hasNoOverflowedItems = true;
+
+      // Called at the end of the item refresh.
+      // Uses the Popupmenu's API to add overflow information.
+      function itemRefreshCallback(menuItem, data) {
+        if (data.isSubmenuItem) {
+          return;
+        }
+
+        if (data.overflowed === true) {
+          menuItem.classList.add('is-overflowed');
+
+          if (data.visible) {
+            menuItem.classList.remove('hidden');
+          }
+
+          hasNoOverflowedItems = false;
+          return;
+        }
+
+        menuItem.classList.remove('is-overflowed');
+        menuItem.classList.add('hidden');
+      }
+
+      // Each Linked Toolbar Item will be refreshed by the Popupmenu API
+      this.toolbarAPI.items.forEach(function (item) {
+        if (!item.actionButtonLink) {
+          return;
+        }
+
+        var itemData = item.toPopupmenuData();
+        itemData.overflowed = item.overflowed;
+
+        if (itemData.id) {
+          delete itemData.id;
+        }
+
+        menuAPI.refreshMenuItem(item.actionButtonLink, itemData, itemRefreshCallback);
+      });
+
+      // Set a record for display
+      this.hasNoOverflowedItems = hasNoOverflowedItems;
+    },
+
+
+    /**
+     * Removes links between the current set of Toolbar Items to `More Actions` menu items.
+     * @private
+     * @returns {void}
+     */
+    unlinkToolbarItems: function unlinkToolbarItems() {
+      if (this.type !== 'actionbutton' || !this.menuRendered || !this.predefinedItems || !this.predefinedItems.length) {
+        return;
+      }
+
+      function doUnlinkSubmenuItem(actionMenuElement) {
+        var $originalMenuElement = $($(actionMenuElement).data('original-menu-element'));
+        $originalMenuElement.removeData('action-button-link');
+        $(actionMenuElement).removeData('original-menu-element');
+
+        if ($originalMenuElement.hasClass('submenu')) {
+          var submenuItems = actionMenuElement.querySelector('.popupmenu').children;
+          for (var j = 0; j < submenuItems.length; j++) {
+            doUnlinkSubmenuItem(submenuItems[j]);
+          }
+        }
+      }
+
+      function doUnlinkToolbarItems(i, itemElement) {
+        var originalButton = $(itemElement).data('originalButton');
+        var originalButtonAPI = $(originalButton).data('toolbarflexitem');
+
+        originalButtonAPI.actionButtonLink = null;
+        $(itemElement).removeData('original-button');
+
+        if (originalButtonAPI.type === 'menubutton') {
+          var submenuItems = itemElement.querySelector('.popupmenu').children;
+          for (var j = 0; j < submenuItems.length; j++) {
+            doUnlinkSubmenuItem(submenuItems[j]);
+          }
+        }
+      }
+
+      this.predefinedItems.each(doUnlinkToolbarItems);
+    },
+
+
+    /**
+     * Links the current set of Toolbar Items to the `More Actions` menu items.
+     * @private
+     * @param {object} popupmenuData incoming popupmenu data
+     * @returns {void}
+     */
+    linkToolbarItems: function linkToolbarItems(popupmenuData) {
+      if (this.type !== 'actionbutton' || !popupmenuData) {
+        return;
+      }
+
+      if (!Array.isArray(popupmenuData)) {
+        popupmenuData = popupmenuData.menu;
+      }
+
+      function doLinkSubmenuItem(menuItemData, actionMenuElement) {
+        var originalMenuElement = menuItemData.elementLink;
+        $(originalMenuElement).data('action-button-link', actionMenuElement);
+        $(actionMenuElement).data('original-menu-element', originalMenuElement);
+
+        var submenu = menuItemData.submenu;
+        if (submenu && submenu.length) {
+          var submenuItems = actionMenuElement.querySelector('.popupmenu').children;
+          for (var j = 0; j < submenuItems.length; j++) {
+            doLinkSubmenuItem(submenu[j], submenuItems[j]);
+          }
+        }
+      }
+
+      function doLinkToolbarItems(i, itemElement) {
+        var originalButtonAPI = popupmenuData[i].itemLink;
+        originalButtonAPI.actionButtonLink = itemElement;
+        $(itemElement).data('original-button', originalButtonAPI.element);
+
+        var submenu = popupmenuData[i].submenu;
+        if (submenu && submenu.length) {
+          var submenuItems = itemElement.querySelector('.popupmenu').children;
+          for (var j = 0; j < submenuItems.length; j++) {
+            doLinkSubmenuItem(submenu[j], submenuItems[j]);
+          }
+        }
+      }
+
+      this.predefinedItems.each(doLinkToolbarItems);
+    },
+
+
+    /**
+     * Converts the contents of the Toolbar Item to a data structure that's compatible with a Popupmenu component.
+     * This data structure can be used to populate the contents of a "More Actions" menu.
+     * @returns {object} an object representation of the Toolbar Item as a Popupmenu Item.
+     */
+    toPopupmenuData: function toPopupmenuData() {
+      if (this.type === 'searchfield' || this.type === 'toolbarsearchfield' || this.type === 'actionbutton') {
+        return undefined;
+      }
+
+      var itemData = {
+        itemLink: this,
+        disabled: this.disabled,
+        visible: this.visible
+      };
+
+      var icon = this.element.querySelector('.icon:not(.close):not(.icon-dropdown) > use');
+      if (icon) {
+        itemData.icon = icon.getAttribute('xlink:href').replace('#icon-', '');
+      }
+
+      if (this.type === 'button' || this.type === 'menubutton') {
+        itemData.text = this.element.textContent.trim();
+      }
+
+      function addMenuElementLinks(menu, data) {
+        var elems = menu.querySelectorAll('li:not(.heading)');
+        data.forEach(function (item, i) {
+          item.elementLink = elems[i];
+          if (item.submenu) {
+            var submenu = elems[i].querySelector('.popupmenu');
+            item.submenu = addMenuElementLinks(submenu, item.submenu);
+          }
+        });
+        return data;
+      }
+
+      // Add links to the menubutton's menu item elements to the Popupmenu data
+      if (this.type === 'menubutton') {
+        var menuElem = this.componentAPI.menu;
+        if (!menuElem.length) {
+          // Act as if this menubutton is simply empty.
+          itemData.submenu = [];
+        } else {
+          // Get a data representation of the existing menu content
+          var originalSubmenuData = this.componentAPI.toData({ noMenuWrap: true });
+          var targetId = this.componentAPI.element[0].id;
+          if (targetId) {
+            // NOTE: don't pass the same ID here, which would cause duplicates
+            itemData.id = this.toolbarAPI.uniqueId + '-' + targetId;
+          }
+          itemData.submenu = addMenuElementLinks(menuElem[0], originalSubmenuData);
+        }
+      }
+
+      return itemData;
+    },
+
+
+    /**
+     * Converts the current state of the toolbar item to an object structure that can be
+     * easily passed back/forth and tested.
+     * @returns {object} containing the current Toolbar Item state.
+     */
+    toData: function toData() {
+      var itemData = {
+        type: this.type,
+        disabled: this.disabled,
+        focused: this.focused,
+        selected: this.selected,
+        overflowed: this.overflowed,
+        visible: this.visible
+      };
+
+      if (this.hasReadOnly) {
+        itemData.readOnly = this.readOnly;
+      }
+
+      if (this.actionButtonLink) {
+        itemData.actionButtonLink = this.actionButtonLink;
+      }
+
+      if (this.componentAPI) {
+        itemData.componentAPI = this.componentAPI;
+      }
+
+      var icon = this.element.querySelector('.icon:not(.close):not(.icon-dropdown) > use');
+      if (icon) {
+        itemData.icon = icon.getAttribute('xlink:href').replace('#icon-', '');
+      }
+
+      if (this.type === 'button' || this.type === 'menubutton') {
+        itemData.text = this.element.textContent.trim();
+      }
+
+      if (this.type === 'actionbutton') {
+        itemData.predefinedItems = this.predefinedItems;
+      }
+
+      if (this.type === 'menubutton' || this.type === 'actionbutton') {
+        // TODO: Need to convert a Popupmenu's contents to the object format with this method
+        itemData.submenu = this.componentAPI.toData({ noMenuWrap: true });
+      }
+
+      return itemData;
+    },
+
+
+    /**
+     * Completely updates this component with (optional) new settings.
+     * @param {object} [settings] incoming settings
+     */
+    updated: function updated(settings) {
+      if (settings) {
+        this.settings = utils.mergeSettings(this.element, settings, this.settings);
+      }
+
+      this.teardown();
+      this.init();
+    },
+
+
+    /**
+     * @private
+     * @returns {void}
+     */
+    teardownPredefinedItems: function teardownPredefinedItems() {
+      if (this.type !== 'actionbutton') {
+        return;
+      }
+
+      this.unlinkToolbarItems();
+      if (this.predefinedItems && this.predefinedItems.length) {
+        this.predefinedItems.remove();
+      }
+    },
+
+
+    /**
+     * Unbinds events and removes preset internal flags for this component.
+     * @returns {void}
+     */
+    teardown: function teardown() {
+      $(this.element).off('selected.' + COMPONENT_NAME$H).off('beforeopen.' + COMPONENT_NAME$H).off('focus.' + COMPONENT_NAME$H);
+
+      $('body').off('resize.' + COMPONENT_NAME$H);
+
+      this.teardownPredefinedItems();
+
+      delete this.type;
+      delete this.selected;
+      delete this.focusable;
+      delete this.visible;
+      delete this.disabled;
+      delete this.readOnly;
+
+      delete this.section;
+      delete this.toolbar;
+      delete this.trueSelected;
+      delete this.menuRendered;
+    }
+  };
+
   /* eslint-disable no-useless-escape */
 
-  var COMPONENT_NAME$E = 'editor';
+  var COMPONENT_NAME$I = 'editor';
+
+  var EDITOR_PARENT_ELEMENTS = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'pre', 'code'];
 
   /**
   * The Editor Component displays and edits markdown.
@@ -45506,13 +48398,14 @@ var Soho = (function (exports) {
   * @param {function} [settings.onLinkClick = null] Call back for clicking on links to control link behavior.
   * @param {function} [settings.showHtmlView = false] If set to true, editor should be displayed in HTML view initialy.
   * @param {function} [settings.preview = false] If set to true, editor should be displayed in preview mode with noneditable content.
+  * @param {string} [settings.paragraphSeparator = 'p'] Only can use 'p'|'br'|'div', If set to anything else will not run `defaultParagraphSeparator` execCommand.
   * @param {boolean} [settings.useFlexToolbar = false] if set to true, renders the toolbar as flex toolbar.
   * @param {boolean} [settings.useSourceFormatter = false] true will format the html content in source mode.
   * @param {boolean} [settings.formatterTabsize = 4] number of spaces can use for indentation.
   */
   var EDITOR_DEFAULTS = {
     buttons: {
-      editor: ['header1', 'header2', 'separator', 'bold', 'italic', 'underline', 'strikethrough', 'separator', 'foreColor', 'backColor', 'separator', 'justifyLeft', 'justifyCenter', 'justifyRight', 'separator', 'quote', 'orderedlist', 'unorderedlist', 'separator', 'anchor', 'separator', 'image', 'separator', 'clearFormatting', 'separator', 'source'],
+      editor: ['fontPicker', 'separator', 'bold', 'italic', 'underline', 'strikethrough', 'separator', 'foreColor', 'backColor', 'separator', 'justifyLeft', 'justifyCenter', 'justifyRight', 'separator', 'quote', 'orderedlist', 'unorderedlist', 'separator', 'anchor', 'separator', 'image', 'separator', 'clearFormatting', 'separator', 'source'],
       source: ['visual']
     },
     excludeButtons: {
@@ -45520,19 +48413,34 @@ var Soho = (function (exports) {
       source: []
     },
     delay: 200,
-    firstHeader: 'h3',
-    secondHeader: 'h4',
     placeholder: null,
     pasteAsPlainText: false,
     // anchor > target: 'SameWindow'|'NewWindow'| any string value
-    anchor: { url: 'http://www.example.com', class: 'hyperlink', target: 'NewWindow', isClickable: false, showIsClickable: false },
-    image: { url: 'https://imgplaceholder.com/250x250/368AC0/ffffff/fa-image' },
+    anchor: {
+      url: 'http://www.example.com',
+      class: 'hyperlink',
+      target: 'NewWindow',
+      isClickable: false,
+      showIsClickable: false
+    },
+    image: {
+      url: '/images/placeholder-80x80.png'
+    },
     onLinkClick: null,
     showHtmlView: false,
     preview: false,
+    paragraphSeparator: 'p',
     useFlexToolbar: false,
     useSourceFormatter: false,
-    formatterTabsize: 4
+    formatterTabsize: 4,
+    fontpickerSettings: {
+      popupmenuSettings: {
+        showArrow: false,
+        offset: {
+          y: 0
+        }
+      }
+    }
   };
 
   function Editor(element, settings) {
@@ -45559,18 +48467,10 @@ var Soho = (function (exports) {
     init: function init() {
       var _this = this;
 
-      var s = this.settings;
-      this.isIe = Environment.browser.name === 'ie';
-      this.isIeEdge = Environment.browser.name === 'edge';
-      this.isIe11 = this.isIe && Environment.browser.version === '11';
-      this.isMac = Environment.os.name === 'Mac OS X';
-      this.isFirefox = Environment.browser.name === 'firefox';
-      this.textarea = null;
-
-      this.parentElements = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'pre'];
       this.id = utils.uniqueId(this.element, 'editor') + '-id';
-
       this.container = this.element.parent('.field, .field-short').addClass('editor-container');
+
+      this.label = this.element.prevAll('.label').first();
 
       // Preview mode
       if (!this.previewRendered && (this.element.hasClass('is-preview') || this.settings.preview)) {
@@ -45582,6 +48482,7 @@ var Soho = (function (exports) {
         return;
       }
 
+      var s = this.settings;
       s.anchor = $.extend({}, EDITOR_DEFAULTS.anchor, s.anchor);
       s.image = $.extend({}, EDITOR_DEFAULTS.image, s.image);
 
@@ -45602,6 +48503,53 @@ var Soho = (function (exports) {
         }
       });
 
+      // Convert legacy header settings into Fontpicker settings
+      if (this.settings.firstHeader || this.settings.secondHeader) {
+        if (!Array.isArray(this.settings.fontpickerSettings.styles)) {
+          this.settings.fontpickerSettings.styles = [];
+        }
+        if (!this.settings.fontpickerSettings.styles.length) {
+          this.settings.fontpickerSettings.styles.push(new FontPickerStyle('legacyDefault', 'Default'));
+        }
+        if (this.settings.firstHeader) {
+          warnAboutDeprecation('`fontpickerSettings.styles` setting', '`firstHeader` setting', 'Editor Component');
+          this.settings.fontpickerSettings.styles.push(new FontPickerStyle('legacyHeader1', 'Header 1', this.settings.firstHeader));
+          delete this.settings.firstHeader;
+        }
+        if (this.settings.secondHeader) {
+          warnAboutDeprecation('`fontpickerSettings.styles` setting', '`secondHeader` setting', 'Editor Component');
+          this.settings.fontpickerSettings.styles.push(new FontPickerStyle('legacyHeader2', 'Header 2', this.settings.secondHeader));
+          delete this.settings.secondHeader;
+        }
+      }
+
+      if (s.buttons && s.buttons.editor) {
+        var foundOldSettings = false;
+        var styles = [new FontPickerStyle('default', 'Default', 'p')];
+
+        var headers = s.buttons.editor.filter(function (el) {
+          return el.substr(0, 6) === 'header';
+        });
+
+        for (var i = 0; i < headers.length; i++) {
+          var hLevel = headers[i].substr(6, 1);
+          foundOldSettings = true;
+          styles.push(new FontPickerStyle('header' + hLevel, 'Header ' + hLevel, 'h' + hLevel));
+        }
+        if (foundOldSettings) {
+          s.buttons.editor = s.buttons.editor.filter(function (el) {
+            return el.substr(0, 6) !== 'header';
+          });
+          s.fontpickerSettings = { styles: styles };
+        }
+        if (s.buttons.editor[0] === 'seperator') {
+          s.buttons.editor.splice(0, 1);
+        }
+        if (foundOldSettings) {
+          s.buttons.editor = ['fontPicker'].concat(s.buttons.editor);
+        }
+      }
+
       if (!s.anchor.defaultTarget) {
         if (s.anchor.target && $.trim(s.anchor.target).length) {
           s.anchor.defaultTarget = s.anchor.target;
@@ -45612,6 +48560,12 @@ var Soho = (function (exports) {
       }
 
       this.setup();
+
+      // Set default paragraph separator
+      if (typeof s.paragraphSeparator === 'string' && /^(p|br|div)$/.test(s.paragraphSeparator)) {
+        document.execCommand('defaultParagraphSeparator', false, s.paragraphSeparator);
+      }
+
       if (this.element.hasClass('is-readonly')) {
         this.readonly();
       }
@@ -45644,7 +48598,7 @@ var Soho = (function (exports) {
       this.initTextarea();
 
       this.bindParagraphCreation().bindTab();
-      this.initToolbar().bindButtons().bindModals().bindAnchorPreview();
+      this.createToolbar().bindButtons().bindModals().bindAnchorPreview();
 
       return this;
     },
@@ -45735,14 +48689,6 @@ var Soho = (function (exports) {
 
       return this;
     },
-    initToolbar: function initToolbar() {
-      if (this.toolbar) {
-        return this;
-      }
-
-      this.createToolbar();
-      return this;
-    },
 
 
     // Set excluded buttons
@@ -45784,7 +48730,17 @@ var Soho = (function (exports) {
       };
       return setButtons();
     },
+
+
+    /**
+     * @private
+     * @returns {this} component instance
+     */
     createToolbar: function createToolbar() {
+      if (this.toolbar) {
+        return this;
+      }
+
       var toolbarCssClasses = [this.settings.useFlexToolbar ? 'flex-toolbar' : 'toolbar', 'editor-toolbar', 'formatter-toolbar'].join(' ');
 
       var sectionCss = '';
@@ -45811,13 +48767,35 @@ var Soho = (function (exports) {
         this.toolbar = $(toolbar).insertBefore(this.sourceViewActive() ? this.element.prev() : this.element);
       }
 
+      // Invoke Fontpicker, if applicable
+      var fpElement = this.toolbar.find('[data-action="fontStyle"]').first();
+      if (fpElement && fpElement.length) {
+        fpElement.fontpicker(this.settings.fontpickerSettings);
+        this.fontPickerElem = fpElement;
+      }
+
       // Invoke Colorpicker, if applicable
       var cpElements = this.toolbar.find('[data-action="foreColor"], [data-action="backColor"]');
-      cpElements.colorpicker({ placeIn: 'editor' });
+      cpElements.colorpicker({
+        placeIn: 'editor',
+        popupmenuSettings: {
+          offset: {
+            y: 0
+          },
+          showArrow: false
+        }
+      });
       $('.trigger', cpElements).off('click.colorpicker');
 
       // Invoke the (Flex?) Toolbar
-      this.toolbar[this.settings.useFlexToolbar ? 'toolbarflex' : 'toolbar']();
+      this.toolbar[this.settings.useFlexToolbar ? 'toolbarflex' : 'toolbar']({
+        moreMenuSettings: {
+          offset: {
+            y: 0
+          },
+          showArrow: false
+        }
+      });
 
       // Invoke Tooltips
       this.toolbar.find('button[title]').tooltip();
@@ -45835,7 +48813,7 @@ var Soho = (function (exports) {
 
       // Rebind everything to the new element
       this.setupTextareaEvents();
-      this.initToolbar();
+      this.createToolbar();
       this.bindButtons().bindModals().bindAnchorPreview();
       this.bindSelect().bindPaste().setupKeyboardEvents();
       this.toolbar.find('button').button();
@@ -45883,7 +48861,6 @@ var Soho = (function (exports) {
     setupKeyboardEvents: function setupKeyboardEvents() {
       var _this6 = this;
 
-      var self = this;
       var currentElement = this.getCurrentElement();
       var keys = {
         b: 66, // {Ctrl + B} bold
@@ -45976,7 +48953,7 @@ var Soho = (function (exports) {
       // Open link in new windows/tab, if clicked with command-key(for mac) or ctrl-key(for windows)
       this.element.on('mousedown.editor', 'a', function (e) {
         var href = $(this).attr('href');
-        if (!self.isFirefox && (self.isMac && e.metaKey || !self.isMac && e.ctrlKey)) {
+        if (Environment.browser.name !== 'firefox' && Environment.os.name === 'Mac OS X' && (e.metaKey || e.ctrlKey)) {
           window.open(href, '_blank');
           e.preventDefault();
         }
@@ -46173,6 +49150,8 @@ var Soho = (function (exports) {
 
         unorderedlist: '<button type="button" class="btn" title="' + Locale.translate('UnorderedList') + '" data-action="insertunorderedlist" data-element="ul">' + buttonLabels.unorderedlist + '</button>',
 
+        fontPicker: '<button type="button" class="btn fontpicker" data-action="fontStyle"><span>' + 'FontPicker' + '</span></button>',
+
         justifyLeft: '<button type="button" class="btn" title="' + Locale.translate('JustifyLeft') + '" data-action="justifyLeft" >' + buttonLabels.justifyLeft + '</button>',
 
         justifyCenter: '<button type="button" class="btn" title="' + Locale.translate('JustifyCenter') + '" data-action="justifyCenter">' + buttonLabels.justifyCenter + '</button>',
@@ -46243,19 +49222,23 @@ var Soho = (function (exports) {
 
     // Bind Events to Toolbar Buttons
     bindButtons: function bindButtons() {
+      var _this8 = this;
+
       var self = this;
 
-      this.toolbar.on('touchstart.editor click.editor', 'button', function (e) {
-        var btn = $(this);
-        var action = btn.attr('data-action');
+      function editorButtonActionHandler(e, item) {
+        var btn = item instanceof ToolbarFlexItem ? $(item.element) : $(e.target);
 
         // Don't do anything if it's the More Button
         if (btn.is('.btn-actions')) {
           return;
         }
 
+        var action = btn.attr('data-action');
+        var currentElem = self.getCurrentElement();
+
         e.preventDefault();
-        self.getCurrentElement().focus();
+        currentElem.focus();
 
         if (self.selection === undefined) {
           self.checkSelection();
@@ -46269,17 +49252,38 @@ var Soho = (function (exports) {
           self.execAction(action, e);
         }
 
-        if (self.isIe || self.isIeEdge) {
-          self.getCurrentElement().trigger('change');
+        if (Environment.browser.name === 'ie' || Environment.browser.isEdge()) {
+          currentElem.trigger('change');
         }
 
-        return false;
-      });
+        if (btn[0].classList.contains('longpress-target')) {
+          return false;
+        }
+      }
+
+      // Most components work fine with the `selected` event on the toolbars.
+      // Colorpicker components aren't "triggered" by a selected event, so they work
+      // off of the click event.
+      if (this.settings.useFlexToolbar) {
+        this.toolbar.on('selected.editor', editorButtonActionHandler);
+        this.toolbar.on('click.editor', '.colorpicker-editor-button', editorButtonActionHandler);
+      } else {
+        this.toolbar.on('click.editor', 'button', editorButtonActionHandler);
+      }
+
+      if (this.fontPickerElem) {
+        this.fontPickerElem.on('font-selected', function (e, fontPickerStyle) {
+          _this8.execFormatBlock(fontPickerStyle.tagName);
+        });
+      }
 
       return this;
     },
     bindModals: function bindModals() {
       var self = this;
+      var modalSettings = {
+        noRefocus: true
+      };
 
       this.modals = {
         url: this.createURLModal(),
@@ -46288,7 +49292,7 @@ var Soho = (function (exports) {
 
       $('[name="em-target-' + this.id + '"]').dropdown();
 
-      $('#modal-url-' + this.id + ', #modal-image-' + this.id).modal().on('beforeopen', function () {
+      $('#modal-url-' + this.id + ', #modal-image-' + this.id).modal(modalSettings).on('beforeopen', function () {
         self.savedSelection = self.saveSelection();
 
         if ($(this).attr('id') === 'modal-url-' + self.id) {
@@ -46345,7 +49349,7 @@ var Soho = (function (exports) {
     * @returns {void}
     */
     createURLModal: function createURLModal() {
-      var _this8 = this;
+      var _this9 = this;
 
       var s = this.settings;
       var urlModal = $('#modal-url-' + this.id);
@@ -46359,7 +49363,7 @@ var Soho = (function (exports) {
 
       $.each(s.anchor.targets, function (key, val) {
         targetOptions += '<option value="' + val + '">' + Locale.translate(key) + '</option>';
-        if (_this8.settings.anchor.defaultTargetText.toLowerCase() === key.toLowerCase()) {
+        if (_this9.settings.anchor.defaultTargetText.toLowerCase() === key.toLowerCase()) {
           isTargetCustom = false;
         }
       });
@@ -46418,7 +49422,7 @@ var Soho = (function (exports) {
       }
     },
     createLink: function createLink(input) {
-      var _this9 = this;
+      var _this10 = this;
 
       // Restore Selection in the Editor and Variables
       this.restoreSelection(this.savedSelection);
@@ -46456,7 +49460,7 @@ var Soho = (function (exports) {
         var rangeStr = void 0;
         var rangeImg = void 0;
 
-        if (!this.selection.isCollapsed || this.isIe11) {
+        if (!this.selection.isCollapsed || Environment.browser.isIE11()) {
           // get example from: http://jsfiddle.net/jwvha/1/
           // and info: http://stackoverflow.com/questions/6690752/insert-html-at-caret-in-a-contenteditable-div
           if (window.getSelection) {
@@ -46512,7 +49516,7 @@ var Soho = (function (exports) {
         } else {
           document.execCommand('insertHtml', null, alink[0].outerHTML);
           setTimeout(function () {
-            _this9.getCurrentElement().focus();
+            _this10.getCurrentElement().focus();
           }, 1);
         }
         this.bindAnchorPreview();
@@ -46528,15 +49532,15 @@ var Soho = (function (exports) {
 
     // Setup Events For Text Selection
     bindSelect: function bindSelect() {
-      var _this10 = this;
+      var _this11 = this;
 
       var selectionTimer = '';
 
       this.selectionHandler = function () {
         clearTimeout(selectionTimer);
         selectionTimer = setTimeout(function () {
-          _this10.checkSelection();
-        }, _this10.settings.delay);
+          _this11.checkSelection();
+        }, _this11.settings.delay);
       };
 
       var currentElement = this.getCurrentElement();
@@ -46625,10 +49629,13 @@ var Soho = (function (exports) {
       if (this.toolbar.find('.buttonset [data-action="backColor"]').length) {
         this.colorpickerButtonState('backColor');
       }
+      if (this.fontPickerElem) {
+        this.checkButtonState('fontStyle');
+      }
 
       var parentNode = this.getSelectedParentElement();
 
-      while (parentNode.tagName !== undefined && this.parentElements.indexOf(parentNode.tagName.toLowerCase) === -1) {
+      while (parentNode.tagName !== undefined && EDITOR_PARENT_ELEMENTS.indexOf(parentNode.tagName.toLowerCase) === -1) {
         this.activateButton(parentNode.tagName.toLowerCase());
 
         // we can abort the search upwards if we leave the contentEditable element
@@ -46643,6 +49650,29 @@ var Soho = (function (exports) {
         return;
       }
 
+      // 'fontStyle' type notifies the FontPicker component if the current selection doesn't match.
+      if (this.fontPickerElem && command === 'fontStyle') {
+        var fontpickerAPI = this.fontPickerElem.data('fontpicker');
+        var fontpickerSupportedTags = fontpickerAPI.supportedTagNames;
+
+        var selectedElem = this.getSelectionParentElement();
+        var searchElems = $(selectedElem).add($(selectedElem).parentsUntil(this.element));
+        var targetElemTag = void 0;
+        var fontStyle = void 0;
+
+        for (var i = 0; i < searchElems.length && fontStyle === undefined; i++) {
+          targetElemTag = searchElems[i].tagName.toLowerCase();
+          if (fontpickerSupportedTags.indexOf(targetElemTag) > -1) {
+            fontStyle = fontpickerAPI.getStyleByTagName(targetElemTag);
+            fontpickerAPI.select(fontStyle, true);
+            break;
+          }
+        }
+
+        return;
+      }
+
+      // Standard Button State Check
       if (document.queryCommandState(command)) {
         this.toolbar.find('[data-action="' + command + '"]').addClass('is-active');
       } else {
@@ -46743,7 +49773,7 @@ var Soho = (function (exports) {
 
         if (clipboardData && clipboardData.types) {
           types = clipboardData.types;
-          if (types instanceof DOMStringList && types.contains('text/html') || types.indexOf && types.indexOf('text/html') !== -1 || self.isIeEdge) {
+          if (types instanceof DOMStringList && types.contains('text/html') || types.indexOf && types.indexOf('text/html') !== -1 || Environment.browser.isEdge()) {
             pastedData = e.originalEvent.clipboardData.getData('text/html');
           }
           if (types instanceof DOMStringList && types.contains('text/plain')) {
@@ -46769,7 +49799,7 @@ var Soho = (function (exports) {
           }
         }
 
-        self.pastedData = self.isIe11 ? pastedData : self.getCleanedHtml(pastedData);
+        self.pastedData = Environment.browser.isIE11() ? pastedData : self.getCleanedHtml(pastedData);
 
         /**
         * Fires before paste.
@@ -46782,7 +49812,7 @@ var Soho = (function (exports) {
         */
         $.when(self.element.triggerHandler('beforepaste', [{ pastedData: self.pastedData }])).done(function () {
           if (self.pastedData && !e.defaultPrevented) {
-            if (!self.isIe11 && !self.isIeEdge) {
+            if (!Environment.browser.isIE11() && !Environment.browser.isEdge()) {
               e.preventDefault();
             }
 
@@ -46805,7 +49835,7 @@ var Soho = (function (exports) {
           self.element.triggerHandler('afterpaste', [{ pastedData: self.pastedData }]);
           self.pastedData = null;
         });
-        if (!self.isIe11) {
+        if (!Environment.browser.isIE11()) {
           return false;
         }
       };
@@ -46826,7 +49856,7 @@ var Soho = (function (exports) {
           range = sel.getRangeAt(0);
           range.deleteContents();
 
-          if (self.isIe11) {
+          if (Environment.browser.isIE11()) {
             html = templIE11;
           }
 
@@ -46857,7 +49887,7 @@ var Soho = (function (exports) {
           }
 
           // IE 11
-          if (self.isIe11) {
+          if (Environment.browser.isIE11()) {
             var maxRun = 50;
             var deferredIE11 = $.Deferred();
 
@@ -47037,9 +50067,9 @@ var Soho = (function (exports) {
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     },
     bindWindowActions: function bindWindowActions() {
-      var _this11 = this;
+      var _this12 = this;
 
-      var editorContainer = this.element.closest('.editor-container');
+      var editorContainer = this.container;
       var currentElement = this.getCurrentElement();
       var self = this;
 
@@ -47047,10 +50077,10 @@ var Soho = (function (exports) {
       // Work around for Firefox with using keys was not focusing on first child in editor
       // Firefox behaves differently than other browsers
       .on('mousedown.editor', function () {
-        _this11.mousedown = true;
+        _this12.mousedown = true;
       }).on('focus.editor', function () {
-        if (_this11.isFirefox && !_this11.mousedown && _this11.element === currentElement) {
-          _this11.setFocus();
+        if (Environment.browser.name === 'firefox' && !_this12.mousedown && _this12.element === currentElement) {
+          _this12.setFocus();
         }
       })
 
@@ -47069,7 +50099,8 @@ var Soho = (function (exports) {
         }
       });
 
-      editorContainer.on('focus.editor', '.editor, .editor-source', function () {
+      // Handle visual styles at the container level on blur/focus
+      function containerFocusHandler() {
         var elem = $(this);
 
         editorContainer.addClass('is-active');
@@ -47079,15 +50110,26 @@ var Soho = (function (exports) {
             editorContainer.parent().find('.editor-source').addClass('error');
           }
         }, 100);
-      }).on('blur.editor', '.editor, .editor-source', function () {
+      }
+      function containerBlurHandler() {
         editorContainer.removeClass('is-active');
         editorContainer.parent().find('.editor-toolbar').removeClass('error');
         editorContainer.parent().find('.editor-source').removeClass('error');
+      }
+
+      this.container.on('focusin.' + COMPONENT_NAME$I, '.editor, .editor-source', containerFocusHandler).on('focusout.' + COMPONENT_NAME$I, '.editor, .editor-source', containerBlurHandler);
+
+      this.container.on('mouseenter.' + COMPONENT_NAME$I, function () {
+        if (!_this12.element.hasClass('error')) {
+          _this12.container.addClass('is-hover');
+        }
+      }).on('mouseleave.' + COMPONENT_NAME$I, function () {
+        _this12.container.removeClass('is-hover');
       });
 
       if (self.settings.onLinkClick) {
         editorContainer.on('click.editorlinks', 'a', function (e) {
-          self.settings.onLinkClick(e, { elem: _this11, url: e.currentTarget.getAttribute('data-url') });
+          self.settings.onLinkClick(e, { elem: _this12, url: e.currentTarget.getAttribute('data-url') });
           e.preventDefault();
           e.stopImmediatePropagation();
           e.stopPropagation();
@@ -47095,14 +50137,10 @@ var Soho = (function (exports) {
       }
 
       // Attach Label
-      var label = this.element.prevAll('.label');
-      for (var i = 0, l = label.length; i < l; i++) {
-        label[i].style.cursor = 'default';
-      }
-      label.on('click.editor', function () {
+      this.label.on('click.editor', function () {
         currentElement.focus();
       });
-      currentElement.attr('aria-label', label.text());
+      currentElement.attr('aria-label', this.label.text());
       return this;
     },
 
@@ -47265,18 +50303,21 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     toggleSource: function toggleSource(forceToSourceMode) {
-      var _this12 = this;
+      var _this13 = this;
 
       // Preview Mode
       var doPreviewMode = function doPreviewMode(res) {
-        var content = res || _this12.textarea.val();
-        _this12.element.empty().removeClass('source-view-active hidden');
-        _this12.sourceView.addClass('hidden').removeClass('is-focused');
-        _this12.element.trigger('focus.editor');
-        _this12.switchToolbars();
+        var content = res || _this13.textarea.val();
+        content = xssUtils.sanitizeHTML(content);
+        content = _this13.getCleanedHtml(content);
+
+        _this13.element.empty().removeClass('source-view-active hidden');
+        _this13.sourceView.addClass('hidden').removeClass('is-focused');
+        _this13.element.trigger('focus.editor');
+        _this13.switchToolbars();
         setTimeout(function () {
-          _this12.element.html(xssUtils.sanitizeHTML(content));
-          content = _this12.element.html();
+          _this13.element.html(content);
+          content = _this13.element.html();
           /**
            * Fires after preview mode activated.
            * @event afterpreviewmode
@@ -47284,23 +50325,23 @@ var Soho = (function (exports) {
            * @property {object} event The jquery event object
            * @property {string} content Additional argument
            */
-          _this12.element.triggerHandler('afterpreviewmode', content);
+          _this13.element.triggerHandler('afterpreviewmode', content);
         }, 0);
       };
 
       // Source Mode
       var doSourceMode = function doSourceMode(res) {
-        var content = res || _this12.element.html().trim().replace(/\s+/g, ' ').replace(/<br( \/)?>/g, '<br>\n').replace(/<\/p> /g, '</p>\n\n').replace(/<\/blockquote>( )?/g, '</blockquote>\n\n');
-        if (_this12.settings.useSourceFormatter) {
-          content = _this12.formatHtml(content);
+        var content = res || _this13.element.html().trim().replace(/\s+/g, ' ').replace(/<br( \/)?>/g, '<br>\n').replace(/<\/p> /g, '</p>\n\n').replace(/<\/blockquote>( )?/g, '</blockquote>\n\n');
+        if (_this13.settings.useSourceFormatter) {
+          content = _this13.formatHtml(content);
         }
-        _this12.textarea.val(content).focus();
-        _this12.element.addClass('source-view-active hidden');
-        _this12.sourceView.removeClass('hidden');
-        _this12.adjustSourceLineNumbers();
-        _this12.textarea.focus();
-        _this12.switchToolbars();
-        content = _this12.textarea.val();
+        _this13.textarea.val(content).focus();
+        _this13.element.addClass('source-view-active hidden');
+        _this13.sourceView.removeClass('hidden');
+        _this13.adjustSourceLineNumbers();
+        _this13.textarea.focus();
+        _this13.switchToolbars();
+        content = _this13.textarea.val();
         /**
          * Fires after source mode activated.
          * @event aftersourcemode
@@ -47308,7 +50349,7 @@ var Soho = (function (exports) {
          * @property {object} event The jquery event object
          * @property {string} content Additional argument
          */
-        _this12.element.triggerHandler('aftersourcemode', content);
+        _this13.element.triggerHandler('aftersourcemode', content);
       };
 
       // Check the false value
@@ -47354,7 +50395,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     clearFormatting: function clearFormatting() {
-      var _this13 = this;
+      var _this14 = this;
 
       var parentEl = this.getSelectionParentElement();
       var parentTag = parentEl.tagName;
@@ -47371,9 +50412,9 @@ var Soho = (function (exports) {
         while (!found && max > 0) {
           max--;
           elem = elem ? elem.parentNode : null;
-          found = elem && elem === _this13.element[0] || isFound(elem);
+          found = elem && elem === _this14.element[0] || isFound(elem);
         }
-        var r = { found: elem && elem !== parentEl && elem !== _this13.element[0] };
+        var r = { found: elem && elem !== parentEl && elem !== _this14.element[0] };
         if (r.found) {
           r.elem = elem;
           r.textAlign = elem.style.textAlign;
@@ -47389,13 +50430,13 @@ var Soho = (function (exports) {
           p.innerHTML = elem.innerHTML;
           parent.replaceChild(p, elem);
         };
-        if (_this13.parentElements.indexOf(parentTag) > -1) {
+        if (EDITOR_PARENT_ELEMENTS.indexOf(parentTag) > -1) {
           if (parentTag !== 'p') {
             document.execCommand('removeFormat', false, null);
             replaceTag(parentEl);
           }
         } else {
-          _this13.parentElements.forEach(function (el) {
+          EDITOR_PARENT_ELEMENTS.forEach(function (el) {
             if (el !== 'p') {
               var _nodes = [].slice.call(parentEl.querySelectorAll(el));
               _nodes.forEach(function (node) {
@@ -47405,7 +50446,7 @@ var Soho = (function (exports) {
           });
         }
         // Blockquote or Pre
-        var nodes = [].slice.call(_this13.element[0].querySelectorAll('blockquote, pre'));
+        var nodes = [].slice.call(_this14.element[0].querySelectorAll('blockquote, pre'));
 
         var _loop = function _loop(i, l) {
           var found = false;
@@ -47472,7 +50513,7 @@ var Soho = (function (exports) {
       var containsNodeInSelection = function containsNodeInSelection(node) {
         var sel = window.getSelection();
         var r = false;
-        if (_this13.isIe11) {
+        if (Environment.browser.isIE11()) {
           var rangeAt = sel.getRangeAt(0);
           var range = document.createRange();
           range.selectNode(node);
@@ -47570,7 +50611,7 @@ var Soho = (function (exports) {
       // Set selection color checkmark in picker popup
       // by adding/updating ['data-value'] attribute
       if (cpApi) {
-        if (this.isFirefox && action === 'backColor') {
+        if (Environment.browser.name === 'firefox' && action === 'backColor') {
           color = $(window.getSelection().focusNode.parentNode).css('background-color');
         }
         // IE-11 queryCommandValue returns the as decimal
@@ -47586,7 +50627,7 @@ var Soho = (function (exports) {
 
     // Colorpicker actions ['foreColor'|'backColor']
     colorpickerActions: function colorpickerActions(action) {
-      var _this14 = this;
+      var _this15 = this;
 
       var state = this.colorpickerButtonState(action);
       var cpBtn = state.cpBtn;
@@ -47608,7 +50649,7 @@ var Soho = (function (exports) {
 
         cpBtn.attr('data-value', value).find('.icon').css('fill', value);
 
-        if (_this14.isIe || action === 'foreColor') {
+        if (Environment.browser.name === 'ie' || action === 'foreColor') {
           if (value) {
             document.execCommand(action, false, value);
           } else {
@@ -47622,7 +50663,7 @@ var Soho = (function (exports) {
           // so use "fontSize" command to add node, then remove size attribute
           // this fix will conflict with combination of font size & background color
           document.execCommand('fontSize', false, '2');
-          var parent = _this14.getSelectionParentElement().parentNode;
+          var parent = _this15.getSelectionParentElement().parentNode;
           var els = parent.getElementsByTagName('font');
 
           // Clearing all the background style in any element node in selection's parent
@@ -47644,14 +50685,26 @@ var Soho = (function (exports) {
         }
 
         setTimeout(function () {
-          _this14.getCurrentElement().focus();
+          _this15.getCurrentElement().focus();
         }, 0);
       });
 
       // Toggle colorpicker
       cpApi.toggleList();
     },
+
+
+    /**
+     * Formats the currently-selected block of content in the editor with a predefined HTML element
+     * and style, if applicable.
+     * @param {string} el, the desired block-level element with which to wrap the current block.
+     * @returns {void|boolean} same return value as [`document.execCommand()`](https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand)
+     */
     execFormatBlock: function execFormatBlock(el) {
+      if (!this.selection || !(this.selection instanceof Selection)) {
+        return;
+      }
+
       var selectionData = this.getSelectionData(this.selection.anchorNode);
       // FF handles blockquote differently on formatBlock
       // allowing nesting, we need to use outdent
@@ -47666,7 +50719,7 @@ var Soho = (function (exports) {
       // blockquote needs to be called as indent
       // http://stackoverflow.com/questions/10741831/execcommand-formatblock-headings-in-ie
       // http://stackoverflow.com/questions/1816223/rich-text-editor-with-blockquote-function/1821777#1821777
-      if (this.isIe) {
+      if (Environment.browser.name === 'ie') {
         if (el === 'blockquote') {
           return document.execCommand('indent', false, el);
         }
@@ -47685,7 +50738,7 @@ var Soho = (function (exports) {
         tagName = el.tagName.toLowerCase();
       }
 
-      while (el && this.parentElements.indexOf(tagName) === -1) {
+      while (el && EDITOR_PARENT_ELEMENTS.indexOf(tagName) === -1) {
         el = el.parentNode;
         if (el && el.tagName) {
           tagName = el.tagName.toLowerCase();
@@ -47698,7 +50751,7 @@ var Soho = (function (exports) {
       var parentNode = node.parentNode;
       var tagName = parentNode.tagName.toLowerCase();
 
-      while (this.parentElements.indexOf(tagName) === -1 && tagName !== 'div') {
+      while (EDITOR_PARENT_ELEMENTS.indexOf(tagName) === -1 && tagName !== 'div') {
         if (tagName === 'li') {
           return true;
         }
@@ -47720,19 +50773,26 @@ var Soho = (function (exports) {
       this.element = checkJQ(this.element);
       this.textarea = checkJQ(this.textarea);
 
-      var toolbarApi = this.toolbar.data('toolbar');
+      var toolbarApi = this.toolbar.data('toolbar') || this.toolbar.data('toolbar-flex');
       if (toolbarApi) {
         toolbarApi.destroy();
       }
 
-      var tooltips = this.toolbar.find('button');
-      for (var i = 0, l = tooltips.length; i < l; i++) {
-        var tooltip = $(tooltips[i]).data('tooltip');
+      // Cleanup buttons
+      var buttons = this.toolbar.find('button');
+      for (var i = 0, l = buttons.length; i < l; i++) {
+        var tooltip = $(buttons[i]).data('tooltip');
         if (tooltip && typeof tooltip.destroy === 'function') {
           tooltip.destroy();
         }
+
+        var button = $(buttons[i]).data('button');
+        if (button && typeof button.destroy === 'function') {
+          button.destroy();
+        }
       }
 
+      // Cleanup pickers
       var colorpickers = $('[data-action="foreColor"], [data-action="backColor"]', this.element);
       for (var _i2 = 0, _l = colorpickers.length; _i2 < _l; _i2++) {
         var colorpicker = $(colorpickers[_i2]).data('colorpicker');
@@ -47741,14 +50801,30 @@ var Soho = (function (exports) {
         }
       }
 
-      this.toolbar.off('touchstart.editor click.editor click.editor mousedown.editor');
+      if (this.fontPickerElem) {
+        this.fontPickerElem.off('font-selected.' + COMPONENT_NAME$I);
+        var fontpickerAPI = this.fontPickerElem.data('fontpicker');
+        if (fontpickerAPI) {
+          fontpickerAPI.destroy();
+        }
+        delete this.fontPickerElem;
+      }
+
+      // Unbind/Remove Toolbar Component (generically)
+      this.toolbar.off(['click.' + COMPONENT_NAME$I, 'selected.' + COMPONENT_NAME$I].join(' '));
       this.toolbar.remove();
-      this.toolbar = undefined;
-      this.element.off('mouseup.editor keypress.editor input.editor keyup.editor keydown.editor focus.editor mousedown.editor DOMNodeInserted.editor updated.editor blur.editor paste.editor');
-      this.textarea.off('mouseup.editor click.editor keyup.editor input.editor focus.editor blur.editor');
+      delete this.toolbar;
+
+      // Remove events that could be bound to either:
+      // - the WYSIWYG editor
+      // - the source code view
+      var boundEventNames = ['blur', 'DOMNodeInserted', 'focus', 'input.' + COMPONENT_NAME$I, 'keydown.' + COMPONENT_NAME$I, 'keypress.' + COMPONENT_NAME$I, 'keyup.' + COMPONENT_NAME$I, 'mouseup.' + COMPONENT_NAME$I, 'mousedown.' + COMPONENT_NAME$I, 'paste.' + COMPONENT_NAME$I].join(' ');
+
+      this.element.off(boundEventNames);
+      this.textarea.off(boundEventNames);
       this.element.prev('.label').off('click.editor');
 
-      this.element.closest('.editor-container').off('focus.editor blur.editor click.editorlinks');
+      this.container.closest('.editor-container').off('focus.editor blur.editor click.editorlinks');
 
       var state = this.colorpickerButtonState('foreColor');
       var cpBtn = state.cpBtn;
@@ -47758,19 +50834,25 @@ var Soho = (function (exports) {
       cpBtn = state.cpBtn;
       cpBtn.off('selected.editor');
 
+      delete this.pasteWrapper;
+      delete this.pasteWrapperHtml;
+      delete this.selectionHandler;
+
       $(window).off('resize.editor');
 
       if (this.modals) {
-        for (var _i3 = 0, _l2 = this.modals.length; _i3 < _l2; _i3++) {
-          var modal = $(this.modals[_i3]);
+        var modalTypes = Object.keys(this.modals);
+        for (var _i3 = 0, _l2 = modalTypes.length; _i3 < _l2; _i3++) {
+          var modal = $('#modal-' + modalTypes[_i3] + '-' + this.id);
           var modalApi = modal.data('modal');
           modal.off('beforeclose.editor close.editor open.editor beforeopen.editor');
           if (modalApi && typeof modalApi.destroy === 'function') {
             modalApi.destroy();
           }
+          modal.remove();
         }
       }
-      this.modals = {};
+      delete this.modals;
 
       this.element.trigger('destroy.toolbar.editor');
     },
@@ -47851,14 +50933,14 @@ var Soho = (function (exports) {
      * @returns {boolean} true if editor is editabled
      */
     isEditable: function isEditable() {
-      var _this15 = this;
+      var _this16 = this;
 
       var isEnabled = true;
       var isContains = function isContains(el, className) {
         return el.classList.contains(className);
       };
       ['is-disabled', 'is-readonly', 'is-preview'].forEach(function (className) {
-        if (isContains(_this15.container[0], className) || isContains(_this15.element[0], className)) {
+        if (isContains(_this16.container[0], className) || isContains(_this16.element[0], className)) {
           isEnabled = false;
         }
       });
@@ -47878,20 +50960,41 @@ var Soho = (function (exports) {
       return this.teardown().init();
     },
     teardown: function teardown() {
-      this.element.attr('contenteditable', 'false');
-      this.element.off('input.editor keyup.editor');
-      $('html').off('mouseup.editor');
-
       this.destroyToolbar();
+
+      // Cleanup Source View elements and events
       if (this.sourceView) {
         this.sourceView.off('.editor');
         this.sourceView.remove();
-        this.sourceView = null;
+        delete this.sourceView;
       }
 
-      if ($('[data-editor="true"]').length === 1) {
-        $('#modal-url-' + this.id + ', #modal-image-' + this.id).remove();
+      delete this.textarea;
+      if (this.lineNumbers) {
+        delete this.lineNumbers;
       }
+      if (this.selection) {
+        delete this.selection;
+      }
+      if (this.selectionRange) {
+        delete this.selectionRange;
+      }
+
+      // Cleanup container
+      this.container.off(['focusin.' + COMPONENT_NAME$I, 'focusout.' + COMPONENT_NAME$I, 'mouseneter.' + COMPONENT_NAME$I, 'mouseleave.' + COMPONENT_NAME$I, 'input.' + COMPONENT_NAME$I, 'keyup.' + COMPONENT_NAME$I].join(' '));
+      this.container.removeClass('editor-container');
+      delete this.container;
+
+      // Cleanup label
+      this.label.off('click.' + COMPONENT_NAME$I);
+      delete this.label;
+
+      // Cleanup Editor Element
+      this.element.attr('contenteditable', 'false');
+      this.element.off(['mousedown.' + COMPONENT_NAME$I, 'updated.' + COMPONENT_NAME$I].join(' '));
+
+      delete this.id;
+      delete this.isActive;
 
       return this;
     },
@@ -47903,7 +51006,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$E);
+      $.removeData(this.element[0], COMPONENT_NAME$I);
     },
 
 
@@ -47986,7 +51089,7 @@ var Soho = (function (exports) {
 
     // Called whenever a paste event has occured
     onPasteTriggered: function onPasteTriggered() {
-      if (!this.isFirefox && document.addEventListener) {
+      if (Environment.browser.name !== 'firefox' && document.addEventListener) {
         document.addEventListener('paste', function (e) {
           if (typeof e.clipboardData !== 'undefined') {
             var copiedData = e.clipboardData.items[0]; // Get the clipboard data
@@ -48140,17 +51243,17 @@ var Soho = (function (exports) {
   // Initialize the plugin (Once)
   $.fn.editor = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$E);
+      var instance = $.data(this, COMPONENT_NAME$I);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$E, new Editor(this, settings));
+        instance = $.data(this, COMPONENT_NAME$I, new Editor(this, settings));
       }
     });
   };
 
   // The name of this component
-  var COMPONENT_NAME$F = 'hierarchy';
+  var COMPONENT_NAME$J = 'hierarchy';
 
   /**
    * The displays customizable hierarchical data such as an org chart.
@@ -48221,10 +51324,12 @@ var Soho = (function (exports) {
 
       // Warn about deprecated settings
       if (s.paging) {
+        // eslint-disable-next-line no-console
         console.warn('\n      Hierarchy,\n      WARNING: Paging setting will be deprecated.\n      Date of Message: 02/12/2019\n      Date of deprecation: 05/15/2019.\n      ');
       }
 
       if (s.mobileView) {
+        // eslint-disable-next-line no-console
         console.warn('\n      Hierarchy,\n      WARNING: MobileView setting will be deprecated.\n      Date of Message: 02/12/2019\n      Date of deprecation: 05/15/2019.\n      ');
       }
 
@@ -49383,7 +52488,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      this.element.removeData(COMPONENT_NAME$F);
+      this.element.removeData(COMPONENT_NAME$J);
     }
   };
 
@@ -49394,17 +52499,17 @@ var Soho = (function (exports) {
    */
   $.fn.hierarchy = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$F);
+      var instance = $.data(this, COMPONENT_NAME$J);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$F, new Hierarchy(this, settings));
+        instance = $.data(this, COMPONENT_NAME$J, new Hierarchy(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$G = 'fieldfilter';
+  var COMPONENT_NAME$K = 'fieldfilter';
 
   /**
    * Ability to have a dropdown next to the field.
@@ -49478,7 +52583,7 @@ var Soho = (function (exports) {
         var ffId = id + '-ff';
 
         // Set Field
-        this.field = this.element.closest('.field');
+        this.field = this.element.closest('.field, .field-short');
 
         // RTL list x-position
         var isRTL = Locale.isRTL();
@@ -49597,10 +52702,11 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this = this;
 
-      this.ffdropdown.on('listopened.' + COMPONENT_NAME$G, function () {
+      this.ffdropdown.on('listopened.' + COMPONENT_NAME$K, function () {
         // drowpdownWidth - border (52)
-        $('#dropdown-list ul').width(_this.element.outerWidth() + 52);
-      }).on('selected.' + COMPONENT_NAME$G, function (e, args) {
+        var extra = _this.field.is('.field-short') ? 42 : 52;
+        $('#dropdown-list ul').width(_this.element.outerWidth() + extra);
+      }).on('selected.' + COMPONENT_NAME$K, function (e, args) {
         /**
          * Fires after the value in the dropdown is selected.
          * @event filtered
@@ -49652,7 +52758,7 @@ var Soho = (function (exports) {
      * @returns {object} The api
      */
     unbind: function unbind() {
-      this.ffdropdown.off('.' + COMPONENT_NAME$G);
+      this.ffdropdown.off('.' + COMPONENT_NAME$K);
 
       // Remove Dropdown
       if (this.ddApi && typeof this.ddApi.destroy === 'function') {
@@ -49683,7 +52789,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$G);
+      $.removeData(this.element[0], COMPONENT_NAME$K);
     }
   };
 
@@ -49694,17 +52800,17 @@ var Soho = (function (exports) {
    */
   $.fn.fieldfilter = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$G);
+      var instance = $.data(this, COMPONENT_NAME$K);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$G, new FieldFilter(this, settings));
+        instance = $.data(this, COMPONENT_NAME$K, new FieldFilter(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$H = 'fieldoptions';
+  var COMPONENT_NAME$L = 'fieldoptions';
 
   /**
   * A control bind next to another component to add some extra functionality.
@@ -49741,7 +52847,7 @@ var Soho = (function (exports) {
       var _this = this;
 
       this.isFirefox = Environment.browser.name === 'firefox';
-      this.isSafari = Environment.browser.name === 'safari';
+      this.isSafari = Environment.browser.isSafari();
 
       this.field = this.element.closest('.field, .radio-group');
       this.targetElem = this.element;
@@ -49769,7 +52875,7 @@ var Soho = (function (exports) {
       // https://stackoverflow.com/a/43010274
       if (this.isFirefox && this.trigger.length) {
         this.trigger[0].contentEditable = true;
-        this.trigger.on('keydown.' + COMPONENT_NAME$H, function (e) {
+        this.trigger.on('keydown.' + COMPONENT_NAME$L, function (e) {
           var key = e.which || e.keyCode || e.charCode || 0;
           if (key !== 9) {
             e.preventDefault();
@@ -49848,9 +52954,9 @@ var Soho = (function (exports) {
       };
       var onPopupToggle = function onPopupToggle(elem) {
         if (elem.trigger) {
-          elem.trigger.off('show.' + COMPONENT_NAME$H).on('show.' + COMPONENT_NAME$H, function () {
+          elem.trigger.off('show.' + COMPONENT_NAME$L).on('show.' + COMPONENT_NAME$L, function () {
             doActive();
-          }).off('hide.' + COMPONENT_NAME$H).on('hide.' + COMPONENT_NAME$H, function (e) {
+          }).off('hide.' + COMPONENT_NAME$L).on('hide.' + COMPONENT_NAME$L, function (e) {
             if (canUnactive(e)) {
               doUnactive();
               _this2.element.removeClass('is-open');
@@ -49885,12 +52991,12 @@ var Soho = (function (exports) {
       // In desktop environments, the button should only display when the field is in use.
       if (Environment.features.touch) {
         this.field.addClass('visible');
-        this.trigger.on('beforeopen.' + COMPONENT_NAME$H, function (e) {
+        this.trigger.on('beforeopen.' + COMPONENT_NAME$L, function (e) {
           if (!canActive()) {
             return;
           }
           doActive();
-        }).on('close.' + COMPONENT_NAME$H, function (e) {
+        }).on('close.' + COMPONENT_NAME$L, function (e) {
           if (!canUnactive(e)) {
             return;
           }
@@ -49898,7 +53004,7 @@ var Soho = (function (exports) {
         });
       } else {
         this.field.removeClass('visible');
-        this.field.on('mouseover.' + COMPONENT_NAME$H, function () {
+        this.field.on('mouseover.' + COMPONENT_NAME$L, function () {
           if (self.element.prop('disabled') || self.element.closest('is-disabled').length) {
             return;
           }
@@ -49906,7 +53012,7 @@ var Soho = (function (exports) {
           if (self.field[0].className.indexOf('visible') < 0) {
             self.field[0].classList.add('visible');
           }
-        }).on('mouseout.' + COMPONENT_NAME$H, function () {
+        }).on('mouseout.' + COMPONENT_NAME$L, function () {
           if (self.field[0].className.indexOf('visible') > -1) {
             self.field[0].classList.remove('visible');
           }
@@ -49936,12 +53042,12 @@ var Soho = (function (exports) {
       }
       // Move trigger(action-button) in to lookup-wrapper
       if (lookup || isColorpicker) {
-        this.field.on('click.' + COMPONENT_NAME$H, '.lookup-wrapper .trigger, .colorpicker-container .trigger', function () {
+        this.field.on('click.' + COMPONENT_NAME$L, '.lookup-wrapper .trigger, .colorpicker-container .trigger', function () {
           doActive();
         });
 
         if (isColorpicker) {
-          this.element.on('beforeopen.' + COMPONENT_NAME$H, function () {
+          this.element.on('beforeopen.' + COMPONENT_NAME$L, function () {
             doActive();
           });
         }
@@ -49950,19 +53056,19 @@ var Soho = (function (exports) {
       if (isCheckbox) {
         this.trigger.addClass('is-checkbox');
         if (!Environment.features.touch && this.isSafari) {
-          this.field.on('click.' + COMPONENT_NAME$H, '.checkbox-label', function () {
+          this.field.on('click.' + COMPONENT_NAME$L, '.checkbox-label', function () {
             doActive();
-          }).on('mouseout.' + COMPONENT_NAME$H, '.checkbox-label', function () {
+          }).on('mouseout.' + COMPONENT_NAME$L, '.checkbox-label', function () {
             doUnactive();
           });
         }
       }
       // Bind fileupload events
       if (isFileupload) {
-        this.element.on('change.' + COMPONENT_NAME$H, function () {
+        this.element.on('change.' + COMPONENT_NAME$L, function () {
           _this2.targetElem.focus();
         });
-        this.field.on('click.' + COMPONENT_NAME$H, '.trigger, .trigger-close', function () {
+        this.field.on('click.' + COMPONENT_NAME$L, '.trigger, .trigger-close', function () {
           doActive();
         });
       }
@@ -49975,7 +53081,7 @@ var Soho = (function (exports) {
       // Fieldset - set trigger(action-button) top value and bind events
       if (isFieldset) {
         setTriggerCssTop();
-        this.targetElem.add(this.trigger).on('keydown.' + COMPONENT_NAME$H, function (e) {
+        this.targetElem.add(this.trigger).on('keydown.' + COMPONENT_NAME$L, function (e) {
           var key = e.which || e.keyCode || e.charCode || 0;
           if (key === 13) {
             setTimeout(function () {
@@ -49983,42 +53089,42 @@ var Soho = (function (exports) {
             }, 0);
           }
         });
-        this.targetElem.attr('tabindex', 0).on('click.' + COMPONENT_NAME$H, function () {
+        this.targetElem.attr('tabindex', 0).on('click.' + COMPONENT_NAME$L, function () {
           doActive();
         });
-        $(document).on('click.' + COMPONENT_NAME$H, function (e) {
+        $(document).on('click.' + COMPONENT_NAME$L, function (e) {
           if (!$(e.target).is(_this2.element)) {
             doUnactive();
           }
         });
-        $('body').on('resize.' + COMPONENT_NAME$H, function () {
+        $('body').on('resize.' + COMPONENT_NAME$L, function () {
           setTriggerCssTop();
         });
       }
       // Radio group - set trigger(action-button) top value and bind events
       if (isRadio) {
         setTriggerCssTop();
-        this.element.on('focusin.' + COMPONENT_NAME$H, '.radio', function () {
+        this.element.on('focusin.' + COMPONENT_NAME$L, '.radio', function () {
           var delay = _this2.isSafari ? 200 : 0;
           addFocused();
           setTimeout(function () {
             doActive();
           }, delay);
-        }).on('focusout.' + COMPONENT_NAME$H, '.radio', function () {
+        }).on('focusout.' + COMPONENT_NAME$L, '.radio', function () {
           removeFocused();
         });
-        $('body').on('resize.' + COMPONENT_NAME$H, function () {
+        $('body').on('resize.' + COMPONENT_NAME$L, function () {
           setTriggerCssTop();
         });
       }
 
       // Element events
-      this.targetElem.on('focusin.' + COMPONENT_NAME$H, function () {
+      this.targetElem.on('focusin.' + COMPONENT_NAME$L, function () {
         doActive();
         if (isRadio && _this2.isSafari) {
           addFocused();
         }
-      }).on('focusout.' + COMPONENT_NAME$H, function (e) {
+      }).on('focusout.' + COMPONENT_NAME$L, function (e) {
         var delay = _this2.isSafari ? 200 : 0;
         if (isRadio && _this2.isSafari) {
           removeFocused();
@@ -50031,15 +53137,15 @@ var Soho = (function (exports) {
       });
 
       // Trigger(action button) events
-      this.trigger.on('focusin.' + COMPONENT_NAME$H + ' click.' + COMPONENT_NAME$H, function () {
+      this.trigger.on('focusin.' + COMPONENT_NAME$L + ' click.' + COMPONENT_NAME$L, function () {
         doActive();
-      }).on('focusout.' + COMPONENT_NAME$H, function (e) {
+      }).on('focusout.' + COMPONENT_NAME$L, function (e) {
         if (canUnactive(e)) {
           doUnactive();
         }
-      }).on('selected.' + COMPONENT_NAME$H, function () {
+      }).on('selected.' + COMPONENT_NAME$L, function () {
         _this2.popupmenuApi.settings.returnFocus = true;
-      }).on('close.' + COMPONENT_NAME$H, function (e) {
+      }).on('close.' + COMPONENT_NAME$L, function (e) {
         if (canUnactive(e)) {
           doUnactive();
         }
@@ -50051,12 +53157,12 @@ var Soho = (function (exports) {
         if (isRadio) {
           this.element.attr('tabindex', 0);
         }
-        this.targetElem.on('keydown.' + COMPONENT_NAME$H, function (e) {
+        this.targetElem.on('keydown.' + COMPONENT_NAME$L, function (e) {
           var key = e.which || e.keyCode || e.charCode || 0;
           if (key === 9 && !e.shiftKey) {
             if (isRadio) {
               _this2.targetElem.find(':checked, .radio:first').not(':disabled').focus();
-              _this2.targetElem.find('.radio').off('keydown.' + COMPONENT_NAME$H).on('keydown.' + COMPONENT_NAME$H, function (e2) {
+              _this2.targetElem.find('.radio').off('keydown.' + COMPONENT_NAME$L).on('keydown.' + COMPONENT_NAME$L, function (e2) {
                 var key2 = e2.which || e2.keyCode || e2.charCode || 0;
                 if (key2 === 9 && !e.shiftKey) {
                   setTimeout(function () {
@@ -50074,9 +53180,9 @@ var Soho = (function (exports) {
         });
       }
 
-      this.element.on('listopened.' + COMPONENT_NAME$H, function () {
+      this.element.on('listopened.' + COMPONENT_NAME$L, function () {
         doActive();
-      }).on('listclosed.' + COMPONENT_NAME$H, function () {
+      }).on('listclosed.' + COMPONENT_NAME$L, function () {
         doUnactive();
       });
 
@@ -50110,17 +53216,17 @@ var Soho = (function (exports) {
      * @returns {object} The api
      */
     unbind: function unbind() {
-      this.field.off(['click.' + COMPONENT_NAME$H, 'mouseover.' + COMPONENT_NAME$H, 'mouseout.' + COMPONENT_NAME$H].join(' '));
+      this.field.off(['click.' + COMPONENT_NAME$L, 'mouseover.' + COMPONENT_NAME$L, 'mouseout.' + COMPONENT_NAME$L].join(' '));
 
-      this.element.off(['beforeopen.' + COMPONENT_NAME$H, 'change.' + COMPONENT_NAME$H, 'focusin.' + COMPONENT_NAME$H, 'focusout.' + COMPONENT_NAME$H, 'listclosed.' + COMPONENT_NAME$H, 'listopened.' + COMPONENT_NAME$H].join(' '));
+      this.element.off(['beforeopen.' + COMPONENT_NAME$L, 'change.' + COMPONENT_NAME$L, 'focusin.' + COMPONENT_NAME$L, 'focusout.' + COMPONENT_NAME$L, 'listclosed.' + COMPONENT_NAME$L, 'listopened.' + COMPONENT_NAME$L].join(' '));
 
-      this.trigger.off(['beforeopen.' + COMPONENT_NAME$H, 'click.' + COMPONENT_NAME$H, 'focusin.' + COMPONENT_NAME$H, 'focusout.' + COMPONENT_NAME$H, 'selected.' + COMPONENT_NAME$H, 'close.' + COMPONENT_NAME$H].join(' '));
+      this.trigger.off(['beforeopen.' + COMPONENT_NAME$L, 'click.' + COMPONENT_NAME$L, 'focusin.' + COMPONENT_NAME$L, 'focusout.' + COMPONENT_NAME$L, 'selected.' + COMPONENT_NAME$L, 'close.' + COMPONENT_NAME$L].join(' '));
 
-      this.targetElem.off(['click.' + COMPONENT_NAME$H, 'keydown.' + COMPONENT_NAME$H].join(' '));
+      this.targetElem.off(['click.' + COMPONENT_NAME$L, 'keydown.' + COMPONENT_NAME$L].join(' '));
 
-      $('body').off(['resize.' + COMPONENT_NAME$H].join(' '));
+      $('body').off(['resize.' + COMPONENT_NAME$L].join(' '));
 
-      $(document).off(['click.' + COMPONENT_NAME$H].join(' '));
+      $(document).off(['click.' + COMPONENT_NAME$L].join(' '));
 
       return this;
     },
@@ -50145,7 +53251,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$H);
+      $.removeData(this.element[0], COMPONENT_NAME$L);
     }
   };
 
@@ -50156,17 +53262,17 @@ var Soho = (function (exports) {
    */
   $.fn.fieldoptions = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$H);
+      var instance = $.data(this, COMPONENT_NAME$L);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$H, new FieldOptions(this, settings));
+        instance = $.data(this, COMPONENT_NAME$L, new FieldOptions(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$I = 'fileupload';
+  var COMPONENT_NAME$M = 'fileupload';
 
   /**
   * A list of items with add/remove/delete and sort functionality.
@@ -50202,7 +53308,7 @@ var Soho = (function (exports) {
 
       this.fileInput = hasInlineLabel ? elem.find('input') : elem;
 
-      elem.closest('.field').addClass('field-fileupload');
+      elem.closest('.field, .field-short').addClass('field-fileupload');
 
       // append markup
       var id = elem.find('input').attr('name');
@@ -50227,16 +53333,12 @@ var Soho = (function (exports) {
           orgLabel = elem.parent().prev('label');
         }
 
-        label = $('<label for="' + (elem.attr('id') || elem.attr('name')) + '-filename">' + orgLabel.text() + '</label>');
-        elem.before(label, shadowField);
-        this.fileInput.after(svgClose);
-        this.fileInput.after(svg);
-        orgLabel.addClass('audible').append('<span class="audible">' + instructions + '</span>');
-      } else {
-        elem.before(label, shadowField);
-        this.fileInput.after(svgClose);
-        this.fileInput.after(svg);
+        label.html(orgLabel.text() + ' <span class="audible">' + instructions + '</span>');
+        orgLabel.addClass('audible').add(this.fileInput).attr('tabindex', '-1');
       }
+
+      elem.before(label, shadowField);
+      this.fileInput.after(svg, svgClose);
 
       // if there is a value attribute, then this will be used as the current value since unable to set files[0].name
       // move it to the text input and remove it off the file input
@@ -50309,7 +53411,7 @@ var Soho = (function (exports) {
         if (this.files.length > 0) {
           self.textInput.val(this.files[0].name).trigger('change');
           self.svgClose.show().addClass('is-visible');
-        } else {
+        } else if (!self.clearing) {
           self.clearUploadFile();
         }
       });
@@ -50336,12 +53438,11 @@ var Soho = (function (exports) {
     * Clear the Input Upload File
     */
     clearUploadFile: function clearUploadFile() {
-      var val = this.fileInput.val();
+      this.clearing = true;
       this.fileInput.add(this.textInput).val('');
       this.svgClose.hide().removeClass('is-visible');
-      if (val !== '') {
-        this.fileInput.triggerHandler('change');
-      }
+      this.fileInput.triggerHandler('change');
+      this.clearing = false;
     },
 
 
@@ -50377,7 +53478,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$I);
+      $.removeData(this.element[0], COMPONENT_NAME$M);
     },
 
 
@@ -50421,18 +53522,18 @@ var Soho = (function (exports) {
    */
   $.fn.fileupload = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$I);
+      var instance = $.data(this, COMPONENT_NAME$M);
 
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$I, new FileUpload(this, settings));
+        instance = $.data(this, COMPONENT_NAME$M, new FileUpload(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$J = 'fileuploadadvanced';
+  var COMPONENT_NAME$N = 'fileuploadadvanced';
 
   /**
   * A trigger field for uploading a single file.
@@ -50960,7 +54061,7 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.unbind();
       $('.fileupload-wrapper', this.element).remove();
-      $.removeData(this.element[0], COMPONENT_NAME$J);
+      $.removeData(this.element[0], COMPONENT_NAME$N);
     }
   };
 
@@ -50978,17 +54079,29 @@ var Soho = (function (exports) {
    */
   $.fn.fileuploadadvanced = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$J);
+      var instance = $.data(this, COMPONENT_NAME$N);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$J, new FileUploadAdvanced(this, settings));
+        instance = $.data(this, COMPONENT_NAME$N, new FileUploadAdvanced(this, settings));
+      }
+    });
+  };
+
+  // Initialize the plugin (Once)
+  $.fn.fontpicker = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$G);
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$G, new FontPicker(this, settings));
       }
     });
   };
 
   // Default Settings
-  var COMPONENT_NAME$K = 'homepage';
+  var COMPONENT_NAME$O = 'homepage';
 
   /**
   * The Homepage handles card layout at multiple breakpoints.
@@ -51259,7 +54372,7 @@ var Soho = (function (exports) {
       // Max sized columns brings to top
       if (this.settings.columns > 1) {
         for (var _i3 = 0, j = 0, _w = 0, _l4 = this.blocks.length; _i3 < _l4; _i3++) {
-          if (this.blocks[_i3].w >= this.settings.columns && _i3 && _w) {
+          if (this.blocks[_i3].w >= this.settings.columns && _i3 && _w && _w <= this.settings.columns / 2) {
             this.arrayIndexMove(this.blocks, _i3, j);
           }
           _w += this.blocks[_i3].w;
@@ -51499,7 +54612,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.detachEvents();
-      $.removeData(this.element[0], COMPONENT_NAME$K);
+      $.removeData(this.element[0], COMPONENT_NAME$O);
     },
 
 
@@ -51528,11 +54641,11 @@ var Soho = (function (exports) {
    */
   $.fn.homepage = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$K);
+      var instance = $.data(this, COMPONENT_NAME$O);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$K, new Homepage(this, settings));
+        instance = $.data(this, COMPONENT_NAME$O, new Homepage(this, settings));
       }
     });
   };
@@ -51540,7 +54653,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle */
 
   // The name of this component.
-  var COMPONENT_NAME$L = 'pager';
+  var COMPONENT_NAME$P = 'pager';
 
   // Selector for Pager elements that should have a tabIndex
   var FOCUSABLE_SELECTOR = ['.pager-first > .btn-icon', '.pager-prev > .btn-icon', '.pager-next > .btn-icon', '.pager-last > .btn-icon', '.pager-no > .btn-icon', '.pager-count input', '.pager-pagesize button'].join(', ');
@@ -52693,8 +55806,11 @@ var Soho = (function (exports) {
         }
       }
 
-      if (this.hidePagerBar(pagingInfo)) {
-        this.pagerBar[0].classList.add('hidden');
+      var classList = this.pagerBar[0] ? this.pagerBar[0].classList : null;
+      if (this.hidePagerBar(pagingInfo) && classList) {
+        classList.add('hidden');
+      } else if (this.settings.hideOnOnePage && classList && classList.contains('hidden')) {
+        classList.remove('hidden');
       }
 
       this.initTabIndexes();
@@ -52979,15 +56095,15 @@ var Soho = (function (exports) {
         });
       }
 
-      this.pagerBar.off(['click.' + COMPONENT_NAME$L, 'keydown.' + COMPONENT_NAME$L].join(' '));
+      this.pagerBar.off(['click.' + COMPONENT_NAME$P, 'keydown.' + COMPONENT_NAME$P].join(' '));
 
       if (this.pageSelectorInput) {
-        $(this.pageSelectorInput).off(['focus.' + COMPONENT_NAME$L, 'blur.' + COMPONENT_NAME$L, 'keydown.' + COMPONENT_NAME$L].join(' '));
+        $(this.pageSelectorInput).off(['focus.' + COMPONENT_NAME$P, 'blur.' + COMPONENT_NAME$P, 'keydown.' + COMPONENT_NAME$P].join(' '));
         $(this.pageSelectorInput).data('mask').destroy();
       }
 
       if (this.pageSizeSelectorButton) {
-        $(this.pageSizeSelectorButton).off('selected.' + COMPONENT_NAME$L);
+        $(this.pageSizeSelectorButton).off('selected.' + COMPONENT_NAME$P);
         this.teardownPageSizeSelector();
       }
 
@@ -53027,7 +56143,7 @@ var Soho = (function (exports) {
       if (this.pagerBar) {
         this.pagerBar.remove();
       }
-      $.removeData(this.element[0], COMPONENT_NAME$L);
+      $.removeData(this.element[0], COMPONENT_NAME$P);
     }
   };
 
@@ -53038,16 +56154,16 @@ var Soho = (function (exports) {
    */
   $.fn.pager = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$L);
+      var instance = $.data(this, COMPONENT_NAME$P);
       if (!instance) {
-        instance = $.data(this, COMPONENT_NAME$L, new Pager(this, settings));
+        instance = $.data(this, COMPONENT_NAME$P, new Pager(this, settings));
       } else {
         instance.updated(settings);
       }
     });
   };
 
-  var COMPONENT_NAME$M = 'listview';
+  var COMPONENT_NAME$Q = 'listview';
 
   /**
    * Creates lists of small pieces of relevant, actionable information.
@@ -54370,7 +57486,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      this.element.removeData(COMPONENT_NAME$M);
+      this.element.removeData(COMPONENT_NAME$Q);
     },
 
 
@@ -54653,17 +57769,17 @@ var Soho = (function (exports) {
     var combinedSettings = utils.extend({}, settings, inlineOpts);
 
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$M);
+      var instance = $.data(this, COMPONENT_NAME$Q);
       if (instance) {
         instance.updated(combinedSettings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$M, new ListView(this, combinedSettings));
+        instance = $.data(this, COMPONENT_NAME$Q, new ListView(this, combinedSettings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$N = 'listbuilder';
+  var COMPONENT_NAME$R = 'listbuilder';
 
   /**
    * A list of items with add/remove/delete and sort functionality.
@@ -55461,7 +58577,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$N);
+      $.removeData(this.element[0], COMPONENT_NAME$R);
     }
   };
 
@@ -55472,17 +58588,17 @@ var Soho = (function (exports) {
    */
   $.fn.listbuilder = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$N);
+      var instance = $.data(this, COMPONENT_NAME$R);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$N, new ListBuilder(this, settings));
+        instance = $.data(this, COMPONENT_NAME$R, new ListBuilder(this, settings));
       }
     });
   };
 
   // The name of this component.
-  var COMPONENT_NAME$O = 'modal';
+  var COMPONENT_NAME$S = 'modal';
 
   // Possible values for the `trigger` setting
   var MODAL_TRIGGER_SETTINGS = ['click', 'immediate'];
@@ -55501,7 +58617,7 @@ var Soho = (function (exports) {
   * @param {isAlert} [settings.isAlert=false] Adds alertdialog role for message dialogs.
   * @param {content} [settings.content=null] Ability to pass in dialog html content.
   * @param {string} [settings.cssClass=null] Append a css class to top level.
-  * @param {boolean} [settings.autoFocus=true] If true the first input will be focused.
+  * @param {boolean} [settings.autoFocus=true] If true, when the modal is opened, the first available input/button in its content area will be focused.
   * @param {string} [settings.id=null] Optionally tag a dialog with an id.
   * @param {number} [settings.frameHeight=180] Optional extra height to add.
   * @param {number} [settings.frameWidth=46] Optional extra width to add.
@@ -55512,6 +58628,9 @@ var Soho = (function (exports) {
   * @param {boolean} [settings.fullsize=false] If true, ignore any sizing algorithms and
   * return the markup in the response and this will be shown in the modal. The busy indicator will be shown while waiting for a response.
   * @param {string} [settings.breakpoint='phone-to-tablet'] The breakpoint to use for a responsive change to "fullsize" mode. See `utils.breakpoints` to view the available sizes.
+  * @param {string} [settings.overlayOpacity=0.7] Adds the ability to control the opacity of the background overlay.
+  * @param {boolean} [settings.noRefocus=false] If true, causes the modal's trigger element not to become focused once the modal is closed.
+  * @param {htmlObject|jqueryObject|srting} [settings.triggerButton=null] The modal's trigger element to keep refocused once the modal is closed. This can be html or jquery object or query selector as string
   */
   var MODAL_DEFAULTS = {
     trigger: 'click',
@@ -55528,7 +58647,10 @@ var Soho = (function (exports) {
     showCloseBtn: false,
     maxWidth: null,
     fullsize: MODAL_FULLSIZE_SETTINGS[0],
-    breakpoint: 'phone-to-tablet'
+    breakpoint: 'phone-to-tablet',
+    overlayOpacity: 0.7,
+    noRefocus: false,
+    triggerButton: null
   };
 
   // Resets some string-based Modal settings to their defaults
@@ -55631,7 +58753,7 @@ var Soho = (function (exports) {
 
       // Used for tracking events tied to the Window object
       this.id = this.element.attr('id') || parseInt($('.modal').length, 10) + 1;
-      this.namespace = COMPONENT_NAME$O + '-' + this.id;
+      this.namespace = COMPONENT_NAME$S + '-' + this.id;
 
       // Find the button or anchor with same dialog ID
       this.trigger = $('[data-modal="' + this.element.attr('id') + '"]');
@@ -55640,10 +58762,10 @@ var Soho = (function (exports) {
       }
 
       if (!this.overlay) {
-        this.overlay = $('<div class="overlay"></div>');
+        this.overlay = $('<div class="overlay" style="opacity: ' + self.settings.overlayOpacity + ';"></div>');
       }
 
-      this.oldActive = this.trigger;
+      this.oldActive = this.settings.triggerButton ? this.useJqEl(this.settings.triggerButton) : this.trigger;
 
       if (this.settings.trigger === 'click' && !this.isAttachedToBody) {
         this.trigger.on('click.' + self.namespace, function (e) {
@@ -56048,7 +59170,9 @@ var Soho = (function (exports) {
         delete this.busyIndicator;
       }
 
-      if (!this.trigger || this.trigger.length === 0) {
+      if (this.settings.triggerButton) {
+        this.oldActive = this.useJqEl(this.settings.triggerButton);
+      } else if (!this.trigger || this.trigger.length === 0 || this.trigger.is('body')) {
         this.oldActive = $(':focus'); // Save and restore focus for A11Y
       }
 
@@ -56339,7 +59463,7 @@ var Soho = (function (exports) {
       }
 
       if (this.element.hasClass('lookup-modal')) {
-        var table = this.element.find('.datagrid-body');
+        var table = this.element.find('.datagrid-wrapper');
         var hasPager = this.element.find('.pager-toolbar');
         var container = table.closest('.datagrid-container');
 
@@ -56351,6 +59475,21 @@ var Soho = (function (exports) {
         } else {
           table[0].style.maxHeight = calcHeight + 'px';
           table[0].style.maxWidth = calcWidth + 'px';
+        }
+      }
+
+      if (this.element.hasClass('datagrid-columns-dialog')) {
+        wrapper[0].style.overflow = 'hidden';
+        if (calcHeight > 220) {
+          this.element.find('.modal-body')[0].style.height = '';
+          this.element.find('.listview.alternate-bg')[0].style.maxHeight = '';
+          this.element.find('.listview.alternate-bg')[0].style.height = '';
+          this.element.find('.listview.alternate-bg')[0].style.minHeight = '';
+        } else {
+          this.element.find('.modal-body')[0].style.height = calcHeight + 'px';
+          this.element.find('.listview.alternate-bg')[0].style.maxHeight = calcHeight - 41 + 'px';
+          this.element.find('.listview.alternate-bg')[0].style.height = calcHeight - 41 + 'px';
+          this.element.find('.listview.alternate-bg')[0].style.minHeight = 0;
         }
       }
 
@@ -56486,11 +59625,15 @@ var Soho = (function (exports) {
       self.element.trigger('close', self.isCancelled);
 
       // Restore focus
-      if (this.oldActive && $(this.oldActive).is('a:visible, button:visible, input:visible, textarea:visible')) {
-        this.oldActive.focus();
-        this.oldActive = null;
-      } else if (this.trigger.parents('.toolbar, .formatter-toolbar').length < 1) {
-        this.trigger.focus();
+      if (!this.settings.noRefocus) {
+        if (!this.oldActive && this.settings.triggerButton) {
+          this.oldActive = this.useJqEl(this.settings.triggerButton);
+        }
+        if (this.oldActive && $(this.oldActive).is('a:visible, button:visible, input:visible, textarea:visible')) {
+          this.oldActive.focus();
+        } else if (this.trigger.parents('.toolbar, .formatter-toolbar').length < 1) {
+          this.trigger.focus();
+        }
       }
 
       // close tooltips
@@ -56516,6 +59659,16 @@ var Soho = (function (exports) {
       renderLoop.register(afterCloseTimer);
 
       return false;
+    },
+
+
+    /**
+     * Use input as jquery element
+     * @param {htmlObject|jqueryObject|srting} option This option can be html or jquery object or query selector as string
+     * @returns {object} The jquery element.
+     */
+    useJqEl: function useJqEl(option) {
+      return option instanceof jQuery ? option : $(option);
     },
 
 
@@ -56585,7 +59738,7 @@ var Soho = (function (exports) {
         }
         self.element[0].removeAttribute('data-modal');
 
-        $.removeData(self.element[0], COMPONENT_NAME$O);
+        $.removeData(self.element[0], COMPONENT_NAME$S);
         if (self.isCAP && self.capAPI) {
           self.capAPI.destroy();
         }
@@ -56594,18 +59747,18 @@ var Soho = (function (exports) {
           duration: 21, // should match the length of time needed for the overlay to fade out
           timeoutCallback: function timeoutCallback() {
             var elem = null;
-            var modalApi = self.element ? self.element.data(COMPONENT_NAME$O) : null;
+            var modalApi = self.element ? self.element.data(COMPONENT_NAME$S) : null;
             if (modalApi) {
               elem = self.element[0];
             } else {
-              modalApi = self.trigger ? self.trigger.data(COMPONENT_NAME$O) : null;
+              modalApi = self.trigger ? self.trigger.data(COMPONENT_NAME$S) : null;
               if (modalApi) {
                 elem = self.trigger[0];
               }
             }
             if (elem && modalApi && modalApi.overlay) {
               modalApi.overlay.remove();
-              $.removeData(elem, COMPONENT_NAME$O);
+              $.removeData(elem, COMPONENT_NAME$S);
             }
           }
         });
@@ -56639,6 +59792,7 @@ var Soho = (function (exports) {
    * @param {string} [settings.returnFocus=null]  JQuery Element selector to focus on return.
    * @param {string} [settings.allowedTags='<a><b><br><br/><del><em><i><ins><mark><small><strong><sub><sup>']  String of allowed HTML tags.
    * @param {string} [settings.audibleLabel='']  String to include in message title that is strictly audible.
+   * @param {string} [settings.overlayOpacity=0.7] Adds the ability to control the opacity of the background overlay.
    */
   var MESSAGE_DEFAULTS = {
     title: 'Message Title',
@@ -56649,7 +59803,8 @@ var Soho = (function (exports) {
     cssClass: null,
     returnFocus: null,
     allowedTags: '<a><b><br><br/><del><em><i><ins><mark><small><strong><sub><sup>',
-    audibleLabel: ''
+    audibleLabel: '',
+    overlayOpacity: 0.7
   };
 
   function Message(element, settings) {
@@ -56692,7 +59847,8 @@ var Soho = (function (exports) {
         buttons: this.settings.buttons,
         resizable: this.settings.resizable,
         close: this.settings.close,
-        isAlert: true
+        isAlert: true,
+        overlayOpacity: this.settings.overlayOpacity
       });
 
       // Adjust Width if Set as a Setting
@@ -56776,11 +59932,11 @@ var Soho = (function (exports) {
   */
   $.fn.modal = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$O);
+      var instance = $.data(this, COMPONENT_NAME$S);
       var elem = $(this);
 
       if (!elem.is('.modal')) {
-        instance = elem.closest('.modal').data(COMPONENT_NAME$O);
+        instance = elem.closest('.modal').data(COMPONENT_NAME$S);
       }
 
       if (instance && settings) {
@@ -56798,7 +59954,7 @@ var Soho = (function (exports) {
         return;
       }
 
-      instance = $.data(this, COMPONENT_NAME$O, new Modal(this, settings));
+      instance = $.data(this, COMPONENT_NAME$S, new Modal(this, settings));
     });
   };
 
@@ -56809,17 +59965,17 @@ var Soho = (function (exports) {
    */
   $.fn.monthview = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$q);
+      var instance = $.data(this, COMPONENT_NAME$r);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$q, new MonthView(this, settings));
+        instance = $.data(this, COMPONENT_NAME$r, new MonthView(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$P = 'multiselect';
+  var COMPONENT_NAME$T = 'multiselect';
 
   // Component Defaults
   var MULTISELECT_DEFAULTS = {
@@ -56831,6 +59987,7 @@ var Soho = (function (exports) {
     multiple: true,
     showEmptyGroupHeaders: false,
     showSelectAll: false,
+    showTags: false,
     source: undefined
   };
 
@@ -56915,7 +60072,7 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.dropdown.destroy();
       this.element.off();
-      $.removeData(this.element[0], COMPONENT_NAME$P);
+      $.removeData(this.element[0], COMPONENT_NAME$T);
     }
   };
 
@@ -56926,17 +60083,17 @@ var Soho = (function (exports) {
    */
   $.fn.multiselect = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$P);
+      var instance = $.data(this, COMPONENT_NAME$T);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$P, new MultiSelect(this, settings));
+        instance = $.data(this, COMPONENT_NAME$T, new MultiSelect(this, settings));
       }
     });
   };
 
   // Settings and Options
-  var COMPONENT_NAME$Q = 'notification';
+  var COMPONENT_NAME$U = 'notification';
 
   var NOTIFICATION_DEFAULTS = {
     message: 'Hi! Im a notification message.',
@@ -57018,11 +60175,11 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var self = this;
 
-      this.element.off('updated.' + COMPONENT_NAME$Q).on('updated.' + COMPONENT_NAME$Q, function () {
+      this.element.off('updated.' + COMPONENT_NAME$U).on('updated.' + COMPONENT_NAME$U, function () {
         self.updated();
       });
 
-      $(this.notificationEl).off('click.' + COMPONENT_NAME$Q).on('click.' + COMPONENT_NAME$Q, '.notification-close', function () {
+      $(this.notificationEl).off('click.' + COMPONENT_NAME$U).on('click.' + COMPONENT_NAME$U, '.notification-close', function () {
         self.destroy();
       });
 
@@ -57050,8 +60207,8 @@ var Soho = (function (exports) {
      * @returns {object} The Component prototype, useful for chaining.
      */
     teardown: function teardown() {
-      this.element.off('updated.' + COMPONENT_NAME$Q);
-      this.element.off('click.' + COMPONENT_NAME$Q, '.notification-close');
+      this.element.off('updated.' + COMPONENT_NAME$U);
+      this.element.off('click.' + COMPONENT_NAME$U, '.notification-close');
       return this;
     },
 
@@ -57065,7 +60222,7 @@ var Soho = (function (exports) {
       }
 
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$Q);
+      $.removeData(this.element[0], COMPONENT_NAME$U);
     }
   };
 
@@ -57076,15 +60233,17 @@ var Soho = (function (exports) {
    */
   $.fn.notification = function (settings) {
     return this.each(function () {
-      $.data(this, COMPONENT_NAME$Q, new Notification(this, settings));
+      $.data(this, COMPONENT_NAME$U, new Notification(this, settings));
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$R = 'progress';
+  var COMPONENT_NAME$V = 'progress';
 
   // Default Progress Options
-  var PROGRESS_DEFAULTS = {};
+  var PROGRESS_DEFAULTS = {
+    value: 0
+  };
 
   /**
   * A list of items with add/remove/delete and sort functionality.
@@ -57092,6 +60251,7 @@ var Soho = (function (exports) {
   * @constructor
   * @param {jQuery[]|HTMLElement} element The component element.
   * @param {object} [settings] The component settings.
+  * @param {string|number} [settings.value] The value to set.
   */
   function Progress(element, settings) {
     this.settings = utils.mergeSettings(element, settings, PROGRESS_DEFAULTS);
@@ -57106,16 +60266,18 @@ var Soho = (function (exports) {
     /**
      * Init this component.
      * @private
+     * @returns {object} The object for chaining.
      */
     init: function init() {
       var _this = this;
 
-      this.update();
+      this.update(this.settings.value || this.element.attr('data-value'));
 
       this.element.off('updated.progress').on('updated.progress', function (e) {
         e.stopPropagation();
         _this.update();
       });
+      return this;
     },
 
 
@@ -57140,9 +60302,11 @@ var Soho = (function (exports) {
     /**
      * Unbind all events.
      * @private
+     * @returns {object} The object for chaining.
      */
     unbind: function unbind() {
       this.element.off('updated.progress');
+      return this;
     },
 
 
@@ -57151,16 +60315,12 @@ var Soho = (function (exports) {
     * @param {string} value  The percent value to use to fill. 0-100
     * @returns {void}
     */
-    update: function update(value) {
-      var perc = this.element.attr('data-value');
+    update: function update() {
+      var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
 
-      if (value) {
-        perc = value;
-        this.element.attr('data-value', value);
-      }
-
-      this.element[0].style.width = perc + '%';
-      this.updateAria(perc);
+      this.element.attr('data-value', value);
+      this.element[0].style.width = value.toString() + '%';
+      this.updateAria(value);
     },
 
 
@@ -57170,8 +60330,8 @@ var Soho = (function (exports) {
      * @returns {object} The api
      */
     updated: function updated(settings) {
-      if (typeof settings !== 'undefined') {
-        this.settings = utils.mergeSettings(this.element, settings, PROGRESS_DEFAULTS);
+      if (typeof settings !== 'undefined' && settings.value) {
+        this.settings.value = settings.value;
       }
       return this.unbind().init();
     },
@@ -57182,7 +60342,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$R);
+      $.removeData(this.element[0], COMPONENT_NAME$V);
     }
   };
 
@@ -57193,11 +60353,11 @@ var Soho = (function (exports) {
    */
   $.fn.progress = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$R);
+      var instance = $.data(this, COMPONENT_NAME$V);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$R, new Progress(this, settings));
+        instance = $.data(this, COMPONENT_NAME$V, new Progress(this, settings));
       }
     });
   };
@@ -57205,7 +60365,7 @@ var Soho = (function (exports) {
   // jQuery Components
 
   // Component Name
-  var COMPONENT_NAME$S = 'popdown';
+  var COMPONENT_NAME$W = 'popdown';
 
   /**
    * The Popdown Component can be used to open an animated popdown from a button. This may in the future
@@ -57217,10 +60377,22 @@ var Soho = (function (exports) {
    * @property {boolean} [settings.keepOpen = false] If true, will keep the Popdown open after clicking out until the Trigger
    * element is clicked, or until another pop-open element is opened.
    * @property {jQuery[]} [settings.trigger] If defined, provides a way to place the popdown against an alternate element.
+   * @param {boolean} [settings.autoFocus=false] If true, when the popdown is opened, the first available input/button in its content area will be focused.
+   * @param {boolean} [settings.toggleOnFocus=false] If true, popdown will be toggle soon focused on the popdown trigger.
+   * @param {function|boolean|object} [settings.firstLastTab=null] it can have three way to tab or shift-tab to first/last input/select/textarea in popdown.
+   * If given value is function it will be call back that goes along with first/last tab in/out.
+   * If given value is boolean and true it will run the default function `closeAndContinue`.
+   * If given value is object it can have key/value `first`, `last`, `callback` as:
+   * first - jQuery[]|string, first element to bind with tab in/out.
+   * last - jQuery[]|string, last element to bind with tab in/out.
+   * callback - function, a call back that goes along with first/last tab in/out.
   */
   var POPDOWN_DEFAULTS = {
     keepOpen: false,
-    trigger: undefined
+    trigger: undefined,
+    autoFocus: false,
+    toggleOnFocus: false,
+    firstLastTab: null
   };
 
   function Popdown(element, settings) {
@@ -57314,6 +60486,8 @@ var Soho = (function (exports) {
       return this;
     },
     handleEvents: function handleEvents() {
+      var _this = this;
+
       var self = this;
 
       this.trigger.on('click.popdown', function () {
@@ -57321,6 +60495,16 @@ var Soho = (function (exports) {
       }).on('updated.popdown', function () {
         self.updated();
       });
+
+      // First and last tab
+      this.setFirstLastTab();
+
+      // Toggle on focus for popdown trigger
+      if (this.settings.toggleOnFocus) {
+        this.trigger.on('focus.popdown', function () {
+          _this.toggle();
+        });
+      }
 
       return this;
     },
@@ -57359,6 +60543,99 @@ var Soho = (function (exports) {
 
 
     /**
+     * Set first last tab action.
+     * @private
+     * @returns {void}
+     */
+    setFirstLastTab: function setFirstLastTab() {
+      var _this2 = this;
+
+      var s = this.settings;
+      if (s.firstLastTab && /function|boolean|object/.test(_typeof(s.firstLastTab))) {
+        var first = null;
+        var last = null;
+        var callback = null;
+        if (_typeof(s.firstLastTab) === 'object') {
+          if (s.firstLastTab.first) {
+            first = s.firstLastTab.first instanceof jQuery ? s.firstLastTab.first : $(s.firstLastTab.first);
+            first.first();
+            if (!this.popdown[0].contains(first[0])) {
+              first = null;
+            }
+          }
+          if (s.firstLastTab.last) {
+            last = s.firstLastTab.last instanceof jQuery ? s.firstLastTab.last : $(s.firstLastTab.last);
+            last.first();
+            if (!this.popdown[0].contains(last[0])) {
+              last = null;
+            }
+          }
+          if (typeof s.firstLastTab.callback === 'function') {
+            callback = s.firstLastTab.callback;
+          }
+        } else if (typeof s.firstLastTab === 'function') {
+          callback = s.firstLastTab;
+        } else if (typeof s.firstLastTab === 'boolean' || s.firstLastTab) {
+          callback = this.closeAndContinue;
+        }
+
+        if (callback) {
+          if (!first || !last || first && !first.length || last && !last.length) {
+            // Focusable (only input/select/textarea or with tabindex) elements in popdown
+            var focusable = 'input:not(:disabled):not([tabindex^="-"]),\n            select:not(:disabled):not([tabindex^="-"]),\n            textarea:not(:disabled):not([tabindex^="-"]),\n            [tabindex]:not(:disabled):not([tabindex^="-"])';
+            var focusableElem = this.popdown.find(focusable);
+            if (!first || first && !first.length) {
+              first = focusableElem.first();
+            }
+            if (!last || last && !last.length) {
+              last = focusableElem.last();
+            }
+          }
+
+          // Attach them to self, so later can turn them off
+          this.focusableElem = { first: first, last: last };
+
+          // First element
+          first.on('keydown.popdown', function (e) {
+            if (e.keyCode === 9 && e.shiftKey) {
+              e.preventDefault();
+              callback({ e: e, self: _this2, first: first });
+            }
+          });
+          // Last element
+          last.on('keydown.popdown', function (e) {
+            if (e.keyCode === 9 && !e.shiftKey) {
+              e.preventDefault();
+              callback({ e: e, self: _this2, last: last });
+            }
+          });
+        }
+      }
+    },
+
+
+    /**
+     * Close the popdown and if available focus to prev/next focusable item.
+     * @private
+     * @param  {object} args The keydown event, first or last element and popdown reference
+     * @returns {void}
+     */
+    closeAndContinue: function closeAndContinue(args) {
+      var focusable = $(document).find(':focusable');
+      var index = focusable.index(args.self.trigger);
+      if (args.e.shiftKey) {
+        index = index - 1 < 0 ? -1 : index - 1;
+      } else {
+        index = index + 1 >= focusable.length ? -1 : index + 1;
+      }
+      if (index !== -1) {
+        focusable.eq(index).focus();
+      }
+      args.self.close();
+    },
+
+
+    /**
      * Determines whether or not the popdown is open.
      * @returns {boolean} returns current state.
      */
@@ -57381,6 +60658,12 @@ var Soho = (function (exports) {
       this.trigger.attr('aria-expanded', 'true');
       this.position();
       this.popdown.addClass('visible');
+
+      // Auto focus
+      if (this.settings.autoFocus) {
+        var focusElem = this.focusableElem ? this.focusableElem.first : this.popdown.find(':focusable').first();
+        focusElem.focus();
+      }
 
       function handleFocusOut(e) {
         if (!self.hasFocus(e.target)) {
@@ -57602,7 +60885,14 @@ var Soho = (function (exports) {
         this.close();
       }
 
-      this.trigger.off('updated.popdown click.popdown').removeAttr('aria-controls').removeAttr('aria-expanded');
+      this.trigger.off('updated.popdown click.popdown focus.popdown').removeAttr('aria-controls').removeAttr('aria-expanded');
+
+      // First and last turn off and withdraw
+      if (this.focusableElem) {
+        this.focusableElem.first.off('keydown.popdown');
+        this.focusableElem.last.off('keydown.popdown');
+        delete this.focusableElem;
+      }
 
       if (this.originalParent && this.originalParent.length) {
         this.popdown.detach().appendTo(this.originalParent);
@@ -57619,7 +60909,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$S);
+      $.removeData(this.element[0], COMPONENT_NAME$W);
     }
   };
 
@@ -57630,17 +60920,17 @@ var Soho = (function (exports) {
    */
   $.fn.popdown = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$S);
+      var instance = $.data(this, COMPONENT_NAME$W);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$S, new Popdown(this, settings));
+        instance = $.data(this, COMPONENT_NAME$W, new Popdown(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$T = 'rating';
+  var COMPONENT_NAME$X = 'rating';
 
   // Default Rating Options
   var RATING_DEFAULTS = {};
@@ -57677,7 +60967,7 @@ var Soho = (function (exports) {
       var inputs = $('input', this.element);
 
       var _loop = function _loop(i, l) {
-        $(inputs[i]).on('change.' + COMPONENT_NAME$T, function () {
+        $(inputs[i]).on('change.' + COMPONENT_NAME$X, function () {
           if (!_this.element.hasClass('is-readonly')) {
             _this.val(i + 1);
           }
@@ -57787,7 +61077,7 @@ var Soho = (function (exports) {
      * @returns {object} The api
      */
     unbind: function unbind() {
-      this.element.find('input').off('change.' + COMPONENT_NAME$T);
+      this.element.find('input').off('change.' + COMPONENT_NAME$X);
       return this;
     },
 
@@ -57811,7 +61101,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$T);
+      $.removeData(this.element[0], COMPONENT_NAME$X);
     }
   };
 
@@ -57822,17 +61112,17 @@ var Soho = (function (exports) {
    */
   $.fn.rating = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$T);
+      var instance = $.data(this, COMPONENT_NAME$X);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$T, new Rating(this, settings));
+        instance = $.data(this, COMPONENT_NAME$X, new Rating(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$U = 'signin';
+  var COMPONENT_NAME$Y = 'signin';
 
   // Default SignIn Options
   var SIGNIN_DEFAULTS = {};
@@ -57920,7 +61210,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$U);
+      $.removeData(this.element[0], COMPONENT_NAME$Y);
     },
 
 
@@ -57974,11 +61264,11 @@ var Soho = (function (exports) {
    */
   $.fn.signin = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$U);
+      var instance = $.data(this, COMPONENT_NAME$Y);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$U, new SignIn(this, settings));
+        instance = $.data(this, COMPONENT_NAME$Y, new SignIn(this, settings));
       }
     });
   };
@@ -57986,7 +61276,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle */
 
   // Component Name
-  var COMPONENT_NAME$V = 'slider';
+  var COMPONENT_NAME$Z = 'slider';
 
   // The Component Defaults
   var SLIDER_DEFAULTS = {
@@ -59165,7 +62455,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$V);
+      $.removeData(this.element[0], COMPONENT_NAME$Z);
     },
 
 
@@ -59215,17 +62505,17 @@ var Soho = (function (exports) {
    */
   $.fn.slider = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$V);
+      var instance = $.data(this, COMPONENT_NAME$Z);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$V, new Slider(this, settings));
+        instance = $.data(this, COMPONENT_NAME$Z, new Slider(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$W = 'spinbox';
+  var COMPONENT_NAME$_ = 'spinbox';
 
   // Component Defaults
   var SPINBOX_DEFAULTS = {
@@ -59268,13 +62558,25 @@ var Soho = (function (exports) {
     },
 
     /**
+     * @returns {boolean} "true" if this spinbox is inside a wrapper.
+     */
+    get isWrapped() {
+      return this.element.parent().is('.spinbox-wrapper');
+    },
+
+    /**
+     * @returns {boolean} "true" if this spinbox is part of an inline label.
+     */
+    get isInlineLabel() {
+      return this.element.parent().is('.inline');
+    },
+
+    /**
      * @private
      */
     init: function init() {
       this.inlineLabel = this.element.closest('label');
       this.inlineLabelText = this.inlineLabel.find('.label-text');
-      this.isInlineLabel = this.element.parent().is('.inline');
-      this.isWrapped = this.element.parent().is('.spinbox-wrapper');
 
       this.setInitialValue().addMarkup().bindEvents().setWidth();
     },
@@ -59346,6 +62648,8 @@ var Soho = (function (exports) {
      * @returns {this} component instance
      */
     addMarkup: function addMarkup() {
+      var _this = this;
+
       var self = this;
       if (this.isInlineLabel) {
         this.inlineLabel.addClass('spinbox-wrapper');
@@ -59363,22 +62667,33 @@ var Soho = (function (exports) {
 
       if (this.isWrapped) {
         this.buttons = {
-          down: this.element.parent().find('.down').button(),
-          up: this.element.parent().find('.up').button()
+          down: this.element.parent().find('.down'),
+          up: this.element.parent().find('.up')
         };
+      }
 
-        if (this.isTouch) {
-          this.buttons.down.attr('aria-hidden', 'true');
-          this.buttons.up.attr('aria-hidden', 'true');
+      if (!this.buttons.up.length) {
+        this.buttons.up = $('<span ' + (this.isTouch ? '' : 'aria-hidden="true"') + ' class="spinbox-control up">+</span>').insertAfter(this.element);
+        this.buttons.up.button();
+      }
+
+      if (!this.buttons.down.length) {
+        this.buttons.down = $('<span ' + (this.isTouch ? '' : 'aria-hidden="true"') + ' class="spinbox-control down">-</span>').insertBefore(this.element);
+        this.buttons.down.button();
+      }
+
+      var sizes = ['input-xs', 'input-sm', 'input-mm', 'input-md', 'input-lg'];
+      var elemClasses = this.element[0].className;
+      sizes.forEach(function (size) {
+        if (elemClasses.indexOf(size) > -1) {
+          var spinboxSize = size.replace('input', 'spinbox');
+          if (_this.isWrapped) {
+            _this.element.parent('.spinbox-wrapper').addClass(spinboxSize);
+          } else if (_this.isInlineLabel) {
+            _this.inlineLabel.addClass(spinboxSize);
+          }
         }
-      }
-
-      if (!this.buttons) {
-        this.buttons = {
-          down: $('<span ' + (this.isTouch ? '' : 'aria-hidden="true"') + ' class="spinbox-control down">-</span>').insertBefore(this.element).button(),
-          up: $('<span ' + (this.isTouch ? '' : 'aria-hidden="true"') + ' class="spinbox-control up">+</span>').insertAfter(this.element).button()
-        };
-      }
+      });
 
       // Figure out minimum/maximum and data-masking attributes.  The user can provide the spinbox
       // plugin either the min/max or the mask, and the plugin will automatically figure out how to
@@ -59924,7 +63239,7 @@ var Soho = (function (exports) {
       this.buttons.down.remove();
       this.element.off('focus.spinbox blur.spinbox keydown.spinbox keyup.spinbox');
       this.element.unwrap();
-      $.removeData(this.element[0], COMPONENT_NAME$W);
+      $.removeData(this.element[0], COMPONENT_NAME$_);
     },
 
 
@@ -60026,17 +63341,17 @@ var Soho = (function (exports) {
    */
   $.fn.spinbox = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$W);
+      var instance = $.data(this, COMPONENT_NAME$_);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$W, new Spinbox(this, settings));
+        instance = $.data(this, COMPONENT_NAME$_, new Spinbox(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$X = 'splitter';
+  var COMPONENT_NAME$$ = 'splitter';
 
   // Default Splitter Options
   var SPLITTER_DEFAULTS = {
@@ -60350,7 +63665,7 @@ var Soho = (function (exports) {
      * @returns {object} The api
      */
     unbind: function unbind() {
-      this.element.off('updated.' + COMPONENT_NAME$X);
+      this.element.off('updated.' + COMPONENT_NAME$$);
       return this;
     },
 
@@ -60374,7 +63689,7 @@ var Soho = (function (exports) {
     */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$X);
+      $.removeData(this.element[0], COMPONENT_NAME$$);
     },
 
 
@@ -60395,7 +63710,7 @@ var Soho = (function (exports) {
       * @type {object}
       * @property {object} event - The jquery event object
       */
-      .on('updated.' + COMPONENT_NAME$X, function () {
+      .on('updated.' + COMPONENT_NAME$$, function () {
         _this.updated();
       })
 
@@ -60407,7 +63722,7 @@ var Soho = (function (exports) {
       * @type {object}
       * @property {object} event - The jquery event object
       */
-      .on('keydown.' + COMPONENT_NAME$X, function (e) {
+      .on('keydown.' + COMPONENT_NAME$$, function (e) {
         // Space will toggle selection
         if (e.which === 32) {
           _this.toggleSelection();
@@ -60434,17 +63749,17 @@ var Soho = (function (exports) {
    */
   $.fn.splitter = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$X);
+      var instance = $.data(this, COMPONENT_NAME$$);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$X, new Splitter(this, settings));
+        instance = $.data(this, COMPONENT_NAME$$, new Splitter(this, settings));
       }
     });
   };
 
   // The name of this component
-  var COMPONENT_NAME$Y = 'swaplist';
+  var COMPONENT_NAME$10 = 'swaplist';
 
   // The Component Defaults
   var SWAPLIST_DEFAULTS = {
@@ -61335,7 +64650,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$Y);
+      $.removeData(this.element[0], COMPONENT_NAME$10);
     },
 
 
@@ -61677,17 +64992,17 @@ var Soho = (function (exports) {
    */
   $.fn.swaplist = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$Y);
+      var instance = $.data(this, COMPONENT_NAME$10);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$Y, new SwapList(this, settings));
+        instance = $.data(this, COMPONENT_NAME$10, new SwapList(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$Z = 'scrollaction';
+  var COMPONENT_NAME$11 = 'scrollaction';
 
   // Default ScrollAction Options
   var SCROLLACTION_DEFAULTS = {
@@ -61751,7 +65066,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$Z);
+      $.removeData(this.element[0], COMPONENT_NAME$11);
     },
 
 
@@ -61787,17 +65102,17 @@ var Soho = (function (exports) {
    */
   $.fn.scrollaction = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$Z);
+      var instance = $.data(this, COMPONENT_NAME$11);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$Z, new ScrollAction(this, settings));
+        instance = $.data(this, COMPONENT_NAME$11, new ScrollAction(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$_ = 'stepchart';
+  var COMPONENT_NAME$12 = 'stepchart';
 
   // Default component options
   var DEFAULT_STEPCHART_OPTIONS = {
@@ -61963,7 +65278,7 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.element.empty();
       this.settings = null;
-      $.removeData(this.element[0], COMPONENT_NAME$_);
+      $.removeData(this.element[0], COMPONENT_NAME$12);
 
       return this;
     }
@@ -61976,21 +65291,21 @@ var Soho = (function (exports) {
    */
   $.fn.stepchart = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$_);
+      var instance = $.data(this, COMPONENT_NAME$12);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$_, new StepChart(this, settings));
+        instance = $.data(this, COMPONENT_NAME$12, new StepChart(this, settings));
         instance.destroy = function destroy() {
           this.teardown();
-          $.removeData(this, COMPONENT_NAME$_);
+          $.removeData(this, COMPONENT_NAME$12);
         };
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$$ = 'tabs';
+  var COMPONENT_NAME$13 = 'tabs';
 
   // Types of possible Tab containers
   var tabContainerTypes = ['horizontal', 'vertical', 'module-tabs', 'header-tabs'];
@@ -65976,7 +69291,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$$);
+      $.removeData(this.element[0], COMPONENT_NAME$13);
     }
   };
 
@@ -65987,11 +69302,11 @@ var Soho = (function (exports) {
    */
   $.fn.tabs = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$$);
+      var instance = $.data(this, COMPONENT_NAME$13);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$$, new Tabs(this, settings));
+        instance = $.data(this, COMPONENT_NAME$13, new Tabs(this, settings));
       }
     });
   };
@@ -65999,162 +69314,32 @@ var Soho = (function (exports) {
   // Deprecated the old Vertical Tabs code in favor of using the Tabs class.
   $.fn.verticaltabs = $.fn.tabs;
 
-  // Component Name
-  var COMPONENT_NAME$10 = 'tag';
-
-  // Default Tag Options
-  var TAG_DEFAULTS = {};
-
-  /**
-  * Implements functionality on tag objects, such as closing tabs.
-  * @class Tag
-  * @param {string} element The component element.
-  * @param {string} settings The component settings.
-  */
-  function Tag(element, settings) {
-    this.settings = utils.mergeSettings(element, settings, TAG_DEFAULTS);
-
-    this.element = $(element);
-    this.init();
-  }
-
-  // Tag Methods
-  Tag.prototype = {
-    init: function init() {
-      this.element.hideFocus();
-      this.handleEvents();
-    },
-
-
-    /**
-     * Remove the tag from the DOM
-     * @private
-     * @param {object} event Type.
-     * @param {string} el The element.
-     * @returns {void}
-     */
-    remove: function remove(event, el) {
-      el = el instanceof jQuery ? el : $(el);
-      var parent = el.parent();
-
-      /**
-      * Fires before tag remove.
-      *
-      * @event beforetagremove
-      * @memberof Tag
-      * @type {object}
-      * @property {object} event - The jquery event object
-      * @property {object} The event used for removing and element
-      */
-      this.element.triggerHandler('beforetagremove', { event: event, element: el });
-      el.remove();
-
-      /**
-      * Fires after tag remove.
-      *
-      * @event aftertagremove
-      * @memberof Tag
-      * @type {object}
-      * @property {object} event - The jquery event object
-      */
-      parent.triggerHandler('aftertagremove', { event: event });
-    },
-
-
-    /**
-     * Removes event bindings from the instance.
-     * @private
-     * @returns {object} The api
-     */
-    unbind: function unbind() {
-      this.element.off('keydown.tag');
-      $('.dismissable-btn, .dismissible-btn', this.element).off('click.tag').remove();
-      return this;
-    },
-
-
-    /**
-     * Resync the UI and Settings.
-     * @param {object} settings The settings to apply.
-     * @returns {object} The api
-     */
-    updated: function updated(settings) {
-      if (typeof settings !== 'undefined') {
-        this.settings = utils.mergeSettings(this.element, settings, TAG_DEFAULTS);
-      }
-      return this.unbind().init();
-    },
-
-
-    /**
-     * Destroy this component instance and remove the link from its base element.
-     * @returns {void}
-     */
-    destroy: function destroy() {
-      this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$10);
-    },
-
-
-    /**
-     * Attach Events used by the Control
-     * @private
-     * @returns {void}
-     */
-    handleEvents: function handleEvents() {
-      var _this = this;
-
-      var self = this;
-      var btnDismissable = $('' + ('<span class="dismissible-btn">\n        ' + $.createIcon('close') + '\n        <span class="audible"> ' + Locale.translate('Close') + '</span>\n      </span>'));
-      var dismissibleClass = '.is-dismissable, .is-dismissible';
-
-      // EPC: Deprecating "dismissable" in favor of "dismissible" as of 4.3.0
-      if (self.element.is(dismissibleClass)) {
-        self.element.append(btnDismissable);
-
-        /**
-        * Fires when the tag is clicked (if enabled).
-        * @event click
-        * @memberof Tag
-        * @type {object}
-        * @property {object} event - The jquery event object
-        */
-        btnDismissable.on('click.tag', function (event) {
-          _this.remove(event, _this.element);
-        });
-
-        /**
-        * Fires when the tag is focused.
-        * @event keydown
-        * @memberof Tag
-        * @type {object}
-        * @property {object} event - The jquery event object
-        */
-        this.element.on('keydown.tag', function (event) {
-          var e = event || window.event;
-          if (e.keyCode === 8) {
-            // Backspace
-            self.remove(event, this);
-          }
-        });
-      }
-    }
-  };
-
   // Initialize the plugin (Once)
   $.fn.tag = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$10);
+      var instance = $.data(this, COMPONENT_NAME$z);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$10, new Tag(this, settings));
+        instance = $.data(this, COMPONENT_NAME$z, new Tag(this, settings));
+      }
+    });
+  };
+
+  // Initialize the plugin (Once)
+  $.fn.taglist = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$A);
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$A, new TagList(this, settings));
       }
     });
   };
 
   // Name of this component
-  var COMPONENT_NAME$11 = 'textarea';
+  var COMPONENT_NAME$14 = 'textarea';
 
   // Component Options
   var TEXTAREA_DEFAULTS = {
@@ -66523,17 +69708,17 @@ var Soho = (function (exports) {
    */
   $.fn.textarea = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$11);
+      var instance = $.data(this, COMPONENT_NAME$14);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$11, new Textarea(this, settings));
+        instance = $.data(this, COMPONENT_NAME$14, new Textarea(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$12 = 'toolbar';
+  var COMPONENT_NAME$15 = 'toolbar';
 
   /**
    * The Toolbar Component manages various levels of application navigation.
@@ -67998,7 +71183,7 @@ var Soho = (function (exports) {
         item.classList.remove('is-overflowed');
         item.removeAttribute('tabindex');
       });
-      this.items.off(['keydown.' + COMPONENT_NAME$12, 'click.' + COMPONENT_NAME$12, 'focus.' + COMPONENT_NAME$12, 'blur.' + COMPONENT_NAME$12, 'close.' + COMPONENT_NAME$12, 'selected.' + COMPONENT_NAME$12].join(' '));
+      this.items.off(['keydown.' + COMPONENT_NAME$15, 'click.' + COMPONENT_NAME$15, 'focus.' + COMPONENT_NAME$15, 'blur.' + COMPONENT_NAME$15, 'close.' + COMPONENT_NAME$15, 'selected.' + COMPONENT_NAME$15].join(' '));
 
       delete this.items;
 
@@ -68039,7 +71224,7 @@ var Soho = (function (exports) {
         delete this.moreMenu;
       }
       if (this.more.length && this.more.data('popupmenu') !== undefined) {
-        this.more.off(['keydown.' + COMPONENT_NAME$12, 'beforeopen.' + COMPONENT_NAME$12, 'selected.' + COMPONENT_NAME$12, 'show-submenu.' + COMPONENT_NAME$12].join(' '));
+        this.more.off(['keydown.' + COMPONENT_NAME$15, 'beforeopen.' + COMPONENT_NAME$15, 'selected.' + COMPONENT_NAME$15, 'show-submenu.' + COMPONENT_NAME$15].join(' '));
 
         this.more.data('popupmenu').destroy();
         delete this.more;
@@ -68050,7 +71235,7 @@ var Soho = (function (exports) {
         delete this.activeButton;
       }
 
-      this.element.off(['updated.' + COMPONENT_NAME$12, 'recalculate-buttons.' + COMPONENT_NAME$12, 'scrollup.' + COMPONENT_NAME$12].join(' '));
+      this.element.off(['updated.' + COMPONENT_NAME$15, 'recalculate-buttons.' + COMPONENT_NAME$15, 'scrollup.' + COMPONENT_NAME$15].join(' '));
 
       this.element[0].classList.remove('do-resize');
       this.element.removeAttr('role').removeAttr('aria-label');
@@ -68110,7 +71295,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$12);
+      $.removeData(this.element[0], COMPONENT_NAME$15);
     }
   };
 
@@ -68121,913 +71306,13 @@ var Soho = (function (exports) {
    */
   $.fn.toolbar = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$12);
+      var instance = $.data(this, COMPONENT_NAME$15);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$12, new Toolbar(this, settings));
+        instance = $.data(this, COMPONENT_NAME$15, new Toolbar(this, settings));
       }
     });
-  };
-
-  // Component Name
-  var COMPONENT_NAME$13 = 'toolbarflexitem';
-
-  // Filters out buttons located inside of Searchfield wrappers.
-  // Only `input` elements should be picked up by the item detector.
-  function buttonFilter(elem) {
-    var searchfieldWrapper = $(elem).parents('.searchfield-wrapper, .toolbar-searchfield-wrapper');
-    return !searchfieldWrapper.length;
-  }
-
-  // Filters out hyperlinks that are part of menu/action button components
-  function hyperlinkFilter(elem) {
-    if (elem.nodeName !== 'A') {
-      throw new Error('Unspecified error occured');
-    }
-
-    var wrapped = $(elem);
-    return wrapped.parents('.popupmenu').length < 1;
-  }
-
-  // Toolbar Focusable Element Selectors.
-  // Any of these element/class types are valid toolbar items.
-  // TODO: Designate between "button" and "menu button"
-  var TOOLBAR_ELEMENTS = [{ type: 'button', selector: 'button:not(.btn-menu):not(.btn-actions):not(.colorpicker-editor-button), input[type="button"]:not(.btn-menu):not(.btn-actions):not(.colorpicker-editor-button)', filter: buttonFilter }, { type: 'menubutton', selector: '.btn-menu' }, { type: 'actionbutton', selector: '.btn-actions' }, { type: 'colorpicker', selector: '.colorpicker-editor-button' }, { type: 'hyperlink', selector: 'a[href]', filter: hyperlinkFilter }, { type: 'checkbox', selector: 'input[type="checkbox"]' }, { type: 'radio', selector: 'input[type="radio"]' }, { type: 'searchfield', selector: '.searchfield' }, { type: 'toolbarsearchfield', selector: '.toolbarsearchfield' // temporary
-  }];
-
-  // Mappings from toolbar item type to component API
-  var TOOLBAR_COMPONENT_APIS = {
-    actionbutton: 'popupmenu',
-    colorpicker: 'colorpicker',
-    menubutton: 'popupmenu',
-    hyperlink: 'hyperlink',
-    searchfield: 'searchfield',
-    toolbarsearchfield: 'searchfield'
-  };
-
-  /**
-   * Default Settings
-   * @namespace
-   */
-  var TOOLBAR_FLEX_ITEM_DEFAULTS = {
-    disabled: false,
-    readOnly: false,
-    hidden: false,
-    componentSettings: undefined,
-    allowTabs: false
-  };
-
-  /**
-   * Gets the type of Toolbar Item that an element represents.
-   * @param {HTMLElement} element being checked for a toolbar item.
-   * @returns {string} representing the type
-   */
-  function getToolbarItemType(element) {
-    var type = false;
-    TOOLBAR_ELEMENTS.forEach(function (elemObj) {
-      if (!$(element).is(elemObj.selector)) {
-        return;
-      }
-      if (typeof elemObj.filter === 'function' && !elemObj.filter(element)) {
-        return;
-      }
-      type = elemObj.type;
-    });
-
-    if (!type) {
-      throw new Error('Element ' + element + ' is not a valid Toolbar Item Type.');
-    }
-
-    return type;
-  }
-
-  /**
-   * Toolbar Item Wrapper Component
-   * @constructor
-   * @param {HTMLElement} element the base element
-   * @param {object} [settings] incoming settings
-   */
-  function ToolbarFlexItem(element, settings) {
-    this.element = element;
-    this.settings = utils.mergeSettings(this.element, settings, TOOLBAR_FLEX_ITEM_DEFAULTS);
-
-    this.init();
-  }
-
-  ToolbarFlexItem.prototype = {
-
-    /**
-     * @property {string} type used to determine the type of toolbar item.  Certain toolbar item types
-     *  have certain special properties.
-     * @property {HTMLElement} section the parent toolbar section that this item is housed in.
-     * @property {HTMLElement} toolbar the parent toolbar's base element.
-     */
-    type: undefined,
-
-    /**
-     * @property {boolean} a different type to check if the object is a ToolbarFlexItem.
-     */
-    isToolbarFlexItem: true,
-
-    /**
-     * @private
-     * @returns {void}
-     */
-    init: function init() {
-      // internal flags
-      this.type = getToolbarItemType(this.element);
-      this.section = this.element.parentElement;
-      this.toolbar = this.section.parentElement;
-      this.trueSelected = false;
-    },
-
-
-    /**
-     * @returns {boolean} whether or not the toolbar item is currently able to be focused, based
-     *  on its `disabled`, `overflowed`, and `visible` properties.
-     */
-    get focusable() {
-      if (this.disabled === true) {
-        return false;
-      }
-      if (this.type === 'searchfield') {
-        return true;
-      }
-      if (this.type === 'actionbutton' && this.hasNoOverflowedItems === true) {
-        return false;
-      }
-      if (this.overflowed === true) {
-        return false;
-      }
-
-      return this.visible;
-    },
-
-    /**
-     * @returns {boolean} whether or not the toolbar item is the one that will currently be focused
-     */
-    get focused() {
-      return this.element.tabIndex === 0;
-    },
-
-    /**
-     * @param {boolean} boolean, if provided, sets a focused state on the toolbar item.
-     * @returns {void}
-     */
-    set focused(boolean) {
-      if (boolean) {
-        this.element.tabIndex = 0;
-        return;
-      }
-      this.element.tabIndex = -1;
-    },
-
-    /**
-     * @returns {boolean} whether or not the Toolbar item is selected.
-     */
-    get selected() {
-      return this.trueSelected;
-    },
-
-    /**
-     * @param {boolean} boolean, if provided, sets a selected state on the toolbar item.
-     * @returns {void}
-     */
-    set selected(boolean) {
-      if (boolean) {
-        this.trueSelected = true;
-        this.element.classList.add('is-selected');
-        this.triggerSelectedEvent();
-
-        if (this.selectedAnchor) {
-          delete this.selectedAnchor;
-        }
-        return;
-      }
-      this.trueSelected = false;
-      this.element.classList.remove('is-selected');
-    },
-
-    /**
-     * Retrieves an item's main Soho Component instance.
-     * @returns {object} Soho Component instance, if applicable
-     */
-    get componentAPI() {
-      var $element = $(this.element);
-      var componentType = TOOLBAR_COMPONENT_APIS[this.type];
-
-      if (!componentType) {
-        return undefined;
-      }
-
-      return $element.data(componentType);
-    },
-
-    /**
-     * @returns {ToolbarFlex} the parent toolbar API
-     */
-    get toolbarAPI() {
-      if (this.settings.toolbarAPI) {
-        return this.settings.toolbarAPI;
-      }
-      return $(this.toolbar).data('toolbar-flex');
-    },
-
-    /**
-     * @fires selected
-     * @returns {void}
-     */
-    triggerSelectedEvent: function triggerSelectedEvent() {
-      // Searchfields and Colorpickers aren't "selectable" in the same way actionable
-      // items are, so they shouldn't fire the "selected" event.
-      var disallowedTypes = ['colorpicker', 'searchfield', 'toolbarsearchfield'];
-      if (disallowedTypes.indexOf(this.type) > -1) {
-        return;
-      }
-
-      var eventArgs = [this];
-
-      // MenuButton types pass the currently-selected anchor
-      var selectedAnchorTypes = ['menubutton', 'actionbutton'];
-      if (selectedAnchorTypes.indexOf(this.type) > -1 && this.selectedAnchor) {
-        eventArgs.push(this.selectedAnchor);
-      }
-
-      $(this.element).trigger('selected', eventArgs);
-    },
-
-
-    /**
-     * Causes the toolbar item to become visible.
-     * @returns {void}
-     */
-    show: function show() {
-      this.visible = true;
-    },
-
-
-    /**
-     * Causes the toolbar item to become hidden.
-     * @returns {void}
-     */
-    hide: function hide() {
-      this.visible = false;
-    },
-
-
-    /**
-     * Toggles the Toolbar item's visiblity.
-     * @param {boolean} boolean whether or not the `hidden` class should be set.
-     */
-    set visible(boolean) {
-      // NOTE: Temporary until Searchfield handles this better internally.
-      var isSearchfield = this.type === 'searchfield' || this.type === 'toolbarsearchfield';
-
-      if (boolean) {
-        if (isSearchfield) {
-          this.element.parentNode.classList.remove('hidden');
-        }
-        this.element.classList.remove('hidden');
-        return;
-      }
-
-      if (isSearchfield) {
-        this.element.parentNode.classList.add('hidden');
-      }
-      this.element.classList.add('hidden');
-    },
-
-    /**
-     * @returns {boolean} whether or not the Toolbar Item is visible.
-     */
-    get visible() {
-      return this.element.className.indexOf('hidden') === -1;
-    },
-
-    /**
-     * @returns {void}
-     */
-    enable: function enable() {
-      this.disabled = false;
-      if (this.hasReadOnly) {
-        this.readOnly = false;
-      }
-    },
-
-
-    /**
-     * @returns {boolean} whether or not the element is disabled
-     */
-    get disabled() {
-      return this.element.disabled;
-    },
-
-    /**
-     * @param {boolean} boolean, if provided, sets a disabled state on the toolbar item.
-     * @returns {void}
-     */
-    set disabled(boolean) {
-      if (boolean) {
-        this.element.disabled = true;
-        this.element.setAttribute('aria-disabled', true);
-        this.element.readOnly = false;
-        return;
-      }
-
-      this.element.disabled = false;
-      this.element.removeAttribute('aria-disabled');
-    },
-
-    /**
-     * @returns {boolean} whether or not `readOnly` as a property exists on this HTMLElement type.
-     */
-    get hasReadOnly() {
-      return 'readOnly' in this.element;
-    },
-
-    /**
-     * @returns {boolean} element's readOnly prop
-     */
-    get readOnly() {
-      if (!this.hasReadOnly) {
-        return false;
-      }
-      return this.element.readOnly;
-    },
-
-    /**
-     * @param {boolean} boolean, if provided, sets a readOnly state on the toolbar item, if possible.
-     * @returns {void}
-     */
-    set readOnly(boolean) {
-      if (!this.hasReadOnly) {
-        return;
-      }
-
-      if (boolean) {
-        this.disabled = false;
-        this.element.disabled = false;
-        this.element.readOnly = true;
-        return;
-      }
-
-      this.element.readOnly = false;
-    },
-
-    /**
-     * @returns {boolean} whether or not the item is pushed into overflow by the boundaries
-     *  of its container element.
-     */
-    get overflowed() {
-      var isRTL = Environment.rtl;
-      var elemRect = this.element.getBoundingClientRect();
-      var sectionRect = this.section.getBoundingClientRect();
-
-      if (isRTL) {
-        return elemRect.left < sectionRect.left;
-      }
-      return elemRect.right > sectionRect.right;
-    },
-
-    /**
-     * @param {boolean} isTrue whether or not the more actions menu has overflowed items, causing it to become displayed
-     * @returns {void}
-     */
-    set hasNoOverflowedItems(isTrue) {
-      if (this.type !== 'actionbutton' || !this.componentAPI) {
-        return;
-      }
-
-      var popupmenuLength = this.componentAPI.toData({ noMenuWrap: true }).length;
-      var menuIsEmpty = popupmenuLength - this.predefinedItems.length < 1;
-
-      if (isTrue && menuIsEmpty) {
-        this.element.classList.add('no-overflowed-items');
-        this.trueHasNoOverflowedItems = true;
-
-        if (this.focused) {
-          this.toolbarAPI.focusedItem = this;
-          this.toolbarAPI.navigate(-1, undefined, true);
-        }
-        return;
-      }
-      this.trueHasNoOverflowedItems = false;
-      this.element.classList.remove('no-overflowed-items');
-    },
-
-    /**
-     *
-     */
-    get hasNoOverflowedItems() {
-      if (!this.componentAPI) {
-        return true;
-      }
-      return this.trueHasNoOverflowedItems;
-    },
-
-    /**
-     * Sets up all event listeners for this element.
-     * @returns {void}
-     */
-    handleEvents: function handleEvents() {
-      var _this = this;
-
-      var self = this;
-      var $element = $(this.element);
-
-      var popupmenuConsumers = ['menubutton', 'actionbutton', 'colorpicker'];
-      if (popupmenuConsumers.indexOf(this.type) > -1) {
-        // Listen to the Popupmenu's selected event
-        $element.on('selected.' + COMPONENT_NAME$13, function (e, anchor) {
-          if (_this.selectedAnchor) {
-            return;
-          }
-
-          e.stopPropagation();
-
-          if (_this.type === 'actionbutton') {
-            var li = $(anchor).parent();
-            var itemLink = li.data('originalButton');
-            var itemLinkAPI = $(itemLink).data('toolbarflexitem');
-            var elementLink = void 0;
-
-            if (li.parents('ul').length > 1) {
-              elementLink = li.data('original-menu-element');
-              itemLink = li.parents('li').last().data('originalButton');
-              itemLinkAPI = $(itemLink).data('toolbarflexitem');
-            }
-
-            // If this item is linked to another toolbar item, trigger its `selected` event instead
-            // of the one on the item in this menu.
-            if (itemLinkAPI) {
-              if (elementLink) {
-                e.preventDefault();
-                itemLinkAPI.selectedAnchor = $(elementLink).children('a');
-              } else {
-                // case of a menu button overflowed into more actions
-                itemLinkAPI.selectedAnchor = anchor;
-              }
-              itemLinkAPI.selected = true;
-              return;
-            }
-          }
-
-          self.selectedAnchor = anchor;
-          self.selected = true;
-        });
-      }
-
-      if (this.type === 'actionbutton') {
-        $element.on('beforeopen.' + COMPONENT_NAME$13, this.handleActionButtonBeforeOpen.bind(this));
-        $('body').off('resize.' + COMPONENT_NAME$13).on('resize.' + COMPONENT_NAME$13, this.handleActionButtonResize.bind(this));
-      }
-
-      if (!this.settings.allowTabs) {
-        $element.on('focus.' + COMPONENT_NAME$13, this.handleFocus.bind(this));
-      }
-    },
-
-
-    /**
-     * If this element is an Action Button, this listener runs before its popupmenu is opened
-     * To determine which elements need to be shown/hidden.
-     * @private
-     * @returns {void}
-     */
-    handleActionButtonBeforeOpen: function handleActionButtonBeforeOpen() {
-      this.refreshMoreActionsMenu();
-    },
-
-
-    /**
-     * If this element is an Action Button, this listener runs whenever Soho's custom resize event
-     * on the `<body>` tag fires, to determine which elements need to be shown/hidden.
-     * @private
-     * @returns {void}
-     */
-    handleActionButtonResize: function handleActionButtonResize() {
-      this.refreshMoreActionsMenu();
-    },
-
-
-    /**
-     * @private
-     * @param {FocusEvent} e `focus`
-     * @returns {void}
-     */
-    handleFocus: function handleFocus(e) {
-      if (e.target && e.target === this.element) {
-        this.toolbarAPI.focusedItem = this;
-      }
-    },
-
-
-    /**
-     * Renders extra markup or anything else needed on the toolbar item
-     * @returns {void}
-     */
-    render: function render() {
-      // eslint-disable-next-line
-      this.disabled = this.disabled;
-      if (this.hasReadOnly) {
-        // eslint-disable-next-line
-        this.readonly = this.readonly;
-      }
-
-      // Setup component APIs, if applicable.
-      // NOTE: Soho Initializer doesn't invoke these automatically, by nature of the
-      // base elements existing inside the Flex Toolbar.
-      var $element = $(this.element);
-      var componentType = TOOLBAR_COMPONENT_APIS[this.type];
-      if (componentType) {
-        var api = $element.data(componentType);
-        if (!api) {
-          $element[componentType](this.settings.componentSettings);
-        } else {
-          api.updated(this.settings.componentSettings);
-        }
-      }
-
-      // Action Buttons need more stuff
-      if (this.type === 'actionbutton') {
-        this.renderMoreActionsMenu();
-        this.refreshMoreActionsMenu();
-      }
-
-      this.handleEvents();
-    },
-
-
-    /**
-     * Uses data from Toolbar Items to build Toolbar-linked, pre-defined items for the More Actions menu.
-     * NOTE: This method only runs when this toolbar item is a "More Actions" button
-     * @private
-     * @returns {void}
-     */
-    renderMoreActionsMenu: function renderMoreActionsMenu() {
-      var menuAPI = this.componentAPI;
-      if (!menuAPI || !this.toolbarAPI) {
-        return;
-      }
-
-      // If the menu doesn't already exist, pre-define it.
-      var $menu = menuAPI.menu;
-      if (!$menu || !$menu.length) {
-        $menu = $('<ul class="popupmenu"></ul>').insertAfter(this.element);
-      }
-
-      this.teardownPredefinedItems();
-
-      // Get Popupmenu data equivalent of the current set of Toolbar items.
-      // Menu item data is scrubbed for IDs that would otherwise be duplicated
-      function removeMenuIds(item, isSubmenu) {
-        if (item.menuId) {
-          delete item.menuId;
-        }
-        var menuTarget = isSubmenu ? 'submenu' : 'menu';
-        if (Array.isArray(item[menuTarget])) {
-          item[menuTarget].forEach(function (subitem) {
-            removeMenuIds(subitem, true);
-          });
-        }
-      }
-      var data = this.toolbarAPI.toPopupmenuData();
-      removeMenuIds(data);
-
-      // Add Toolbar Items as predefined items to the Popupmenu.
-      var menuItems = $(menuAPI.renderItem(data));
-      this.predefinedItems = menuItems;
-      this.linkToolbarItems(data);
-
-      // Notify the Popupmenu of predefined items
-      $menu.prepend(this.predefinedItems);
-      menuAPI.updated({
-        menu: $menu,
-        predefined: menuItems
-      });
-
-      this.menuRendered = true;
-    },
-
-
-    /**
-     * Refreshes the state of menu items in a "More Actions" menu that were constructed by the Flex Toolbar.
-     * @private
-     * @returns {void}
-     */
-    refreshMoreActionsMenu: function refreshMoreActionsMenu() {
-      if (this.type !== 'actionbutton') {
-        return;
-      }
-
-      this.hasNoOverflowedItems = true;
-
-      var menuAPI = this.componentAPI;
-      if (!menuAPI || !this.toolbarAPI) {
-        return;
-      }
-
-      // If there are toolbar items, but no predefined items, render the more-actions menu
-      if (!menuAPI.settings.beforeOpen && (!this.predefinedItems || !this.predefinedItems.length) && this.toolbarAPI.items.length) {
-        this.renderMoreActionsMenu();
-      }
-
-      var hasNoOverflowedItems = true;
-
-      // Called at the end of the item refresh.
-      // Uses the Popupmenu's API to add overflow information.
-      function itemRefreshCallback(menuItem, data) {
-        if (data.isSubmenuItem) {
-          return;
-        }
-
-        if (data.overflowed === true) {
-          menuItem.classList.add('is-overflowed');
-
-          if (data.visible) {
-            menuItem.classList.remove('hidden');
-          }
-
-          hasNoOverflowedItems = false;
-          return;
-        }
-
-        menuItem.classList.remove('is-overflowed');
-        menuItem.classList.add('hidden');
-      }
-
-      // Each Linked Toolbar Item will be refreshed by the Popupmenu API
-      this.toolbarAPI.items.forEach(function (item) {
-        if (!item.actionButtonLink) {
-          return;
-        }
-
-        var itemData = item.toPopupmenuData();
-        itemData.overflowed = item.overflowed;
-
-        if (itemData.id) {
-          delete itemData.id;
-        }
-
-        menuAPI.refreshMenuItem(item.actionButtonLink, itemData, itemRefreshCallback);
-      });
-
-      // Set a record for display
-      this.hasNoOverflowedItems = hasNoOverflowedItems;
-    },
-
-
-    /**
-     * Removes links between the current set of Toolbar Items to `More Actions` menu items.
-     * @private
-     * @returns {void}
-     */
-    unlinkToolbarItems: function unlinkToolbarItems() {
-      if (this.type !== 'actionbutton' || !this.menuRendered || !this.predefinedItems || !this.predefinedItems.length) {
-        return;
-      }
-
-      function doUnlinkSubmenuItem(actionMenuElement) {
-        var $originalMenuElement = $($(actionMenuElement).data('original-menu-element'));
-        $originalMenuElement.removeData('action-button-link');
-        $(actionMenuElement).removeData('original-menu-element');
-
-        if ($originalMenuElement.hasClass('submenu')) {
-          var submenuItems = actionMenuElement.querySelector('.popupmenu').children;
-          for (var j = 0; j < submenuItems.length; j++) {
-            doUnlinkSubmenuItem(submenuItems[j]);
-          }
-        }
-      }
-
-      function doUnlinkToolbarItems(i, itemElement) {
-        var originalButton = $(itemElement).data('originalButton');
-        var originalButtonAPI = $(originalButton).data('toolbarflexitem');
-
-        originalButtonAPI.actionButtonLink = null;
-        $(itemElement).removeData('original-button');
-
-        if (originalButtonAPI.type === 'menubutton') {
-          var submenuItems = itemElement.querySelector('.popupmenu').children;
-          for (var j = 0; j < submenuItems.length; j++) {
-            doUnlinkSubmenuItem(submenuItems[j]);
-          }
-        }
-      }
-
-      this.predefinedItems.each(doUnlinkToolbarItems);
-    },
-
-
-    /**
-     * Links the current set of Toolbar Items to the `More Actions` menu items.
-     * @private
-     * @param {object} popupmenuData incoming popupmenu data
-     * @returns {void}
-     */
-    linkToolbarItems: function linkToolbarItems(popupmenuData) {
-      if (this.type !== 'actionbutton' || !popupmenuData) {
-        return;
-      }
-
-      if (!Array.isArray(popupmenuData)) {
-        popupmenuData = popupmenuData.menu;
-      }
-
-      function doLinkSubmenuItem(menuItemData, actionMenuElement) {
-        var originalMenuElement = menuItemData.elementLink;
-        $(originalMenuElement).data('action-button-link', actionMenuElement);
-        $(actionMenuElement).data('original-menu-element', originalMenuElement);
-
-        var submenu = menuItemData.submenu;
-        if (submenu && submenu.length) {
-          var submenuItems = actionMenuElement.querySelector('.popupmenu').children;
-          for (var j = 0; j < submenuItems.length; j++) {
-            doLinkSubmenuItem(submenu[j], submenuItems[j]);
-          }
-        }
-      }
-
-      function doLinkToolbarItems(i, itemElement) {
-        var originalButtonAPI = popupmenuData[i].itemLink;
-        originalButtonAPI.actionButtonLink = itemElement;
-        $(itemElement).data('original-button', originalButtonAPI.element);
-
-        var submenu = popupmenuData[i].submenu;
-        if (submenu && submenu.length) {
-          var submenuItems = itemElement.querySelector('.popupmenu').children;
-          for (var j = 0; j < submenuItems.length; j++) {
-            doLinkSubmenuItem(submenu[j], submenuItems[j]);
-          }
-        }
-      }
-
-      this.predefinedItems.each(doLinkToolbarItems);
-    },
-
-
-    /**
-     * Converts the contents of the Toolbar Item to a data structure that's compatible with a Popupmenu component.
-     * This data structure can be used to populate the contents of a "More Actions" menu.
-     * @returns {object} an object representation of the Toolbar Item as a Popupmenu Item.
-     */
-    toPopupmenuData: function toPopupmenuData() {
-      if (this.type === 'searchfield' || this.type === 'toolbarsearchfield' || this.type === 'actionbutton') {
-        return undefined;
-      }
-
-      var itemData = {
-        itemLink: this,
-        disabled: this.disabled,
-        visible: this.visible
-      };
-
-      var icon = this.element.querySelector('.icon:not(.close):not(.icon-dropdown) > use');
-      if (icon) {
-        itemData.icon = icon.getAttribute('xlink:href').replace('#icon-', '');
-      }
-
-      if (this.type === 'button' || this.type === 'menubutton') {
-        itemData.text = this.element.textContent.trim();
-      }
-
-      function addMenuElementLinks(menu, data) {
-        var elems = menu.querySelectorAll('li:not(.heading)');
-        data.forEach(function (item, i) {
-          item.elementLink = elems[i];
-          if (item.submenu) {
-            var submenu = elems[i].querySelector('.popupmenu');
-            item.submenu = addMenuElementLinks(submenu, item.submenu);
-          }
-        });
-        return data;
-      }
-
-      // Add links to the menubutton's menu item elements to the Popupmenu data
-      if (this.type === 'menubutton') {
-        var menuElem = this.componentAPI.menu;
-        if (!menuElem.length) {
-          // Act as if this menubutton is simply empty.
-          itemData.submenu = [];
-        } else {
-          // Get a data representation of the existing menu content
-          var originalSubmenuData = this.componentAPI.toData({ noMenuWrap: true });
-          var targetId = this.componentAPI.element[0].id;
-          if (targetId) {
-            // NOTE: don't pass the same ID here, which would cause duplicates
-            itemData.id = this.toolbarAPI.uniqueId + '-' + targetId;
-          }
-          itemData.submenu = addMenuElementLinks(menuElem[0], originalSubmenuData);
-        }
-      }
-
-      return itemData;
-    },
-
-
-    /**
-     * Converts the current state of the toolbar item to an object structure that can be
-     * easily passed back/forth and tested.
-     * @returns {object} containing the current Toolbar Item state.
-     */
-    toData: function toData() {
-      var itemData = {
-        type: this.type,
-        disabled: this.disabled,
-        focused: this.focused,
-        selected: this.selected,
-        overflowed: this.overflowed,
-        visible: this.visible
-      };
-
-      if (this.hasReadOnly) {
-        itemData.readOnly = this.readOnly;
-      }
-
-      if (this.actionButtonLink) {
-        itemData.actionButtonLink = this.actionButtonLink;
-      }
-
-      if (this.componentAPI) {
-        itemData.componentAPI = this.componentAPI;
-      }
-
-      var icon = this.element.querySelector('.icon:not(.close):not(.icon-dropdown) > use');
-      if (icon) {
-        itemData.icon = icon.getAttribute('xlink:href').replace('#icon-', '');
-      }
-
-      if (this.type === 'button' || this.type === 'menubutton') {
-        itemData.text = this.element.textContent.trim();
-      }
-
-      if (this.type === 'actionbutton') {
-        itemData.predefinedItems = this.predefinedItems;
-      }
-
-      if (this.type === 'menubutton' || this.type === 'actionbutton') {
-        // TODO: Need to convert a Popupmenu's contents to the object format with this method
-        itemData.submenu = this.componentAPI.toData({ noMenuWrap: true });
-      }
-
-      return itemData;
-    },
-
-
-    /**
-     * Completely updates this component with (optional) new settings.
-     * @param {object} [settings] incoming settings
-     */
-    updated: function updated(settings) {
-      if (settings) {
-        this.settings = utils.mergeSettings(this.element, settings, this.settings);
-      }
-
-      this.teardown();
-      this.init();
-    },
-
-
-    /**
-     * @private
-     * @returns {void}
-     */
-    teardownPredefinedItems: function teardownPredefinedItems() {
-      if (this.type !== 'actionbutton') {
-        return;
-      }
-
-      this.unlinkToolbarItems();
-      if (this.predefinedItems && this.predefinedItems.length) {
-        this.predefinedItems.remove();
-      }
-    },
-
-
-    /**
-     * Unbinds events and removes preset internal flags for this component.
-     * @returns {void}
-     */
-    teardown: function teardown() {
-      $(this.element).off('selected.' + COMPONENT_NAME$13).off('beforeopen.' + COMPONENT_NAME$13).off('focus.' + COMPONENT_NAME$13);
-
-      $('body').off('resize.' + COMPONENT_NAME$13);
-
-      this.teardownPredefinedItems();
-
-      delete this.type;
-      delete this.selected;
-      delete this.focusable;
-      delete this.visible;
-      delete this.disabled;
-      delete this.readOnly;
-
-      delete this.section;
-      delete this.toolbar;
-      delete this.trueSelected;
-      delete this.menuRendered;
-    }
   };
 
   /**
@@ -69037,11 +71322,11 @@ var Soho = (function (exports) {
    */
   $.fn.toolbarflexitem = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$13);
+      var instance = $.data(this, COMPONENT_NAME$H);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$13, new ToolbarFlexItem(this, settings));
+        instance = $.data(this, COMPONENT_NAME$H, new ToolbarFlexItem(this, settings));
 
         // Remove the jQuery Component reference from $.data
         var oldDestroy = instance.destroy;
@@ -69049,22 +71334,23 @@ var Soho = (function (exports) {
           if (typeof oldDestroy === 'function') {
             oldDestroy.call(this);
           }
-          $.removeData(this, COMPONENT_NAME$13);
+          $.removeData(this, COMPONENT_NAME$H);
         };
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$14 = 'toolbar-flex';
+  var COMPONENT_NAME$16 = 'toolbar-flex';
 
   /**
    * Component Default Settings
    * @namespace
    */
   var TOOLBAR_FLEX_DEFAULTS = {
+    allowTabs: false,
     beforeMoreMenuOpen: null,
-    allowTabs: false
+    moreMenuSettings: {}
   };
 
   /**
@@ -69073,6 +71359,7 @@ var Soho = (function (exports) {
    * @param {object} [settings] incoming settings
    * @param {function} [settings.beforeMoreMenuOpen=null] Ajax function to be called before the more menu is opened
    * @param {boolean} [settings.allowTabs] Allows tab to navigate the toolbar
+   * @param {object} [settings.moreMenuSettings] if defined on a toolbar containing a More Actions menu, this will pass settings into this toolbar's More Actions menu
    */
   function ToolbarFlex(element, settings) {
     this.element = element;
@@ -69103,9 +71390,17 @@ var Soho = (function (exports) {
       this.sections = utils.getArrayFromList(this.element.querySelectorAll('.toolbar-section'));
       this.items = this.getElements().map(function (item) {
         var itemComponentSettings = {};
-        if ($(item).hasClass('btn-actions') && !!_this.settings.beforeMoreMenuOpen) {
-          itemComponentSettings.beforeOpen = _this.settings.beforeMoreMenuOpen;
+        var isActionButton = $(item).hasClass('btn-actions');
+
+        if (isActionButton) {
+          itemComponentSettings = _this.settings.moreMenuSettings || itemComponentSettings;
+
+          if (_this.settings.beforeMoreMenuOpen) {
+            warnAboutDeprecation('settings.moreMenuSettings.beforeOpen', 'settings.beforeMoreMenuOpen', 'Flex Toolbar');
+            itemComponentSettings.beforeOpen = _this.settings.beforeMoreMenuOpen;
+          }
         }
+
         $(item).toolbarflexitem({
           toolbarAPI: _this,
           componentSettings: itemComponentSettings,
@@ -69169,14 +71464,14 @@ var Soho = (function (exports) {
         this.element.addEventListener('click', this.clickListener);
       }
 
-      $(this.element).on('selected.' + COMPONENT_NAME$14, function (e) {
+      $(this.element).on('selected.' + COMPONENT_NAME$16, function (e) {
         for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
           args[_key - 1] = arguments[_key];
         }
       });
 
       // Inlined Searchfields can cause navigation requiring a focus change to occur on collapse.
-      $(this.element).on('collapsed-responsive.' + COMPONENT_NAME$14, function (e, direction) {
+      $(this.element).on('collapsed-responsive.' + COMPONENT_NAME$16, function (e, direction) {
         e.stopPropagation();
         _this2.navigate(direction, null, true);
       });
@@ -69561,12 +71856,17 @@ var Soho = (function (exports) {
         noMenuWrap: true
       };
 
-      var hasIcons = false;
-
       function getItemData(item) {
         var itemData = item.toPopupmenuData();
-        if (itemData && itemData.icon) {
-          hasIcons = true;
+
+        if (itemData) {
+          // Pass along some properties to the top level data object
+          if (itemData.icon) {
+            data.hasIcons = true;
+          }
+          if (itemData.selectable) {
+            data.selectable = itemData.selectable;
+          }
         }
         return itemData;
       }
@@ -69579,8 +71879,6 @@ var Soho = (function (exports) {
       }).map(function (item) {
         return getItemData(item);
       });
-
-      data.hasIcons = hasIcons;
 
       return data;
     },
@@ -69613,6 +71911,36 @@ var Soho = (function (exports) {
     },
 
     /**
+     * Detects whether or not a toolbar item is currently overflowed.
+     * @param {ToolbarFlexItem|jQuery[]|HTMLElement} item the Toolbar Item or Element to check for overlflow.
+     * @returns {boolean} whether or not the item is overflowed.
+     */
+    isItemOverflowed: function isItemOverflowed(item) {
+      if (!item) {
+        return false;
+      }
+
+      // If we get an HTMLElement or jQuery object, rzesolve the ToolbarFlex Item
+      // from either of those, if applicable. Otherwise, it's not overflowed.
+      var targetItem = void 0;
+      if (item instanceof HTMLElement || item instanceof $) {
+        targetItem = $(item).data('toolbarflexitem');
+        if (!targetItem) {
+          return false;
+        }
+        item = targetItem;
+      }
+
+      // If this item isn't inside this toolbar, it's definitely not overflowed.
+      if (this.items.indexOf(item) < 0) {
+        return false;
+      }
+
+      return item.overflowed;
+    },
+
+
+    /**
      * @param {object} [settings] incoming settings
      * @returns {void}
      */
@@ -69636,8 +71964,8 @@ var Soho = (function (exports) {
         this.element.removeEventListener('click', this.clickListener);
       }
 
-      $(this.element).off('selected.' + COMPONENT_NAME$14);
-      $(this.element).off('collapsed-responsive.' + COMPONENT_NAME$14);
+      $(this.element).off('selected.' + COMPONENT_NAME$16);
+      $(this.element).off('collapsed-responsive.' + COMPONENT_NAME$16);
 
       this.items.forEach(function (item) {
         item.teardown();
@@ -69663,11 +71991,11 @@ var Soho = (function (exports) {
    */
   $.fn.toolbarflex = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$14);
+      var instance = $.data(this, COMPONENT_NAME$16);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$14, new ToolbarFlex(this, settings));
+        instance = $.data(this, COMPONENT_NAME$16, new ToolbarFlex(this, settings));
 
         // Remove the jQuery Component reference from $.data
         var oldDestroy = instance.destroy;
@@ -69675,7 +72003,7 @@ var Soho = (function (exports) {
           if (typeof oldDestroy === 'function') {
             oldDestroy.call(this);
           }
-          $.removeData(this, COMPONENT_NAME$14);
+          $.removeData(this, COMPONENT_NAME$16);
         };
       }
     });
@@ -69689,7 +72017,7 @@ var Soho = (function (exports) {
   $.fn.toolbarsearchfield = $.fn.searchfield;
 
   // Component Name
-  var COMPONENT_NAME$15 = 'trackdirty';
+  var COMPONENT_NAME$17 = 'trackdirty';
 
   // Default Trackdirty Options
   var TRACKDIRTY_DEFAULTS = {};
@@ -69805,7 +72133,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$15);
+      $.removeData(this.element[0], COMPONENT_NAME$17);
     },
 
 
@@ -69869,10 +72197,7 @@ var Soho = (function (exports) {
         // Add class and icon
         d.icon = el.prev();
         if (!d.icon.is('.icon-dirty')) {
-          if (input.is('[type="checkbox"]')) {
-            d.rect = _this.getAbsolutePosition(label);
-            d.style = 'left:' + d.rect.left + 'px; top:' + d.rect.top + 'px;';
-          } else if (input.is('.colorpicker') && !Locale.isRTL()) {
+          if (input.is('.colorpicker') && !Locale.isRTL()) {
             d.rect = _this.getAbsolutePosition(input);
             d.style = 'left:' + d.rect.left + 'px; top:' + d.rect.top + 'px;';
           }
@@ -69940,17 +72265,17 @@ var Soho = (function (exports) {
    */
   $.fn.trackdirty = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$15);
+      var instance = $.data(this, COMPONENT_NAME$17);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$15, new Trackdirty(this, settings));
+        instance = $.data(this, COMPONENT_NAME$17, new Trackdirty(this, settings));
       }
     });
   };
 
   // The name of this component.
-  var COMPONENT_NAME$16 = 'tree';
+  var COMPONENT_NAME$18 = 'tree';
 
   /**
   * The tree Component displays a hierarchical list.
@@ -71204,7 +73529,7 @@ var Soho = (function (exports) {
         a.alertIcon = '<svg class="icon step-alert icon-' + data.alertIcon + '" focusable="false" aria-hidden="true" role="presentation"><use xlink:href="#icon-' + data.alertIcon + '"></use>';
       }
 
-      var isChildren = data.children && data.children.constructor === Array;
+      var isChildren = data.children && Array.isArray(data.children);
       var liClassList = isChildren ? 'folder' : '';
       liClassList += data.selected ? ' is-selected' : '';
       if (liClassList !== '') {
@@ -72387,7 +74712,7 @@ var Soho = (function (exports) {
     destroy: function destroy() {
       this.unbind();
       this.element.empty();
-      $.removeData(this.element[0], COMPONENT_NAME$16);
+      $.removeData(this.element[0], COMPONENT_NAME$18);
     },
 
 
@@ -72472,11 +74797,11 @@ var Soho = (function (exports) {
    */
   $.fn.tree = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$16);
+      var instance = $.data(this, COMPONENT_NAME$18);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$16, new Tree(this, settings));
+        instance = $.data(this, COMPONENT_NAME$18, new Tree(this, settings));
       }
     });
   };
@@ -72484,7 +74809,7 @@ var Soho = (function (exports) {
   // Shared Imports
 
   // Settings and Options
-  var COMPONENT_NAME$17 = 'treemap';
+  var COMPONENT_NAME$19 = 'treemap';
 
   // Default Radar Options
   var TREEMAP_DEFAULTS = {
@@ -72656,21 +74981,21 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this2 = this;
 
-      this.element.on('updated.' + COMPONENT_NAME$17, function () {
+      this.element.on('updated.' + COMPONENT_NAME$19, function () {
         _this2.updated();
       });
 
       if (this.settings.redrawOnResize) {
-        $('body').on('resize.' + COMPONENT_NAME$17, function () {
+        $('body').on('resize.' + COMPONENT_NAME$19, function () {
           _this2.handleResize();
         });
 
-        this.element.on('resize.' + COMPONENT_NAME$17, function () {
+        this.element.on('resize.' + COMPONENT_NAME$19, function () {
           _this2.handleResize();
         });
       }
 
-      $('html').on('themechanged.' + COMPONENT_NAME$17, function () {
+      $('html').on('themechanged.' + COMPONENT_NAME$19, function () {
         _this2.updated();
       });
       return this;
@@ -72721,9 +75046,9 @@ var Soho = (function (exports) {
      * @returns {object} The Component prototype, useful for chaining.
      */
     teardown: function teardown() {
-      this.element.off('updated.' + COMPONENT_NAME$17);
-      $('body').off('resize.' + COMPONENT_NAME$17);
-      $('html').off('themechanged.' + COMPONENT_NAME$17);
+      this.element.off('updated.' + COMPONENT_NAME$19);
+      $('body').off('resize.' + COMPONENT_NAME$19);
+      $('html').off('themechanged.' + COMPONENT_NAME$19);
       return this;
     },
 
@@ -72736,7 +75061,7 @@ var Soho = (function (exports) {
       this.element.empty().removeClass('chart-treemap');
       charts.removeTooltip();
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$17);
+      $.removeData(this.element[0], COMPONENT_NAME$19);
     }
   };
 
@@ -72747,11 +75072,11 @@ var Soho = (function (exports) {
    */
   $.fn.treemap = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$17);
+      var instance = $.data(this, COMPONENT_NAME$19);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$17, new Treemap(this, settings));
+        instance = $.data(this, COMPONENT_NAME$19, new Treemap(this, settings));
       }
     });
   };
@@ -72763,11 +75088,11 @@ var Soho = (function (exports) {
    */
   $.fn.weekview = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$r);
+      var instance = $.data(this, COMPONENT_NAME$s);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$r, new WeekView(this, settings));
+        instance = $.data(this, COMPONENT_NAME$s, new WeekView(this, settings));
       }
     });
   };
@@ -72775,7 +75100,7 @@ var Soho = (function (exports) {
   // jQuery Components
 
   // Component Name
-  var COMPONENT_NAME$18 = 'wizard';
+  var COMPONENT_NAME$1a = 'wizard';
 
   // Component Default Settings
   var WIZARD_DEFAULTS = {
@@ -72803,7 +75128,7 @@ var Soho = (function (exports) {
      * @private
      */
     init: function init() {
-      this.namespace = utils.uniqueId({ classList: [COMPONENT_NAME$18] });
+      this.namespace = utils.uniqueId({ classList: [COMPONENT_NAME$1a] });
       this.build().handleEvents();
     },
 
@@ -73053,7 +75378,7 @@ var Soho = (function (exports) {
     setTooltip: function setTooltip(label) {
       var _this3 = this;
 
-      label.jqEl.tooltip({ content: label.label, placement: 'bottom' }).on('blur.' + COMPONENT_NAME$18, function () {
+      label.jqEl.tooltip({ content: label.label, placement: 'bottom' }).on('blur.' + COMPONENT_NAME$1a, function () {
         return _this3.removeTooltip(label);
       });
     },
@@ -73068,7 +75393,7 @@ var Soho = (function (exports) {
     removeTooltip: function removeTooltip(label) {
       var tooltipApi = label.jqEl.data('tooltip');
       if (tooltipApi) {
-        tooltipApi.element.off('blur.' + COMPONENT_NAME$18);
+        tooltipApi.element.off('blur.' + COMPONENT_NAME$1a);
         tooltipApi.destroy();
       }
     },
@@ -73149,8 +75474,8 @@ var Soho = (function (exports) {
       });
       delete this.labels;
 
-      this.ticks.off('click.' + COMPONENT_NAME$18);
-      this.element.off('updated.' + COMPONENT_NAME$18);
+      this.ticks.off('click.' + COMPONENT_NAME$1a);
+      this.element.off('updated.' + COMPONENT_NAME$1a);
       $('body').off('resize.' + this.namespace);
 
       this.ticks.remove();
@@ -73265,7 +75590,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$18);
+      $.removeData(this.element[0], COMPONENT_NAME$1a);
     },
 
 
@@ -73281,11 +75606,11 @@ var Soho = (function (exports) {
 
       var self = this;
 
-      this.element.on('updated.' + COMPONENT_NAME$18, function () {
+      this.element.on('updated.' + COMPONENT_NAME$1a, function () {
         self.updated();
       });
 
-      this.ticks.on('click.' + COMPONENT_NAME$18, function (e) {
+      this.ticks.on('click.' + COMPONENT_NAME$1a, function (e) {
         self.activate(e, $(this));
       });
 
@@ -73304,11 +75629,11 @@ var Soho = (function (exports) {
    */
   $.fn.wizard = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$18);
+      var instance = $.data(this, COMPONENT_NAME$1a);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$18, new Wizard(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1a, new Wizard(this, settings));
       }
     });
   };
@@ -73697,16 +76022,12 @@ var Soho = (function (exports) {
       var depth = api && api.settings.treeDepth && api.settings.treeDepth[row] ? api.settings.treeDepth[row].depth : 0;
 
       // When use filter then
-      // If (settings.allowChildExpandOnMatch === false) and only parent node got match
-      // then make expand/collapse button to be collapsed and disabled
+      // If (settings.allowChildExpandOnMatch === false) and only parent node has a match
+      // then make expand/collapse button collapsed and disabled
       var isExpandedBtnDisabled = item && item.isAllChildrenFiltered;
       var expandedBtnDisabledHtml = isExpandedBtnDisabled ? ' disabled' : '';
       if (isOpen && isExpandedBtnDisabled) {
         isOpen = false;
-      }
-      if (item && typeof item.isAllChildrenFiltered !== 'undefined') {
-        // Remove key after use to reset
-        delete item.isAllChildrenFiltered;
       }
 
       // Tabsize as button width (+/-)
@@ -74357,9 +76678,6 @@ var Soho = (function (exports) {
         var selected = this.input.find(':selected');
         var val = selected.attr('value');
         var dataType = selected.attr('data-type');
-        if (!val && this.input.find('option[selected]').length > 0) {
-          val = this.input.find('option[selected]').attr('value');
-        }
 
         // For non-string option values (number, boolean, etc.),
         // convert string attr value to proper type
@@ -75438,7 +77756,11 @@ var Soho = (function (exports) {
             } else {
               value = node[field];
             }
-            return sum + Number(value);
+
+            value = Number(value);
+            var valuePlaces = numberUtils.decimalPlaces(value);
+            var sumPlaces = numberUtils.decimalPlaces(sum);
+            return Number((sum + value).toFixed(Math.max(valuePlaces, sumPlaces)));
           };
 
           var total = items.reduce(self[columns[i].aggregator], 0);
@@ -75469,7 +77791,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle, no-continue, no-nested-ternary */
 
   // The name of this component.
-  var COMPONENT_NAME$19 = 'datagrid';
+  var COMPONENT_NAME$1b = 'datagrid';
 
   /**
    * The Datagrid Component displays and process data in tabular format.
@@ -75511,9 +77833,8 @@ var Soho = (function (exports) {
    * @param {string}   [settings.selectable=false] Controls the selection Mode this may be: false, 'single' or 'multiple' or 'mixed' or 'siblings'
    * @param {null|function} [settings.onBeforeSelect=null] If defined as a function will fire as callback before rows are selected. You can return false to veto row selection.
    * @param {object}   [settings.groupable=null]  Controls fields to use for data grouping Use Data grouping, e.g. `{fields: ['incidentId'], supressRow: true, aggregator: 'list', aggregatorOptions: ['unitName1']}`
-   * @param {boolean}  [settings.spacerColumn=false] if true and the grid is not wide enough to fit the last column will get filled with an empty spacer column.
    * @param {boolean}  [settings.showNewRowIndicator=true] If true, the new row indicator will display after adding a row.
-   * @param {string}   [settings.stretchColumn='last'] If 'last' the last column will stretch using 100% css and work on resize.
+   * @param {string}   [settings.stretchColumn=null] If 'last' the last column will stretch to the end, otherwise specific columns can be targetted.
    * @param {boolean}  [settings.stretchColumnOnChange=true] If true, column will recalculate its width and stretch if required.
    * @param {boolean}  [settings.clickToSelect=true] Controls if using a selection mode if you can click the rows to select
    * @param {object}   [settings.toolbar=false]  Toggles and appends various toolbar features for example `{title: 'Data Grid Header Title', results: true, keywordFilter: true, filter: true, rowHeight: true, views: true}`
@@ -75558,7 +77879,7 @@ var Soho = (function (exports) {
    * emptyMessage: {title: 'No Data Available', info: 'Make a selection on the list above to see results',
    * icon: 'icon-empty-no-data', button: {text: 'Button Text', click: <function>}} set this to null for no message
    * or will default to 'No Data Found with an icon.'
-   * @param {boolean}  [settings.allowChildExpandOnMatch=false] use  with filter
+   * @param {boolean} [settings.allowChildExpandOnMatch=false] Used with filter
    * if true:
    * and if only parent has a match then add all children nodes too
    * or if one or more child node got match then add parent node and all the children nodes
@@ -75603,9 +77924,8 @@ var Soho = (function (exports) {
     onBeforeSelect: null,
     allowSelectAcrossPages: null,
     groupable: null,
-    spacerColumn: false,
     showNewRowIndicator: true,
-    stretchColumn: 'last',
+    stretchColumn: null,
     stretchColumnOnChange: false,
     twoLineHeader: false,
     clickToSelect: true,
@@ -75701,19 +78021,18 @@ var Soho = (function (exports) {
       this.isInModal = false;
       this.appendTooltip();
       this.initSettings();
-      this.originalColumns = this.columnsFromString(JSON.stringify(this.settings.columns));
+      this.setOriginalColumns();
       this.removeToolbarOnDestroy = false;
       this.nonVisibleCellErrors = [];
       this.recordCount = 0;
       this.canvas = null;
       this.totalWidths = { left: 0, center: 0, right: 0 };
-      this.totalMinWidths = { left: 0, center: 0, right: 0 };
+      this.stretchColumnWidth = 0;
       this.editor = null; // Current Cell Editor thats in Use
       this.activeCell = { node: null, cell: null, row: null }; // Current Active Cell
       this.dontSyncUi = false;
       this.widthPercent = false;
       this.rowSpans = [];
-      this.headerWidths = []; // Cache
       this.filterRowRendered = false; // Flag used to determine if the header is rendered or not.
       this.scrollLeft = 0;
       this.scrollTop = 0;
@@ -75735,7 +78054,7 @@ var Soho = (function (exports) {
       * @property {object} event - The jquery event object
       * @property {array} ui - An array with references to the domElement, header and pagerBar
       */
-      this.element.trigger('rendered', [this.element, this.headerContainer.find('thead'), this.pagerBar]);
+      this.element.trigger('rendered', [this.element, this.element.find('thead'), this.pagerBar]);
     },
 
 
@@ -75837,29 +78156,24 @@ var Soho = (function (exports) {
       var self = this;
       this.hasLeftPane = this.settings.frozenColumns.left.length > 0;
       this.hasRightPane = this.settings.frozenColumns.right.length > 0;
-      self.bodyContainer = $('<div class="datagrid-body-container"></div>');
 
       if (this.hasLeftPane) {
-        self.bodyWrapperLeft = $('<div class="datagrid-body left"></div>');
+        self.bodyWrapperLeft = $('<div class="datagrid-wrapper left"></div>');
         self.tableLeft = $('<table></table>').addClass('datagrid').attr('role', this.settings.treeGrid ? 'treegrid' : 'grid').appendTo(self.bodyWrapperLeft);
-        self.bodyContainer.append(self.bodyWrapperLeft);
+        self.element.append(self.bodyWrapperLeft);
       }
 
-      self.bodyWrapperCenter = $('<div class="datagrid-body center scroll-x' + (!this.hasRightPane ? ' scroll-y' : '') + '"></div>');
+      self.bodyWrapperCenter = $('<div class="datagrid-wrapper center scroll-x' + (!this.hasRightPane ? ' scroll-y' : '') + '"></div>');
       self.table = $('<table></table>').addClass('datagrid').attr('role', this.settings.treeGrid ? 'treegrid' : 'grid').appendTo(self.bodyWrapperCenter);
-      self.bodyContainer.append(self.bodyWrapperCenter);
+      self.element.append(self.bodyWrapperCenter);
 
       if (this.hasRightPane) {
-        self.bodyWrapperRight = $('<div class="datagrid-body right scroll-y"></div>');
+        self.bodyWrapperRight = $('<div class="datagrid-wrapper right scroll-y"></div>');
         self.tableRight = $('<table></table>').addClass('datagrid').attr('role', this.settings.treeGrid ? 'treegrid' : 'grid').appendTo(self.bodyWrapperRight);
-        self.bodyContainer.append(self.bodyWrapperRight);
+        self.element.append(self.bodyWrapperRight);
       }
 
-      this.element.addClass('datagrid-container').attr('x-ms-format-detection', 'none');
-
-      if (this.isWindows) {
-        this.element.addClass('is-windows'); // need since scrollbars are visible
-      }
+      this.element.removeClass('datagrid').addClass('datagrid-container').attr('x-ms-format-detection', 'none');
 
       // initialize row height by a setting
       if (this.settings.rowHeight !== 'normal') {
@@ -75879,13 +78193,11 @@ var Soho = (function (exports) {
         $(this.element).removeClass('is-gridlist');
       }
 
-      this.isInitialRender = true;
       self.table.empty();
-      self.clearHeaderCache();
-      self.renderRows();
-      self.element.append(this.bodyContainer);
-      self.renderHeader();
+      self.clearCache();
       self.container = self.element.closest('.datagrid-container');
+      self.renderRows();
+      self.renderHeader();
 
       if (this.settings.emptyMessage) {
         self.setEmptyMessage(this.settings.emptyMessage);
@@ -75906,6 +78218,8 @@ var Soho = (function (exports) {
     * @param {string} location Where to add the row. This can be 'bottom' or 'top', default is top.
     */
     addRow: function addRow(data, location) {
+      var _this = this;
+
       var self = this;
       var isTop = false;
       var row = 0;
@@ -75913,40 +78227,86 @@ var Soho = (function (exports) {
       var args = void 0;
       var rowNode = void 0;
 
+      // Get first or last index of matching key/value
+      function getIndexByKey(array, key, value, isReverse) {
+        for (var i = 0, l = array.length; i < l; i++) {
+          var idx = isReverse ? l - 1 - i : i;
+          if (array[idx][key] === value) {
+            return idx;
+          }
+        }
+        return -1;
+      }
+
       if (!location || location === 'top') {
         location = 'top';
         isTop = true;
       }
+
       // Add row status
-      data.rowStatus = { icon: 'new', text: Locale.translate('New'), tooltip: Locale.translate('New') };
+      var newRowStatus = { icon: 'new', text: Locale.translate('New'), tooltip: Locale.translate('New') };
+
+      data = data || {};
+      data.rowStatus = data.rowStatus || newRowStatus;
+
       this.saveDirtyRows();
 
-      // Add to array
-      var appendArray = this.settings.groupable && this.originalDataset ? this.originalDataset : this.settings.dataset;
+      var dataset = this.settings.dataset;
 
-      if (typeof location === 'string') {
-        appendArray[isTop ? 'unshift' : 'push'](data);
+      if (this.settings.groupable) {
+        dataset = this.originalDataset || dataset;
+        var targetIndex = -1;
+        if (typeof location === 'string') {
+          var field = this.settings.groupable.fields[0];
+          var idx = getIndexByKey(dataset, field, data[field], !isTop);
+          targetIndex = idx > -1 ? !isTop ? idx + 1 : idx : 0;
+          dataset.splice(targetIndex, 0, data);
+          row = targetIndex;
+        } else {
+          dataset.splice(location, 0, data);
+          row = location;
+        }
+      } else if (typeof location === 'string') {
+        dataset[isTop ? 'unshift' : 'push'](data);
+        row = isTop ? row : dataset.length - 1;
       } else {
-        appendArray.splice(location, 0, data);
+        dataset.splice(location, 0, data);
+        row = location;
       }
 
       this.restoreDirtyRows();
       this.setRowGrouping();
-      this.pagerRefresh(location);
-      this.syncSelectedRowsIdx();
+
+      if (!this.settings.groupable) {
+        this.pagerRefresh(location);
+      }
+
+      // Update selected
+      this._selectedRows.forEach(function (selected) {
+        if (typeof selected.pagingIdx !== 'undefined' && selected.pagingIdx >= row) {
+          selected.idx++;
+          selected.pagingIdx++;
+        }
+      });
 
       // Add to ui
+      this.clearCache();
       this.renderRows();
+
+      if (this.settings.groupable) {
+        rowNode = this.dataRowNode(row);
+        row = this.visualRowIndex(rowNode);
+      }
 
       // Sync with others
       this.syncSelectedUI();
 
       // Set active and fire handler
       setTimeout(function () {
-        row = isTop ? row : self.settings.dataset.length - 1;
         self.setActiveCell(row, cell);
-
-        rowNode = self.tableBody.find('tr[aria-rowindex="' + (row + 1) + '"]');
+        if (!_this.settings.groupable) {
+          rowNode = _this.visualRowNode(row);
+        }
         args = { row: row, cell: cell, target: rowNode, value: data, oldValue: {} };
 
         /**
@@ -75989,7 +78349,7 @@ var Soho = (function (exports) {
         pagingInfo.pagesize = this.settings.pagesize;
       }
       if (savePage) {
-        pagingInfo.activePage = this.settings.pagesize * this.pager.activePage > this.settings.dataset.length ? 1 : this.pager.activePage;
+        pagingInfo.activePage = this.settings.pagesize * this.pagerAPI.activePage > this.settings.dataset.length ? 1 : this.pagerAPI.activePage;
       }
       this.renderPager(pagingInfo, true);
     },
@@ -76007,13 +78367,23 @@ var Soho = (function (exports) {
       var arrayToUse = this.settings.groupable && this.originalDataset ? this.originalDataset : this.settings.dataset;
       var rowData = arrayToUse[row];
 
-      this.unselectRow(row, noSync);
+      this.saveDirtyRows();
 
+      this.unselectRow(row, noSync);
       arrayToUse.splice(row, 1);
+      this.restoreDirtyRows();
+
+      if (this.settings.selectable) {
+        if (!this.settings.groupable && this.settings.groupable && this.originalDataset) {
+          this.syncDatasetWithSelectedRows();
+        }
+      }
+
       this.preventSelection = true;
       if (!noSync) {
         this.setRowGrouping();
         this.pagerRefresh('top', true);
+        this.clearCache();
         this.renderRows();
       }
 
@@ -76262,6 +78632,13 @@ var Soho = (function (exports) {
         }
       }
 
+      // Clear groupable
+      if (this.settings.groupable && this.settings.dataset[0] && !this.settings.dataset[0].values) {
+        this._selectedRows = [];
+        this.originalDataset = null;
+        this.clearDirty();
+      }
+
       // Update Paging and Clear Rows
       this.setTreeDepth();
       if (this.settings.source) {
@@ -76294,17 +78671,16 @@ var Soho = (function (exports) {
       // Resize and re-render if have a new dataset
       // (since automatic column sizing depends on the dataset)
       if (pagerInfo.type === 'initial') {
-        this.clearHeaderCache();
+        this.clearCache();
         this.restoreUserSettings();
         this.renderRows();
         this.renderHeader();
-      } else if (this.headerContainer.find('.datagrid-filter-wrapper .is-open').length === 0) {
-        this.clearHeaderCache();
+      } else if (this.element.find('.datagrid-filter-wrapper .is-open').length === 0) {
+        this.clearCache();
         this.setTreeDepth();
         this.setRowGrouping();
         this.setTreeRootNodes();
         this.renderRows();
-        this.syncColGroups();
       } else {
         // Filter field is open so do not resize
         this.renderRows();
@@ -76356,33 +78732,6 @@ var Soho = (function (exports) {
 
 
     /**
-    * Returns the index of the last column.
-    * @private
-    * @returns {number} The last columns index.
-    */
-    lastColumnIdx: function lastColumnIdx() {
-      var last = 0;
-
-      if (this.lastColumn) {
-        return this.lastColumn;
-      }
-
-      for (var j = 0; j < this.settings.columns.length; j++) {
-        var column = this.settings.columns[j];
-
-        if (column.hidden) {
-          continue;
-        }
-
-        last = j;
-      }
-
-      this.lastColumn = last;
-      return last;
-    },
-
-
-    /**
     * Gets an if for the column group used for grouped headers.
     * @private
     * @param {object} idx The index of the column group
@@ -76416,7 +78765,7 @@ var Soho = (function (exports) {
     updateColumnGroup: function updateColumnGroup() {
       var colGroups = this.settings.columnGroups;
       if (!this.originalColGroups) {
-        this.originalColGroups = JSON.parse(JSON.stringify(colGroups));
+        this.originalColGroups = this.deepCopy(colGroups);
       }
 
       if (this.settings.groupable) {
@@ -76517,7 +78866,7 @@ var Soho = (function (exports) {
       }
 
       if (!this.originalColGroups) {
-        this.originalColGroups = JSON.parse(JSON.stringify(colGroups));
+        this.originalColGroups = this.deepCopy(colGroups);
       }
 
       var groups = colGroups.map(function (group) {
@@ -76585,8 +78934,6 @@ var Soho = (function (exports) {
     renderHeader: function renderHeader() {
       var self = this;
       var headerRows = { left: '', center: '', right: '' };
-      var headerColGroups = { left: '<colgroup>', center: '<colgroup>', right: '<colgroup>' };
-      var headerColGroupCols = { left: '', center: '', right: '' };
       var uniqueId = void 0;
 
       // Handle Nested Headers
@@ -76703,7 +79050,6 @@ var Soho = (function (exports) {
         // If header text is center aligned, for proper styling,
         // place the sortIndicator as a child of datagrid-header-text.
         headerRows[container] += '<div class="' + (isSelection ? 'datagrid-checkbox-wrapper ' : 'datagrid-column-wrapper') + headerAlignmentClass + '">\n      <span class="datagrid-header-text' + (column.required ? ' required' : '') + '">' + self.headerText(this.settings.columns[j]) + (headerAlignmentClass === ' l-center-text' ? sortIndicator : '') + '</span>';
-        headerColGroupCols[container] += '<col' + this.columnWidth(column, j) + (column.hidden ? ' class="is-hidden"' : '') + '>';
 
         if (isSelection) {
           if (self.settings.showSelectAllCheckBox) {
@@ -76726,63 +79072,29 @@ var Soho = (function (exports) {
       headerRows.center += '</tr>';
       headerRows.right += '</tr>';
 
-      headerColGroups.left += headerColGroupCols.left + '</colgroup>';
-      headerColGroups.center += headerColGroupCols.center + '</colgroup>';
-      headerColGroups.right += headerColGroupCols.right + '</colgroup>';
-
       // Set Up Header Panes
       if (self.headerRow === undefined) {
-        self.headerContainer = $('<div class="datagrid-header-container"></div>').prependTo(self.element);
-        var headerHtml = '<div class="datagrid-header"><table role="grid"></table></div>';
-
         if (self.hasLeftPane) {
-          self.headerContainerLeft = $(headerHtml).addClass('left');
-          self.headerContainer.append(self.headerContainerLeft);
-          self.headerTableLeft = self.headerContainerLeft.find('table');
-          self.headerTableLeft.width(this.headerTableWidth('left'));
-          self.headerTableLeft.css('min-width', this.headerTableMinWidth('left'));
-          self.headerColGroupLeft = $(headerColGroups.left).appendTo(self.headerTableLeft);
-          DOM.append(self.headerContainerLeft.find('table'), '<thead>' + headerRows.left + '</thead>', '*');
-          self.headerRowLeft = self.headerContainerLeft.find('thead');
+          self.headerRowLeft = $('<thead class="datagrid-header left">' + headerRows.left + '</thead>');
+          self.tableLeft.find('colgroup').after(self.headerRowLeft);
         }
 
-        self.headerContainerCenter = $(headerHtml).addClass('center');
-        self.headerContainer.append(self.headerContainerCenter);
-        self.headerTable = self.headerContainerCenter.find('table');
-        self.headerTable.width(this.headerTableWidth('center'));
-        self.headerTable.css('min-width', this.headerTableMinWidth('center'));
-        self.headerColGroup = $(headerColGroups.center).appendTo(self.headerTable);
-        DOM.append(self.headerContainerCenter.find('table'), '<thead>' + headerRows.center + '</thead>', '*');
-        self.headerRow = self.headerContainerCenter.find('thead');
+        self.headerRow = $('<thead class="datagrid-header center">' + headerRows.center + '</thead>');
+        self.table.find('colgroup').after(self.headerRow);
 
         if (self.hasRightPane) {
-          self.headerContainerRight = $(headerHtml).addClass('right');
-          self.headerContainer.append(self.headerContainerRight);
-          self.headerTableRight = self.headerContainerRight.find('table');
-          self.headerTableRight.width(this.headerTableWidth('right'));
-          self.headerTableRight.css('min-width', this.headerTableMinWidth('right'));
-          self.headerColGroupRight = self.hasRightPane ? $(headerColGroups.right).appendTo(self.headerTableRight) : '';
-          DOM.append(self.headerContainerRight.find('table'), '<thead>' + headerRows.right + '</thead>', '*');
-          self.headerRowRight = self.headerContainerRight.find('thead');
+          self.headerRowRight = $('<thead class="datagrid-header right">' + headerRows.right + '</thead>');
+          self.tableRight.find('colgroup').after(self.headerRowRight);
         }
       } else {
         if (self.hasLeftPane) {
-          self.headerTableLeft.width(this.headerTableWidth('left'));
-          self.headerTableLeft.css('min-width', this.headerTableMinWidth('left'));
           DOM.html(self.headerRowLeft, headerRows.left, '*');
-          self.headerColGroupLeft.html(headerColGroupCols.left);
         }
 
-        self.headerTable.width(this.headerTableWidth('center'));
-        self.headerTable.css('min-width', this.headerTableMinWidth('center'));
         DOM.html(self.headerRow, headerRows.center, '*');
-        self.headerColGroup.html(headerColGroupCols.center);
 
         if (self.hasRightPane) {
-          self.headerTableRight.width(this.headerTableWidth('right'));
-          self.headerTableRight.css('min-width', this.headerTableMinWidth('right'));
           DOM.html(self.headerRowRight, headerRows.right, '*');
-          self.headerColGroupRight.html(headerColGroupCols.right);
         }
       }
 
@@ -76810,24 +79122,6 @@ var Soho = (function (exports) {
       }
 
       this.activeEllipsisHeaderAll();
-    },
-
-
-    /**
-     * Sync the colgroups and widths between the body and the header.
-     * @private
-     */
-    syncColGroups: function syncColGroups() {
-      if (this.bodyColGroup) {
-        this.headerColGroup.children().remove();
-        this.bodyColGroup.children().clone().appendTo(this.headerColGroup);
-      }
-      if (this.table && this.headerTable && this.table.css('min-width')) {
-        this.headerTable.css('min-width', this.table.css('min-width'));
-      }
-      if (this.table && this.headerTable && this.table.css('width')) {
-        this.headerTable.css('width', this.table.css('width'));
-      }
     },
 
 
@@ -77032,7 +79326,7 @@ var Soho = (function (exports) {
     * @private
     */
     attachFilterRowEvents: function attachFilterRowEvents() {
-      var _this = this;
+      var _this2 = this;
 
       var self = this;
 
@@ -77047,7 +79341,7 @@ var Soho = (function (exports) {
       }
 
       // Attach Keyboard support
-      this.headerContainer.off('click.datagrid-filter').on('click.datagrid-filter', '.btn-filter', function () {
+      this.element.off('click.datagrid-filter').on('click.datagrid-filter', '.btn-filter', function () {
         var popupOpts = { trigger: 'immediate', offset: { y: 15 }, placementOpts: { strategies: ['flip', 'nudge'] } };
         var popupmenu = $(this).data('popupmenu');
 
@@ -77081,7 +79375,7 @@ var Soho = (function (exports) {
       });
 
       var typingTimer = void 0;
-      this.headerContainer.off('keydown.datagrid').on('keydown.datagrid', '.datagrid-filter-wrapper input', function (e) {
+      this.element.off('keydown.datagrid-filter-input').on('keydown.datagrid-filter-input', '.datagrid-filter-wrapper input', function (e) {
         clearTimeout(typingTimer);
         e.stopPropagation();
 
@@ -77095,13 +79389,13 @@ var Soho = (function (exports) {
       });
 
       if (this.settings.filterWhenTyping) {
-        this.headerContainer.off('keyup.datagrid').on('keyup.datagrid', '.datagrid-filter-wrapper input', function (e) {
+        this.element.off('keyup.datagrid-filter-input').on('keyup.datagrid-filter-input', '.datagrid-filter-wrapper input', function (e) {
           if (e.which === 13) {
             return;
           }
 
-          if (_this.activeCell && _this.activeCell.isFocused) {
-            _this.activeCell.isFocused = false;
+          if (_this2.activeCell && _this2.activeCell.isFocused) {
+            _this2.activeCell.isFocused = false;
           }
 
           clearTimeout(typingTimer);
@@ -77111,7 +79405,7 @@ var Soho = (function (exports) {
         });
       }
 
-      this.headerContainer.find('tr:last th').each(function () {
+      this.element.find('.datagrid-header tr:last th').each(function () {
         var col = self.columnById($(this).attr('data-column-id'))[0];
         var elem = $(this);
 
@@ -77148,12 +79442,12 @@ var Soho = (function (exports) {
         });
 
         elem.find('select.multiselect').each(function () {
-          var _this2 = this;
+          var _this3 = this;
 
           var multiselect = $(this);
           multiselect.multiselect(col.editorOptions).on('selected.datagrid', function () {
             // Wierd Hack - Sync to "sync" up the filter row
-            var ddElem = $(_this2);
+            var ddElem = $(_this3);
             $('#' + ddElem.attr('id')).val(ddElem.val());
             self.applyFilter(null, 'selected');
           });
@@ -77316,7 +79610,7 @@ var Soho = (function (exports) {
     */
     toggleFilterRow: function toggleFilterRow() {
       if (this.settings.filterable) {
-        this.headerContainer.find('.datagrid-filter-wrapper').hide();
+        this.element.find('.datagrid-filter-wrapper').hide();
         this.settings.filterable = false;
         this.filterRowRendered = false;
         this.element.removeClass('has-filterable-columns');
@@ -77338,7 +79632,7 @@ var Soho = (function (exports) {
           this.element.addClass('has-two-line-header');
         }
 
-        this.headerContainer.find('.datagrid-filter-wrapper').show();
+        this.element.find('.datagrid-filter-wrapper').show();
 
         /**
         * Fires after the filter row is opened by the user.
@@ -77484,7 +79778,7 @@ var Soho = (function (exports) {
             var values = null;
             if (conditions[i].operator === 'in-range') {
               var cell = self.settings.columns.indexOf(columnDef);
-              var input = self.headerContainer.find('th:eq(' + cell + ') .datagrid-filter-wrapper input');
+              var input = self.element.find('.datagrid-header th:eq(' + cell + ') .datagrid-filter-wrapper input');
               var datepickerApi = input.data('datepicker');
               if (datepickerApi) {
                 rangeData = datepickerApi.settings.range.data;
@@ -77668,6 +79962,7 @@ var Soho = (function (exports) {
       this.setChildExpandOnMatch();
 
       if (!this.settings.source) {
+        this.clearCache();
         this.renderRows();
       }
 
@@ -77796,7 +80091,7 @@ var Soho = (function (exports) {
         return;
       }
 
-      this.headerContainer.find('input, select').each(function () {
+      this.element.find('.datagrid-header input, select').each(function () {
         var input = $(this);
         input.val('');
         if (input.is('select')) {
@@ -77808,7 +80103,7 @@ var Soho = (function (exports) {
       });
 
       // reset all the filters to first item
-      this.headerContainer.find('.btn-filter').each(function () {
+      this.element.find('.datagrid-header .btn-filter').each(function () {
         var btn = $(this);
         var ul = btn.next();
         var first = ul.find('li:first');
@@ -77828,7 +80123,7 @@ var Soho = (function (exports) {
       this.clearFilterFields();
       for (var i = 0; i < conditions.length; i++) {
         // Find the filter row
-        var rowElem = this.headerContainer.find('th[data-column-id="' + conditions[i].columnId + '"]');
+        var rowElem = this.element.find('.datagrid-header th[data-column-id="' + conditions[i].columnId + '"]');
         var input = rowElem.find('input, select');
         var btn = rowElem.find('.btn-filter');
         var ul = btn.next();
@@ -77885,7 +80180,7 @@ var Soho = (function (exports) {
       var filterExpr = [];
 
       // Create an array of objects with: field, id, filterType, operator, value
-      this.headerContainer.find('th').each(function () {
+      this.element.find('th').each(function () {
         var rowElem = $(this);
         var btn = rowElem.find('.btn-filter');
         var input = rowElem.find('input, select');
@@ -78426,6 +80721,10 @@ var Soho = (function (exports) {
       self.bodyColGroupHtmlRight = '<colgroup>';
       self.triggerDestroyCell(); // Trigger Destroy on previous cells
 
+      if (!self.settings.columns || self.settings.columns.length === 0) {
+        self.settings.columns.push({ id: 'blank', value: '', field: '' });
+      }
+
       for (j = 0; j < self.settings.columns.length; j++) {
         var col = self.settings.columns[j];
         var container = self.getContainer(col.id);
@@ -78519,6 +80818,20 @@ var Soho = (function (exports) {
 
         // Handle Grouping
         if (this.settings.groupable) {
+          // Filter and sorted
+          if (s.dataset[i].values) {
+            var thisLength = s.dataset[i].values.length;
+            var thisFilterCount = 0;
+            for (var k = 0; k < thisLength; k++) {
+              if (s.dataset[i].values[k].isFiltered) {
+                thisFilterCount++;
+              }
+            }
+            if (thisFilterCount === thisLength) {
+              continue; //eslint-disable-line
+            }
+          }
+
           // First push group row
           if (!this.settings.groupable.suppressGroupRow) {
             // Show the grouping row
@@ -78559,9 +80872,9 @@ var Soho = (function (exports) {
           }
 
           // Now Push Groups
-          for (var k = 0; k < s.dataset[i].values.length; k++) {
-            if (!s.dataset[i].values[k].isFiltered) {
-              var _rowHtml = self.rowHtml(s.dataset[i].values[k], this.recordCount, s.dataset[i].values[k].idx);
+          for (var _k = 0; _k < s.dataset[i].values.length; _k++) {
+            if (!s.dataset[i].values[_k].isFiltered) {
+              var _rowHtml = self.rowHtml(s.dataset[i].values[_k], this.recordCount, s.dataset[i].values[_k].idx);
               if (self.hasLeftPane && _rowHtml.left) {
                 tableHtmlLeft += _rowHtml.left;
               }
@@ -78572,7 +80885,7 @@ var Soho = (function (exports) {
                 tableHtmlRight += _rowHtml.right;
               }
               this.recordCount++;
-              self.groupArray.push({ group: i, node: k });
+              self.groupArray.push({ group: i, node: _k });
             }
           }
 
@@ -78653,7 +80966,7 @@ var Soho = (function (exports) {
         }
 
         self.bodyColGroup = $(self.bodyColGroupHtml);
-        self.tableBody.before(self.bodyColGroup);
+        (self.headerRow || self.tableBody).before(self.bodyColGroup);
 
         if (self.hasRightPane) {
           self.bodyColGroupRight = $(self.bodyColGroupHtmlRight);
@@ -78682,7 +80995,7 @@ var Soho = (function (exports) {
     * @private
     */
     afterRender: function afterRender() {
-      var _this3 = this;
+      var _this4 = this;
 
       var self = this;
 
@@ -78746,10 +81059,6 @@ var Soho = (function (exports) {
       self.setAlternateRowShading();
       self.createDraggableRows();
 
-      if (!self.activeCell || !self.activeCell.node) {
-        self.activeCell = { node: self.cellNode(0, 0).attr('tabindex', '0'), isFocused: false, cell: 0, row: 0 };
-      }
-
       if (self.activeCell.isFocused) {
         self.setActiveCell(self.activeCell.row, self.activeCell.cell);
       }
@@ -78785,15 +81094,19 @@ var Soho = (function (exports) {
       */
       setTimeout(function () {
         self.element.trigger('afterrender', { body: self.bodyContainer, header: self.headerContainer, pager: self.pagerBar });
-
-        // Hack for scrolling issue on windows
-        if (self.hasRightPane && _this3.isWindows) {
-          var w = self.tableRight.width() + 17;
-          self.tableRight.parent().width(w);
-          self.tableRight.parent().find('.datagrid-column-wrapper').eq(0).width(w);
-          self.headerTableRight.width(w);
-        }
+        _this4.activateFirstCell();
       });
+    },
+
+
+    /**
+     * Set active node to first cell and focus if possible
+     * @private
+     */
+    activateFirstCell: function activateFirstCell() {
+      if (!this.activeCell || !this.activeCell.node) {
+        this.activeCell = { node: this.cellNode(0, 0).attr('tabindex', '0'), isFocused: false, cell: 0, row: 0 };
+      }
     },
 
 
@@ -78802,7 +81115,7 @@ var Soho = (function (exports) {
     * @private
     */
     triggerDestroyCell: function triggerDestroyCell() {
-      var _this4 = this;
+      var _this5 = this;
 
       var self = this;
 
@@ -78819,7 +81132,7 @@ var Soho = (function (exports) {
         }
 
         var _loop3 = function _loop3(i) {
-          var col = _this4.settings.columns[i];
+          var col = _this5.settings.columns[i];
 
           if (col.component) {
             rows.each(function () {
@@ -79145,6 +81458,14 @@ var Soho = (function (exports) {
           cssClass += ' datagrid-trigger-cell';
         }
 
+        if (formatted.indexOf('trigger') === -1 && _col && _col.editor) {
+          var editorName = this.getEditorName(_col.editor);
+
+          if (['colorpicker', 'dropdown', 'time', 'lookup', 'date'].indexOf(editorName) >= 0) {
+            cssClass += ' datagrid-trigger-cell datagrid-no-default-formatter';
+          }
+        }
+
         if (_col.editor && this.settings.editable) {
           cssClass += ' has-editor';
         }
@@ -79206,6 +81527,7 @@ var Soho = (function (exports) {
         }
 
         cssClass += _col.focusable ? ' is-focusable' : '';
+        cssClass += formatter.name === 'Actions' ? ' has-btn-actions' : '';
 
         var rowspan = this.calculateRowspan(cellValue, dataRowIdx, _col);
 
@@ -79320,6 +81642,29 @@ var Soho = (function (exports) {
 
 
     /**
+     * Return the name of the editor.
+     * @private
+     * @param  {object} editor The editor to check
+     * @returns {string} The editors name
+     */
+    getEditorName: function getEditorName(editor) {
+      if (!editor) {
+        return '';
+      }
+
+      var editorName = editor.name;
+      // In IE functions do not have names
+      if (!function f() {}.name) {
+        var getFnName = function getFnName(fn) {
+          return (fn.toString().match(/function (.+?)\(/) || [, ''])[1]; //eslint-disable-line
+        };
+        editorName = getFnName(editor);
+      }
+      return editorName ? editorName.toLowerCase() : '';
+    },
+
+
+    /**
      * This Function approximates the table auto widthing
      * Except use all column values and compare the text width of the header as max
      * @private
@@ -79334,10 +81679,6 @@ var Soho = (function (exports) {
       var maxText = '';
       var hasButton = false;
       var self = this;
-
-      if (columnDef.hidden) {
-        return 0;
-      }
 
       if (columnDef.formatter === formatters.Colorpicker) {
         maxText = '';
@@ -79507,78 +81848,25 @@ var Soho = (function (exports) {
 
 
     /**
-     * Return the currently cached table width ready for the css style.
-     * @private
-     * @param  {string} container The container (left, right, center).
-     * @returns {string} The css width
-     */
-    headerTableWidth: function headerTableWidth(container) {
-      var cacheWidths = this.headerWidths[this.settings.columns.length - 1];
-      var hasVisibleScrollbars = false;
-
-      if (!cacheWidths) {
-        return '';
-      }
-
-      if (this.hasRightPane && container === 'right') {
-        hasVisibleScrollbars = Environment.os.name === 'Mac OS X' && this.bodyWrapperRight.width() - this.tableRight.width() > 0;
-      }
-
-      if (cacheWidths.widthPercent) {
-        return '100%';
-      } else if (!isNaN(this.totalWidths[container])) {
-        if (hasVisibleScrollbars) {
-          return parseFloat(this.totalWidths[container]) + 15 + 'px';
-        }
-        return parseFloat(this.totalWidths[container]) + 'px';
-      }
-
-      return '';
-    },
-
-
-    /**
-     * Return the currently cached table min width ready for the css style.
-     * @private
-     * @param  {string} container The container (left, right, center).
-     * @returns {string} The css width
-     */
-    headerTableMinWidth: function headerTableMinWidth(container) {
-      if (!isNaN(this.totalMinWidths[container])) {
-        return parseFloat(this.totalMinWidths[container]) + 'px';
-      }
-      return '';
-    },
-
-
-    /**
-     * Set the scroll class if the scrollbar is visible to effect the scrollheight.
+     * Set the scroll class if the scrollbar is visible to effect the display.
      * @private
      */
     setScrollClass: function setScrollClass() {
-      var height = parseInt(this.bodyWrapperCenter[0].offsetHeight, 10);
-      var hasScrollBarV = parseInt(this.bodyWrapperCenter[0].scrollHeight, 10) > height + 2;
+      if (!this.hasLeftPane && !this.hasRightPane) {
+        return;
+      }
+      this.element.removeClass('has-vertical-scroll has-less-rows');
+
       var width = parseInt(this.bodyWrapperCenter[0].offsetWidth, 10);
       var hasScrollBarH = parseInt(this.bodyWrapperCenter[0].scrollWidth, 10) > width;
-      this.element.removeClass('has-vertical-scroll has-less-rows');
+      var height = parseInt(this.bodyWrapperCenter[0].offsetHeight, 10);
+      var hasScrollBarV = parseInt(this.bodyWrapperCenter[0].scrollHeight, 10) > height + 2;
 
       if (hasScrollBarV) {
         this.element.addClass('has-vertical-scroll');
       }
       if (hasScrollBarH) {
         this.element.addClass('has-horizontal-scroll');
-      }
-
-      if (!hasScrollBarV && this.tableBody[0].offsetHeight < height) {
-        this.element.addClass('has-less-rows');
-      }
-
-      if (this.hasRightPane) {
-        this.element.addClass('has-frozen-right-columns');
-
-        if (utils.getScrollbarWidth() > 0) {
-          this.element.addClass('has-visible-scrollbars');
-        }
       }
     },
 
@@ -79588,27 +81876,22 @@ var Soho = (function (exports) {
      * @private
      * @returns {void}
      */
-    clearHeaderCache: function clearHeaderCache() {
-      this.headerWidths = [];
+    clearCache: function clearCache() {
       this.totalWidths.left = 0;
       this.totalWidths.center = 0;
       this.totalWidths.right = 0;
-      this.totalMinWidths.left = 0;
-      this.totalMinWidths.center = 0;
-      this.totalMinWidths.right = 0;
       this.elemWidth = 0;
       this.lastColumn = null;
-      this.isInitialRender = true;
-      this.cacheColumnWidths();
+      this.stretchColumnWidth = 0;
+      this.fixColumnIds();
     },
 
 
     /**
-     * Calculate and cache the width for all the columns
-     * Simulates https://www.w3.org/TR/CSS21/tables.html#width-layout
+     * Fix duplicate column Id's
      * @private
      */
-    cacheColumnWidths: function cacheColumnWidths() {
+    fixColumnIds: function fixColumnIds() {
       for (var i = 0; i < this.settings.columns.length; i++) {
         var _col2 = this.settings.columns[i];
 
@@ -79619,15 +81902,12 @@ var Soho = (function (exports) {
             colsById[k].id = colsById[k].id + '-' + k;
           }
         }
-
-        this.calculateColumnWidth(_col2, i);
       }
     },
 
 
     /**
      * Return the width for a column (upfront with no rendering)
-     * Simulates https://www.w3.org/TR/CSS21/tables.html#width-layout
      * @private
      * @param  {[type]} col The column object to use
      * @param  {[type]} index The column index
@@ -79644,16 +81924,6 @@ var Soho = (function (exports) {
 
         this.widthSpecified = false;
       }
-
-      // use cache
-      if (this.headerWidths[index]) {
-        var cacheWidths = this.headerWidths[index];
-
-        if (cacheWidths.width === 'default' || !cacheWidths.width) {
-          return '';
-        }
-        return ' style="width: ' + cacheWidths.width + (cacheWidths.widthPercent ? '%' : 'px') + '"';
-      }
       return this.calculateColumnWidth(col, index);
     },
 
@@ -79667,11 +81937,9 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     calculateColumnWidth: function calculateColumnWidth(col, index) {
-      var _this5 = this;
-
       var colPercWidth = void 0;
       var visibleColumns = this.visibleColumns(true);
-      var lastColumn = index === this.lastColumnIdx();
+      var lastColumn = index === this.visibleColumns().length - 1;
       var container = this.getContainer(col.id);
 
       if (!this.elemWidth) {
@@ -79698,21 +81966,6 @@ var Soho = (function (exports) {
         this.widthPixel = false;
       }
 
-      // use cache
-      if (this.headerWidths[index]) {
-        var cacheWidths = this.headerWidths[index];
-
-        if (cacheWidths.width === 'default') {
-          return '';
-        }
-
-        if (this.widthSpecified && !cacheWidths.width) {
-          return '';
-        }
-
-        return ' style="width: ' + cacheWidths.width + (cacheWidths.widthPercent ? '%' : 'px') + '"';
-      }
-
       // A column element with a value other than 'auto' for the 'width' property
       // sets the width for that column.
       if (col.width) {
@@ -79736,8 +81989,6 @@ var Soho = (function (exports) {
       if (!this.widthSpecified || !colWidth) {
         colWidth = Math.max(textWidth, colWidth || 0);
       }
-
-      lastColumn = index === this.lastColumnIdx();
 
       // Simulate Auto Width Algorithm
       if ((!this.widthSpecified || col.width === undefined) && this.settings.sizeColumnsEqually && ['selectionCheckbox', 'expander', 'drilldown', 'rowStatus', 'favorite'].indexOf(col.id) === -1) {
@@ -79791,100 +82042,31 @@ var Soho = (function (exports) {
         colWidth = col.maxWidth;
       }
 
-      // cache the header widths
-      this.headerWidths[index] = {
-        id: col.id,
-        width: this.widthPercent ? colPercWidth : colWidth,
-        widthPercent: this.widthPercent
-      };
+      this.totalWidths[container] += col.hidden ? 0 : colWidth;
 
-      if (col.id !== 'spacerColumn') {
-        this.totalWidths[container] += col.hidden ? 0 : colWidth;
+      if (this.settings.stretchColumn !== 'last' && this.settings.stretchColumn !== null && this.settings.stretchColumn === col.id) {
+        return ' style="max-width: 99%"';
       }
 
       // For the last column stretch it if it doesnt fit the area
-      if (lastColumn && this.isInitialRender && !this.settings.spacerColumn) {
+      if (lastColumn) {
         var diff = this.elemWidth - this.totalWidths[container];
 
-        if (this.settings.stretchColumn === 'last' && !this.settings.sizeColumnsEqually) {
-          if (diff > 0 && diff > colWidth && !this.widthPercent && !col.width) {
-            colWidth = '';
-            this.headerWidths[index] = {
-              id: col.id,
-              width: colWidth,
-              widthPercent: this.widthPercent
-            };
-            this.totalMinWidths[container] = this.totalWidths[container];
-            this.totalWidths[container] = this.isInModal ? this.elemWidth : '100%';
-          }
-          if (diff > 0 && diff < colWidth && !this.widthPercent && !col.width) {
-            colWidth += diff;
-            this.headerWidths[index] = {
-              id: col.id,
-              width: colWidth,
-              widthPercent: this.widthPercent
-            };
-            this.totalWidths[container] += colWidth;
-            this.totalMinWidths[container] = this.totalWidths[container];
-            this.totalWidths[container] = this.isInModal ? this.elemWidth : '100%';
-          }
+        if (this.isInModal && this.settings.stretchColumn === null && !this.settings.sizeColumnsEqually && diff > 0 && !this.widthPercent && !col.width) {
+          colWidth = this.elemWidth;
+          col.width = colWidth;
         }
 
-        if (this.settings.stretchColumn !== 'last') {
-          this.headerWidths[index] = { id: col.id, width: colWidth, widthPercent: this.widthPercent };
-          var diff2 = this.elemWidth - this.totalWidths[container];
-          var stretchColumn = $.grep(this.headerWidths, function (e) {
-            return e.id === _this5.settings.stretchColumn;
-          });
-          if (diff2 > 0 && !stretchColumn[0].widthPercent) {
-            stretchColumn[0].width = '';
-          }
-          this.totalWidths[container] = this.isInModal ? this.elemWidth : '100%';
-        }
-
-        if (this.widthPercent) {
-          this.table.css('width', '100%');
-        } else if (!isNaN(this.totalWidths.center)) {
-          this.table.css('width', this.totalWidths.center);
-        } else {
-          this.table.css('width', '');
-        }
-
-        if (!isNaN(this.totalMinWidths.center) && this.totalMinWidths.center > 0) {
-          this.table.css('min-width', this.totalMinWidths.center + 'px');
+        if (this.settings.stretchColumn !== 'last' && this.settings.stretchColumn !== null) {
+          this.stretchColumnWidth += diff;
         }
 
         if (this.hasLeftPane) {
           this.tableLeft.css('width', this.totalWidths.left);
         }
-        if (!isNaN(this.totalMinWidths.left) && this.totalMinWidths.left > 0) {
-          this.tableLeft.css('min-width', this.totalMinWidths.left + 'px');
-        }
         if (this.hasRightPane) {
           this.tableRight.css('width', this.totalWidths.right);
         }
-        if (!isNaN(this.totalMinWidths.right) && this.totalMinWidths.right > 0) {
-          this.tableRight.css('min-width', this.totalMinWidths.right + 'px');
-        }
-        this.isInitialRender = false;
-      }
-
-      if (lastColumn && this.isInitialRender && this.settings.spacerColumn) {
-        var _diff = this.elemWidth - this.totalWidths[container];
-        this.totalWidths[container] += _diff;
-
-        if (_diff > 0 && !this.widthPercent && !col.width) {
-          this.settings.columns.push({ id: 'spacerColumn', cssClass: 'is-spacer', name: '', field: '', width: _diff - 4 - colWidth });
-        }
-      }
-
-      if (lastColumn && this.settings.spacerColumn && this.isInitialRender) {
-        if (this.widthPercent) {
-          this.table.css('width', '100%');
-        } else if (!isNaN(this.totalWidths[container])) {
-          this.table.css('width', this.totalWidths[container]);
-        }
-        this.isInitialRender = false;
       }
 
       if (!this.widthPercent && colWidth === undefined) {
@@ -79965,8 +82147,8 @@ var Soho = (function (exports) {
       // Set selector
       var selector = {
         th: '.datagrid-header th',
-        td: '.datagrid-body tr.datagrid-row td[role="gridcell"]:not(.rowstatus-cell)',
-        rowstatus: '.datagrid-body tr.datagrid-row td[role="gridcell"] .icon-rowstatus'
+        td: '.datagrid-wrapper tbody tr.datagrid-row td[role="gridcell"]:not(.rowstatus-cell)',
+        rowstatus: '.datagrid-wrapper tbody tr.datagrid-row td[role="gridcell"] .icon-rowstatus'
       };
 
       if (this.settings.filterable) {
@@ -80099,10 +82281,23 @@ var Soho = (function (exports) {
      * @returns {array} Array with all header dom nodes
      */
     headerNodes: function headerNodes() {
-      if (!this.headerContainer) {
+      if (!this.headerRow) {
         return $();
       }
-      return this.headerContainer.find('tr:not(.datagrid-header-groups) th');
+      return this.element.find('.datagrid-header tr:not(.datagrid-header-groups) th');
+    },
+
+
+    /**
+     * Returns all colgroup nodes
+     * @private
+     * @returns {array} Array with all colgroups across all panes
+     */
+    colGroupNodes: function colGroupNodes() {
+      if (!this.headerRow) {
+        return $();
+      }
+      return this.element.find('colgroup col');
     },
 
 
@@ -80252,6 +82447,31 @@ var Soho = (function (exports) {
       }
 
       return false;
+    },
+
+
+    /**
+     * Create deep copy for given array.
+     * @private
+     * @param  {array} arr The array to be copied.
+     * @returns {array} The copied array.
+     */
+    deepCopy: function deepCopy(arr) {
+      var copy = function copy(items) {
+        return items.map(function (item) {
+          return Array.isArray(item) ? copy(item) : item;
+        });
+      };
+      return copy(arr || []);
+    },
+
+
+    /**
+     * Set the original column which may later be reloaded.
+     * @private
+     */
+    setOriginalColumns: function setOriginalColumns() {
+      this.originalColumns = this.deepCopy(this.settings.columns);
     },
 
 
@@ -80491,19 +82711,14 @@ var Soho = (function (exports) {
 
       this.settings.columns[idx].hidden = true;
       this.headerNodes().eq(idx).addClass('is-hidden');
+      this.colGroupNodes().eq(idx).addClass('is-hidden');
       this.tableBody.find('> tr > td:nth-child(' + (idx + 1) + ')').addClass('is-hidden');
-      this.headerColGroup.find('col').eq(idx).addClass('is-hidden');
-
       // Shrink or remove colgroups
       this.updateColumnGroup();
 
-      if (this.bodyColGroup) {
-        this.bodyColGroup.find('col').eq(idx).addClass('is-hidden');
-      }
-
       // Handle colSpans if present on the column
       if (this.hasColSpans) {
-        var colSpan = this.headerContainer.find('th').eq(idx).attr('colspan');
+        var colSpan = this.element.find('.datagrid-header th').eq(idx).attr('colspan');
 
         if (colSpan && colSpan > 0) {
           colSpan -= 1;
@@ -80548,7 +82763,6 @@ var Soho = (function (exports) {
       this.settings.columns[idx].hidden = false;
       this.headerNodes().eq(idx).removeClass('is-hidden');
       this.tableBody.find('> tr > td:nth-child(' + (idx + 1) + ')').removeClass('is-hidden');
-      this.headerColGroup.find('col').eq(idx).removeClass('is-hidden');
 
       if (this.bodyColGroup) {
         this.bodyColGroup.find('col').eq(idx).removeClass('is-hidden');
@@ -80559,7 +82773,7 @@ var Soho = (function (exports) {
 
       // Handle colSpans if present on the column
       if (this.hasColSpans) {
-        var colSpan = this.headerContainer.find('th').eq(idx).attr('colspan');
+        var colSpan = this.element.find('.datagrid-header th').eq(idx).attr('colspan');
 
         if (colSpan && colSpan > 0) {
           colSpan -= 1;
@@ -80626,16 +82840,19 @@ var Soho = (function (exports) {
           text: Locale.translate('Close'),
           click: function click(e, modal) {
             modal.close();
-            $('body').off('open.datagrid');
+            $('body').off('beforeopen.datagrid');
           }
         }]
-      }).on('beforeopen.datagrid', function () {
+      }).off('beforeopen.datagrid').on('beforeopen.datagrid', function (e, modal) {
+        if (!modal) {
+          return;
+        }
+
         self.isColumnsChanged = false;
-      }).on('open.datagrid', function (e, modal) {
         modal.element.find('.searchfield').searchfield({ clearable: true });
         modal.element.find('.listview').listview({
           source: _this6.settings.columns,
-          template: '\n          <ul>\n          {{#dataset}}\n            {{#name}}\n            <li>\n              <a href="#" target="_self" tabindex="-1">\n                <label class="inline">\n                  <input tabindex="-1" type="checkbox" class="checkbox" {{^hideable}}disabled{{/hideable}} {{^hidden}}checked{{/hidden}} data-column-id="{{id}}"/>\n                  <span class="label-text">{{name}}</span>\n                </label>\n              </a>\n            </li>\n            {{/name}}\n          {{/dataset}}\n          </ul>',
+          template: '\n            <ul>\n            {{#dataset}}\n              {{#name}}\n              <li>\n                <a href="#" target="_self" tabindex="-1">\n                  <label class="inline">\n                    <input tabindex="-1" type="checkbox" class="checkbox" {{^hideable}}disabled{{/hideable}} {{^hidden}}checked{{/hidden}} data-column-id="{{id}}"/>\n                    <span class="label-text">{{name}}</span>\n                  </label>\n                </a>\n              </li>\n              {{/name}}\n            {{/dataset}}\n            </ul>',
           searchable: true,
           selectOnFocus: false,
           listFilterSettings: {
@@ -80644,7 +82861,7 @@ var Soho = (function (exports) {
               return item.name;
             }
           }
-        }).on('selected', function (selectedEvent, args) {
+        }).off('selected.datagrid').on('selected.datagrid', function (selectedEvent, args) {
           var chk = args.elem.find('.checkbox');
           var id = chk.attr('data-column-id');
           var isChecked = chk.prop('checked');
@@ -80656,12 +82873,23 @@ var Soho = (function (exports) {
           }
           self.isColumnsChanged = true;
 
+          // Set listview dataset node state, to be in sync after filtering
+          var lv = { node: {}, api: $(this).data('listview') };
+          if (lv.api) {
+            var idx = self.columnIdxById(id);
+            if (idx !== -1 && lv.api.settings.dataset[idx]) {
+              lv.node = lv.api.settings.dataset[idx];
+            }
+          }
+
           if (!isChecked) {
             self.showColumn(id);
             chk.prop('checked', true);
+            lv.node.hidden = false;
           } else {
             self.hideColumn(id);
             chk.prop('checked', false);
+            lv.node.hidden = true;
           }
         });
 
@@ -80672,7 +82900,7 @@ var Soho = (function (exports) {
           // Escape Button Code. Make sure to close the modal correctly.
           if (event.keyCode === 27) {
             modal.close();
-            $('body').off('open.datagrid');
+            $('body').off('beforeopen.datagrid');
           }
         });
       });
@@ -80684,9 +82912,9 @@ var Soho = (function (exports) {
     * @private
     * @param {string} id Specifies if the column info is provide by id or as a node reference.
     * @param {number} width The width of the column
-    * @param {number} diff The difference between the old and new width
+    * @param {boolean} set If true the width will actively be set, else it was set during resize.
     */
-    setColumnWidth: function setColumnWidth(id, width) {
+    setColumnWidth: function setColumnWidth(id, width, set) {
       var self = this;
       var percent = parseFloat(width);
       var columnSettings = this.columnById(id)[0];
@@ -80726,9 +82954,13 @@ var Soho = (function (exports) {
         columnSettings.width = width;
       }
 
+      if (set) {
+        var currentCol = this.bodyColGroup.find('col').eq(idx)[0];
+        currentCol.style.width = width + 'px';
+      }
+
       this.element.trigger('columnchange', [{ type: 'resizecolumn', index: idx, columns: this.settings.columns }]);
       this.saveUserSettings();
-      this.headerWidths[idx].width = width;
     },
 
 
@@ -80755,7 +82987,7 @@ var Soho = (function (exports) {
         var id = this.settings.columns[i].id;
         var column = this.columnById(id)[0];
         if (this.isEllipsisActiveHeader(column)) {
-          var columnEl = this.headerContainer[0].querySelector('th[data-column-id="' + id + '"]');
+          var columnEl = this.element[0].querySelector('.datagrid-header th[data-column-id="' + id + '"]');
           this.activeEllipsisHeader(columnEl);
         }
       }
@@ -80778,33 +83010,12 @@ var Soho = (function (exports) {
 
 
     /**
-     * Change the width of the column as the user drags the resizeHandle
-     * @private
-     * @param {boolean} idOrNode Specifies if the column info is provide by id or as a node reference.
-     * @param {number} width The width of the column
-     * @param {number} diff The difference between the old and new width
-     */
-    resizeColumnWidth: function resizeColumnWidth(idOrNode, width, diff) {
-      var idx = idOrNode.index();
-      this.headerColGroup.find('col').eq(idx)[0].style.width = width + 'px';
-
-      if (this.settings.dataset.length > 0) {
-        this.bodyColGroup.find('col').eq(idx)[0].style.width = width + 'px';
-      }
-
-      if (this.tableWidth && diff) {
-        this.headerTable.css('width', parseInt(this.tableWidth, 10) + diff);
-        this.table.css('width', parseInt(this.tableWidth, 10) + diff);
-        this.headerWidths[idx].widthPercent = false;
-      }
-    },
-
-
-    /**
     * Generate the ui handles used to resize columns.
     * @private
     */
     createResizeHandle: function createResizeHandle() {
+      var _this7 = this;
+
       var self = this;
       if (this.resizeHandle) {
         return;
@@ -80819,15 +83030,14 @@ var Soho = (function (exports) {
         this.resizeHandle[0].style.height = '62px';
       }
 
-      this.headerContainerCenter.find('table').before(this.resizeHandle);
+      this.element.find('table').before(this.resizeHandle);
 
       var columnId = void 0;
-      var startingLeft = void 0;
       var draggingLeft = void 0;
-      var columnStartWidth = void 0;
+      var startingLeft = void 0;
       var column = void 0;
 
-      this.resizeHandle.drag({ axis: 'x', containment: this.element }).on('dragstart.datagrid', function () {
+      this.resizeHandle.drag({ axis: 'x', containment: this.element }).on('dragstart.datagrid', function (e, ui) {
         if (!self.currentHeader) {
           return;
         }
@@ -80835,35 +83045,67 @@ var Soho = (function (exports) {
         self.dragging = true;
 
         columnId = self.currentHeader.attr('data-column-id');
-        column = self.columnById(columnId)[0]; // eslint-disable-line
+        column = self.columnById(columnId)[0];
 
-        startingLeft = self.currentHeader.position().left + (self.table.scrollLeft() - 10);
-        self.tableWidth = self.table[0].offsetWidth;
-        columnStartWidth = self.currentHeader[0].offsetWidth;
+        startingLeft = ui.left;
+
         if (self.isEllipsisActiveHeader(column)) {
           self.currentHeader[0].classList.add('is-ellipsis-active');
         }
       }).on('drag.datagrid', function (e, ui) {
-        if (!self.currentHeader || !column) {
+        if (!self.currentHeader || !column || _this7.settings.dataset.length === 0) {
           return;
         }
 
-        var width = ui.left - startingLeft - 1;
+        // Setup enforcement for column or default min and max widths
         var minWidth = column.minWidth || 12;
         var maxWidth = column.maxWidth || 1000;
 
-        if (width < minWidth || width > maxWidth) {
+        // Find how for to move each adjacent column
+        draggingLeft = ui.left;
+        var diff = startingLeft - draggingLeft;
+        var node = self.currentHeader;
+        var idx = node.index();
+        var nextIdx = idx + 1;
+
+        // Find how the adjacent column
+        var currentCol = _this7.bodyColGroup.find('col').eq(idx)[0];
+        var currentColWidth = parseInt(currentCol.style.width, 10);
+        var nextCol = DOM.getNextSibling(currentCol, ':not(.is-hidden)');
+        var nextColWidth = parseInt(nextCol.style.width, 10);
+        var nextMinWidth = self.settings.columns[nextIdx].minWidth || 12;
+        var nextMaxWidth = self.settings.columns[nextIdx].maxWidth || 1000;
+
+        // Calculate
+        var width = currentColWidth - diff;
+        var nextWidth = nextColWidth + diff;
+
+        // Enforce Column or Default min and max widths
+        if (width < minWidth || width > maxWidth || nextWidth < nextMinWidth || nextWidth > nextMaxWidth) {
           self.resizeHandle.css('cursor', 'inherit');
           return;
         }
 
-        width = Math.round(width);
-        draggingLeft = ui.left;
-        self.resizeColumnWidth(self.currentHeader, width, width - columnStartWidth);
+        // Update the DOM
+        nextCol.style.width = nextWidth + 'px';
+        currentCol.style.width = width + 'px';
+        startingLeft = ui.left;
       }).on('dragend.datagrid', function () {
-        var width = draggingLeft - startingLeft - 1;
         self.dragging = false;
-        self.setColumnWidth(self.currentHeader.attr('data-column-id'), width);
+        var node = self.currentHeader;
+        var idx = node.index();
+
+        // Find how the adjacent column
+        var currentCol = _this7.bodyColGroup.find('col').eq(idx)[0];
+        var currentColWidth = parseInt(currentCol.style.width, 10);
+        var nextCol = DOM.getNextSibling(self.currentHeader, ':not(.is-hidden)');
+        var nextColGroup = DOM.getNextSibling(currentCol, ':not(.is-hidden)');
+        var nextColWidth = parseInt(nextColGroup.style.width, 10);
+
+        self.setColumnWidth(self.currentHeader.attr('data-column-id'), currentColWidth);
+        if (nextCol) {
+          self.setColumnWidth(nextCol.getAttribute('data-column-id'), nextColWidth);
+        }
         if (self.isEllipsisActiveHeader(column)) {
           self.activeEllipsisHeader(self.currentHeader[0]);
         }
@@ -80953,9 +83195,9 @@ var Soho = (function (exports) {
     */
     setEmptyMessage: function setEmptyMessage(emptyMessage) {
       if (!this.emptyMessage) {
-        this.emptyMessageContainer = $('<div>');
-        this.bodyContainer.before(this.emptyMessageContainer);
-        this.emptyMessage = this.emptyMessageContainer.emptymessage(emptyMessage).data('emptymessage');
+        this.emptyMessageContainer = $('<div class="empty-message-container"><div></div></div>');
+        this.element.append(this.emptyMessageContainer).addClass('has-empty-message');
+        this.emptyMessage = this.emptyMessageContainer.find('div').emptymessage(emptyMessage).data('emptymessage');
         this.checkEmptyMessage();
       } else {
         this.emptyMessage.settings = emptyMessage;
@@ -81034,20 +83276,6 @@ var Soho = (function (exports) {
     /**
      * Sync the containers when scrolling on the y axis.
      * @private
-     */
-    handleScrollX: function handleScrollX() {
-      var left = this.bodyWrapperCenter[0].scrollLeft;
-
-      if (left !== this.scrollLeft && this.headerContainerCenter) {
-        this.scrollLeft = left;
-        this.headerContainerCenter[0].scrollLeft = this.scrollLeft;
-      }
-    },
-
-
-    /**
-     * Sync the containers when scrolling on the y axis.
-     * @private
      * @param  {jQuery} e The event object
      */
     handleScrollY: function handleScrollY(e) {
@@ -81073,7 +83301,7 @@ var Soho = (function (exports) {
     * @private
     */
     rerender: function rerender() {
-      this.clearHeaderCache();
+      this.clearCache();
       this.renderRows();
       this.renderHeader();
     },
@@ -81085,7 +83313,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     handleEvents: function handleEvents() {
-      var _this7 = this;
+      var _this8 = this;
 
       var self = this;
       var isMultiple = this.settings.selectable === 'multiple';
@@ -81093,7 +83321,7 @@ var Soho = (function (exports) {
 
       // Set Focus on rows
       if (!self.settings.cellNavigation && self.settings.rowNavigation) {
-        self.bodyContainer.on('focus.datagrid', 'tbody > tr', function () {
+        self.element.on('focus.datagrid', 'tbody > tr', function () {
           $(this).addClass('is-active-row');
         }).on('blur.datagrid', 'tbody > tr', function () {
           $('tbody > tr', self.table).removeClass('is-active-row');
@@ -81102,14 +83330,14 @@ var Soho = (function (exports) {
 
       // Handle Paging
       if (this.settings.paging) {
-        this.tableBody.on('page.' + COMPONENT_NAME$19, function (e, pagingInfo) {
-          if (pagingInfo.type === 'filtered' && _this7.settings.source) {
+        this.tableBody.on('page.' + COMPONENT_NAME$1b, function (e, pagingInfo) {
+          if (pagingInfo.type === 'filtered' && _this8.settings.source) {
             return;
           }
           self.saveUserSettings();
           self.render(null, pagingInfo);
           self.afterPaging(pagingInfo);
-        }).on('pagesizechange.' + COMPONENT_NAME$19, function (e, pagingInfo) {
+        }).on('pagesizechange.' + COMPONENT_NAME$1b, function (e, pagingInfo) {
           self.render(null, pagingInfo);
           self.afterPaging(pagingInfo);
         });
@@ -81117,7 +83345,7 @@ var Soho = (function (exports) {
 
       // Handle Hover States
       if (self.settings.showHoverState) {
-        self.bodyContainer.off('mouseenter.datagrid, mouseleave.datagrid').on('mouseenter.datagrid', 'tbody > tr', function () {
+        self.element.off('mouseenter.datagrid, mouseleave.datagrid').on('mouseenter.datagrid', 'tbody > tr', function () {
           var rowNodes = self.rowNodes($(this));
           rowNodes.addClass('is-hover-row');
         }).on('mouseleave.datagrid', 'tbody > tr', function () {
@@ -81127,12 +83355,12 @@ var Soho = (function (exports) {
       }
 
       // Sync Header and Body During scrolling
-      self.bodyContainer.find('.datagrid-body').on('scroll.table', function (e) {
-        self.handleScrollY(e);
-      });
-
       if (this.hasLeftPane || this.hasRightPane) {
-        self.bodyContainer.find('.datagrid-body').on('wheel.table', function (e) {
+        self.element.find('.datagrid-wrapper').on('scroll.table', function (e) {
+          self.handleScrollY(e);
+        });
+
+        self.element.find('.datagrid-wrapper').on('wheel.table', function (e) {
           if (e.originalEvent.deltaY !== 0) {
             e.currentTarget.scrollTop += e.originalEvent.deltaY;
             e.preventDefault();
@@ -81140,10 +83368,6 @@ var Soho = (function (exports) {
           }
         });
       }
-
-      self.bodyContainer.find('.datagrid-body.scroll-x').on('scroll.tablex', function (e) {
-        self.handleScrollX(e);
-      });
 
       if (this.settings.virtualized) {
         var oldScroll = 0;
@@ -81157,6 +83381,7 @@ var Soho = (function (exports) {
 
           if (scrollTop !== oldScroll && (hitTop || hitBottom)) {
             oldScroll = this.scrollTop;
+            self.clearCache();
             self.renderRows();
           }
         }, 0));
@@ -81166,22 +83391,26 @@ var Soho = (function (exports) {
 
           if (height !== oldHeight) {
             oldHeight = this.scrollTop;
+            self.clearCache();
             self.renderRows();
           }
         });
       }
 
       // Handle Sorting
-      this.headerContainer.off('click.datagrid-header').on('click.datagrid-header', '.datagrid-header th.is-sortable, .datagrid-header th.btn-filter', function (e) {
+      this.element.off('click.datagrid-header').on('click.datagrid-header', '.datagrid-header th.is-sortable, .datagrid-header th.btn-filter', function (e) {
         if ($(e.target).parent().is('.datagrid-filter-wrapper') || $(e.target).parent().is('.lookup-wrapper')) {
-          return;
+          return false;
         }
 
+        // Prevent parent grid from sorting when nested
+        e.stopPropagation();
         self.setSortColumn($(this).attr('data-column-id'));
+        return false;
       });
 
       // Prevent redirects
-      this.element.off('click.datagrid').on('click.datagrid', 'tbody .datagrid-row a', function (e) {
+      this.element.off('click.datagrid-links').on('click.datagrid-links', 'tbody .datagrid-row a', function (e) {
         var href = e.currentTarget.getAttribute('href');
         if (!href || href === '#') {
           e.preventDefault();
@@ -81229,8 +83458,14 @@ var Soho = (function (exports) {
         var rowNode = null;
         var dataRowIdx = null;
         var target = $(e.target);
+        var td = target.closest('td');
 
         if ($(e.currentTarget).parent().hasClass('.datagrid-row-detail')) {
+          return;
+        }
+
+        if (td.is('.has-btn-actions') && !target.is('.btn-actions')) {
+          self.setActiveCell(td);
           return;
         }
 
@@ -81251,7 +83486,7 @@ var Soho = (function (exports) {
         * @property {object} args.originalEvent The original event object.
         */
         self.triggerRowEvent('click', e, true);
-        self.setActiveCell(target.closest('td'));
+        self.setActiveCell(td);
 
         // Dont Expand rows or make cell editable when clicking expand button
         if (target.is('.datagrid-expand-btn')) {
@@ -81295,8 +83530,7 @@ var Soho = (function (exports) {
         var isEditable = self.makeCellEditable(self.activeCell.rowIndex, self.activeCell.cell, e);
 
         // Handle Cell Click Event
-        var elem = $(this).closest('td');
-        var cell = elem.attr('aria-colindex') - 1;
+        var cell = td.attr('aria-colindex') - 1;
         var col = self.columnSettings(cell);
 
         if (col.click && typeof col.click === 'function' && target.is('button, input[checkbox], a') || target.parent().is('button')) {
@@ -81306,7 +83540,7 @@ var Soho = (function (exports) {
           dataRowIdx = self.dataRowIndex(rowElem);
           var item = self.settings.treeGrid ? self.settings.treeDepth[rowIdx].node : self.settings.dataset[dataRowIdx];
 
-          if (elem.hasClass('is-focusable')) {
+          if (td.hasClass('is-focusable')) {
             if (!target.is(self.buttonSelector)) {
               if (!target.parent('button').is(self.buttonSelector)) {
                 return;
@@ -81324,7 +83558,7 @@ var Soho = (function (exports) {
             }
           }
 
-          if (!elem.hasClass('is-cell-readonly') && target.is('button, input[checkbox], a') || target.parent().is('button')) {
+          if (!td.hasClass('is-cell-readonly') && target.is('button, input[checkbox], a') || target.parent().is('button')) {
             //eslint-disable-line
             col.click(e, [{ row: rowIdx, cell: self.activeCell.cell, item: item, originalEvent: e }]);
           }
@@ -81336,11 +83570,12 @@ var Soho = (function (exports) {
           var btn = $(this).find('button');
           btn.popupmenu({
             attachToBody: true,
-            autoFocus: false,
-            mouseFocus: true,
             menuId: col.menuId,
             trigger: 'immediate',
-            offset: { y: 5 }
+            offset: { y: 5 },
+            returnFocus: function returnFocus() {
+              return td.focus();
+            }
           }).off('close.gridpopupbtn').on('close.gridpopupbtn', function () {
             var el = $(this);
             if (el.data('popupmenu') && !el.data('tooltip')) {
@@ -81356,7 +83591,7 @@ var Soho = (function (exports) {
         // Apply Quick Edit Mode
         if (isEditable) {
           setTimeout(function () {
-            if ($('textarea, input', elem).length && !$('.dropdown,' + '[type=file],' + '[type=image],' + '[type=button],' + '[type=submit],' + '[type=reset],' + '[type=checkbox],' + '[type=radio]', elem).length) {
+            if ($('textarea, input', td).length && !$('.dropdown,' + '[type=file],' + '[type=image],' + '[type=button],' + '[type=submit],' + '[type=reset],' + '[type=checkbox],' + '[type=radio]', td).length) {
               self.quickEditMode = true;
             }
           }, 0);
@@ -81365,7 +83600,7 @@ var Soho = (function (exports) {
 
       if (this.stretchColumn !== 'last') {
         $(window).on('orientationchange.datagrid', function () {
-          _this7.rerender();
+          _this8.rerender();
         });
       }
 
@@ -81448,8 +83683,8 @@ var Soho = (function (exports) {
         var leftPos = 0;
         leftPos = alignToLeft ? rightEdge - 6 : leftEdge - 6;
 
-        // Ignore First Column
-        if (self.currentHeader.index() === 0 && !alignToLeft) {
+        // Ignore First Column and last column
+        if (self.currentHeader.index() === 0 && !alignToLeft || self.currentHeader.index() === self.visibleColumns().length) {
           leftPos = '-999';
         }
 
@@ -81490,7 +83725,7 @@ var Soho = (function (exports) {
       });
 
       // Handle Clicking Header Checkbox
-      this.headerContainer.off('click.datagrid-header-select').on('click.datagrid-header-select', 'th .datagrid-checkbox', function () {
+      this.element.off('click.datagrid-header-select').on('click.datagrid-header-select', 'th .datagrid-checkbox', function () {
         var checkbox = $(this);
 
         if (!checkbox.hasClass('is-checked')) {
@@ -81811,10 +84046,10 @@ var Soho = (function (exports) {
     * @param  {string} term The term to search for.
     */
     keywordSearch: function keywordSearch(term) {
-      this.bodyContainer.find('tr[role="row"]').removeClass('is-filtered').show();
+      this.element.find('tr[role="row"]').removeClass('is-filtered').show();
       this.filterExpr = [];
 
-      this.bodyContainer.find('.datagrid-expandable-row').each(function () {
+      this.element.find('.datagrid-expandable-row').each(function () {
         var row = $(this);
         // Collapse All rows
         row.prev().find('.datagrid-expand-btn').removeClass('is-expanded');
@@ -81823,7 +84058,7 @@ var Soho = (function (exports) {
         row.find('.datagrid-row-detail').css('height', '');
       });
 
-      this.bodyContainer.find('.search-mode').each(function () {
+      this.element.find('.search-mode').each(function () {
         var cell = $(this);
         var text = cell.text();
         cell.text(text.replace('<i>', '').replace('</i>', ''));
@@ -81833,6 +84068,7 @@ var Soho = (function (exports) {
       this.filterExpr.push({ column: 'all', operator: 'contains', value: term, keywordSearch: true });
 
       this.filterKeywordSearch();
+      this.clearCache();
       this.renderRows();
       this.setSearchActivePage({ trigger: 'searched' });
 
@@ -81917,7 +84153,7 @@ var Soho = (function (exports) {
 
         // Check in all visible columns
         if (filterExpr.column === 'all') {
-          self.headerContainer.find('th:visible').each(function () {
+          self.element.find('th:visible').each(function () {
             //eslint-disable-line
             var th = $(this);
             var columnId = th.attr('data-column-id');
@@ -81964,7 +84200,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     highlightSearchRows: function highlightSearchRows(term) {
-      var _this8 = this;
+      var _this9 = this;
 
       var self = this;
 
@@ -81977,7 +84213,7 @@ var Soho = (function (exports) {
         rowNodes.toArray().forEach(function (row) {
           [].slice.call(row.querySelectorAll('td')).forEach(function (cell) {
             var cellText = cell.innerText.toLowerCase();
-            var isSearchExpandableRow = self.settings.searchExpandableRow ? true : !DOM.hasClass(_this8, 'datagrid-expandable-row');
+            var isSearchExpandableRow = self.settings.searchExpandableRow ? true : !DOM.hasClass(_this9, 'datagrid-expandable-row');
 
             if (cellText.indexOf(term) > -1 && isSearchExpandableRow) {
               found = true;
@@ -82201,6 +84437,9 @@ var Soho = (function (exports) {
         }
         if (selectedIndex !== -1) {
           this.unselectRow(selectedIndex, true, true);
+          if (!rowNode.length && this._selectedRows.length > 0) {
+            this._selectedRows.pop();
+          }
         }
       }
 
@@ -82290,7 +84529,10 @@ var Soho = (function (exports) {
               idx: rowData.idx,
               data: rowData,
               elem: rowNode,
-              group: s.dataset[self.groupArray[row].group]
+              group: s.dataset[self.groupArray[row].group],
+              page: self.pagerAPI ? self.pagerAPI.activePage : 1,
+              pagingIdx: dataRowIndex,
+              pagesize: self.settings.pagesize
             });
           }
           self.selectNode(rowNode, dataRowIndex, rowData);
@@ -82385,30 +84627,40 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     syncSelectedRows: function syncSelectedRows() {
+      var _this10 = this;
+
+      var s = this.settings;
+      var dataset = s.groupable && this.originalDataset ? this.originalDataset : s.dataset;
       var idx = null;
+
+      var selectNode = function selectNode(i) {
+        var elem = s.groupable ? _this10.dataRowNode(idx) : _this10.visualRowNode(idx);
+        if (elem[0]) {
+          _this10._selectedRows[i].elem = elem;
+          _this10.selectNode(elem, idx, dataset[idx], true);
+        }
+      };
 
       for (var i = 0; i < this._selectedRows.length; i++) {
         if (this.pagerAPI && this._selectedRows[i].page === this.pagerAPI.activePage) {
           idx = this._selectedRows[i].idx;
-          var elem = this.visualRowNode(idx);
-          if (elem[0]) {
-            this._selectedRows[i].elem = elem;
-            this.selectNode(elem, idx, this.settings.dataset[idx], true);
-          }
-        }
-        // Check for rows that changed page
-        idx = this._selectedRows[i].pagingIdx;
-        if (this._selectedRows[i].pagesize !== this.settings.pagesize && this.settings.dataset[idx]) {
-          this.selectNode(this.visualRowNode(idx), idx, this.settings.dataset[idx], true);
-          this._selectedRows[i].pagesize = this.settings.pagesize;
-          this._selectedRows[i].idx = idx;
-          this._selectedRows[i].page = this.pagerAPI.activePage;
+          selectNode(i);
         }
 
-        if (this._selectedRows[i].pagesize !== this.settings.pagesize && !this.settings.dataset[idx]) {
-          this._selectedRows[i].idx = idx % this.settings.pagesize;
-          this._selectedRows[i].page = Math.round(idx / this.settings.pagesize) + 1;
-          this._selectedRows[i].pagesize = this.settings.pagesize;
+        // Check for rows that changed page
+        if (this._selectedRows[i].pagesize !== s.pagesize && !s.groupable) {
+          idx = this._selectedRows[i].pagingIdx;
+
+          if (s.dataset[idx]) {
+            selectNode(i);
+            this._selectedRows[i].idx = idx;
+            this._selectedRows[i].page = this.pagerAPI.activePage;
+            this._selectedRows[i].pagesize = s.pagesize;
+          } else {
+            this._selectedRows[i].idx = idx % s.pagesize;
+            this._selectedRows[i].page = Math.round(idx / s.pagesize) + 1;
+            this._selectedRows[i].pagesize = s.pagesize;
+          }
         }
       }
     },
@@ -82451,22 +84703,34 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     syncSelectedRowsIdx: function syncSelectedRowsIdx() {
-      if (this._selectedRows.length === 0 || this.settings.dataset.length === 0) {
+      var dataset = this.settings.groupable && this.originalDataset ? this.originalDataset : this.settings.dataset;
+      if (this._selectedRows.length === 0 || dataset.length === 0) {
         return;
       }
       this._selectedRows = [];
 
-      for (var i = 0; i < this.settings.dataset.length; i++) {
-        if (this.settings.dataset[i]._selected) {
-          var calculatePagerInfo = this.calculatePagerInfo(i);
-          this._selectedRows.push({
+      for (var i = 0; i < dataset.length; i++) {
+        if (dataset[i]._selected) {
+          var selectedRow = {
             idx: i,
-            data: this.settings.dataset[i],
+            data: dataset[i],
             elem: this.dataRowNode(i),
-            page: calculatePagerInfo.page,
             pagingIdx: i,
             pagesize: this.settings.pagesize
-          });
+          };
+          if (this.settings.groupable) {
+            var rowNode = this.rowNodesByDataIndex(i);
+            if (rowNode.length) {
+              var row = this.actualPagingRowIndex(this.actualRowIndex(rowNode));
+              var group = this.groupArray[row].group;
+              selectedRow.group = this.settings.dataset[group];
+              selectedRow.page = this.calculatePagerInfo(group).page;
+            }
+          } else {
+            selectedRow.page = this.calculatePagerInfo(i).page;
+          }
+
+          this._selectedRows.push(selectedRow);
         }
       }
     },
@@ -82617,7 +84881,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     activateAllRowNodes: function activateAllRowNodes(idx, dataset) {
-      var _this9 = this;
+      var _this11 = this;
 
       if (typeof idx !== 'number' || idx < 0) {
         return;
@@ -82631,7 +84895,7 @@ var Soho = (function (exports) {
       var args = [{ row: idx, item: dataset[idx] }];
 
       var doRowactivated = function doRowactivated() {
-        var rowNodes = _this9.rowNodes(idx).toArray();
+        var rowNodes = _this11.rowNodes(idx).toArray();
         rowNodes.forEach(function (rowElem) {
           rowElem.classList.add('is-rowactivated');
         });
@@ -82647,7 +84911,7 @@ var Soho = (function (exports) {
          * @property {array} args.row An array of selected rows.
          * @property {object} args.item The current sort column.
          */
-        _this9.element.triggerHandler('rowactivated', args);
+        _this11.element.triggerHandler('rowactivated', args);
       };
 
       if (dataset[idx]) {
@@ -82716,7 +84980,7 @@ var Soho = (function (exports) {
       }
 
       // Deselect activated row
-      var activated = [].slice.call(this.bodyContainer[0].querySelectorAll('tr.is-rowactivated'));
+      var activated = [].slice.call(this.element[0].querySelectorAll('tr.is-rowactivated'));
       if (activated.length > 0) {
         activated.forEach(function (row) {
           row.classList.remove('is-rowactivated');
@@ -83170,14 +85434,14 @@ var Soho = (function (exports) {
     * @returns {void}
     */
     handleKeys: function handleKeys() {
-      var _this10 = this;
+      var _this12 = this;
 
       var self = this;
       var isMultiple = self.settings.selectable === 'multiple';
       var checkbox = $('th .datagrid-checkbox', self.headerRow);
 
       // Handle header navigation
-      self.headerContainer.on('keydown.datagrid', 'th', function (e) {
+      self.element.on('keydown.datagrid', 'th', function (e) {
         var key = e.which || e.keyCode || e.charCode || 0;
         var th = $(this);
         var index = self.columnIdxById(th.attr('data-column-id'));
@@ -83224,9 +85488,6 @@ var Soho = (function (exports) {
           th.removeAttr('tabindex').removeClass('is-active');
           $('th:not(.is-hidden)', this.headerContainer).eq(move).attr('tabindex', '0').addClass('is-active').focus();
           e.preventDefault();
-
-          // Sync the body scroll area
-          self.syncBodyScroll(th);
         }
 
         // Down arrow
@@ -83238,14 +85499,14 @@ var Soho = (function (exports) {
       });
 
       // Handle Editing / Keyboard
-      self.bodyContainer.on('keydown.datagrid', 'td, input', function (e) {
+      self.element.on('keydown.datagrid', 'td, input', function (e) {
         //eslint-disable-line
         var key = e.which || e.keyCode || e.charCode || 0;
         var handled = false;
 
         // F2 - toggles actionableMode "true" and "false"
         // Force to not toggle, if "inlineMode: true"
-        if (key === 113 && !_this10.inlineMode) {
+        if (key === 113 && !_this12.inlineMode) {
           self.settings.actionableMode = !self.settings.actionableMode;
           handled = true;
         }
@@ -83263,7 +85524,7 @@ var Soho = (function (exports) {
       // set focus to the first row.
 
       // Handle rest of the keyboard
-      self.bodyContainer.on('keydown.datagrid', 'td', function (e) {
+      self.element.on('keydown.datagrid', 'td', function (e) {
         var key = e.which || e.keyCode || e.charCode || 0;
         var handled = false;
         var target = $(e.target);
@@ -83404,7 +85665,7 @@ var Soho = (function (exports) {
             // Up arrow key to navigate by row.
             if (row === 0 && !prevRow.is('.datagrid-rowgroup-header')) {
               node.removeAttr('tabindex');
-              self.headerContainer.find('th').eq(cell).attr('tabindex', '0').focus();
+              self.element.find('th').eq(cell).attr('tabindex', '0').focus();
               return;
             }
             self.setActiveCell(prevRow, cell);
@@ -83498,6 +85759,14 @@ var Soho = (function (exports) {
           }
         }
 
+        // Action button from Formatters.Actions
+        if (key === 13 && node.is('.has-btn-actions')) {
+          var btnAction = node.find('.btn-actions');
+          if (btnAction.length) {
+            btnAction.trigger('click');
+          }
+        }
+
         // if column have click function to fire [ie. action button]
         if (key === 13 && col.click && typeof col.click === 'function') {
           if (!node.hasClass('is-cell-readonly')) {
@@ -83587,28 +85856,6 @@ var Soho = (function (exports) {
 
 
     /**
-     * Sync the body area with the header or other containers.
-     * @private
-     * @param  {element} elem The element to check.
-     */
-    syncBodyScroll: function syncBodyScroll(elem) {
-      var container = elem.closest('.datagrid-header');
-      if (container.length > 0) {
-        var left = container.scrollLeft();
-        if (!(elem.is(':last-child') && left === 0)) {
-          this.bodyWrapperCenter.scrollLeft(container.scrollLeft());
-        }
-        return;
-      }
-
-      container = elem.closest('.datagrid-body.left, .datagrid-body.right');
-      if (container.length > 0) {
-        this.bodyWrapperCenter.scrollTop(container.scrollTop());
-      }
-    },
-
-
-    /**
      * Does the column editor have a text field.
      * @private
      * @param  {object} container The dom element
@@ -83675,7 +85922,7 @@ var Soho = (function (exports) {
         return false;
       }
 
-      if (this.isRowDisabled(row)) {
+      if (this.isRowDisabled(row) || !this.activeCell.node) {
         return false;
       }
 
@@ -83747,9 +85994,8 @@ var Soho = (function (exports) {
 
       var thisRow = this.actualRowNode(row);
       var idx = this.settings.treeGrid ? this.actualPagingRowIndex(this.actualRowIndex(thisRow)) : this.dataRowIndex(thisRow);
-      var rowData = this.rowData(this.dataRowIndex(thisRow));
+      var rowData = this.rowData(idx);
 
-      var cellWidth = cellParent.outerWidth();
       var isEditor = $('.is-editor', cellParent).length > 0;
       var isPlaceholder = $('.is-placeholder', cellNode).length > 0;
       var cellValue = cellNode.text() ? cellNode.text() : this.fieldValue(rowData, col.field);
@@ -83776,8 +86022,7 @@ var Soho = (function (exports) {
         if (isEditor) {
           cellNode.css({ position: 'static', height: cellNode.outerHeight() });
         }
-        // initialis Editor
-        cellParent.addClass('is-editing').css({ 'max-width': cellWidth, 'min-width': cellWidth, width: cellWidth });
+        cellParent.addClass('is-editing');
 
         cellNode.empty();
       } else {
@@ -83802,6 +86047,10 @@ var Soho = (function (exports) {
       */
       this.element.triggerHandler('beforeentereditmode', [{ row: idx, cell: cell, item: rowData, target: cellNode, value: cellValue, column: col, editor: this.editor }]);
 
+      if (this.visibleColumns().length === 1) {
+        cellParent.addClass('has-singlecolumn');
+      }
+
       this.editor = new col.editor(idx, cell, cellValue, cellNode, col, event, this, rowData); // eslint-disable-line
       this.editor.row = idx;
       this.editor.cell = cell;
@@ -83819,7 +86068,7 @@ var Soho = (function (exports) {
       if (this.settings.showDirty) {
         var originalVal = cellValue;
 
-        if (originalVal === '' && /checkbox|favorite/i.test(this.editor.name)) {
+        if (originalVal === '' && /checkbox|favorite/i.test(this.getEditorName(this.editor))) {
           originalVal = false;
         }
 
@@ -83875,8 +86124,9 @@ var Soho = (function (exports) {
       var input = this.editor.input;
       var newValue = void 0;
       var cellNode = void 0;
-      var isEditor = this.editor.name === 'editor';
-      var isFileupload = this.editor.name === 'fileupload';
+      var editorName = this.getEditorName(this.editor);
+      var isEditor = editorName === 'editor';
+      var isFileupload = editorName === 'fileupload';
       var isUseActiveRow = !input.is('.timepicker, .datepicker, .lookup, .spinbox, .colorpicker');
 
       // Editor.getValue
@@ -83939,7 +86189,7 @@ var Soho = (function (exports) {
 
       // Format Cell again
       var isInline = cellNode.hasClass('is-editing-inline');
-      cellNode.removeClass('is-editing is-editing-inline');
+      cellNode.removeClass('is-editing is-editing-inline has-singlecolumn');
 
       // Editor.destroy
       this.editor.destroy();
@@ -83984,7 +86234,7 @@ var Soho = (function (exports) {
      */
     validateCell: function validateCell(row, cell) {
       var _$,
-          _this11 = this;
+          _this13 = this;
 
       var self = this;
       var column = this.columnSettings(cell);
@@ -84053,8 +86303,8 @@ var Soho = (function (exports) {
           }
           if (messageText !== '') {
             self.showCellError(row, cell, messageText, validationType.type);
-            var rowNode = _this11.dataRowNode(row);
-            self.element.trigger('cell' + validationType.type, { row: row, cell: cell, message: messageText, target: _this11.cellNode(rowNode, cell), value: cellValue, column: column });
+            var rowNode = _this13.dataRowNode(row);
+            self.element.trigger('cell' + validationType.type, { row: row, cell: cell, message: messageText, target: _this13.cellNode(rowNode, cell), value: cellValue, column: column });
           } else {
             self.clearCellError(row, cell, validationType.type);
           }
@@ -84114,7 +86364,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     showNonVisibleCellErrors: function showNonVisibleCellErrors() {
-      var _this12 = this;
+      var _this14 = this;
 
       // Create empty toolbar
       if (!this.toolbar) {
@@ -84131,10 +86381,10 @@ var Soho = (function (exports) {
         var _loop4 = function _loop4(props) {
           // eslint-disable-line
           var validationType = $.fn.validation.ValidationTypes[props].type;
-          var errors = $.grep(_this12.nonVisibleCellErrors, function (error) {
+          var errors = $.grep(_this14.nonVisibleCellErrors, function (error) {
             return error.type === validationType;
           });
-          _this12.showNonVisibleCellErrorType(errors, validationType);
+          _this14.showNonVisibleCellErrorType(errors, validationType);
         };
 
         // process via type
@@ -84485,41 +86735,35 @@ var Soho = (function (exports) {
     /**
     * Return an array containing all of the currently modified rows, the type of modification
     * and the cells that are dirty and the data.
+    * @param  {boolean} onlyChangedValues If true will return an array of only changed values
     * @returns {array} An array showing the dirty row info.
     */
-    getModifiedRows: function getModifiedRows() {
+    getModifiedRows: function getModifiedRows(onlyChangedValues) {
       var s = this.settings;
       var dataset = s.treeGrid ? s.treeDepth : s.dataset;
       var modified = [];
 
-      // First add the dirty rows
-      if (this.dirtyArray && this.dirtyArray.length) {
-        for (var i = 0; i < this.dirtyArray.length; i++) {
-          if (this.dirtyArray[i] === undefined) {
-            continue;
-          }
-
-          var data = {
-            data: s.treeGrid ? dataset[i].node : dataset[i],
-            row: i,
-            type: 'dirty',
-            cells: []
-          };
-
-          for (var j = 0; j < this.dirtyArray[i].length; j++) {
-            if (this.dirtyArray[i][j] !== undefined) {
-              data.cells.push(this.dirtyArray[i][j]);
+      for (var i = 0; i < dataset.length; i++) {
+        var node = s.treeGrid ? dataset[i].node : dataset[i];
+        var data = { row: i, data: node, cells: [] };
+        // First add the dirty rows
+        if (this.isRowDirty(i)) {
+          data.type = 'dirty';
+          // No need to run trhu columns loop, if need only changed values to returns
+          for (var j = 0; !onlyChangedValues && j < this.dirtyArray[i].length; j++) {
+            var cellData = this.dirtyArray[i][j];
+            if (typeof cellData !== 'undefined' && cellData.isDirty) {
+              data.cells.push({ row: i, col: j, cellData: cellData });
             }
           }
-          modified.push(data);
         }
-      }
-
-      // Now add error and in progress rows
-      for (var _i9 = 0; _i9 < dataset.length; _i9++) {
-        var el = dataset[_i9];
-        if (el.rowStatus !== undefined && (el.rowStatus.icon === 'error' || el.rowStatus.icon === 'in-progress')) {
-          modified.push({ data: el, row: _i9, type: el.rowStatus.icon, cells: [] });
+        // Now add error and in progress rows
+        if (typeof node.rowStatus !== 'undefined' && (node.rowStatus.icon === 'error' || node.rowStatus.icon === 'in-progress')) {
+          data.type = data.type === 'dirty' ? ['dirty', node.rowStatus.icon] : node.rowStatus.icon;
+        }
+        // Add to modified
+        if (typeof data.type !== 'undefined') {
+          modified.push(onlyChangedValues ? node : data);
         }
       }
       return modified;
@@ -84650,14 +86894,14 @@ var Soho = (function (exports) {
       var formatter = col.formatter ? col.formatter : this.defaultFormatter;
       var isEditor = $('.editor', cellNode).length > 0;
       var isTreeGrid = this.settings.treeGrid;
-      var dataRowIndex = this.dataRowIndex(rowNodes);
+      var dataRowIndex = isTreeGrid ? this.actualPagingRowIndex(this.actualRowIndex(rowNodes)) : this.dataRowIndex(rowNodes);
+
       if (dataRowIndex === null || dataRowIndex === undefined || isNaN(dataRowIndex)) {
         dataRowIndex = row;
       }
       var rowData = this.rowData(dataRowIndex);
 
       if (rowNodes.length === 0 && this.settings.paging) {
-        // TODO Frozen Editing with Paging
         rowNodes = this.visualRowNode(row);
         cellNode = rowNodes.find('td').eq(cell);
       }
@@ -84765,9 +87009,9 @@ var Soho = (function (exports) {
       }
 
       // resize on change
-      if (this.settings.stretchColumnOnChange && col && !col.width) {
+      if (this.settings.stretchColumnOnChange && col) {
         var newWidth = this.calculateTextWidth(col);
-        // make sure that the column is atleast the minimum width
+        // make sure that the column is at least the minimum width
         if (col.minWidth && newWidth < col.minWidth) {
           newWidth = col.minWidth;
         }
@@ -84775,10 +87019,8 @@ var Soho = (function (exports) {
         if (col.minWidth && newWidth > col.maxWidth) {
           newWidth = col.maxWidth;
         }
-        var diff = newWidth - this.headerWidths[cell].width;
-        if (diff > 0 && this.headerWidths[cell].width !== '') {
-          this.resizeColumnWidth(cellNode, newWidth, diff);
-          this.headerWidths[cell].width = newWidth;
+        if (newWidth > 0) {
+          this.setColumnWidth(col.id, newWidth, true);
         }
       }
 
@@ -84815,6 +87057,30 @@ var Soho = (function (exports) {
         this.element.trigger('cellchange', args);
         this.wasJustUpdated = true;
       }
+    },
+
+
+    /**
+     * Function to check if given row has true value for isDirty in any cell in it
+     * @private
+     * @param {number} rowIndex The row index
+     * @returns {boolean} true if isDirty
+     */
+    isRowDirty: function isRowDirty(rowIndex) {
+      var isDirty = false;
+      if (typeof rowIndex === 'number' && this.dirtyArray && this.dirtyArray.length) {
+        var row = this.dirtyArray[rowIndex];
+        if (typeof row !== 'undefined') {
+          for (var i = 0, l = row.length; i < l; i++) {
+            var _col6 = row[i];
+            if (typeof _col6 !== 'undefined' && _col6.isDirty) {
+              isDirty = true;
+              break;
+            }
+          }
+        }
+      }
+      return isDirty;
     },
 
 
@@ -84891,7 +87157,7 @@ var Soho = (function (exports) {
         this.addToDirtyArray(row, cell, data);
       }
 
-      if (row < 0 || cell < 0) {
+      if (row < 0 || cell < 0 || !cellNode.length) {
         return;
       }
 
@@ -84972,14 +87238,13 @@ var Soho = (function (exports) {
      * @returns {object} The dom jQuery node
      */
     rowNodes: function rowNodes(row) {
+      var container = this.element;
+
       if (row instanceof jQuery) {
+        container = row.closest('.datagrid-container');
         row = row.attr('aria-rowindex') - 1;
       }
-      var leftNodes = this.tableBodyLeft ? this.tableBodyLeft.find('tr[aria-rowindex="' + (row + 1) + '"]') : $();
-      var centerNodes = this.tableBody.find('tr[aria-rowindex="' + (row + 1) + '"]');
-      var rightNodes = this.tableBodyRight ? this.tableBodyRight.find('tr[aria-rowindex="' + (row + 1) + '"]') : $();
-
-      return $(centerNodes).add(leftNodes).add(rightNodes);
+      return container.find('> .datagrid-wrapper > table > tbody > tr[aria-rowindex="' + (row + 1) + '"]');
     },
 
 
@@ -85152,13 +87417,14 @@ var Soho = (function (exports) {
         self.activeCell = prevCell;
       }
 
-      if (!$('input, button:not(.btn-secondary, .row-btn, .datagrid-expand-btn, .datagrid-drilldown, .btn-icon)', self.activeCell.node).length) {
+      if (!$('input, button:not(.btn-secondary, .row-btn, .datagrid-expand-btn, .datagrid-drilldown, .btn-icon)', self.activeCell.node).length || self.activeCell.node.is('.has-btn-actions') && self.activeCell.node.find('.btn-actions').length) {
         self.activeCell.node.focus();
         if (isGroupRow) {
           self.activeCell.groupNode = self.activeCell.node;
         }
       }
-      if (self.activeCell.node.hasClass('is-focusable')) {
+
+      if (self.activeCell.node.is('.is-focusable')) {
         self.activeCell.node.find('button').focus();
       }
 
@@ -85218,8 +87484,6 @@ var Soho = (function (exports) {
       if (col && col.expandOnActivate && this.activeCell && this.activeCell.node) {
         self.activeCell.node.addClass('is-active');
       }
-
-      self.syncBodyScroll(self.activeCell.node);
 
       /**
       * Fires when a cell is focued.
@@ -85524,11 +87788,11 @@ var Soho = (function (exports) {
       var childrenRight = $();
 
       if (this.hasLeftPane) {
-        childrenLeft = this.tableLeft.find('tr').eq(rowIdx).nextUntil('.datagrid-rowgroup-header');
+        childrenLeft = this.tableLeft.find('tbody tr').eq(rowIdx).nextUntil('.datagrid-rowgroup-header');
       }
-      children = this.table.find('tr').eq(rowIdx).nextUntil('.datagrid-rowgroup-header');
+      children = this.table.find('tbody tr').eq(rowIdx).nextUntil('.datagrid-rowgroup-header');
       if (this.hasRightPane) {
-        childrenRight = this.tableRight.find('tr').eq(rowIdx).nextUntil('.datagrid-rowgroup-header');
+        childrenRight = this.tableRight.find('tbody tr').eq(rowIdx).nextUntil('.datagrid-rowgroup-header');
       }
       var expandButton = rowElement.find('.datagrid-expand-btn');
 
@@ -85603,6 +87867,7 @@ var Soho = (function (exports) {
           this.setTreeDepth();
           this.setRowGrouping();
           this.setTreeRootNodes();
+          this.clearCache();
           this.renderRows();
           // Update selected and Sync header checkbox
           this.syncSelectedUI();
@@ -85660,6 +87925,9 @@ var Soho = (function (exports) {
     saveDirtyRows: function saveDirtyRows() {
       var s = this.settings;
       var dataset = s.treeGrid ? s.treeDepth : s.dataset;
+      if (this.settings.groupable) {
+        dataset = this.originalDataset || dataset;
+      }
       if (s.showDirty && !this.settings.source && this.dirtyArray && this.dirtyArray.length) {
         for (var i = 0, l = dataset.length; i < l; i++) {
           if (typeof this.dirtyArray[i] !== 'undefined') {
@@ -85679,6 +87947,9 @@ var Soho = (function (exports) {
     restoreDirtyRows: function restoreDirtyRows() {
       var s = this.settings;
       var dataset = s.treeGrid ? s.treeDepth : s.dataset;
+      if (this.settings.groupable) {
+        dataset = this.originalDataset || dataset;
+      }
       if (s.showDirty && this.dirtyArray && this.dirtyArray.length) {
         var changes = [];
         for (var i = 0, l = dataset.length; i < l; i++) {
@@ -85689,8 +87960,8 @@ var Soho = (function (exports) {
           }
         }
         var newDirtyArray = [];
-        for (var _i10 = 0, _l3 = changes.length; _i10 < _l3; _i10++) {
-          newDirtyArray[changes[_i10].newIdx] = this.dirtyArray[changes[_i10].oldIdx];
+        for (var _i9 = 0, _l3 = changes.length; _i9 < _l3; _i9++) {
+          newDirtyArray[changes[_i9].newIdx] = this.dirtyArray[changes[_i9].oldIdx];
         }
         this.dirtyArray = newDirtyArray;
       }
@@ -85702,7 +87973,7 @@ var Soho = (function (exports) {
     * @private
     */
     syncDatasetWithSelectedRows: function syncDatasetWithSelectedRows() {
-      var _this13 = this;
+      var _this15 = this;
 
       this._selectedRows = [];
       var s = this.settings;
@@ -85710,34 +87981,34 @@ var Soho = (function (exports) {
       var idx = -1;
 
       var _loop5 = function _loop5(i, _data) {
-        if (s.groupable && !_this13.originalDataset) {
+        if (s.groupable && !_this15.originalDataset) {
           // Object.values is not supported in IE11; hence usage of Object.keys and Map
           for (var k = 0; k < Object.keys(dataset[i]).length; k++) {
             idx++;
             _data = Object.keys(dataset[i]).map(function (v) {
               return dataset[i][v];
             });
-            if (_this13.isRowSelected(_data)) {
-              _this13._selectedRows.push({
+            if (_this15.isRowSelected(_data)) {
+              _this15._selectedRows.push({
                 idx: idx,
                 data: _data,
-                elem: _this13.dataRowNode(idx),
+                elem: _this15.dataRowNode(idx),
                 group: dataset[i],
-                page: _this13.pagerAPI ? _this13.pagerAPI.activePage : 1,
+                page: _this15.pagerAPI ? _this15.pagerAPI.activePage : 1,
                 pagingIdx: idx,
-                pagesize: _this13.settings.pagesize
+                pagesize: _this15.settings.pagesize
               });
             }
           }
         } else {
           _data = s.treeGrid ? dataset[i].node : dataset[i];
-          if (_this13.isRowSelected(_data)) {
-            _this13._selectedRows.push({
+          if (_this15.isRowSelected(_data)) {
+            _this15._selectedRows.push({
               idx: i,
               data: _data,
-              elem: _this13.visualRowNode(i),
-              pagesize: _this13.settings.pagesize,
-              page: _this13.pagerAPI ? _this13.pagerAPI.activePage : 1,
+              elem: _this15.visualRowNode(i),
+              pagesize: _this15.settings.pagesize,
+              page: _this15.pagerAPI ? _this15.pagerAPI.activePage : 1,
               pagingIdx: i
             });
           }
@@ -85752,7 +88023,7 @@ var Soho = (function (exports) {
 
 
     /**
-     * Sort the ui sort indicator on the column.
+     * Set the sort indicator on the column.
      * @private
      * @param {string} id The column id
      * @param {boolean} ascending Set the sort in ascending or descending order
@@ -85763,8 +88034,8 @@ var Soho = (function (exports) {
       }
 
       // Set Visual Indicator
-      this.headerContainer.find('.is-sorted-asc, .is-sorted-desc').removeClass('is-sorted-asc is-sorted-desc').attr('aria-sort', 'none');
-      this.headerContainer.find('[data-column-id="' + id + '"]').addClass(ascending ? 'is-sorted-asc' : 'is-sorted-desc').attr('aria-sort', ascending ? 'ascending' : 'descending');
+      this.element.find('.is-sorted-asc, .is-sorted-desc').removeClass('is-sorted-asc is-sorted-desc').attr('aria-sort', 'none');
+      this.element.find('[data-column-id="' + id + '"]').addClass(ascending ? 'is-sorted-asc' : 'is-sorted-desc').attr('aria-sort', ascending ? 'ascending' : 'descending');
     },
 
 
@@ -85912,7 +88183,7 @@ var Soho = (function (exports) {
     getPageableElements: function getPageableElements() {
       var elements = this.element.children().not('.datagrid-expandable-row');
       if (elements.is('table')) {
-        elements = elements.find('tr');
+        elements = elements.find('tbody tr');
       }
       return elements;
     },
@@ -85925,7 +88196,7 @@ var Soho = (function (exports) {
     * @returns {void}
     */
     appendTooltip: function appendTooltip(extraClass) {
-      var _this14 = this;
+      var _this16 = this;
 
       var defaultClass = 'grid-tooltip';
       var regExp = new RegExp('\\b' + defaultClass + '\\b', 'g');
@@ -85952,7 +88223,7 @@ var Soho = (function (exports) {
         if (this.isTouch) {
           this.tooltip.style.pointerEvents = 'auto';
           $(this.tooltip).on('touchend.gridtooltip', function () {
-            _this14.hideTooltip();
+            _this16.hideTooltip();
           });
         }
       }
@@ -85976,7 +88247,7 @@ var Soho = (function (exports) {
         var isHeaderColumn = utils.hasClass(elem, 'datagrid-column-wrapper');
         var isHeaderFilter = utils.hasClass(elem.parentNode, 'datagrid-filter-wrapper');
         var cell = elem.getAttribute('aria-colindex') - 1;
-        var _col6 = this.columnSettings(cell);
+        var _col7 = this.columnSettings(cell);
         var title = void 0;
 
         tooltip = { content: '', wrapper: elem.querySelector('.datagrid-cell-wrapper') };
@@ -86006,7 +88277,7 @@ var Soho = (function (exports) {
 
         if (contentTooltip) {
           // Used with rich text editor
-          var width = _col6.editorOptions && _col6.editorOptions.width ? this.setUnit(_col6.editorOptions.width) : false;
+          var width = _col7.editorOptions && _col7.editorOptions.width ? this.setUnit(_col7.editorOptions.width) : false;
 
           // Width for tooltip can be come from column options
           contentTooltip.style.width = width || elem.offsetWidth + 'px';
@@ -86076,14 +88347,14 @@ var Soho = (function (exports) {
           }
         }
 
-        if (typeof _col6.tooltip === 'function') {
+        if (typeof _col7.tooltip === 'function') {
           var _rowNode = this.closest(elem, function (el) {
             return utils.hasClass(el, 'datagrid-row');
           });
           var rowIdx = _rowNode.getAttribute('data-index');
           var rowData = this.settings.dataset[rowIdx];
-          var value = this.fieldValue(this.settings.dataset[rowIdx], _col6.field);
-          tooltip.content = _col6.tooltip(rowIdx, cell, value, _col6, rowData, this);
+          var value = this.fieldValue(this.settings.dataset[rowIdx], _col7.field);
+          tooltip.content = _col7.tooltip(rowIdx, cell, value, _col7, rowData, this);
           tooltip.textwidth = stringUtils.textWidth(tooltip.content) + 20;
         }
       }
@@ -86106,7 +88377,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     showTooltip: function showTooltip(options) {
-      var _this15 = this;
+      var _this17 = this;
 
       if (this.tooltip) {
         var tooltip = $(this.tooltip);
@@ -86122,7 +88393,7 @@ var Soho = (function (exports) {
           }
           if (options.extraClassList) {
             options.extraClassList.map(function (className) {
-              return _this15.tooltip.classList.add(className);
+              return _this17.tooltip.classList.add(className);
             });
           }
 
@@ -86154,14 +88425,14 @@ var Soho = (function (exports) {
           tooltip.data('gridtooltip', true);
 
           tooltip.one('afterplace.gridtooltip', function (e, placementObj) {
-            _this15.handleAfterPlaceTooltip(e, placementObj);
+            _this17.handleAfterPlaceTooltip(e, placementObj);
           }).on('click.gridtooltip', function () {
-            _this15.hideTooltip();
+            _this17.hideTooltip();
           });
 
           // Hide the tooltip when the page scrolls.
           $('body, .scrollable').off('scroll.gridtooltip').on('scroll.gridtooltip', function () {
-            _this15.hideTooltip();
+            _this17.hideTooltip();
           });
         }
       }
@@ -86190,7 +88461,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     hideTooltip: function hideTooltip() {
-      var _this16 = this;
+      var _this18 = this;
 
       if (this.tooltip) {
         this.removeTooltipData(this.tooltip); // Remove flag as gridtooltip
@@ -86201,7 +88472,7 @@ var Soho = (function (exports) {
 
       // Remove scroll events
       $('body, .scrollable').off('scroll.gridtooltip', function () {
-        _this16.hideTooltip();
+        _this18.hideTooltip();
       });
     },
 
@@ -86243,7 +88514,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     removeTooltip: function removeTooltip() {
-      var _this17 = this;
+      var _this19 = this;
 
       if (this.tooltip) {
         var tooltip = $(this.tooltip);
@@ -86251,8 +88522,8 @@ var Soho = (function (exports) {
         // Set selector
         var selector = {
           th: '.datagrid-header th',
-          td: '.datagrid-body tr.datagrid-row td[role="gridcell"]:not(.rowstatus-cell)',
-          rowstatus: '.datagrid-body tr.datagrid-row td[role="gridcell"] .icon-rowstatus'
+          td: '.datagrid-wrapper tbody tr.datagrid-row td[role="gridcell"]:not(.rowstatus-cell)',
+          rowstatus: '.datagrid-wrapper tbody tr.datagrid-row td[role="gridcell"] .icon-rowstatus'
         };
         selector.str = selector.th + ', ' + selector.td + ', ' + selector.rowstatus;
 
@@ -86274,7 +88545,7 @@ var Soho = (function (exports) {
         // Remove cached tooltip data
         var nodes = [].slice.call(this.element[0].querySelectorAll(selector.str));
         nodes.forEach(function (node) {
-          return _this17.removeTooltipData(node);
+          return _this19.removeTooltipData(node);
         });
 
         if (this.tooltip.parentNode) {
@@ -86298,7 +88569,7 @@ var Soho = (function (exports) {
 
       // UnBind the pager
       if (this.pagerAPI) {
-        this.tableBody.off('page.' + COMPONENT_NAME$19 + ' pagesizechange.' + COMPONENT_NAME$19);
+        this.tableBody.off('page.' + COMPONENT_NAME$1b + ' pagesizechange.' + COMPONENT_NAME$1b);
         this.pagerAPI.destroy();
       }
 
@@ -86325,11 +88596,10 @@ var Soho = (function (exports) {
       }
 
       this.element.next('.pager-toolbar').remove();
-      $.removeData(this.element[0], COMPONENT_NAME$19);
+      $.removeData(this.element[0], COMPONENT_NAME$1b);
 
       this.element.off();
       $(document).off('touchstart.datagrid touchend.datagrid touchcancel.datagrid click.datagrid touchmove.datagrid');
-      this.bodyContainer.off().remove();
       $('body').off('resize.vtable resize.datagrid');
       $(window).off('orientationchange.datagrid');
       return this;
@@ -86376,17 +88646,17 @@ var Soho = (function (exports) {
    */
   $.fn.datagrid = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$19);
+      var instance = $.data(this, COMPONENT_NAME$1b);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$19, new Datagrid(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1b, new Datagrid(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$1a = 'formcompact';
+  var COMPONENT_NAME$1c = 'formcompact';
 
   // Settings
   var FORMCOMPACT_DEFAULTS = {};
@@ -86454,9 +88724,9 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this2 = this;
 
-      $(this.form).on('focusin.' + COMPONENT_NAME$1a, 'input', function (e) {
+      $(this.form).on('focusin.' + COMPONENT_NAME$1c, 'input', function (e) {
         return _this2.handleFocusIn(e);
-      }).on('focusout.' + COMPONENT_NAME$1a, 'input', function (e) {
+      }).on('focusout.' + COMPONENT_NAME$1c, 'input', function (e) {
         return _this2.handleFocusOut(e);
       });
 
@@ -86557,7 +88827,7 @@ var Soho = (function (exports) {
       this.inputsObserver.disconnect();
       delete this.inputsObserver;
 
-      $(this.form).off(['focusin.' + COMPONENT_NAME$1a, 'focusout.' + COMPONENT_NAME$1a].join(' '));
+      $(this.form).off(['focusin.' + COMPONENT_NAME$1c, 'focusout.' + COMPONENT_NAME$1c].join(' '));
       delete this.form;
       delete this.inputs;
     },
@@ -86568,7 +88838,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element, COMPONENT_NAME$1a);
+      $.removeData(this.element, COMPONENT_NAME$1c);
     }
   };
 
@@ -86579,17 +88849,17 @@ var Soho = (function (exports) {
    */
   $.fn.formcompact = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1a);
+      var instance = $.data(this, COMPONENT_NAME$1c);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1a, new FormCompact(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1c, new FormCompact(this, settings));
       }
     });
   };
 
   // The Component Name
-  var COMPONENT_NAME$1b = 'header';
+  var COMPONENT_NAME$1d = 'header';
 
   /**
    * Special Header with Toolbar at the top of the page used to faciliate IDS Enterprise Nav Patterns
@@ -86975,16 +89245,22 @@ var Soho = (function (exports) {
      * @returns {this} component instance
      */
     handleEvents: function handleEvents() {
+      var _this = this;
+
       var self = this;
 
-      this.element.on('updated.' + COMPONENT_NAME$1b, function (e, settings) {
+      this.element.on('updated.' + COMPONENT_NAME$1d, function (e, settings) {
         self.updated(settings);
-      }).on('reset.' + COMPONENT_NAME$1b, function () {
+      }).on('reset.' + COMPONENT_NAME$1d, function () {
         self.reset();
-      }).on('drilldown.' + COMPONENT_NAME$1b, function (e, viewTitle) {
+      }).on('drilldown.' + COMPONENT_NAME$1d, function (e, viewTitle) {
         self.drilldown(viewTitle);
-      }).on('drillup.' + COMPONENT_NAME$1b, function (e, viewTitle) {
+      }).on('drillup.' + COMPONENT_NAME$1d, function (e, viewTitle) {
         self.drillup(viewTitle);
+      });
+
+      $('html').on('themechanged.' + COMPONENT_NAME$1d, function () {
+        _this.updatePageChanger();
       });
 
       // Events for the title button.  e.preventDefault(); stops Application Menu
@@ -86993,7 +89269,7 @@ var Soho = (function (exports) {
 
       // Popupmenu Events
       if (this.titlePopup && this.titlePopup.length) {
-        this.titlePopup.on('selected.' + COMPONENT_NAME$1b, function (e, anchor) {
+        this.titlePopup.on('selected.' + COMPONENT_NAME$1d, function (e, anchor) {
           var text = void 0;
           if (!(anchor instanceof $)) {
             // Toolbar Flex Item
@@ -87015,16 +89291,16 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     handleTitleButtonEvents: function handleTitleButtonEvents() {
-      var _this = this;
+      var _this2 = this;
 
       if (!this.titleButton || !this.titleButton.length) {
         return;
       }
 
-      this.titleButton.bindFirst('click.' + COMPONENT_NAME$1b, function (e) {
-        if (_this.levelsDeep.length > 1) {
+      this.titleButton.bindFirst('click.' + COMPONENT_NAME$1d, function (e) {
+        if (_this2.levelsDeep.length > 1) {
           e.stopImmediatePropagation();
-          _this.drillup();
+          _this2.drillup();
           e.returnValue = false;
         }
       });
@@ -87124,18 +89400,36 @@ var Soho = (function (exports) {
       var currentTheme = theme.currentTheme;
       if (currentTheme.id !== 'theme-soho-light') {
         var themeParts = currentTheme.id.split('-');
-        this.element.find('[data-theme-name]').parent().removeClass('is-checked');
-        this.element.find('[data-theme-name="' + themeParts[0] + '-' + themeParts[1] + '"]').parent().addClass('is-checked');
-        this.element.find('[data-theme-variant]').parent().removeClass('is-checked');
-        this.element.find('[data-theme-variant="' + themeParts[2] + '"]').parent().addClass('is-checked');
+        $('body').find('.popupmenu [data-theme-name]').parent().removeClass('is-checked');
+        $('body').find('.popupmenu [data-theme-name="' + themeParts[0] + '-' + themeParts[1] + '"]').parent().addClass('is-checked');
+        $('body').find('.popupmenu [data-theme-variant]').parent().removeClass('is-checked');
+        $('body').find('.popupmenu [data-theme-variant="' + themeParts[2] + '"]').parent().addClass('is-checked');
       }
 
       if (personalization.settings.colors) {
         var _colors = _typeof(personalization.settings.colors) === 'object' ? personalization.settings.colors.header : personalization.settings.colors;
         _colors = _colors.replace('#', '');
 
-        this.element.find('[data-rgbcolor]').parent().removeClass('is-checked');
-        this.element.find('[data-rgbcolor="#' + _colors + '"]').parent().addClass('is-checked');
+        $('body').find('.popupmenu [data-rgbcolor]').parent().removeClass('is-checked');
+        $('body').find('.popupmenu [data-rgbcolor="#' + _colors + '"]').parent().addClass('is-checked');
+      }
+    },
+
+
+    /**
+     * Sets up the page changer after changing theme.
+     * @private
+     * @returns {void}
+     */
+    updatePageChanger: function updatePageChanger() {
+      var api = this.changer.data('popupmenu');
+      var menu = api.menu;
+      var tags = menu.find('[data-rgbcolor]');
+      var colors = theme.personalizationColors();
+      var keys = Object.keys(colors);
+
+      for (var i = 0; i < tags.length; i++) {
+        tags[i].setAttribute('data-rgbcolor', colors[keys[i]].value);
       }
     },
 
@@ -87252,7 +89546,7 @@ var Soho = (function (exports) {
           appMenu.modifyTriggers([this.titleButton], true, true);
         }
 
-        this.titleButton.off('click.' + COMPONENT_NAME$1b).remove();
+        this.titleButton.off('click.' + COMPONENT_NAME$1d).remove();
         this.titleButton = $();
 
         // Need to trigger an update on the toolbar control to make sure
@@ -87400,8 +89694,12 @@ var Soho = (function (exports) {
 
       this.toolbarAPI.teardown();
 
-      this.titlePopup.data('popupmenu').destroy();
-      this.titlePopup.data('button').destroy();
+      if (this.titlePopup.data('popupmenu')) {
+        this.titlePopup.data('popupmenu').destroy();
+      }
+      if (this.titlePopup.data('popupmenu')) {
+        this.titlePopup.data('button').destroy();
+      }
       this.titlePopupMenu.remove();
       this.titlePopup.children('h1').detach().insertBefore(self.titlePopup);
       this.titlePopup.remove();
@@ -87422,14 +89720,16 @@ var Soho = (function (exports) {
      */
     unbind: function unbind() {
       if (this.titleButton && this.titleButton.length) {
-        this.titleButton.off('click.' + COMPONENT_NAME$1b);
+        this.titleButton.off('click.' + COMPONENT_NAME$1d);
       }
 
       if (this.titlePopup && this.titlePopup.length) {
-        this.titlePopup.off('updated.' + COMPONENT_NAME$1b);
+        this.titlePopup.off('updated.' + COMPONENT_NAME$1d);
       }
 
-      this.element.off(['updated.' + COMPONENT_NAME$1b, 'reset.' + COMPONENT_NAME$1b, 'drilldown.' + COMPONENT_NAME$1b, 'drillup.' + COMPONENT_NAME$1b].join(' '));
+      this.element.off(['updated.' + COMPONENT_NAME$1d, 'reset.' + COMPONENT_NAME$1d, 'drilldown.' + COMPONENT_NAME$1d, 'drillup.' + COMPONENT_NAME$1d].join(' '));
+
+      $('html').off('themechanged.' + COMPONENT_NAME$1d);
 
       return this;
     },
@@ -87468,7 +89768,7 @@ var Soho = (function (exports) {
         delete this.changer;
       }
 
-      $.removeData(this.element[0], COMPONENT_NAME$1b);
+      $.removeData(this.element[0], COMPONENT_NAME$1d);
     }
   };
 
@@ -87479,11 +89779,11 @@ var Soho = (function (exports) {
    */
   $.fn.header = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1b);
+      var instance = $.data(this, COMPONENT_NAME$1d);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1b, new Header(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1d, new Header(this, settings));
       }
     });
   };
@@ -87491,7 +89791,7 @@ var Soho = (function (exports) {
   /* eslint-disable no-underscore-dangle */
 
   // Component Name
-  var COMPONENT_NAME$1c = 'lookup';
+  var COMPONENT_NAME$1e = 'lookup';
 
   // Lookup components are "modal" (one on-screen at any given time)
   var LOOKUP_GRID_ID = 'lookup-datagrid';
@@ -87533,7 +89833,7 @@ var Soho = (function (exports) {
     autoWidth: false,
     clickArguments: {},
     delimiter: ',',
-    minWidth: 400
+    minWidth: null
   };
 
   function Lookup(element, settings) {
@@ -87615,6 +89915,10 @@ var Soho = (function (exports) {
 
       if (this.settings.autoWidth) {
         this.applyAutoWidth();
+      }
+
+      if (!this.minWidth) {
+        this.settings.minWidth = this.settings.options && this.settings.options.paging ? 482 : 400;
       }
 
       // Add Masking to show the #
@@ -88212,7 +90516,7 @@ var Soho = (function (exports) {
 
 
     /**
-     * apply the min width setting to the datagrid.
+     * Apply the min width setting to the datagrid.
      * @private
      * @param {jquery[]} lookupGrid jQuery wrapped element
      * @returns {jquery[]} grid jQuery wrapped element with the css applied
@@ -88225,6 +90529,7 @@ var Soho = (function (exports) {
       // check that the minWidth is less than the windows width, so
       // that the control remains responsive
       if ($(window).width() > this.settings.minWidth) {
+        this.modal.element.addClass('has-minwidth');
         var minWidth = this.settings.minWidth + 'px';
         lookupGrid.css({
           'min-width': minWidth
@@ -88293,7 +90598,7 @@ var Soho = (function (exports) {
     * @returns {void}
     */
     destroy: function destroy() {
-      $.removeData(this.element[0], COMPONENT_NAME$1c);
+      $.removeData(this.element[0], COMPONENT_NAME$1e);
       $('.modal .searchfield').off('keypress.lookup');
       $('body').off('open.lookup close.lookup');
       if (this.modal && this.modal.element) {
@@ -88317,17 +90622,17 @@ var Soho = (function (exports) {
    */
   $.fn.lookup = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1c);
+      var instance = $.data(this, COMPONENT_NAME$1e);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1c, new Lookup(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1e, new Lookup(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$1d = 'multitabs';
+  var COMPONENT_NAME$1f = 'multitabs';
 
   // Default Settings for MultiTabs
   var MULTITABS_DEFAULTS = {
@@ -88704,7 +91009,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$1d);
+      $.removeData(this.element[0], COMPONENT_NAME$1f);
     }
   };
 
@@ -88715,17 +91020,17 @@ var Soho = (function (exports) {
    */
   $.fn.multitabs = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1d);
+      var instance = $.data(this, COMPONENT_NAME$1f);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1d, new MultiTabs(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1f, new MultiTabs(this, settings));
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$1e = 'listdetail';
+  var COMPONENT_NAME$1g = 'listdetail';
   // Available breakpoint types for Edge Bleeding
   var LIST_DETAIL_EDGE_BLEED_BREAKPOINTS = ['phone', 'tablet'];
 
@@ -88932,10 +91237,10 @@ var Soho = (function (exports) {
     handleEvents: function handleEvents() {
       var _this2 = this;
 
-      $(this.element).on('drilldown.' + COMPONENT_NAME$1e, function (e, item) {
+      $(this.element).on('drilldown.' + COMPONENT_NAME$1g, function (e, item) {
         e.stopPropagation();
         _this2.drilldown(item, e.target);
-      }).on('drillup.' + COMPONENT_NAME$1e, function (e) {
+      }).on('drillup.' + COMPONENT_NAME$1g, function (e) {
         e.stopPropagation();
         _this2.drillup();
       });
@@ -88949,7 +91254,7 @@ var Soho = (function (exports) {
       }
 
       // Run certain responsive checks on page resize
-      $('body').off('resize.' + COMPONENT_NAME$1e).on('resize.' + COMPONENT_NAME$1e, function () {
+      $('body').off('resize.' + COMPONENT_NAME$1g).on('resize.' + COMPONENT_NAME$1g, function () {
         _this2.handleResize();
       });
     },
@@ -89067,7 +91372,7 @@ var Soho = (function (exports) {
 
       if (this.childrenListDetailElements) {
         this.childrenListDetailElements.forEach(function (elem) {
-          var api = $(elem).data(COMPONENT_NAME$1e);
+          var api = $(elem).data(COMPONENT_NAME$1g);
           if (api && typeof api.drillup === 'function') {
             api.drillup();
           }
@@ -89200,9 +91505,9 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     teardown: function teardown() {
-      $('body').off('resize.' + COMPONENT_NAME$1e);
+      $('body').off('resize.' + COMPONENT_NAME$1g);
 
-      $(this.element).off('drilldown.' + COMPONENT_NAME$1e + ' drillup.' + COMPONENT_NAME$1e);
+      $(this.element).off('drilldown.' + COMPONENT_NAME$1g + ' drillup.' + COMPONENT_NAME$1g);
 
       if (this.backElement) {
         this.backElement.removeEventListener('click', this.handleBackClick.bind(this));
@@ -89237,7 +91542,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element, COMPONENT_NAME$1e);
+      $.removeData(this.element, COMPONENT_NAME$1g);
     }
   };
 
@@ -89248,21 +91553,21 @@ var Soho = (function (exports) {
    */
   $.fn.listdetail = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1e);
+      var instance = $.data(this, COMPONENT_NAME$1g);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1e, new ListDetail(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1g, new ListDetail(this, settings));
         instance.destroy = function destroy() {
           this.teardown();
-          $.removeData(this, COMPONENT_NAME$1e);
+          $.removeData(this, COMPONENT_NAME$1g);
         };
       }
     });
   };
 
   // Component Name
-  var COMPONENT_NAME$1f = 'stepprocess';
+  var COMPONENT_NAME$1h = 'stepprocess';
 
   // Default Stepprocess Options
   var STEPPROCESS_DEFAULTS = {
@@ -90100,7 +92405,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$1f);
+      $.removeData(this.element[0], COMPONENT_NAME$1h);
     }
   };
 
@@ -90111,11 +92416,11 @@ var Soho = (function (exports) {
    */
   $.fn.stepprocess = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$1f);
+      var instance = $.data(this, COMPONENT_NAME$1h);
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$1f, new Stepprocess(this, settings));
+        instance = $.data(this, COMPONENT_NAME$1h, new Stepprocess(this, settings));
       }
     });
   };
@@ -90373,6 +92678,9 @@ var Soho = (function (exports) {
       invoke(a, 'accordion');
     });
   }],
+
+  // Tag List
+  ['taglist', '.tag-list'],
 
   // Form Compact Component
   ['formcompact', '.form-compact-container', function (rootElem, pluginName, selector) {
@@ -90710,6 +93018,8 @@ var Soho = (function (exports) {
     Dropdown: Dropdown,
     EmptyMessage: EmptyMessage,
     ExpandableArea: ExpandableArea,
+    FontPicker: FontPicker,
+    FontPickerStyle: FontPickerStyle,
     Line: Line,
     ListBuilder: ListBuilder,
     ListView: ListView,
@@ -90728,6 +93038,7 @@ var Soho = (function (exports) {
     StepChart: StepChart,
     Tabs: Tabs,
     Tag: Tag,
+    TagList: TagList,
     Textarea: Textarea,
     TimePicker: TimePicker,
     Toast: Toast,
@@ -90780,6 +93091,7 @@ var Soho = (function (exports) {
   exports.longPress = longPress;
   exports.masks = masks;
   exports.number = numberUtils;
+  exports.object = objectUtils;
   exports.patterns = patterns;
   exports.personalization = personalization;
   exports.renderLoop = renderLoop;

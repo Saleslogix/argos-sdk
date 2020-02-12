@@ -5,6 +5,7 @@
 .modal-wrapper {
   align-items: center;
   display: flex;
+  flex-direction: column;
   height: 100%;
   justify-content: center;
   margin: 0 auto;
@@ -484,19 +485,29 @@ body.modal-engaged {
   }
 }
 
-// Fix scrollbar in IE on single-line Message Modals
-.ie {
-  .modal-content {
-    .modal-body-wrapper {
-      padding: 2px 20px;
-    }
-  }
-}
-
 // Message specific styles
 .message {
   .modal-body-wrapper {
     padding: 5px 20px;
+  }
+}
+
+// IE-specific adjustments
+html.ie {
+  .modal {
+    &.full-width {
+      margin: 0;
+    }
+  }
+}
+
+// iOS specific adjustments
+html.ios {
+  .has-modal-open {
+    [aria-hidden='true'],
+    [aria-hidden='true'] * {
+      overflow: hidden;
+    }
   }
 }
 
@@ -510,8 +521,15 @@ html[dir='rtl'] {
       &:nth-child(1) {
         border-left: 1px solid $modal-btn-border-color;
       }
-    }
 
+      &:last-child {
+        border-left-color: transparent;
+
+        &:focus {
+          border-left-color: $input-color-focus-border;
+        }
+      }
+    }
   }
 
   .modal-content {
@@ -546,15 +564,6 @@ html[dir='rtl'] {
     .btn-close {
       left: 10px;
       right: auto;
-    }
-  }
-}
-
-.ios {
-  .has-modal-open {
-    [aria-hidden='true'],
-    [aria-hidden='true'] * {
-      overflow: hidden;
     }
   }
 }

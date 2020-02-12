@@ -139,7 +139,7 @@
   &.panel {
     background-color: $accordion-bg-color;
     border-color: $accordion-panel-border-color;
-    border-right-color: $accordion-toplevel-border-color;
+    border-right-color: $accordion-panel-border-color;
 
     .accordion-header {
       border-bottom-color: $accordion-panel-border-color;
@@ -162,6 +162,10 @@
 
         > .icon {
           color: $accordion-selected-text-color;
+
+          .chevron {
+            top: -1px;
+          }
         }
 
         > [class^='btn'] {
@@ -194,29 +198,43 @@
         }
       }
 
-      &.has-filtered-children,
-      &.has-filtered-children.is-focused,
-      &.has-filtered-children.is-selected {
-        background-color: $accordion-header-filtered-children-background-color;
+      &.filtered.has-filtered-children {
+        &:not(:hover):not(.is-selected) {
+          > a {
+            color: $accordion-filtered-text-color;
+          }
 
-        > a {
-          color: $accordion-filtered-text-color !important;
-        }
+          > .icon {
+            color: $accordion-filtered-text-color;
+          }
 
-        > .icon {
-          color: $accordion-filtered-text-color !important;
-        }
-
-        > .btn > .icon {
-          &::before,
-          &::after {
-            background-color: $accordion-filtered-text-color !important;
+          > .btn > .icon {
+            &::before,
+            &::after {
+              background-color: $accordion-filtered-text-color;
+            }
           }
         }
       }
 
       &:last-child {
         border-bottom-color: transparent;
+      }
+
+      .btn {
+        top: -1px;
+      }
+
+      .icon {
+        top: -3px;
+
+        &.chevron {
+          top: 1px;
+
+          &.active {
+            top: 0;
+          }
+        }
       }
     }
 
@@ -416,12 +434,6 @@
             .icon {
               color: $accordion-selected-text-color;
             }
-          }
-
-          &.has-filtered-children,
-          &.has-filtered-children.is-focused,
-          &.has-filtered-children.is-selected {
-            background-color: transparent;
           }
         }
 
@@ -639,9 +651,13 @@
 .accordion-pane {
   @include transition(padding 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94));
 
-  height: 0;
+  display: block;
   overflow: hidden;
   padding: 0;
+
+  &:not(.is-expanded) {
+    height: 0;
+  }
 
   // Visible accordion panes force a border to show up on the next accordion header for visual separation
   &.is-expanded {
@@ -754,7 +770,6 @@
 
     &.is-disabled {
       background-color: $accordion-disabled-pane-bg-color !important;
-      border-bottom-color: $accordion-disabled-pane-bg-color !important;
     }
 
     // Subheaders can now have chevrons as of v4.23.x
@@ -821,6 +836,19 @@
 
 .accordion-content {
   padding: 15px 0 15px 20px;
+}
+
+// Slight adjustment to padding/placement of icons on JP styles.
+// JP fonts have different character spacing/padding requirements.
+// See Github: infor-design/enterprise#3364
+html[lang='ja-JP'] {
+  .accordion-pane {
+    .accordion-header.list-item {
+      &::before {
+        font-size: 0.8rem;
+      }
+    }
+  }
 }
 
 // RTL Styles
@@ -1383,7 +1411,6 @@ html[dir='rtl'] {
   &.tooltip-accordion-style {
     background-color: $theme-color-palette-white;
     color: $theme-color-palette-black;
-    -webkit-text-fill-color: $theme-color-palette-black;
 
     .arrow {
       display: none;
@@ -1394,7 +1421,6 @@ html[dir='rtl'] {
 
       p {
         color: $theme-color-palette-black;
-        -webkit-text-fill-color: $theme-color-palette-black;
       }
     }
   }

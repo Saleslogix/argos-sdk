@@ -39,7 +39,8 @@ Soho.Locale.addCulture('it-IT', {
     // ca-gregorian/main/dates/calendars/gregorian/timeFormats/short
     timeFormat: 'HH:mm',
     // ca-gregorian/main/dates/calendars/gregorian/dayPeriods/wide
-    dayPeriods: ['AM', 'PM']
+    dayPeriods: ['AM', 'PM'],
+    firstDayofWeek: 1 // Starts on Mon
   }],
   // numbers/currencyFormats-numberSystem-latn/standard
   currencySign: '€',
@@ -354,6 +355,8 @@ Soho.Locale.addCulture('it-IT', {
     SortZtoA: { id: 'SortZtoA', value: 'Ordinamento decrescente', comment: 'Sort Z to A in icons for filtering' },
     SortDown: { id: 'SortDown', value: 'Ordinamento decrescente', comment: 'Sort Down tooltip' },
     SortUp: { id: 'SortUp', value: 'Ordinamento crescente', comment: 'Sort Up tooltip' },
+    Submit: { id: 'Submit', value: 'Invia', comment: 'Submit on a modal dialog' },
+    Subject: { id: 'Subject', value: 'Oggetto', comment: 'The subject of an calendar event.' },
     Subscript: { id: 'Subscript', value: 'Pedice', comment: 'Turn on and off Subscript text in text editor (like word)' },
     Subtle: { id: 'Subtle', value: 'Tenue', comment: 'The title of one of the application themes.' },
     Superscript: { id: 'Superscript', value: 'Apice', comment: 'Turn on and off Superscript text in text editor (like word)' },
@@ -369,6 +372,7 @@ Soho.Locale.addCulture('it-IT', {
     TextBtnCancel: { id: 'TextBtnCancel', value: 'Annulla caricamento file corrente', comment: 'text for cancel button for advanced fileupload' },
     TextBtnCloseError: { id: 'TextBtnCloseError', value: 'Chiudi errore', comment: 'text for error close button for advanced fileupload' },
     TextBtnRemove: { id: 'TextBtnRemove', value: 'Chiudi errore', comment: 'text for remove button for advanced fileupload' },
+    Time: { id: 'Time', value: 'Ora', comment: 'The time part of a date.' },
     Timer: { id: 'Timer', value: 'Timer', comment: 'Timer tooltip' },
     To: { id: 'To', value: 'A', comment: 'End of a range (of dates)' },
     Today: { id: 'Today', value: 'Oggi', comment: 'refering to today on a calendar' },
@@ -384,6 +388,7 @@ Soho.Locale.addCulture('it-IT', {
     TreeCollapse: { id: 'TreeCollapse', value: 'Comprimi struttura', comment: 'Tree Collapse tooltip' },
     TreeExpand: { id: 'TreeExpand', value: 'Espandi struttura', comment: 'Tree Expand tooltip' },
     Turquoise: { id: 'Turquoise', value: 'Turchese', comment: 'Color in our color pallette' },
+    Type: { id: 'Type', value: 'Tipo', comment: 'The type of event.' },
     TypeToFilter: { id: 'TypeToFilter', value: 'Digitare per filtrare', comment: 'Screen reader hit for screen reader users.' },
     Up: { id: 'Up', value: 'Su', comment: 'Up tooltip' },
     UpComing: { id: 'UpComing', value: 'Attività imminenti', comment: 'List of upcoming things (general)' },

@@ -9,34 +9,16 @@
   }
 }
 
-.field-short {
+.field-short,
+.form-layout-compact .field {
   .datepicker {
     + .icon {
-      margin-top: 8px;
+      margin-top: 6px;
     }
   }
 }
 
 .calendar-toolbar .toolbar-section .btn-monthyear-pane {
   font-size: 2rem !important;
-}
-
-html[dir='rtl'] {
-  .field-short {
-    .datepicker {
-      + .icon {
-        margin-top: 6px;
-      }
-    }
-  }
-
-  &.is-firefox {
-    .field-short {
-      .datepicker {
-        + .icon {
-          margin-top: 8px;
-        }
-      }
-    }
-  }
+  top: -1px;
 }

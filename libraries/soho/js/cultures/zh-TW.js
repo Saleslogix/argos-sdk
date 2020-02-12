@@ -18,7 +18,7 @@ Soho.Locale.addCulture('zh-TW', {
       long: 'yyyy年M月d日',
       full: 'yyyy年M月d日 EEEE',
       month: 'M月d日',
-      year: 'yyyy年M',
+      year: 'yyyy年 M月',
       timestamp: 'ah:mm:ss',
       hour: 'ah:mm',
       datetime: 'M/d/yyyy ah:mm',
@@ -33,13 +33,14 @@ Soho.Locale.addCulture('zh-TW', {
     },
     // ca-gregorian/main/dates/calendars/gregorian/months/format/wide
     months: {
-      wide: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
-      abbreviated: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月']
+      wide: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+      abbreviated: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
     },
     // ca-gregorian/main/dates/calendars/gregorian/timeFormats/short
     timeFormat: 'ah:mm',
     // ca-gregorian/main/dates/calendars/gregorian/dayPeriods/wide
-    dayPeriods: ['上午', '下午']
+    dayPeriods: ['上午', '下午'],
+    firstDayofWeek: 0 // Starts on Sun
   }],
   // numbers/currencyFormats-numberSystem-latn/standard
   currencySign: 'NT$',
@@ -354,6 +355,8 @@ Soho.Locale.addCulture('zh-TW', {
     SortZtoA: { id: 'SortZtoA', value: '遞減排序', comment: 'Sort Z to A in icons for filtering' },
     SortDown: { id: 'SortDown', value: '向下排序', comment: 'Sort Down tooltip' },
     SortUp: { id: 'SortUp', value: '向上排序', comment: 'Sort Up tooltip' },
+    Submit: { id: 'Submit', value: '送出', comment: 'Submit on a modal dialog' },
+    Subject: { id: 'Subject', value: '主旨', comment: 'The subject of an calendar event.' },
     Subscript: { id: 'Subscript', value: '下標', comment: 'Turn on and off Subscript text in text editor (like word)' },
     Subtle: { id: 'Subtle', value: '輕微', comment: 'The title of one of the application themes.' },
     Superscript: { id: 'Superscript', value: '上標', comment: 'Turn on and off Superscript text in text editor (like word)' },
@@ -369,6 +372,7 @@ Soho.Locale.addCulture('zh-TW', {
     TextBtnCancel: { id: 'TextBtnCancel', value: '取消上載此檔案', comment: 'text for cancel button for advanced fileupload' },
     TextBtnCloseError: { id: 'TextBtnCloseError', value: '關閉此錯誤', comment: 'text for error close button for advanced fileupload' },
     TextBtnRemove: { id: 'TextBtnRemove', value: '關閉此錯誤', comment: 'text for remove button for advanced fileupload' },
+    Time: { id: 'Time', value: '時間', comment: 'The time part of a date.' },
     Timer: { id: 'Timer', value: '計時器', comment: 'Timer tooltip' },
     To: { id: 'To', value: '至', comment: 'End of a range (of dates)' },
     Today: { id: 'Today', value: '今天', comment: 'refering to today on a calendar' },
@@ -384,6 +388,7 @@ Soho.Locale.addCulture('zh-TW', {
     TreeCollapse: { id: 'TreeCollapse', value: '折疊樹狀目錄', comment: 'Tree Collapse tooltip' },
     TreeExpand: { id: 'TreeExpand', value: '展開樹狀目錄', comment: 'Tree Expand tooltip' },
     Turquoise: { id: 'Turquoise', value: '藍綠色', comment: 'Color in our color pallette' },
+    Type: { id: 'Type', value: '類型', comment: 'The type of event.' },
     TypeToFilter: { id: 'TypeToFilter', value: '鍵入以篩選', comment: 'Screen reader hit for screen reader users.' },
     Up: { id: 'Up', value: '上', comment: 'Up tooltip' },
     UpComing: { id: 'UpComing', value: '即將到來的事件', comment: 'List of upcoming things (general)' },
