@@ -1098,8 +1098,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
   _applyStateToActions: function _applyStateToActions(selection, rowNode) {
     let actionRow;
     if (rowNode) {
-      const id = `#popupmenu-${this.getItemActionKey(selection.data)}`;
-      actionRow = $(id);
+      actionRow = $(rowNode).find('.actions-row')[0];
+      if (typeof actionRow === 'undefined') {
+        throw new Error('The actions-row domNode is missing. Ensure your listActionTemplate has an "actions-row" className.');
+      }
+
       $(actionRow).empty();
     }
 
@@ -1809,22 +1812,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
       // initialize popupmenus on each card
       const btn = $(rowNode).find('.btn-actions');
       $(btn).popupmenu();
-      $(btn).on('selected', (evt, args) => {
-        // Latest versions of Soho/IDS broke our _ActionMixin
-        // Just hack around it for now using the popupmenu selected event:
-        // https://design.infor.com/code/ids-enterprise/latest/popupmenu
-        const node = args.first();
-        if (!node) {
-          console.warn('Missing quick action dom nodes.'); // eslint-disable-line
-        }
-        const parameters = {
-          id: node.attr('data-id'),
-          $event: evt,
-          $source: node,
-        };
-
-        this.invokeActionItem(parameters, evt, node);
-      });
       $(btn).on('beforeopen', (evt) => {
         this.selectEntry({ key: evt.target.attributes['data-key'].value });
       });
