@@ -831,6 +831,7 @@ input.fileupload-background-transparent {
   right: 10px;
 }
 .crm-modal {
+  background-color: #fff;
   position: relative;
   max-width: 95%;
   max-height: 95%;
@@ -1175,4 +1176,8 @@ input.fileupload-background-transparent {
 }
 .offline {
   background-color: #787d82 !important;
+}
+.summary-form .data {
+  height: auto !important;
+  margin-bottom: 2rem;
 }
