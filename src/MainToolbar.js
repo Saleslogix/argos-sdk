@@ -49,7 +49,7 @@ const __class = declare('argos.MainToolbar', [Toolbar], /** @lends module:argos/
    */
   widgetTemplate: new Simplate([`
     <header class="header is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
-      <div class="toolbar do-resize has-more-button has-title-button" role="toolbar" aria-label="Layouts" data-options="{maxVisibleButtons: 2}">
+      <div class="toolbar do-resize has-more-button has-title-button" role="toolbar" aria-label="Layouts" data-options="{maxVisibleButtons: 4}">
         <div class="title">
           <button class="btn-icon application-menu-trigger hide-focus" type="button" tabindex="0">
               <span class="audible">Show navigation</span>
