@@ -1811,7 +1811,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
     if (this.isCardView && this.visibleActions.length) {
       // initialize popupmenus on each card
       const btn = $(rowNode).find('.btn-actions');
-      $(btn).popupmenu();
+      $(btn).popupmenu({
+        attachToBody: false,
+      });
       $(btn).on('beforeopen', (evt) => {
         this.selectEntry({ key: evt.target.attributes['data-key'].value });
       });

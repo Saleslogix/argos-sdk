@@ -1694,7 +1694,9 @@ define('argos/_ListBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       if (this.isCardView && this.visibleActions.length) {
         // initialize popupmenus on each card
         var btn = $(rowNode).find('.btn-actions');
-        $(btn).popupmenu();
+        $(btn).popupmenu({
+          attachToBody: false
+        });
         $(btn).on('beforeopen', function (evt) {
           _this7.selectEntry({ key: evt.target.attributes['data-key'].value });
         });
