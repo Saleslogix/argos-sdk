@@ -1181,3 +1181,6 @@ input.fileupload-background-transparent {
   height: auto !important;
   margin-bottom: 2rem;
 }
+.actions-row {
+  min-width: 125px;
+}
