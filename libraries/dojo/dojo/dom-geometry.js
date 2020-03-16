@@ -128,7 +128,7 @@ return (_2.body(doc).dir||doc.documentElement.dir||"ltr").toLowerCase()=="ltr";
 };
 _5.docScroll=function docScroll(doc){
 doc=doc||_2.doc;
-var _1e=_2.doc.parentWindow||_2.doc.defaultView;
+var _1e=doc.parentWindow||doc.defaultView;
 return "pageXOffset" in _1e?{x:_1e.pageXOffset,y:_1e.pageYOffset}:(_1e=_1("quirks")?_2.body(doc):doc.documentElement)&&{x:_5.fixIeBiDiScrollLeft(_1e.scrollLeft||0,doc),y:_1e.scrollTop||0};
 };
 _5.getIeDocumentElementOffset=function(doc){
