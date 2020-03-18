@@ -801,6 +801,7 @@ input.fileupload-background-transparent {
   outline: 0;
   position: absolute;
   width: 34px;
+  z-index: 1;
 }
 .field-control-trigger .icon {
   background-color: inherit;
