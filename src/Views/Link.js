@@ -36,7 +36,7 @@ const __class = declare('argos.Views.Link', [View], /** @lends module:argos/View
   widgetTemplate: new Simplate([
     '<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="detail panel {%= $.cls %}">',
     '<iframe class="link-node" data-dojo-attach-point="linkNode"',
-    'sandbox="allow-scripts allow-forms allow-same-origin">',
+    'sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox">',
     '</iframe>',
     '</div>',
   ]),

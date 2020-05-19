@@ -45,7 +45,7 @@ define('argos/Views/Link', ['module', 'exports', 'dojo/_base/declare', '../View'
      */
     link: '',
     cls: 'link-view',
-    widgetTemplate: new Simplate(['<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="detail panel {%= $.cls %}">', '<iframe class="link-node" data-dojo-attach-point="linkNode"', 'sandbox="allow-scripts allow-forms allow-same-origin">', '</iframe>', '</div>']),
+    widgetTemplate: new Simplate(['<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="detail panel {%= $.cls %}">', '<iframe class="link-node" data-dojo-attach-point="linkNode"', 'sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox">', '</iframe>', '</div>']),
     _getLink: function _getLink() {
       var link = this.options.link;
 
