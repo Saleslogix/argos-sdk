@@ -48,9 +48,9 @@ const __class = declare('argos._SDataEditMixin', [_SDataDetailMixin], /** @lends
 
   _buildRefreshMessage: function _buildRefreshMessage() {
     const message = this.inherited(_buildRefreshMessage, arguments);
-
+    const model = this.getModel();
     return lang.mixin(message, {
-      resourceKind: this.resourceKind,
+      resourceKind: (model && model.resourceKind) || this.resourceKind,
     });
   },
   onRefresh: function onRefresh() {
