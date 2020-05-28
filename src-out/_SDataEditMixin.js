@@ -42,9 +42,9 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
 
     _buildRefreshMessage: function _buildRefreshMessage() {
       var message = this.inherited(_buildRefreshMessage, arguments);
-
+      var model = this.getModel();
       return _lang2.default.mixin(message, {
-        resourceKind: this.resourceKind
+        resourceKind: model && model.resourceKind || this.resourceKind
       });
     },
     onRefresh: function onRefresh() {
