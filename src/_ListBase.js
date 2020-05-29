@@ -77,7 +77,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    */
   widgetTemplate: new Simplate([`
     <div id="{%= $.id %}" data-title="{%= $.titleText %}" class="list {%= $.cls %}" {% if ($.resourceKind) { %}data-resource-kind="{%= $.resourceKind %}"{% } %}>
-      <div class="page-container scrollable{% if ($$.isNavigationDisabled()) { %} is-multiselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
+      <div data-columns="{%: $$.multiColumnCount %}" class="page-container scrollable{% if ($$.isNavigationDisabled()) { %} is-multiselect is-selectable is-toolbar-open {% } %} {% if (!$$.isCardView) { %} listview {% } %}"
         {% if ($$.isNavigationDisabled()) { %}
         data-selectable="multiple"
         {% } else { %}
@@ -85,9 +85,6 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
         {% } %}
         data-dojo-attach-point="scrollerNode">
           <div class="toolbar has-title-button" role="toolbar" aria-label="List Toolbar">
-            <div class="title">
-              <h1></h1>
-            </div>
             <div class="buttonset" data-dojo-attach-point="toolNode">
               {% if($.enableSearch) { %}
               <div data-dojo-attach-point="searchNode"></div>
@@ -661,7 +658,9 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
   },
   initSoho: function initSoho() {
     const toolbar = $('.toolbar', this.domNode).first();
-    toolbar.toolbar();
+    toolbar.toolbar({
+      rightAligned: true,
+    });
     this.toolbar = toolbar.data('toolbar');
     $('[data-action=openSettings]', this.domNode).on('click', () => {
       this.openSettings();
