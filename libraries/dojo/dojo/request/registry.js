@@ -11,7 +11,7 @@ function _6(_7,_8){
 var _9=_5.slice(0),i=0,_a;
 while(_a=_9[i++]){
 if(_a(_7,_8)){
-return _a.request.call(null,_7,_8);
+return _a.request.apply(null,arguments);
 }
 }
 return _3.apply(null,arguments);

@@ -23,12 +23,30 @@ _2();
 _2();
 },isCanceled:function(){
 _2();
-},always:function(_8){
-return this.then(_8,_8);
-},"catch":function(_9){
-return this.then(null,_9);
-},otherwise:function(_a){
-return this.then(null,_a);
+},"finally":function(_8){
+return this.then(function(_9){
+var _a=_8();
+if(_a&&typeof _a.then==="function"){
+return _a.then(function(){
+return _9;
+});
+}
+return _9;
+},function(_b){
+var _c=_8();
+if(_c&&typeof _c.then==="function"){
+return _c.then(function(){
+throw _b;
+});
+}
+throw _b;
+});
+},always:function(_d){
+return this.then(_d,_d);
+},"catch":function(_e){
+return this.then(null,_e);
+},otherwise:function(_f){
+return this.then(null,_f);
 },trace:function(){
 return this;
 },traceRejected:function(){
