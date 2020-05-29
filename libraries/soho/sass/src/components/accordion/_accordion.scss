@@ -70,7 +70,7 @@
       }
 
       > .icon,
-      > [class^='btn'] {
+      > [class*='btn'] {
         + a {
           padding-left: 0;
         }
@@ -168,7 +168,7 @@
           }
         }
 
-        > [class^='btn'] {
+        > [class*='btn'] {
           .icon {
             color: $accordion-selected-text-color;
 
@@ -185,7 +185,7 @@
           }
         }
 
-        [class^='btn']:focus {
+        [class*='btn']:focus {
           box-shadow: none;
 
           &:not(.hide-focus) {
@@ -333,7 +333,7 @@
           }
         }
 
-        > [class^='btn'] {
+        > [class*='btn'] {
           &:focus:not(.hide-focus) {
             border-color: $accordion-inverse-focus-state-color;
             box-shadow: $focus-box-shadow;
@@ -372,7 +372,7 @@
             }
           }
 
-          > [class^='btn'] {
+          > [class*='btn'] {
             &:focus:not(.hide-focus) {
               border-color: $accordion-selected-text-color;
               box-shadow: $focus-box-shadow;
@@ -516,11 +516,11 @@
     }
   }
 
-  > [class^='btn'] {
+  > [class*='btn'] {
     @include btn-chevron-style;
   }
 
-  > [class^='btn'],
+  > [class*='btn'],
   > .icon {
     + a {
       padding-left: 0;
@@ -569,7 +569,7 @@
   }
 
   &.has-chevron {
-    > [class^='btn'] {
+    > [class*='btn'] {
       padding: 0;
     }
 
@@ -682,6 +682,10 @@
       font-size: $theme-size-font-base;
       -webkit-text-size-adjust: 100%;
     }
+
+    &.filtered {
+      display: none;
+    }
   }
 
   @include left-align-cascade-styles-pane(20px, 40px, 40px);
@@ -703,7 +707,7 @@
       padding: 8px 0 8px 20px;
     }
 
-    > [class^='btn'],
+    > [class*='btn'],
     > .icon {
       margin-left: 14px;
 
@@ -713,7 +717,7 @@
       }
     }
 
-    > [class^='btn'] {
+    > [class*='btn'] {
       height: 25px;
       width: 20px;
 
@@ -733,7 +737,7 @@
         content: '\25cf';
         display: inline-block;
         font-size: $theme-size-font-sm;
-        padding: 8px 10px 8px 21px;
+        padding: 4px 10px 8px 21px;
         vertical-align: middle;
       }
 
@@ -869,7 +873,7 @@ html[dir='rtl'] {
       }
 
       > .icon,
-      > [class^='btn'] {
+      > [class*='btn'] {
         + a {
           padding-right: 0;
         }
@@ -900,7 +904,7 @@ html[dir='rtl'] {
         }
 
         > .icon,
-        > [class^='btn'] {
+        > [class*='btn'] {
           margin-left: 3px;
           margin-right: 14px;
 
@@ -948,7 +952,7 @@ html[dir='rtl'] {
           }
 
           > .icon,
-          > [class^='btn'] {
+          > [class*='btn'] {
             margin-left: 3px;
             margin-right: 34px;
 
@@ -995,7 +999,7 @@ html[dir='rtl'] {
             }
 
             > .icon,
-            > [class^='btn'] {
+            > [class*='btn'] {
               margin-left: 3px;
               margin-right: 53px;
 
@@ -1042,7 +1046,7 @@ html[dir='rtl'] {
               }
 
               > .icon,
-              > [class^='btn'] {
+              > [class*='btn'] {
                 margin-left: 3px;
                 margin-right: 72px;
 
@@ -1089,7 +1093,7 @@ html[dir='rtl'] {
                 }
 
                 > .icon,
-                > [class^='btn'] {
+                > [class*='btn'] {
                   margin-left: 3px;
                   margin-right: 92px;
 
@@ -1130,7 +1134,7 @@ html[dir='rtl'] {
         }
 
         > .icon,
-        > [class^='btn'] {
+        > [class*='btn'] {
           + a {
             padding-right: 0;
           }
@@ -1165,7 +1169,7 @@ html[dir='rtl'] {
           }
 
           > .icon,
-          > [class^='btn'] {
+          > [class*='btn'] {
             margin-left: 3px;
             margin-right: 30px;
 
@@ -1209,7 +1213,7 @@ html[dir='rtl'] {
             }
 
             > .icon,
-            > [class^='btn'] {
+            > [class*='btn'] {
               margin-left: 3px;
               margin-right: 49px;
 
@@ -1253,7 +1257,7 @@ html[dir='rtl'] {
               }
 
               > .icon,
-              > [class^='btn'] {
+              > [class*='btn'] {
                 margin-left: 3px;
                 margin-right: 68px;
 
@@ -1297,7 +1301,7 @@ html[dir='rtl'] {
                 }
 
                 > .icon,
-                > [class^='btn'] {
+                > [class*='btn'] {
                   margin-left: 3px;
                   margin-right: 87px;
 
@@ -1341,7 +1345,7 @@ html[dir='rtl'] {
                   }
 
                   > .icon,
-                  > [class^='btn'] {
+                  > [class*='btn'] {
                     margin-left: 3px;
                     margin-right: 106px;
 
@@ -1382,7 +1386,7 @@ html[dir='rtl'] {
 // These rules vertically "center" the plus-minus icon in
 .is-firefox {
   .accordion-header {
-    > [class^='btn'] {
+    > [class*='btn'] {
       .icon.plus-minus {
         &::before,
         &::after {
@@ -1394,13 +1398,24 @@ html[dir='rtl'] {
 
   .accordion-pane {
     .accordion-header {
-      > [class^='btn'] {
+      > [class*='btn'] {
         .icon.plus-minus {
           &::before,
           &::after {
             top: 9px;
           }
         }
+      }
+    }
+  }
+}
+
+// Fix size of the bullet icon on Android devices
+html.android {
+  .accordion-pane {
+    .accordion-header.list-item {
+      &::before {
+        font-size: 0.7rem;
       }
     }
   }

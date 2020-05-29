@@ -110,35 +110,6 @@ p {
   }
 }
 
-// Text Color Labels
-.text-default {
-  color: $font-color-default;
-}
-
-.text-descriptive {
-  color: $font-color-descriptive;
-}
-
-.text-link {
-  color: $font-color-hyperlink;
-}
-
-.text-muted {
-  color: $font-color-muted;
-}
-
-.text-emphasis {
-  font-style: italic !important;
-}
-
-.text-strong {
-  font-weight: $theme-number-font-weight-bold !important;
-}
-
-.text-alert {
-  color: $theme-color-status-danger;
-}
-
 .text-primary,
 a.text-primary {
   @include rem(line-height, 2.5rem);
@@ -171,7 +142,7 @@ label,
   display: block;
   font-size: $label-size-regular-font-size;
   margin: $label-size-regular-margin;
-  min-height: 13px; //prevents need to use &nbsp; for blank labels
+  min-height: 14px; //prevents need to use &nbsp; for blank labels
 }
 
 .is-disabled.label,
@@ -344,6 +315,13 @@ small,
   }
 }
 
+.form-layout-compact {
+  .field-flex [class*='btn'] {
+    margin-bottom: 0 !important;
+  }
+}
+
+// Tighter field-flex
 .field-flex-sm {
   align-items: center;
   display: flex;
@@ -352,8 +330,8 @@ small,
   .data-description {
     flex-basis: auto;
     line-height: 34px;
-    overflow: auto;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
@@ -385,9 +363,141 @@ small,
 .label + .data {
   color: $font-color-extrahighcontrast;
 
+  &.field-height {
+    display: inline-block;
+    font-size: $input-size-regular-font-size;
+    height: $input-size-regular-height;
+    line-height: $input-size-regular-height;
+  }
+
   &.is-placeholder {
     color: $input-placeholder-color;
   }
+}
+
+.form-layout-compact {
+  .label + .data.field-height {
+    font-size: $input-size-compact-font-size !important;
+    height: $input-size-compact-height !important;
+    line-height: $input-size-compact-height !important;
+  }
+}
+
+// New Pixel Based Typography Scale
+.font-size-base {
+  font-size: $theme-size-font-base;
+}
+
+.font-size-xs {
+  font-size: $theme-size-font-xs;
+}
+
+.font-size-sm {
+  font-size: $theme-size-font-sm;
+}
+
+.font-size-md {
+  font-size: $theme-size-font-md;
+}
+
+.font-size-lg {
+  font-size: $theme-size-font-lg;
+}
+
+.font-size-xl {
+  font-size: $theme-size-font-xl;
+}
+
+.font-size-px-72 {
+  font-size: $theme-size-font-px-72;
+  line-height: 1.25em;
+}
+
+.font-size-px-60 {
+  font-size: $theme-size-font-px-60;
+  line-height: 1.2em;
+}
+
+.font-size-px-48 {
+  font-size: $theme-size-font-px-48;
+  line-height: 1.25em;
+}
+
+.font-size-px-40 {
+  font-size: $theme-size-font-px-40;
+  line-height: 1.2em;
+}
+
+.font-size-px-32 {
+  font-size: $theme-size-font-px-32;
+  line-height: 1.25em;
+}
+
+.font-size-px-28 {
+  font-size: $theme-size-font-px-28;
+  line-height: 1.28em;
+}
+
+.font-size-px-24 {
+  font-size: $theme-size-font-px-24;
+  line-height: 1.3em;
+}
+
+.font-size-px-20 {
+  font-size: $theme-size-font-px-20;
+  line-height: 1.4em;
+}
+
+.font-size-px-16 {
+  font-size: $theme-size-font-px-16;
+  line-height: 1.5em;
+}
+
+.font-size-px-14 {
+  font-size: $theme-size-font-px-14;
+  line-height: 1.7em;
+}
+
+.font-size-px-12 {
+  font-size: $theme-size-font-px-12;
+  line-height: 1.5em;
+  text-transform: uppercase;
+}
+
+.font-size-px-10 {
+  font-size: $theme-size-font-px-10;
+  line-height: 1.6em;
+  text-transform: uppercase;
+}
+
+// Still Used Text Color Characteristics
+.text-default {
+  color: $font-color-default !important;
+}
+
+.text-descriptive {
+  color: $font-color-descriptive !important;
+}
+
+.text-link {
+  color: $font-color-hyperlink !important;
+  text-decoration: underline;
+}
+
+.text-muted {
+  color: $font-color-muted !important;
+}
+
+.text-emphasis {
+  font-style: italic !important;
+}
+
+.text-strong {
+  font-weight: $theme-number-font-weight-bold !important;
+}
+
+.text-alert {
+  color: $theme-color-status-danger !important;
 }
 
 // RTL Styles

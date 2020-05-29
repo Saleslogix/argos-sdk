@@ -2,6 +2,11 @@
 // Flexible Toolbar Component
 // ==================================== //
 
+@import '../button/button';
+@import '../colorpicker/colorpicker';
+@import '../fontpicker/fontpicker';
+@import '../popupmenu/popupmenu';
+
 .toolbar-container {
   &.in-page {
     height: 40px;
@@ -80,8 +85,12 @@
   &.buttonset {
     padding: 4px;
 
-    [class^='btn'] {
+    [class*='btn'] {
       margin-right: 0;
+
+      @media (max-width: $breakpoint-slim) {
+        width: auto;
+      }
     }
   }
 

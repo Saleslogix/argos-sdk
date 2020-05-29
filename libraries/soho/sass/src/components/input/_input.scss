@@ -198,6 +198,10 @@ textarea {
   @include input-style();
 }
 
+textarea[rows] {
+  height: auto;
+}
+
 // Element with input "like" style borders
 .input-style {
   background-color: $input-color-initial-background;
@@ -319,7 +323,7 @@ textarea {
 label,
 .label {
   &.required {
-    &:not(.inline) {
+    &:not(.inline):not(.checkbox-label) {
       &:not(.accessible)::after {
         @include required-indicator($is-content: true);
       }
@@ -339,7 +343,10 @@ label,
       }
     }
   }
+}
 
+span.required::after {
+  @include required-indicator($is-content: true);
 }
 
 // Placeholder - Inline help
@@ -352,7 +359,8 @@ label,
 // Safari requires the `-webkit-text-fill-color` prop, which we
 // don't want to use generally because it conflicts.
 .is-safari {
-  input {
+  input,
+  textarea {
     &[disabled] {
       -webkit-text-fill-color: $input-disabled-color;
     }
@@ -378,11 +386,14 @@ label,
 }
 
 // Error States
-.error,
+.error {
+  color: $error-color;
+}
+
 .error-message,
 .error-message p,
 .popover .error-message p {
-  color: $error-color;
+  color: $error-text-color;
 }
 
 .error::-webkit-input-placeholder {
@@ -497,10 +508,11 @@ label,
     resize: none;
   }
 
-  textarea {
+  textarea:not(.editable) {
     font-size: $input-size-compact-font-size;
+    line-height: 1.6rem;
     min-height: $textarea-size-compact-height;
-    padding: $input-size-compact-padding;
+    padding: 5px;
   }
 
   &:last-child:not(:only-child) {
@@ -534,6 +546,15 @@ label,
 
   :-ms-input-placeholder {
     font-size: $input-size-compact-font-size;
+  }
+}
+
+.is-firefox {
+  .field-short,
+  .form-layout-compact .field {
+    input:not(.spinbox) {
+      padding-top: 2px;
+    }
   }
 }
 
@@ -594,6 +615,12 @@ label,
 .form-layout-compact {
   .field {
     margin-bottom: $form-size-field-compact-margin-bottom;
+
+    span {
+      &.data {
+        display: inline;
+      }
+    }
   }
 
   label,

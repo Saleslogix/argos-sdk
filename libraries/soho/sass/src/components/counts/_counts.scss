@@ -49,6 +49,8 @@
   text-align: center;
 
   &.hyperlink {
+    margin: -1px 0 0;
+    padding: 0 0 8px;
     text-decoration: none;
   }
 
@@ -56,6 +58,14 @@
   .xl-text {
     color: inherit;
     display: block;
+  }
+}
+
+.form-layout-compact {
+  .object-count {
+    .xl-text {
+      font-size: $theme-size-font-px-40;
+    }
   }
 }
 

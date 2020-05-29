@@ -146,7 +146,7 @@ div.multiselect {
     .icon,
     + .icon {
       background-color: $input-color-disabled-background;
-      color: $trigger-disabled-color;
+      color: $input-color-disabled-border;
       cursor: default;
     }
   }
@@ -191,6 +191,10 @@ div.multiselect {
     &[tabindex='-1']:focus {
       border-color: $input-color-readonly-border !important;
       box-shadow: none;
+    }
+
+    + .icon {
+      color: $dropdown-readonly-icon-color;
     }
   }
 
@@ -434,6 +438,12 @@ div.multiselect {
       bottom: 6px;
       top: auto;
     }
+
+    > .trigger {
+      .icon {
+        top: 8px;
+      }
+    }
   }
 
   &.has-icons {
@@ -616,7 +626,7 @@ div.multiselect {
   border-bottom: 1px solid $dropdown-menu-separator-border-color;
   border-radius: 0;
   color: $dropdown-color-initial-font;
-  padding: 8px 30px 8px 10px;
+  padding: 7px 30px 8px 10px;
   text-overflow: ellipsis;
   width: 100%;
 
@@ -655,6 +665,7 @@ div.multiselect {
 
   .dropdown-search {
     border-bottom: 0;
+    padding: 7px 30px 9px 10px;
   }
 }
 
@@ -680,6 +691,7 @@ input.dropdown.error:focus {
 .form-layout-compact .field {
   .dropdown-wrapper {
     margin-bottom: 0;
+    vertical-align: top;
   }
 
   .dropdown {
@@ -757,6 +769,7 @@ input.dropdown.error:focus {
 // Compound field icon adjustments
 .compound-field {
   .dropdown-wrapper {
+    margin-bottom: 5px;
     margin-top: 0;
   }
 
@@ -972,7 +985,7 @@ div.dropdown-xs,
     .dismissible-btn,
     .linkable-btn {
       .icon {
-        top: 2px;
+        top: 1px;
       }
     }
   }
@@ -1015,6 +1028,32 @@ div.dropdown-xs,
         .dropdown-search {
           padding: 6px 21px 5px 25px;
         }
+      }
+    }
+  }
+}
+
+// On IE11, adjust the placement of icons inside of Multiselect Tags
+.ie {
+  div.dropdown,
+  div.multiselect {
+    .dismissible-btn,
+    .linkable-btn {
+      .icon {
+        top: -1px;
+      }
+    }
+  }
+}
+
+// On Mac OSX Chrome, adjust the placement of icons inside of Multiselect Tags
+.is-mac {
+  div.dropdown,
+  div.multiselect {
+    .dismissible-btn,
+    .linkable-btn {
+      .icon {
+        top: 0;
       }
     }
   }
@@ -1074,6 +1113,21 @@ div.dropdown-xs,
         top: 4px;
       }
     }
+  }
+
+  .dropdown-list.is-ontop {
+    > .trigger {
+      .icon {
+        top: 10px;
+      }
+    }
+  }
+}
+
+// for safari
+.is-safari {
+  .dropdown-list.dropdown-short.multiple li a {
+    padding-left: 32px;
   }
 }
 
@@ -1168,7 +1222,7 @@ html[dir='rtl'] {
 
     > .trigger {
       .icon {
-        margin-right: -20px;
+        margin-right: -23px;
       }
     }
 

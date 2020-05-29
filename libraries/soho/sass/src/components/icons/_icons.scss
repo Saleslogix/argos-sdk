@@ -123,13 +123,6 @@ svg.icon-dirty,
   .icon {
     vertical-align: middle;
   }
-
-  .icon + span {
-    display: inline-block;
-    padding-left: 5px;
-    vertical-align: middle;
-    width: calc(100% - 27px);
-  }
 }
 
 .icon-dirtyerror,
@@ -215,7 +208,7 @@ svg.icon-logo {
   &.dirty-checkbox {
     &.is-checked {
       border-width: 4px;
-      left: 1px;
+      left: 0;
       top: 0;
       z-index: 2;
     }
@@ -396,7 +389,7 @@ svg.icon-dirty {
   }
 }
 
-[class^='btn'] {
+[class*='btn'] {
   .icon.app-header {
     height: 32px;
     width: 32px;
@@ -577,11 +570,6 @@ svg.icon-dirty {
 // RTL Styles
 html[dir='rtl'] {
   .field {
-    .icon + span {
-      padding-left: 0;
-      padding-right: 5px;
-    }
-
     .icon-error,
     .icon-success,
     .icon-alert,
@@ -645,4 +633,11 @@ html[dir='rtl'] {
     margin: 1px 1px 0 0;
   }
 
+}
+
+.is-firefox {
+  .icon-dirty.dirty-checkbox.is-checked {
+    left: 0;
+    top: 0;
+  }
 }

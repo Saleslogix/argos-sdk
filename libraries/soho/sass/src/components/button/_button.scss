@@ -14,7 +14,7 @@ button {
 }
 
 // How all button types will deal with iconography
-[class^='btn'] {
+[class*='btn'] {
   //Fixes an issue about the circle effect coming out of the button.
   @include css3-extended(backface-visibility, hidden, (-webkit-, -moz-));
   @include css3-extended(transform, translate3d(0, 0, 0), (-webkit-, -moz-));
@@ -66,10 +66,18 @@ button {
   &.half-width {
     padding: 0 30px;
     width: 50%;
+
+    @media (max-width: $breakpoint-slim) {
+      text-overflow: ellipsis;
+    }
   }
 
   &.full-width {
     padding: 0 30px;
+    width: 100%;
+  }
+
+  &.btn-full-width {
     width: 100%;
   }
 
@@ -518,7 +526,7 @@ a.btn-close {
     left: 0;
     margin-left: 0;
     position: relative;
-    top: 2px;
+    top: 0;
   }
 
   &.has-content {
@@ -581,9 +589,10 @@ a.btn-close {
 // Short field buttons
 .field-short,
 .form-layout-compact .field {
-  [class*='btn'] {
+  [class*='btn']:not(.btn-editor) {
     height: $button-size-compact-height;
     margin-bottom: 10px;
+    min-height: $button-size-compact-height;
     min-width: 0;
 
     > .icon:not(.icon-dropdown) {
@@ -630,7 +639,7 @@ html[dir='rtl'] {
   }
 
   // How all button types will deal with iconography
-  [class^='btn'] {
+  [class*='btn'] {
     > .icon {
       + span:not(.audible):not(:empty) {
         padding-left: 0;
@@ -683,7 +692,7 @@ html[dir='rtl'] {
 
 //Do not allow upper case in french
 html[lang^='fr-'] {
-  [class^='btn'] {
+  [class*='btn'] {
     text-transform: none;
   }
 }
@@ -728,7 +737,7 @@ html[lang^='fr-'] {
 .is-mac.is-firefox {
   .field-short,
   .form-layout-compact .field {
-    [class^='btn'] {
+    [class*='btn'] {
       line-height: $button-size-compact-height;
 
       > .icon:not(.icon-dropdown) {
@@ -754,6 +763,19 @@ html[lang^='fr-'] {
 
     .icon {
       color: $hyperlink-hover-color;
+    }
+  }
+}
+
+// Special case to target buttons that are inside of the page container only
+.page-container {
+  button {
+    &.btn,
+    &.btn-secondary {
+      @media (max-width: $breakpoint-big-phone) {
+        max-width: 100%;
+        text-overflow: ellipsis;
+      }
     }
   }
 }

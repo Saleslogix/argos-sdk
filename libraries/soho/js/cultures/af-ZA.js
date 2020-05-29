@@ -19,6 +19,7 @@ Soho.Locale.addCulture('af-ZA', {
       full: 'EEEE dd MMMM yyyy',
       month: 'dd MMMM',
       year: 'MMMM yyyy',
+      dayOfWeek: 'EEE d',
       timestamp: 'HH:mm:ss',
       hour: 'HH:mm',
       datetime: 'yyyy-MM-dd HH:mm',
@@ -28,7 +29,7 @@ Soho.Locale.addCulture('af-ZA', {
     // ca-gregorian/main/dates/calendars/gregorian/days/format/short or abbreviated (2 digit)
     days: {
       wide: ['Sondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrydag', 'Saterdag'],
-      abbreviated: ['So', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'sa'],
+      abbreviated: ['So', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Sa'],
       narrow: ['S', 'M', 'D', 'W', 'D', 'V', 'S']
     },
     // ca-gregorian/main/dates/calendars/gregorian/months/format/wide
@@ -88,6 +89,7 @@ Soho.Locale.addCulture('af-ZA', {
     BookmarkThis: { id: 'BookmarkThis', value: 'Boekmerk dit', comment: 'Bookmark an element' },
     Breadcrumb: { id: 'Breadcrumb', value: 'Broodkrummel', comment: 'Text describing the Breadcrumb' },
     Browser: { id: 'Browser', value: 'Webblaaier', comment: 'As in a Web Browser' },
+    BrowserLanguage: { id: 'BrowserLanguage', value: 'Blaaier Taal', comment: 'Language in the current Web Browser' },
     BulletedList: { id: 'BulletedList', value: 'Kolpuntlys', comment: 'Bulleted List tooltip' },
     Calendar: { id: 'Calendar', value: 'Kalender', comment: 'Inline Text for the title of the Calendar control' },
     Camera: { id: 'Camera', value: 'Kamera', comment: 'Camera tooltip' },
@@ -173,6 +175,8 @@ Soho.Locale.addCulture('af-ZA', {
     Filter: { id: 'Filter', value: 'Filtreerder', comment: 'Filter tooltip' },
     FirstPage: { id: 'FirstPage', value: 'Eerste Bladsy', comment: 'First Page tooltip' },
     Folder: { id: 'Folder', value: 'Lêergids', comment: 'Folder tooltip' },
+    FontPickerNormal: { id: 'FontPickerNormal', value: 'Normale Teks', comment: 'Description of default text style on Fontpicker components' },
+    FontPickerHeader: { id: 'FontPickerHeader', value: 'Koptekst {0}', comment: 'Description of header text style on Fontpicker components' },
     From: { id: 'From', value: 'Van', comment: 'Start of a range (of dates)' },
     FullView: { id: 'FullView', value: 'Volledige Aansig', comment: 'Full View tooltip' },
     GoForward: { id: 'GoForward', value: 'Gaan Forentoe', comment: 'Move Page / object this direction' },
@@ -217,6 +221,7 @@ Soho.Locale.addCulture('af-ZA', {
     JustifyLeft: { id: 'JustifyLeft', value: 'Stel Links In Lyn', comment: 'justify text to left in the editor' },
     JustifyRight: { id: 'JustifyRight', value: 'Stel Regs In Lyn', comment: 'justify text to right in the editor' },
     Keyword: { id: 'Keyword', value: 'Sleutelwoord', comment: 'Describes filtering by a keyword search' },
+    Language: { id: 'Language', value: 'Taal', comment: 'The currently used Language' },
     Launch: { id: 'Launch', value: 'Begin', comment: 'Launch' },
     LastPage: { id: 'LastPage', value: 'Laaste Bladsy', comment: 'Last Page tooltip' },
     Left: { id: 'Left', value: 'Links', comment: 'Left tooltip' },
@@ -262,7 +267,7 @@ Soho.Locale.addCulture('af-ZA', {
     NoCommentsEntered: { id: 'NoCommentsEntered', value: 'Geen Kommentaar Ingevul Nie', comment: 'Placeholder for where no comments are added.' },
     NoData: { id: 'NoData', value: 'Geen Data Beskikbaar Nie', comment: 'Shown when there is no rows shown in a list' },
     NoDataFilter: { id: 'NoDataFilter', value: 'Geen data beskikbaar nie, maak \'n nuwe filter keuse om meer resultate te sien.', comment: 'Shown when there is no rows shown in a list' },
-    NoDataList: { id: 'NoDataList', value: 'Geen data beskikbaar nie, maak ‘n keuse in die boonste lys om meer resultate te sien.', comment: 'Shown when there is no rows shown in a list' },
+    NoDataList: { id: 'NoDataList', value: 'Geen data beskikbaar nie, maak \'n keuse in die boonste lys om meer resultate te sien.', comment: 'Shown when there is no rows shown in a list' },
     None: { id: 'None', value: 'Geen', comment: 'None to pick clear color' },
     NoResults: { id: 'NoResults', value: 'Geen Resultate', comment: 'Search Results Text' },
     NoTitle: { id: 'NoTitle', value: '(Geen Titel)', comment: 'Placeholder text for when you add an event to the calendar with no title typed.' },

@@ -1,6 +1,14 @@
 // Uplift Modal
 //================================================== //
 
+.modal {
+  .modal-content {
+    h1 {
+      line-height: 3.5rem;
+    }
+  }
+}
+
 .modal-buttonset {
   button {
     line-height: normal;
@@ -12,6 +20,22 @@
     right: 11px;
     top: 15px;
   }
+}
+
+.modal .field.editor-container {
+  max-width: 810px;
+}
+
+.modal-content h1.has-status .icon {
+  height: 20px;
+  left: -7px;
+  margin-left: 9px;
+  width: 20px;
+}
+
+.modal .modal-content h1 {
+  font-size: 2.6rem;
+  line-height: 3rem;
 }
 
 html[dir='rtl'] {

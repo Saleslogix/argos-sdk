@@ -186,7 +186,6 @@ $trigger-icon-fill-light-color: $theme-color-palette-slate-40;
 $trigger-hover-color: $theme-color-palette-white;
 $trigger-active-color: $theme-color-brand-primary-base;
 $trigger-focus-color: $theme-color-brand-primary-base;
-$trigger-disabled-color: $theme-color-palette-slate-40;
 
 // List View
 $listview-bg-color: $theme-color-palette-slate-70;
@@ -194,8 +193,8 @@ $listview-bg-color-alternate: $theme-color-palette-slate-80;
 $listview-hover-bg-color: $theme-color-palette-slate-60;
 $listview-border-color: $theme-color-palette-slate-50;
 $listview-color: $inverse-color;
-$listview-secondary-color: $theme-color-palette-slate-30;
-$listview-tertiary-color: $theme-color-palette-slate-40;
+$listview-secondary-color: $theme-color-palette-slate-20;
+$listview-tertiary-color: $theme-color-palette-slate-30;
 $listview-disabled-color: $input-disabled-color;
 $listview-selected-text-color: $theme-color-palette-white;
 $listview-header-bg-color: $theme-color-palette-slate-60;
@@ -240,6 +239,7 @@ $contextual-panel-seperator-bg-color: $theme-color-palette-slate-30;
 $dropdown-menu-border-color: $theme-color-brand-primary-base;
 $dropdown-menu-separator-color: $theme-color-palette-slate-40;
 $dropdown-menu-separator-border-color: $theme-color-palette-slate-50;
+$dropdown-readonly-icon-color: $theme-color-palette-slate-50;
 
 // Date Picker
 $datepicker-month-year-color: $inverse-color;
@@ -254,15 +254,20 @@ $datepicker-disabled-icon-color: $theme-color-palette-slate-50;
 $datepicker-disabled-border-color: $theme-color-palette-slate-50;
 $datepicker-disabled-bg-color: $theme-color-palette-slate-60;
 $datepicker-disabled-color: $theme-color-palette-slate-40;
+$datepicker-readonly-icon-color: $theme-color-palette-slate-50;
 
 // Time Picker
 $timepicker-disabled-icon-color: $theme-color-palette-slate-50;
 $timepicker-disabled-border-color: $theme-color-palette-slate-50;
 $timepicker-disabled-color: $theme-color-palette-slate-40;
 
+// Color Palette Background
+$color-border-color: rgba(255, 255, 255, 0.2);
+
 // Color Picker
 $colorpicker-initial-bg-color: $theme-color-palette-slate-40;
 $colorpicker-swatch-border-color: $theme-color-palette-slate-50;
+$colorpicker-readonly-icon-color: $theme-color-palette-slate-50;
 
 // Fileupload
 $fileupload-border-color: $theme-color-palette-slate-50;
@@ -284,6 +289,14 @@ $spinbox-active-color: $font-color-extrahighcontrast;
 $spinbox-bg-color: $theme-color-palette-slate-60;
 $spinbox-button-color: $body-color-primary-background;
 
+// Error Pge
+$error-page-bg-color: $theme-color-palette-slate-100;
+$error-page-content-bg-color: $theme-color-palette-slate-70;
+$error-page-title-color: $theme-color-palette-white;
+$error-page-info-color: $theme-color-palette-slate-30;
+$error-page-border-color: $theme-color-palette-slate-50;
+$error-page-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
 // Skip Link
 $skip-link-border-color: $theme-color-palette-slate-50;
 $skip-link-bg-color: $theme-color-palette-slate-70;
@@ -294,6 +307,8 @@ $swaplist-bg-color-hover: $theme-color-palette-slate-60;
 $swaplist-border-color-card: $theme-color-palette-slate-50;
 $swaplist-icon-color: $theme-color-palette-slate-30;
 $swaplist-icon-color-hover: $theme-color-palette-white;
+$swaplist-icon-color-disabled: $theme-color-palette-slate-50;
+$swaplist-icon-svg-color-disabled: $theme-color-palette-slate-50;
 $swaplist-icon-svg-color: $theme-color-palette-slate-10;
 $swaplist-icon-svg-color-hover: $theme-color-palette-white;
 $swaplist-border-color-hover: $theme-color-palette-white;
@@ -301,7 +316,7 @@ $swaplist-title-text-color: $theme-color-palette-white;
 $swaplist-text-color: $theme-color-palette-white;
 
 // Mast Head
-$masthead-bg-color: $header-bg-color;
+$masthead-bg-color: $theme-color-palette-slate-100;
 $masthead-border-color: $theme-color-palette-slate-80;
 
 // Icons
@@ -351,10 +366,10 @@ $editor-line-number-color: $theme-color-palette-slate-40;
 $editor-color: $input-color;
 $editor-toolbar-bg-color: $theme-color-palette-slate-60;
 $editor-toolbar-bottom-border-color: $theme-color-palette-graphite-70;
-$editor-middle-border-color: $theme-color-palette-slate-40;
-$editor-btn-color: $theme-color-palette-slate-30;
+$editor-btn-color: $theme-color-palette-graphite-30;
 $editor-btn-hover-color: $theme-color-palette-white;
 $editor-btn-active-color: $theme-color-brand-primary-lighter;
+$editor-btn-disabled-color: $theme-color-palette-slate-50;
 $editor-btn-active-box-shadow: 0 0 0 2px transparent, 0 0 0 1px $theme-color-brand-primary-base, $focus-box-shadow;
 $editor-top-focus-box-shadow: -2px -2px 3px 0 rgba(141, 201, 230, 0.3);
 $editor-blockquote-color: $theme-color-palette-slate-40;
@@ -400,6 +415,8 @@ $modal-btn-primary-color: $theme-color-palette-azure-40;
 $modal-btn-primary-hover-color: $theme-color-palette-azure-30;
 $modal-btn-disabled-color: $theme-color-palette-white;
 $modal-btn-disabled-opacity: 0.3;
+$modal-btn-primary-disabled-color: $theme-color-palette-slate-50;
+$modal-btn-primary-disabled-opacity: 1;
 $modal-primary-color: $theme-color-palette-white;
 $modal-secondary-color: $theme-color-palette-slate-30;
 
@@ -511,6 +528,7 @@ $datagrid-cell-editing-bg-color: $panel-bg-color;
 $datagrid-cell-readonly-bg-color: $theme-color-palette-slate-70;
 $datagrid-cell-readonly-color: $theme-color-palette-white;
 $datagrid-cell-border-color: $theme-color-palette-slate-50;
+$datagrid-group-row-border-color: $theme-color-palette-slate-50;
 $datagrid-cell-focus-box-shadow: 0 0 4px 1px rgba(101, 104, 113, 0.4);
 $datagrid-data-color: $font-color-extrahighcontrast;
 $datagrid-row-selected-color: #334d60;
@@ -607,11 +625,11 @@ $wizard-focus-box-shadow: 0 0 0 1px $theme-color-brand-primary-base;
 $hierarchy-line-color: $theme-color-palette-slate-40;
 
 // Searchfield Colors
-$searchfield-bg-color: $theme-color-palette-slate-90;
+$searchfield-bg-color: $theme-color-palette-slate-70;
 $searchfield-border-color: $theme-color-palette-slate-100;
 $searchfield-icon-color: $button-color-tertiary-initial-font;
 $searchfield-text-color: $button-color-tertiary-initial-font;
-$searchfield-placeholder-text-color: $theme-color-palette-slate-60;
+$searchfield-placeholder-text-color: $theme-color-palette-slate-40;
 $searchfield-lighter-bg-color: $theme-color-palette-slate-80;
 $searchfield-lighter-text-color: $theme-color-palette-slate-40;
 $searchfield-lighter-placeholder-text-color: $theme-color-brand-secondary-alt;
