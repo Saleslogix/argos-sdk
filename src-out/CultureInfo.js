@@ -4,6 +4,7 @@ define('argos/CultureInfo', ['module', 'exports', 'dojo/_base/lang'], function (
   });
 
   exports.default = function () {
+    // eslint-disable-line
     var localeContext = window.regionalContext;
     var entity = localeContext.getEntitySync('CultureInfo');
 
