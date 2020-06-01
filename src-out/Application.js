@@ -721,21 +721,23 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
             title: resource.connectionToastTitleText,
             toastTime: _this6.PING_TIMEOUT
           });
-          var ping$ = Rx.Observable.interval(_this6.PING_TIMEOUT).flatMap(function () {
-            return Rx.Observable.fromPromise(_this6._ping()).flatMap(function (online) {
+
+          var attempts = 1;
+          var handle = setInterval(function () {
+            _this6._ping().then(function (online) {
               if (online) {
-                return Rx.Observable.of(online);
+                _this6.store.dispatch((0, _connection.setConnectionState)(true));
+                clearInterval(handle);
+                return;
               }
 
-              return Rx.Observable.throw(new Error());
+              attempts++;
+              if (attempts > _this6.PING_RETRY) {
+                _this6.store.dispatch((0, _connection.setConnectionState)(false));
+                clearInterval(handle);
+              }
             });
-          }).retry(_this6.PING_RETRY).take(1);
-
-          ping$.subscribe(function () {
-            _this6.store.dispatch((0, _connection.setConnectionState)(true));
-          }, function () {
-            _this6.store.dispatch((0, _connection.setConnectionState)(false));
-          });
+          }, _this6.PING_TIMEOUT);
         }, this.PING_DEBOUNCE);
       }
     }, {

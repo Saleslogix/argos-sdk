@@ -712,25 +712,23 @@ class Application {
         title: resource.connectionToastTitleText,
         toastTime: this.PING_TIMEOUT,
       });
-      const ping$ = Rx.Observable.interval(this.PING_TIMEOUT)
-        .flatMap(() => {
-          return Rx.Observable.fromPromise(this._ping())
-            .flatMap((online) => {
-              if (online) {
-                return Rx.Observable.of(online);
-              }
 
-              return Rx.Observable.throw(new Error());
-            });
-        })
-        .retry(this.PING_RETRY)
-        .take(1);
+      let attempts = 1;
+      const handle = setInterval(() => {
+        this._ping().then((online) => {
+          if (online) {
+            this.store.dispatch(setConnectionState(true));
+            clearInterval(handle);
+            return;
+          }
 
-      ping$.subscribe(() => {
-        this.store.dispatch(setConnectionState(true));
-      }, () => {
-        this.store.dispatch(setConnectionState(false));
-      });
+          attempts++;
+          if (attempts > this.PING_RETRY) {
+            this.store.dispatch(setConnectionState(false));
+            clearInterval(handle);
+          }
+        });
+      }, this.PING_TIMEOUT);
     }, this.PING_DEBOUNCE);
   }
 
