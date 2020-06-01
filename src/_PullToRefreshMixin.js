@@ -133,10 +133,12 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends module:arg
       top: 0,
       startTop: 0,
       y: 0,
+      pulling: false,
     };
 
     $(dragNode).on('touchstart', (e) => {
       if (!this.shouldStartPullToRefresh(this.scrollerNode)) {
+        data.pulling = false;
         return;
       }
 
@@ -157,10 +159,15 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends module:arg
         top: parseInt(style.top, 10),
         startTop: parseInt(style.top, 10),
         y: evt.clientY,
+        pulling: true,
       };
     });
 
     $(dragNode).on('touchmove', (evt) => {
+      if (!data.pulling) {
+        return;
+      }
+
       const touches = evt.touches[0];
       const weight = 2; // slow the drag
       distance = (touches.clientY - data.y) / weight;
@@ -200,6 +207,7 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends module:arg
       });
       $(this.dragNode).addClass(this.animateCls);
 
+      data.pulling = false;
       // Check if we dragged over the threshold (maxDistance),
       // if so, fire the callbacks the views will implement.
       if (distance > maxDistance) {

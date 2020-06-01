@@ -130,11 +130,13 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
         topCss: '',
         top: 0,
         startTop: 0,
-        y: 0
+        y: 0,
+        pulling: false
       };
 
       $(dragNode).on('touchstart', function (e) {
         if (!_this.shouldStartPullToRefresh(_this.scrollerNode)) {
+          data.pulling = false;
           return;
         }
 
@@ -154,11 +156,16 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
           topCss: style.top,
           top: parseInt(style.top, 10),
           startTop: parseInt(style.top, 10),
-          y: evt.clientY
+          y: evt.clientY,
+          pulling: true
         };
       });
 
       $(dragNode).on('touchmove', function (evt) {
+        if (!data.pulling) {
+          return;
+        }
+
         var touches = evt.touches[0];
         var weight = 2; // slow the drag
         distance = (touches.clientY - data.y) / weight;
@@ -198,6 +205,7 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
         });
         $(_this.dragNode).addClass(_this.animateCls);
 
+        data.pulling = false;
         // Check if we dragged over the threshold (maxDistance),
         // if so, fire the callbacks the views will implement.
         if (distance > maxDistance) {
