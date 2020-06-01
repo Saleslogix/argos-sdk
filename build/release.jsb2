@@ -49,7 +49,7 @@
           "path": "../libraries/pouchdb/"
         },
         {
-          "text": "deep-diff-0.2.0.min.js",
+          "text": "deep-diff.min.js",
           "path": "../libraries/deep-diff/"
         },
         {
