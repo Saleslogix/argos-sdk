@@ -27,7 +27,6 @@ module.exports = {
     "spyOn": false,
     "module": false,
     "moment": false,
-    "Rx": false,
     "$": false,
     "Soho": false,
     "d3": false,

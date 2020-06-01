@@ -693,14 +693,6 @@ class Application {
   }
 
   initPing() {
-    // Lite build, which will not have Rx, disable offline and ping
-    if (!Rx) {
-      this.ping = () => {
-        this.store.dispatch(setConnectionState(true));
-      };
-      this.enableOfflineSupport = false;
-    }
-
     // this.ping will be set if ping was passed as an options to the ctor
     if (this.ping) {
       return;

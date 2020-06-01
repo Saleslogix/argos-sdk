@@ -109,7 +109,7 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends module:arg
    * @param {DOMNode} dragNode The node that the user will drag. Defaults to scrollerNode if not specified.
    */
   initPullToRefresh: function initPullToRefresh(scrollerNode, dragNode) {
-    if (!this.enablePullToRefresh || !window.App.supportsTouch() || !scrollerNode || !Rx) {
+    if (!this.enablePullToRefresh || !window.App.supportsTouch() || !scrollerNode) {
       return;
     }
 
@@ -125,87 +125,54 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends module:arg
     // Pull down to refresh touch handles
     this.scrollerNode = scrollerNode;
 
-    const style = {
-      top: $(dragNode).position().top,
+    let distance; // current dragged distance
+    let maxDistance; // required distance to trigger a refresh
+    let data = {
+      bannerHeight: 0,
+      topCss: '',
+      top: 0,
+      startTop: 0,
+      y: 0,
     };
 
-    const touchstart = Rx.Observable.fromEvent(dragNode, 'touchstart')
-      .filter((evt) => {
-        // The implementor of this mixin should determine what shouldStartPullToRefresh is.
-        const shouldStart = this.shouldStartPullToRefresh(this.scrollerNode);
-        const results = shouldStart && evt.touches[0];
-        return results;
-      })
-      .map((e) => {
-        const evt = e.touches[0];
-        $(this.pullRefreshBanner).css({
-          top: `${this._initPosition.top}px`,
-        });
-        $(this.dragNode).removeClass(this.animateCls);
-        const bannerHeight = $(this.pullRefreshBanner).height();
+    $(dragNode).on('touchstart', (e) => {
+      if (!this.shouldStartPullToRefresh(this.scrollerNode)) {
+        return;
+      }
 
-        // We filtered out if the drag should start, so we are mapping the initial state here.
-        return {
-          bannerHeight,
-          topCss: style.top,
-          top: parseInt(style.top, 10),
-          y: evt.clientY,
-        };
+      const evt = e.touches[0];
+      $(this.pullRefreshBanner).css({
+        top: `${this._initPosition.top}px`,
       });
-    const touchmove = Rx.Observable.fromEvent(dragNode, 'touchmove');
-    const touchcancel = Rx.Observable.fromEvent(dragNode, 'touchcancel');
-    const touchend = Rx.Observable.fromEvent(dragNode, 'touchend');
-    const done = touchcancel.merge(touchend);
+      $(this.dragNode).removeClass(this.animateCls);
+      const bannerHeight = $(this.pullRefreshBanner).height();
 
-    // Merge the touchstart and dragging observables
-    const dragging = touchstart.flatMap((data) => {
-      let distance; // current dragged distance
-      let maxDistance; // required distance to trigger a refresh
-      return touchmove
-        .map((evt) => {
-          const touches = evt.touches[0];
-          const weight = 2; // slow the drag
-          distance = (touches.clientY - data.y) / weight;
-          maxDistance = data.bannerHeight + 20;
-          return {
-            evt,
-            distance,
-            maxDistance,
-            top: data.top + distance,
-          };
-        })
-        .filter((d) => {
-          // Prevent the user from dragging the pane above our starting point
-          return d.distance >= 0;
-        })
-        .takeUntil(done.do(() => {
-          // The "done" observable is a combination of touch end and touch cancel.
-          // We should restore the UI state and invoke callbacks here.
-          $(this.dragNode).css({
-            top: data.topCss,
-            'overflow-y': data.overflowCssY,
-            'overflow-x': data.overflowCssX,
-          });
-          $(this.pullRefreshBanner).css({
-            visibility: 'hidden',
-            top: `${this._initPosition.top}px`,
-          });
-          $(this.dragNode).addClass(this.animateCls);
+      const style = {
+        top: $(dragNode).position().top,
+      };
 
-          // Check if we dragged over the threshold (maxDistance),
-          // if so, fire the callbacks the views will implement.
-          if (distance > maxDistance) {
-            this.onPullToRefreshComplete();
-          } else {
-            this.onPullToRefreshCancel();
-          }
-        }));
+      data = {
+        bannerHeight,
+        topCss: style.top,
+        top: parseInt(style.top, 10),
+        startTop: parseInt(style.top, 10),
+        y: evt.clientY,
+      };
     });
 
-    // Listen to the "dragging" observable which is a combination of our touch
-    // start and touch drag. Update the UI while dragging here.
-    dragging.subscribe((data) => {
-      data.evt.preventDefault();
+    $(dragNode).on('touchmove', (evt) => {
+      const touches = evt.touches[0];
+      const weight = 2; // slow the drag
+      distance = (touches.clientY - data.y) / weight;
+      maxDistance = data.bannerHeight + 20;
+
+      if (distance < 0) {
+        return;
+      }
+
+      data.top = data.startTop + distance;
+
+      evt.preventDefault();
       $(this.dragNode).css({
         top: `${data.top}px`,
       });
@@ -213,12 +180,37 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends module:arg
         visibility: 'visible',
         top: `${data.top + this._initPosition.top}px`,
       });
-      if (data.distance > data.maxDistance) {
+      if (distance > maxDistance) {
         this.pullRefreshBanner.innerHTML = this.pullReleaseTemplate.apply(this);
       } else {
         this.pullRefreshBanner.innerHTML = this.pullRefreshTemplate.apply(this);
       }
     });
+
+    const touchend = () => {
+      // We should restore the UI state and invoke callbacks here.
+      $(this.dragNode).css({
+        top: data.topCss,
+        'overflow-y': data.overflowCssY,
+        'overflow-x': data.overflowCssX,
+      });
+      $(this.pullRefreshBanner).css({
+        visibility: 'hidden',
+        top: `${this._initPosition.top}px`,
+      });
+      $(this.dragNode).addClass(this.animateCls);
+
+      // Check if we dragged over the threshold (maxDistance),
+      // if so, fire the callbacks the views will implement.
+      if (distance > maxDistance) {
+        this.onPullToRefreshComplete();
+      } else {
+        this.onPullToRefreshCancel();
+      }
+    };
+
+    $(dragNode).on('touchcancel', touchend);
+    $(dragNode).on('touchend', touchend);
   },
   /**
    * Derived class must implement this to determine when pull to refresh should start. This is called when onTouchStart is fired.

@@ -702,14 +702,6 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       value: function initPing() {
         var _this6 = this;
 
-        // Lite build, which will not have Rx, disable offline and ping
-        if (!Rx) {
-          this.ping = function () {
-            _this6.store.dispatch((0, _connection.setConnectionState)(true));
-          };
-          this.enableOfflineSupport = false;
-        }
-
         // this.ping will be set if ping was passed as an options to the ctor
         if (this.ping) {
           return;
