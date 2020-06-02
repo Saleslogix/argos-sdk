@@ -40,6 +40,16 @@ define('argos/ApplicationModule', ['module', 'exports', './Views/ConfigureQuickA
   }();
 
   var ApplicationModule = function () {
+    _createClass(ApplicationModule, null, [{
+      key: 'sdkViewsLoaded',
+      get: function get() {
+        return ApplicationModule._sdkViewsLoaded;
+      },
+      set: function set(val) {
+        ApplicationModule._sdkViewsLoaded = val;
+      }
+    }]);
+
     function ApplicationModule() {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -55,7 +65,14 @@ define('argos/ApplicationModule', ['module', 'exports', './Views/ConfigureQuickA
        * The {@link App App} instance for the application
        */
       this.application = null;
+      this._viewsLoaded = false;
     }
+
+    /**
+     * Destroy loops and disconnects all `_connect`s and unsubscribes all `_subscribe`s.
+     * Also calls {@link #uninitialize uninitialize}
+     */
+
 
     _createClass(ApplicationModule, [{
       key: 'destroy',
@@ -75,6 +92,7 @@ define('argos/ApplicationModule', ['module', 'exports', './Views/ConfigureQuickA
         this.loadCustomizations();
         this.loadToolbars();
         this.loadViews();
+        this._loadSDKViews();
         this.loadCache();
       }
     }, {
@@ -94,16 +112,7 @@ define('argos/ApplicationModule', ['module', 'exports', './Views/ConfigureQuickA
       value: function loadAppStatePromises() {}
     }, {
       key: 'loadCustomizations',
-      value: function loadCustomizations() {
-        if (ApplicationModule.customizationsLoaded) {
-          console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.'); // eslint-disable-line
-          return;
-        }
-
-        // Load base customizations
-
-        ApplicationModule.customizationsLoaded = true;
-      }
+      value: function loadCustomizations() {}
     }, {
       key: 'loadCustomizationsDynamic',
       value: function loadCustomizationsDynamic() {}
@@ -115,30 +124,21 @@ define('argos/ApplicationModule', ['module', 'exports', './Views/ConfigureQuickA
       value: function loadViewsDynamic() {}
     }, {
       key: 'loadViews',
-      value: function loadViews() {
-        if (ApplicationModule.viewsLoaded) {
-          console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.'); // eslint-disable-line
+      value: function loadViews() {}
+    }, {
+      key: '_loadSDKViews',
+      value: function _loadSDKViews() {
+        if (ApplicationModule.sdkViewsLoaded) {
           return;
         }
 
-        // Load base views
         this.registerView(new _ConfigureQuickActions2.default());
         this.registerView(new _Link2.default());
-
-        ApplicationModule.viewsLoaded = true;
+        ApplicationModule.sdkViewsLoaded = true;
       }
     }, {
       key: 'loadToolbars',
-      value: function loadToolbars() {
-        if (ApplicationModule.toolbarsLoaded) {
-          console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.'); // eslint-disable-line
-          return;
-        }
-
-        // Load base toolbars
-
-        ApplicationModule.toolbarsLoaded = true;
-      }
+      value: function loadToolbars() {}
     }, {
       key: 'loadCache',
       value: function loadCache() {}
@@ -171,30 +171,6 @@ define('argos/ApplicationModule', ['module', 'exports', './Views/ConfigureQuickA
         if (this.application) {
           this.application.registerAppStatePromise(promise);
         }
-      }
-    }], [{
-      key: 'customizationsLoaded',
-      get: function get() {
-        return ApplicationModule._customizationsLoaded;
-      },
-      set: function set(value) {
-        ApplicationModule._customizationsLoaded = value;
-      }
-    }, {
-      key: 'viewsLoaded',
-      get: function get() {
-        return ApplicationModule._viewsLoaded;
-      },
-      set: function set(value) {
-        ApplicationModule._viewsLoaded = value;
-      }
-    }, {
-      key: 'toolbarsLoaded',
-      get: function get() {
-        return ApplicationModule._toolbarsLoaded;
-      },
-      set: function set(value) {
-        ApplicationModule._toolbarsLoaded = value;
       }
     }]);
 

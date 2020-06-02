@@ -33,6 +33,14 @@ import './Models/Briefcase/Offline';
  * You may think of ApplicationModule as "loader" or initializer.
  */
 class ApplicationModule {
+  static get sdkViewsLoaded() {
+    return ApplicationModule._sdkViewsLoaded;
+  }
+
+  static set sdkViewsLoaded(val) {
+    ApplicationModule._sdkViewsLoaded = val;
+  }
+
   constructor(options = {}) {
     for (const config in options) {
       if (options.hasOwnProperty(config)) {
@@ -44,31 +52,9 @@ class ApplicationModule {
      * The {@link App App} instance for the application
      */
     this.application = null;
+    this._viewsLoaded = false;
   }
 
-  static get customizationsLoaded() {
-    return ApplicationModule._customizationsLoaded;
-  }
-
-  static set customizationsLoaded(value) {
-    ApplicationModule._customizationsLoaded = value;
-  }
-
-  static get viewsLoaded() {
-    return ApplicationModule._viewsLoaded;
-  }
-
-  static set viewsLoaded(value) {
-    ApplicationModule._viewsLoaded = value;
-  }
-
-  static get toolbarsLoaded() {
-    return ApplicationModule._toolbarsLoaded;
-  }
-
-  static set toolbarsLoaded(value) {
-    ApplicationModule._toolbarsLoaded = value;
-  }
   /**
    * Destroy loops and disconnects all `_connect`s and unsubscribes all `_subscribe`s.
    * Also calls {@link #uninitialize uninitialize}
@@ -99,6 +85,7 @@ class ApplicationModule {
     this.loadCustomizations();
     this.loadToolbars();
     this.loadViews();
+    this._loadSDKViews();
     this.loadCache();
   }
 
@@ -129,14 +116,6 @@ class ApplicationModule {
    * This function should be overriden in the app and be used to register all customizations.
    */
   loadCustomizations() {
-    if (ApplicationModule.customizationsLoaded) {
-      console.warn('Multiple calls to loadCustomizations detected. Ensure your customization is not calling this.inherited from loadCustomizations in the ApplicationModule.'); // eslint-disable-line
-      return;
-    }
-
-    // Load base customizations
-
-    ApplicationModule.customizationsLoaded = true;
   }
 
   /**
@@ -164,30 +143,21 @@ class ApplicationModule {
    * @virtual
    */
   loadViews() {
-    if (ApplicationModule.viewsLoaded) {
-      console.warn('Multiple calls to loadViews detected. Ensure your customization is not calling this.inherited from loadViews in the ApplicationModule.'); // eslint-disable-line
+  }
+  _loadSDKViews() {
+    if (ApplicationModule.sdkViewsLoaded) {
       return;
     }
 
-    // Load base views
     this.registerView(new ConfigureQuickActions());
     this.registerView(new LinkView());
-
-    ApplicationModule.viewsLoaded = true;
+    ApplicationModule.sdkViewsLoaded = true;
   }
   /**
    * This function should be overriden in the app and be used to register all toolbars.
    * @virtual
    */
   loadToolbars() {
-    if (ApplicationModule.toolbarsLoaded) {
-      console.warn('Multiple calls to loadToolbars detected. Ensure your customization is not calling this.inherited from loadToolbars in the ApplicationModule.'); // eslint-disable-line
-      return;
-    }
-
-    // Load base toolbars
-
-    ApplicationModule.toolbarsLoaded = true;
   }
 
   /**

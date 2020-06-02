@@ -249,9 +249,6 @@ const __class = declare('argos._SDataListMixin', null, /** @lends module:argos/_
     // into the layout. The past method of extending a querySelect for example,
     // was to modify the protoype of the view's querySelect array.
     if (this.querySelect && this.querySelect.length) {
-      /* eslint-disable */
-      console.warn(`A view's querySelect is deprecated. Register a customization to the models layout instead.`);
-      /* eslint-enable */
       if (!queryModel.querySelect) {
         queryModel.querySelect = [];
       }
@@ -262,9 +259,6 @@ const __class = declare('argos._SDataListMixin', null, /** @lends module:argos/_
     }
 
     if (this.queryInclude && this.queryInclude.length) {
-      /* eslint-disable */
-      console.warn(`A view's queryInclude is deprecated. Register a customization to the models layout instead.`);
-      /* eslint-enable */
       if (!queryModel.queryInclude) {
         queryModel.queryInclude = [];
       }
@@ -275,23 +269,14 @@ const __class = declare('argos._SDataListMixin', null, /** @lends module:argos/_
     }
 
     if (this.queryWhere) {
-      /* eslint-disable */
-      console.warn(`A view's queryWhere is deprecated. Register a customization to the models layout instead.`);
-      /* eslint-enable */
       queryModel.queryWhere = this.queryWhere;
     }
 
     if (this.queryArgs) {
-      /* eslint-disable */
-      console.warn(`A view's queryArgs is deprecated. Register a customization to the models layout instead.`);
-      /* eslint-enable */
       queryModel.queryArgs = lang.mixin({}, queryModel.queryArgs, this.queryArgs);
     }
 
     if (this.queryOrderBy && this.queryOrderBy.length) {
-      /* eslint-disable */
-      console.warn(`A view's queryOrderBy is deprecated. Register a customization to the models layout instead.`);
-      /* eslint-enable */
       if (Array.isArray(this.queryOrderBy)) {
         if (!queryModel.queryOrderBy) {
           queryModel.queryOrderBy = [];
@@ -306,16 +291,10 @@ const __class = declare('argos._SDataListMixin', null, /** @lends module:argos/_
     }
 
     if (this.resourceProperty) {
-      /* eslint-disable */
-      console.warn(`A view's resourceProperty is deprecated. Register a customization to the models layout instead.`);
-      /* eslint-enable */
       queryModel.resourceProperty = this.resourceProperty;
     }
 
     if (this.resourcePredicate) {
-      /* eslint-disable */
-      console.warn(`A view's resourcePredicate is deprecated. Register a customization to the models layout instead.`);
-      /* eslint-enable */
       queryModel.resourcePredicate = this.resourcePredicate;
     }
   },
