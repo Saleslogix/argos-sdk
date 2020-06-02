@@ -99,6 +99,7 @@ class ApplicationModule {
     this.loadCustomizations();
     this.loadToolbars();
     this.loadViews();
+    this.loadCache();
   }
 
   /**
@@ -187,6 +188,13 @@ class ApplicationModule {
     // Load base toolbars
 
     ApplicationModule.toolbarsLoaded = true;
+  }
+
+  /**
+   * Loading cache resource should happen here.
+   * @virtual
+   */
+  loadCache() {
   }
   /**
    * Passes the view instance to {@link App#registerView App.registerView}.

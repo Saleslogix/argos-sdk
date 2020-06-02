@@ -633,7 +633,9 @@ class Application {
         reject(err);
       };
 
-      navigator.serviceWorker.controller.postMessage(message, [channel.port2]);
+      navigator.serviceWorker.ready.then(() => {
+        navigator.serviceWorker.controller.postMessage(message, [channel.port2]);
+      });
     });
   }
 

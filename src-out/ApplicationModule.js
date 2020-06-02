@@ -75,6 +75,7 @@ define('argos/ApplicationModule', ['module', 'exports', './Views/ConfigureQuickA
         this.loadCustomizations();
         this.loadToolbars();
         this.loadViews();
+        this.loadCache();
       }
     }, {
       key: 'initDynamic',
@@ -138,6 +139,9 @@ define('argos/ApplicationModule', ['module', 'exports', './Views/ConfigureQuickA
 
         ApplicationModule.toolbarsLoaded = true;
       }
+    }, {
+      key: 'loadCache',
+      value: function loadCache() {}
     }, {
       key: 'registerView',
       value: function registerView(view, domNode) {
