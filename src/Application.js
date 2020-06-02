@@ -63,6 +63,8 @@ class Application {
      * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
      */
     this.enableConcurrencyCheck = false;
+    this.serviceWorkerPath = '';
+    this.serviceWorkerRegistrationOptions = {};
 
     this.ReUI = {
       app: null,
@@ -590,7 +592,49 @@ class Application {
     this.initHash();
     this.initModal();
     this.initScene();
+    this.initServiceWorker();
     this.updateSoho();
+  }
+
+  initServiceWorker() {
+    if ('serviceWorker' in navigator && typeof this.serviceWorkerPath === 'string') {
+      navigator.serviceWorker.register(this.serviceWorkerPath, this.serviceWorkerRegistrationOptions).then((registration) => {
+        console.log('Serviceworker registered with scope: ', registration.scope); // eslint-disable-line
+      }, (err) => {
+        console.error('Service worker registration failed: ', err); // eslint-disable-line
+      });
+
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        this.onServiceWorkerMessage(event);
+      });
+    }
+  }
+
+  /**
+   * Recieve messages from the service worker
+   * @param {ExtendableEvent} event
+   */
+  onServiceWorkerMessage(event) {// eslint-disable-line
+  }
+
+  /**
+   * Send a data message to the service worker.
+   * Returns a promise with the response message.
+   * @param {Object} message
+   */
+  sendServiceWorkerMessage(message) {
+    return new Promise((resolve, reject) => {
+      const channel = new MessageChannel();
+      channel.port1.onmessage = (event) => {
+        resolve(event.data);
+      };
+
+      channel.port1.onerror = (err) => {
+        reject(err);
+      };
+
+      navigator.serviceWorker.controller.postMessage(message, [channel.port2]);
+    });
   }
 
   initIcons() {

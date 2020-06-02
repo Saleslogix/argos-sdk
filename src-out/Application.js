@@ -106,6 +106,8 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
        * @property enableConcurrencyCheck {Boolean} Option to skip concurrency checks to avoid precondition/412 errors.
        */
       this.enableConcurrencyCheck = false;
+      this.serviceWorkerPath = '';
+      this.serviceWorkerRegistrationOptions = {};
 
       this.ReUI = {
         app: null,
@@ -586,7 +588,52 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
         this.initHash();
         this.initModal();
         this.initScene();
+        this.initServiceWorker();
         this.updateSoho();
+      }
+    }, {
+      key: 'initServiceWorker',
+      value: function initServiceWorker() {
+        var _this5 = this;
+
+        if ('serviceWorker' in navigator && typeof this.serviceWorkerPath === 'string') {
+          navigator.serviceWorker.register(this.serviceWorkerPath, this.serviceWorkerRegistrationOptions).then(function (registration) {
+            console.log('Serviceworker registered with scope: ', registration.scope); // eslint-disable-line
+          }, function (err) {
+            console.error('Service worker registration failed: ', err); // eslint-disable-line
+          });
+
+          navigator.serviceWorker.addEventListener('message', function (event) {
+            _this5.onServiceWorkerMessage(event);
+          });
+        }
+      }
+    }, {
+      key: 'onServiceWorkerMessage',
+      value: function onServiceWorkerMessage(event) {} // eslint-disable-line
+
+
+      /**
+       * Send a data message to the service worker.
+       * Returns a promise with the response message.
+       * @param {Object} message
+       */
+
+    }, {
+      key: 'sendServiceWorkerMessage',
+      value: function sendServiceWorkerMessage(message) {
+        return new Promise(function (resolve, reject) {
+          var channel = new MessageChannel();
+          channel.port1.onmessage = function (event) {
+            resolve(event.data);
+          };
+
+          channel.port1.onerror = function (err) {
+            reject(err);
+          };
+
+          navigator.serviceWorker.controller.postMessage(message, [channel.port2]);
+        });
       }
     }, {
       key: 'initIcons',
@@ -596,7 +643,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'initSoho',
       value: function initSoho() {
-        var _this5 = this;
+        var _this6 = this;
 
         var container = this.getAppContainerNode();
         var menu = $('.application-menu', container).first();
@@ -613,7 +660,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
         });
 
         closeMenuHeader.on('click', function () {
-          _this5.hideApplicationMenu();
+          _this6.hideApplicationMenu();
         });
 
         var viewSettingsModal = $('.modal.view-settings', container).first();
@@ -700,7 +747,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'initPing',
       value: function initPing() {
-        var _this6 = this;
+        var _this7 = this;
 
         // this.ping will be set if ping was passed as an options to the ctor
         if (this.ping) {
@@ -708,28 +755,28 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
         }
 
         this.ping = _Utility2.default.debounce(function () {
-          _this6.toast.add({
+          _this7.toast.add({
             message: resource.checkingText,
             title: resource.connectionToastTitleText,
-            toastTime: _this6.PING_TIMEOUT
+            toastTime: _this7.PING_TIMEOUT
           });
 
           var attempts = 1;
           var handle = setInterval(function () {
-            _this6._ping().then(function (online) {
+            _this7._ping().then(function (online) {
               if (online) {
-                _this6.store.dispatch((0, _connection.setConnectionState)(true));
+                _this7.store.dispatch((0, _connection.setConnectionState)(true));
                 clearInterval(handle);
                 return;
               }
 
               attempts++;
-              if (attempts > _this6.PING_RETRY) {
-                _this6.store.dispatch((0, _connection.setConnectionState)(false));
+              if (attempts > _this7.PING_RETRY) {
+                _this7.store.dispatch((0, _connection.setConnectionState)(false));
                 clearInterval(handle);
               }
             });
-          }, _this6.PING_TIMEOUT);
+          }, _this7.PING_TIMEOUT);
         }, this.PING_DEBOUNCE);
       }
     }, {
@@ -1268,11 +1315,11 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'filterNavigationContext',
       value: function filterNavigationContext(predicate, scope) {
-        var _this7 = this;
+        var _this8 = this;
 
         var list = this.context.history || [];
         var filtered = list.filter(function (item) {
-          return predicate.call(scope || _this7, item.data);
+          return predicate.call(scope || _this8, item.data);
         });
 
         return filtered.map(function (item) {
