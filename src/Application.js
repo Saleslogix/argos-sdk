@@ -633,8 +633,9 @@ class Application {
         reject(err);
       };
 
-      navigator.serviceWorker.ready.then(() => {
-        navigator.serviceWorker.controller.postMessage(message, [channel.port2]);
+      navigator.serviceWorker.ready.then((reg) => {
+        const serviceWorker = reg.active;
+        serviceWorker.postMessage(message, [channel.port2]);
       });
     });
   }

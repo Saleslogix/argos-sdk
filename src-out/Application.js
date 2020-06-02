@@ -632,8 +632,9 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
             reject(err);
           };
 
-          navigator.serviceWorker.ready.then(function () {
-            navigator.serviceWorker.controller.postMessage(message, [channel.port2]);
+          navigator.serviceWorker.ready.then(function (reg) {
+            var serviceWorker = reg.active;
+            serviceWorker.postMessage(message, [channel.port2]);
           });
         });
       }
