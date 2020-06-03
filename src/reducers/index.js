@@ -20,7 +20,7 @@ import { SET_MAX_VIEWPORTS, INSERT_HISTORY } from '../actions/index';
 import { SET_CONNECTION_STATE } from '../actions/connection';
 
 const initialSDKState = {
-  online: false,
+  online: null,
   viewports: 1,
   maxviewports: 2,
   viewset: [],

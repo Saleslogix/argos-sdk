@@ -225,7 +225,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       /**
        * Number of times to attempt to ping.
        */
-      this.PING_RETRY = 5;
+      this.PING_RETRY = 3;
 
       /*
        * Static resource to request on the ping. Should be a small file.
