@@ -17,7 +17,7 @@ define('argos/reducers/index', ['exports', '../actions/index', '../actions/conne
   }
 
   var initialSDKState = {
-    online: false,
+    online: null,
     viewports: 1,
     maxviewports: 2,
     viewset: [],
