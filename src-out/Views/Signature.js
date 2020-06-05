@@ -1,11 +1,9 @@
-define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', 'dojo/window', '../Format', '../View', '../I18n'], function (module, exports, _declare, _window, _Format, _View, _I18n) {
+define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../Format', '../View', '../I18n'], function (module, exports, _declare, _Format, _View, _I18n) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
 
   var _declare2 = _interopRequireDefault(_declare);
-
-  var _window2 = _interopRequireDefault(_window);
 
   var _Format2 = _interopRequireDefault(_Format);
 
@@ -19,15 +17,6 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', 'doj
     };
   }
 
-  var resource = (0, _I18n2.default)('signature');
-
-  /**
-   * @class
-   * @alias module:argos/Views/Signature
-   * @classdesc Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
-   * It goes hand-in-hand with {@link SignatureField SignatureField}
-   * @extends module:argos/View
-   */
   /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
    *
    * Licensed under the Apache License, Version 2.0 (the "License");
@@ -45,6 +34,15 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', 'doj
 
   /**
    * @module argos/Views/Signature
+   */
+  var resource = (0, _I18n2.default)('signature');
+
+  /**
+   * @class
+   * @alias module:argos/Views/Signature
+   * @classdesc Signature View is a view tailored to present an HTML5 canvas that has signature-recording capabilities.
+   * It goes hand-in-hand with {@link SignatureField SignatureField}
+   * @extends module:argos/View
    */
   var __class = (0, _declare2.default)('argos.Views.Signature', [_View2.default], /** @lends module:argos/Views/Signature.prototype */{
     // Localization
@@ -268,9 +266,9 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', 'doj
      * Sets the canvas width/height based on the size of the window/screen
      */
     _sizeCanvas: function _sizeCanvas() {
-      this.canvasNodeWidth = Math.floor(_window2.default.getBox().w * 0.92);
+      this.canvasNodeWidth = Math.floor($(window).width() * 0.92);
 
-      this.canvasNodeHeight = Math.min(Math.floor(this.canvasNodeWidth * 0.5), _window2.default.getBox().h - $('.toolbar').get(0).offsetHeight);
+      this.canvasNodeHeight = Math.min(Math.floor(this.canvasNodeWidth * 0.5), $(window).height() - $('.toolbar').get(0).offsetHeight);
 
       this.signatureNode.width = this.canvasNodeWidth;
       this.signatureNode.height = this.canvasNodeHeight;

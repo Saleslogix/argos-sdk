@@ -17,7 +17,6 @@
  * @module argos/Views/Signature
  */
 import declare from 'dojo/_base/declare';
-import win from 'dojo/window';
 import format from '../Format';
 import View from '../View';
 import getResource from '../I18n';
@@ -269,11 +268,11 @@ const __class = declare('argos.Views.Signature', [View], /** @lends module:argos
    * Sets the canvas width/height based on the size of the window/screen
    */
   _sizeCanvas: function _sizeCanvas() {
-    this.canvasNodeWidth = Math.floor(win.getBox().w * 0.92);
+    this.canvasNodeWidth = Math.floor($(window).width() * 0.92);
 
     this.canvasNodeHeight = Math.min(
       Math.floor(this.canvasNodeWidth * 0.5),
-      win.getBox().h - $('.toolbar').get(0).offsetHeight
+      $(window).height() - $('.toolbar').get(0).offsetHeight
     );
 
     this.signatureNode.width = this.canvasNodeWidth;
