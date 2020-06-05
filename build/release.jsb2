@@ -73,7 +73,7 @@
           "path": "../libraries/icrm/"
         },
         {
-          "text": "redux.js",
+          "text": "redux.min.js",
           "path": "../libraries/redux/"
         },
         {
