@@ -1,4 +1,4 @@
-define('argos/Application', ['module', 'exports', './Utility', './Models/Manager', './Dialogs/Toast', './Dialogs/Modal', './Dialogs/BusyIndicator', 'dojo/hash', 'dojo/_base/connect', './ErrorManager', './I18n', './reducers/index', './actions/connection', './Scene', './SohoIcons'], function (module, exports, _Utility, _Manager, _Toast, _Modal, _BusyIndicator, _hash, _connect, _ErrorManager, _I18n, _index, _connection, _Scene, _SohoIcons) {
+define('argos/Application', ['module', 'exports', './Utility', './Models/Manager', './Dialogs/Toast', './Dialogs/Modal', './Dialogs/BusyIndicator', 'dojo/_base/connect', './ErrorManager', './I18n', './reducers/index', './actions/connection', './Scene', './SohoIcons'], function (module, exports, _Utility, _Manager, _Toast, _Modal, _BusyIndicator, _connect, _ErrorManager, _I18n, _index, _connection, _Scene, _SohoIcons) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
@@ -12,8 +12,6 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
   var _Modal2 = _interopRequireDefault(_Modal);
 
   var _BusyIndicator2 = _interopRequireDefault(_BusyIndicator);
-
-  var _hash2 = _interopRequireDefault(_hash);
 
   var _connect2 = _interopRequireDefault(_connect);
 
@@ -186,7 +184,6 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       this._connections = null;
       this.modules = null;
       this.views = null;
-      this.hash = _hash2.default;
       this.onLine = true;
       this._currentPage = null;
       /**

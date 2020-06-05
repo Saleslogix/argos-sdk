@@ -22,7 +22,6 @@ import ModelManager from './Models/Manager';
 import Toast from './Dialogs/Toast';
 import Modal from './Dialogs/Modal';
 import BusyIndicator from './Dialogs/BusyIndicator';
-import hash from 'dojo/hash';
 import connect from 'dojo/_base/connect';
 import ErrorManager from './ErrorManager';
 import getResource from './I18n';
@@ -144,7 +143,6 @@ class Application {
     this._connections = null;
     this.modules = null;
     this.views = null;
-    this.hash = hash;
     this.onLine = true;
     this._currentPage = null;
     /**
