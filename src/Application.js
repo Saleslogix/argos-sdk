@@ -968,7 +968,7 @@ class Application {
       <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
         data-breakpoint="large">
         <div class="application-menu-header">
-          <button type="button" class="btn-icon icon-close">
+          <button type="button" class="btn-icon icon-close" aria-label="${this.closeText}">
               <svg role="presentation" aria-hidden="true" focusable="false" class="icon">
                 <use xlink:href="#icon-close"></use>
               </svg>
