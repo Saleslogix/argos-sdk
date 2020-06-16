@@ -88,13 +88,6 @@ define('argos/Format', ['module', 'exports', 'dojo/_base/lang', 'dojo/string', '
     shortDateFormatText: dtFormatResource.shortDateFormatText,
 
     /**
-     * @property {String}
-     * format string for percent
-     * * `${0}` - percent value
-     * * `${1}` - percent synmbol "%"
-     */
-    percentFormatText: resource.percentFormatText,
-    /**
      * Takes a String and encodes `&`, `<`, `>`, `"`, `'`, and `/` to HTML entities
      * @param {String} String to encode
      * @return {String} Html encoded string
@@ -194,19 +187,21 @@ define('argos/Format', ['module', 'exports', 'dojo/_base/lang', 'dojo/string', '
     /**
      * Takes a decimal number, multiplies by 100 and adds the % sign with the number of palces to the right.
      *
-     * `perecent(0.35)` => `'35.00%'`
-     * `perecent(0.35, 0)` => `'35%'`
-     * `percent(2.9950)` => `'299.50%'`
-     * `percent(2.9950,0)` => `'300%'`
+     * `perecent(0.35)` => `'35.00 %'`
+     * `perecent(0.35, 0)` => `'35 %'`
+     * `percent(2.9950)` => `'299.50 %'`
+     * `percent(2.9950,0)` => `'300 %'`
      *
      * @param {Number/String} val The value will be `parseFloat` before operating.
      * @param {Number/String} places If no value is given the default value will be set to 2.
      * @return {String} Number as a percentage with % sign.
      */
     percent: function percent(val, places) {
-      return format.percent(val, places, function (num) {
-        return _string2.default.substitute(argos.Format.percentFormatText, [num, Mobile.CultureInfo.numberFormat.percentSymbol]);
-      }, Mobile.CultureInfo.numberFormat.percentGroupSeparator, Mobile.CultureInfo.numberFormat.percentDecimalSeparator);
+      if (typeof places === 'undefined') {
+        places = 2;
+      }
+
+      return Soho.Locale.formatNumber(val, { style: 'percent', minimumFractionDigits: places, maximumFractionDigits: places, round: true });
     },
     /**
      * Takes a boolean value and returns the string Yes or No for true or false

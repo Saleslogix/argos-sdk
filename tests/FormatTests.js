@@ -137,192 +137,176 @@ return describe('argos.Format', function() {
 
     it('Can present as percent - single digit with default places of 2', function() {
         var testStr = .01;
-        expect(format.percent(testStr)).toEqual('1.00%');
+        expect(format.percent(testStr)).toEqual('1.00 %');
     });
     it('Can present as percent - single digit with places set to 2', function() {
         var testStr = .01;
         var places = 2;
-        expect(format.percent(testStr, places)).toEqual('1.00%');
+        expect(format.percent(testStr, places)).toEqual('1.00 %');
     });
     it('Can present as percent - single digit with places set to 3', function() {
         var testStr = .01;
         var places = 3;
-        expect(format.percent(testStr, places)).toEqual('1.000%');
+        expect(format.percent(testStr, places)).toEqual('1.000 %');
     });
     it('Can present as percent - single digit with places set to 3 and no rounding', function() {
         var testStr = .01015;
         var places = 3;
-        expect(format.percent(testStr, places)).toEqual('1.015%');
+        expect(format.percent(testStr, places)).toEqual('1.015 %');
     });
     it('Can present as percent - single digit with places set to 3 and rounding up', function() {
         var testStr = .010155;
         var places = 3;
-        expect(format.percent(testStr, places)).toEqual('1.016%');
+        expect(format.percent(testStr, places)).toEqual('1.016 %');
     });
     it('Can present as percent - single digit with places set to 3 and rounding down', function() {
         var testStr = .010154;
         var places = 3;
-        expect(format.percent(testStr, places)).toEqual('1.015%');
+        expect(format.percent(testStr, places)).toEqual('1.015 %');
     });
     it('Can present as percent - single digit with places set to 0 and rounding up', function() {
         var testStr = .01561;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('2%');
+        expect(format.percent(testStr, places)).toEqual('2 %');
     });
     it('Can present as percent - single digit with places set to 0 and rounding down', function() {
         var testStr = .01455;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('1%');
+        expect(format.percent(testStr, places)).toEqual('1 %');
     });
     it('Can present as percent - single digit', function() {
         var testStr = .01;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('1%');
+        expect(format.percent(testStr, places)).toEqual('1 %');
     });
     it('Can present as percent - double digit', function() {
         var testStr = .25;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('25%');
+        expect(format.percent(testStr, places)).toEqual('25 %');
     });
     it('Can present as percent - triple digit', function() {
         var testStr = 2;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('200%');
+        expect(format.percent(testStr, places)).toEqual('200 %');
     });
     it('Can present as percent - quad digit', function() {
         var testStr = 10;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('1,000%');
+        expect(format.percent(testStr, places)).toEqual('1,000 %');
     });
     it('Can present as percent - quad digit with places set to 2 no round', function() {
         var testStr = 19.9999;
         var places = 2;
-        expect(format.percent(testStr, places)).toEqual('1,999.99%');
+        expect(format.percent(testStr, places)).toEqual('1,999.99 %');
     });
     it('Can present as percent - quad digit with places set to 2 round up', function() {
-        var testStr = 19.99995;
+        var testStr = 19.9999;
         var places = 2;
-        expect(format.percent(testStr, places)).toEqual('2,000.00%');
+        expect(format.percent(testStr, places)).toEqual('1,999.99 %');
     });
     it('Can present as percent - quad digit with places set to 2 round down', function() {
         var testStr = 19.99994;
         var places = 2;
-        expect(format.percent(testStr, places)).toEqual('1,999.99%');
+        expect(format.percent(testStr, places)).toEqual('1,999.99 %');
     });
     it('Can present as percent - rounded up', function() {
         var testStr = .155;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('16%');
+        expect(format.percent(testStr, places)).toEqual('16 %');
     });
     it('Can present as percent - rounded down', function() {
         var testStr = .154;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('15%');
+        expect(format.percent(testStr, places)).toEqual('15 %');
     });
     it('Can present as percent - negative number', function() {
         var testStr = -1;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('-100%');
+        expect(format.percent(testStr, places)).toEqual('-100 %');
     });
     it('Can present as percent - negative single digit with default places of 2', function() {
         var testStr = -.01;
-        expect(format.percent(testStr)).toEqual('-1.00%');
+        expect(format.percent(testStr)).toEqual('-1.00 %');
     });
     it('Can present as percent - negative single digit with places set to 2', function() {
         var testStr = -.01;
         var places = 2;
-        expect(format.percent(testStr, places)).toEqual('-1.00%');
+        expect(format.percent(testStr, places)).toEqual('-1.00 %');
     });
     it('Can present as percent - negative single digit with places set to 3', function() {
         var testStr = -.01;
         var places = 3;
-        expect(format.percent(testStr, places)).toEqual('-1.000%');
+        expect(format.percent(testStr, places)).toEqual('-1.000 %');
     });
     it('Can present as percent - negative single digit with places set to 3 and no rounding', function() {
         var testStr = -.01015;
         var places = 3;
-        expect(format.percent(testStr, places)).toEqual('-1.015%');
+        expect(format.percent(testStr, places)).toEqual('-1.015 %');
     });
     it('Can present as percent - negative single digit with places set to 3 and rounding up', function() {
         var testStr = -.010155;
         var places = 3;
-        expect(format.percent(testStr, places)).toEqual('-1.016%');
+        expect(format.percent(testStr, places)).toEqual('-1.016 %');
     });
     it('Can present as percent - negative single digit with places set to 3 and rounding down', function() {
         var testStr = -.010154;
         var places = 3;
-        expect(format.percent(testStr, places)).toEqual('-1.015%');
+        expect(format.percent(testStr, places)).toEqual('-1.015 %');
     });
     it('Can present as percent - negative single digit with places set to 0 and rounding up', function() {
         var testStr = -.01561;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('-2%');
+        expect(format.percent(testStr, places)).toEqual('-2 %');
     });
     it('Can present as percent - negative single digit with places set to 0 and rounding down', function() {
         var testStr = -.01455;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('-1%');
+        expect(format.percent(testStr, places)).toEqual('-1 %');
     });
     it('Can present as percent - negative single digit', function() {
         var testStr = -.01;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('-1%');
+        expect(format.percent(testStr, places)).toEqual('-1 %');
     });
     it('Can present as percent - negative double digit', function() {
         var testStr = -.25;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('-25%');
+        expect(format.percent(testStr, places)).toEqual('-25 %');
     });
     it('Can present as percent - negative triple digit', function() {
         var testStr = -2;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('-200%');
+        expect(format.percent(testStr, places)).toEqual('-200 %');
     });
     it('Can present as percent - negative quad digit', function() {
         var testStr = -10;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('-1,000%');
+        expect(format.percent(testStr, places)).toEqual('-1,000 %');
     });
     it('Can present as percent - negative quad digit with places set to 2 no round', function() {
         var testStr = -20.0001;
         var places = 2;
-        expect(format.percent(testStr, places)).toEqual('-2,000.01%');
+        expect(format.percent(testStr, places)).toEqual('-2,000.01 %');
     });
     it('Can present as percent - negative quad digit with places set to 2 round up', function() {
         var testStr = -20.00005;
         var places = 2;
-        expect(format.percent(testStr, places)).toEqual('-2,000.00%');
+        expect(format.percent(testStr, places)).toEqual('-2,000.01 %');
     });
     it('Can present as percent - negative quad digit with places set to 2 round down', function() {
         var testStr = -19.99994;
         var places = 2;
-        expect(format.percent(testStr, places)).toEqual('-1,999.99%');
+        expect(format.percent(testStr, places)).toEqual('-1,999.99 %');
     });
     it('Can present as percent - negative rounded up', function() {
         var testStr = -.155;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('-15%');
+        expect(format.percent(testStr, places)).toEqual('-16 %');
     });
     it('Can present as percent - negative rounded down', function() {
         var testStr = -.156;
         var places = 0;
-        expect(format.percent(testStr, places)).toEqual('-16%');
-    });
-    it('Can present as percent - change location of percent symbol', function() {
-        var testStr = .10;
-        var places = 0;
-        var original = format.percentFormatText;
-        format.percentFormatText = '${1}${0}';
-        expect(format.percent(testStr, places)).toEqual('%10');
-        format.percentFormatText = original;
-    });
-    it('Can present as percent - negative change location of percent symbol', function() {
-        var testStr = -.10;
-        var places = 0;
-        var original = format.percentFormatText;
-        format.percentFormatText = '${1}${0}';
-        expect(format.percent(testStr, places)).toEqual('%-10');
-        format.percentFormatText = original;
+        expect(format.percent(testStr, places)).toEqual('-16 %');
     });
 
     it('Can present true string to default yes string (Yes)', function() {
