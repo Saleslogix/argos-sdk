@@ -17,7 +17,6 @@
   * @module argos/Format
   */
 import lang from 'dojo/_base/lang';
-import string from 'dojo/string';
 import getResource from './I18n';
 
 
