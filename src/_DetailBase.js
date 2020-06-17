@@ -586,6 +586,36 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends modul
         this.set('title', descriptor);
       }
     }
+
+
+    // Check if we should refresh based on related items
+    // We will iterate all the views from the related items layout and check if the resource kind matches
+    // from the view or the view's model. If it does match, we will flag this detail to refresh so the
+    // related item counts will get updated.
+    if (!Array.isArray(this.layout)) {
+      return;
+    }
+
+    const relatedItems = this.layout.filter(section => section.name === 'RelatedItemsSection');
+
+    if (relatedItems.length > 0) {
+      const views = relatedItems[0].children.map(child => App.getView(child.view));
+      const matchesResourceKind = views.filter((view) => {
+        if (view.resourceKind === o.resourceKind) {
+          return true;
+        }
+
+        const model = view.getModel();
+        if (model && model.resourceKind === o.resourceKind) {
+          return true;
+        }
+
+        return false;
+      });
+      if (matchesResourceKind.length > 0) {
+        this.refreshRequired = true;
+      }
+    }
   },
   /**
    * Handler for the related entry action, navigates to the defined `data-view` passing the `data-context`.
