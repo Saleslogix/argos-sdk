@@ -265,7 +265,7 @@ const __class = declare('argos._EditBase', [View], /** @lends module:argos/_Edit
   errorText: {
     general: resource.errorGeneral,
     status: {
-      410: resource.error401,
+      410: resource.error410,
     },
   },
   /**

@@ -91,6 +91,7 @@ const __class = lang.setObject('argos.ErrorManager', /** @lends module:argos/Err
     const errorItem = {
       $key: dateStamp,
       Date: moment().format(),
+      Description: '',
       Error: JSON.stringify(utility.sanitizeForJson({
         serverResponse,
         requestOptions,

@@ -44,6 +44,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
     * @module argos/View
     */
 
+  var errorResource = (0, _I18n2.default)('errorHandleMixin');
 
   var __class = (0, _declare2.default)('argos.View', [_WidgetBase3.default, _CustomizationMixin3.default, _Templated3.default], /** @lends module:argos/View.prototype */{
 
@@ -138,7 +139,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
      * @static
      */
     errorText: {
-      general: resource.general,
+      general: errorResource.general,
       status: {}
     },
     /**
@@ -352,10 +353,10 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
      * Gets the general error message, or the error message for the status code.
      */
     getErrorMessage: function getErrorMessage(error) {
-      var message = this.errorText.general;
+      var message = this.errorText.general || '';
 
       if (error) {
-        message = this.errorText.status[error.status] || this.errorText.general;
+        message = this.errorText.status[error.status] || message;
       }
 
       return message;

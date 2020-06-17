@@ -204,7 +204,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
     errorText: {
       general: resource.errorGeneral,
       status: {
-        410: resource.error401
+        410: resource.error410
       }
     },
     /**

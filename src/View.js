@@ -28,6 +28,7 @@ import { insertHistory } from './actions/index';
 
 
 const resource = getResource('view');
+const errorResource = getResource('errorHandleMixin');
 
 const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templated], /** @lends module:argos/View.prototype */{
 
@@ -125,7 +126,7 @@ const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templa
    * @static
    */
   errorText: {
-    general: resource.general,
+    general: errorResource.general,
     status: {},
   },
   /**
@@ -337,10 +338,10 @@ const __class = declare('argos.View', [_WidgetBase, _CustomizationMixin, _Templa
    * Gets the general error message, or the error message for the status code.
    */
   getErrorMessage: function getErrorMessage(error) {
-    let message = this.errorText.general;
+    let message = this.errorText.general || '';
 
     if (error) {
-      message = this.errorText.status[error.status] || this.errorText.general;
+      message = this.errorText.status[error.status] || message;
     }
 
     return message;

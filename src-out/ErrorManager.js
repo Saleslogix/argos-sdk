@@ -92,6 +92,7 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
       var errorItem = {
         $key: dateStamp,
         Date: moment().format(),
+        Description: '',
         Error: JSON.stringify(_Utility2.default.sanitizeForJson({
           serverResponse: serverResponse,
           requestOptions: requestOptions,
