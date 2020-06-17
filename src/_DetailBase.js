@@ -403,6 +403,13 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends modul
    * Determines the SoHo class implemented in property templates
    */
   multiColumnClass: 'four',
+
+  /**
+   * @property {Boolean}
+   * A flag to determine if the detailHeaderTemplate gets rendered. Default false.
+   */
+  enableDetailHeader: false,
+
   /**
    * @property {Number}
    * Determines how many columns the detail view property views should contain
@@ -940,7 +947,9 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends modul
       this.processLayout(this._createCustomizedLayout(this.createLayout()), this.entry);
       if (this.isTabbed) {
         this.createTabs(this.tabs);
-        this.placeDetailHeader(this.entry);
+        if (this.enableDetailHeader) {
+          this.placeDetailHeader(this.entry);
+        }
       }
     } else {
       this.set('detailContent', '');
