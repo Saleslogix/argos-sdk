@@ -218,8 +218,8 @@ const control = declare('argos.Fields.DurationField', [LookupField], /** @lends 
    * @return {Boolean} True if they are equal.
    */
   isWordMatch: function isWordMatch(val, word) {
-    let newVal = val;
-    let newWord = word;
+    let newVal = typeof val === 'string' ? val.trim() : '';
+    let newWord = typeof word === 'string' ? word.trim() : '';
 
     if (newVal.length > newWord.length) {
       newVal = newVal.slice(0, newWord.length);

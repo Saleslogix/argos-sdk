@@ -215,8 +215,8 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * @return {Boolean} True if they are equal.
      */
     isWordMatch: function isWordMatch(val, word) {
-      var newVal = val;
-      var newWord = word;
+      var newVal = typeof val === 'string' ? val.trim() : '';
+      var newWord = typeof word === 'string' ? word.trim() : '';
 
       if (newVal.length > newWord.length) {
         newVal = newVal.slice(0, newWord.length);
