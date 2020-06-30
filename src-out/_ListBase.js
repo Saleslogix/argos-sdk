@@ -247,6 +247,8 @@ define('argos/_ListBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      */
     actionsNode: null,
 
+    currentPopupMenu: null,
+
     /**
      * @cfg {String} id
      * The id for the view, and it's main DOM element.
@@ -546,6 +548,10 @@ define('argos/_ListBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       });
       this.toolbar = toolbar.data('toolbar');
       $('[data-action=openSettings]', this.domNode).on('click', function () {
+        if (_this.currentPopupMenu && _this.currentPopupMenu.isOpen) {
+          _this.currentPopupMenu.close();
+        }
+
         _this.openSettings();
       });
     },
@@ -1699,8 +1705,11 @@ define('argos/_ListBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
         $(btn).popupmenu({
           attachToBody: false
         });
+
         $(btn).on('beforeopen', function (evt) {
           _this7.selectEntry({ key: evt.target.attributes['data-key'].value });
+          var popupmenu = $(btn).data('popupmenu');
+          _this7.currentPopupMenu = popupmenu;
         });
 
         // The click handle in the popup stops propagation which breaks our _ActionMixin click handling
