@@ -358,6 +358,8 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
    */
   actionsNode: null,
 
+  currentPopupMenu: null,
+
   /**
    * @cfg {String} id
    * The id for the view, and it's main DOM element.
@@ -663,6 +665,10 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
     });
     this.toolbar = toolbar.data('toolbar');
     $('[data-action=openSettings]', this.domNode).on('click', () => {
+      if (this.currentPopupMenu && this.currentPopupMenu.isOpen) {
+        this.currentPopupMenu.close();
+      }
+
       this.openSettings();
     });
   },
@@ -1813,8 +1819,11 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
       $(btn).popupmenu({
         attachToBody: false,
       });
+
       $(btn).on('beforeopen', (evt) => {
         this.selectEntry({ key: evt.target.attributes['data-key'].value });
+        const popupmenu = $(btn).data('popupmenu');
+        this.currentPopupMenu = popupmenu;
       });
 
       // The click handle in the popup stops propagation which breaks our _ActionMixin click handling
