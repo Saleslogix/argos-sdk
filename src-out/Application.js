@@ -1121,9 +1121,11 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'getView',
       value: function getView(key) {
+        var init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
         return this._internalGetView({
           key: key,
-          init: true
+          init: init
         });
       }
     }, {

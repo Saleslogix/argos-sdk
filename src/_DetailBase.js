@@ -599,7 +599,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends modul
     const relatedItems = this.layout.filter(section => section.name === 'RelatedItemsSection');
 
     if (relatedItems.length > 0) {
-      const views = relatedItems[0].children.map(child => App.getView(child.view));
+      const views = relatedItems[0].children.map(child => App.getView(child.view, false));
       const matchesResourceKind = views.filter((view) => {
         if (view.resourceKind === o.resourceKind) {
           return true;
@@ -1144,7 +1144,7 @@ const __class = declare('argos._DetailBase', [View, TabWidget], /** @lends modul
     this._navigationOptions = [];
   },
   _processRelatedItem: function _processRelatedItem(data, context, rowNode) {
-    const view = App.getView(data.view);
+    const view = App.getView(data.view, false);
     const options = {};
 
     const renderRelated = (result) => {
