@@ -1176,12 +1176,13 @@ class Application {
   /**
    * Returns the registered view instance with the associated key.
    * @param {String/Object} key The id of the view to return, if object then `key.id` is used.
+   * @param {Boolean} init Flag to initialize and render the view into the DOM. Defaults to true.
    * @return {View} view The requested view.
    */
-  getView(key) {
+  getView(key, init = true) {
     return this._internalGetView({
       key,
-      init: true,
+      init,
     });
   }
   getViewDetailOnly(key) {

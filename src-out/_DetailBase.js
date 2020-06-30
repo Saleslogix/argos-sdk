@@ -507,7 +507,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
 
       if (relatedItems.length > 0) {
         var views = relatedItems[0].children.map(function (child) {
-          return App.getView(child.view);
+          return App.getView(child.view, false);
         });
         var matchesResourceKind = views.filter(function (view) {
           if (view.resourceKind === o.resourceKind) {
@@ -1052,7 +1052,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       this._navigationOptions = [];
     },
     _processRelatedItem: function _processRelatedItem(data, context, rowNode) {
-      var view = App.getView(data.view);
+      var view = App.getView(data.view, false);
       var options = {};
 
       var renderRelated = function renderRelated(result) {
