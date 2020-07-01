@@ -366,6 +366,26 @@ $datagrid-short-row-height: 25px;
           border: 1px solid $datagrid-list-header-checkbox-border-color;
         }
       }
+
+      &.is-active.is-sorted-asc {
+        .sort-indicator {
+          .sort-desc {
+            .icon {
+              color: $datagrid-list-alt-sorted-icon-color;
+            }
+          }
+        }
+      }
+
+      &.is-active.is-sorted-desc {
+        .sort-indicator {
+          .sort-asc {
+            .icon {
+              color: $datagrid-list-alt-sorted-icon-color;
+            }
+          }
+        }
+      }
     }
 
     td {
@@ -451,6 +471,28 @@ $datagrid-short-row-height: 25px;
       .handle {
         &:hover {
           color: $datagrid-list-header-color;
+        }
+      }
+    }
+  }
+
+  &.has-draggable-columns {
+    th.is-active.is-sorted-asc {
+      .sort-indicator {
+        .sort-desc {
+          .icon {
+            color: $datagrid-list-draggable-sorted-icon-color;
+          }
+        }
+      }
+    }
+
+    th.is-active.is-sorted-desc {
+      .sort-indicator {
+        .sort-asc {
+          .icon {
+            color: $datagrid-list-draggable-sorted-icon-color;
+          }
         }
       }
     }
@@ -777,6 +819,7 @@ $datagrid-short-row-height: 25px;
         }
 
         .hyperlink {
+          margin-top: -2px;
           vertical-align: middle;
         }
 
@@ -1931,8 +1974,13 @@ $datagrid-short-row-height: 25px;
     }
 
     .hyperlink {
+      color: $hyperlink-color;
       display: inline-block;
       font-size: $theme-size-font-base;
+
+      &:hover {
+        color: $hyperlink-hover-color;
+      }
 
       &:focus {
         outline: none;
@@ -2987,16 +3035,15 @@ td .btn-actions {
 
 .medium-rowheight {
   .datagrid-multiline-text {
-    margin-top: -8px;
-    min-height: $datagrid-medium-row-height + 2;
+    min-height: $datagrid-medium-row-height;
+    padding: 5px 20px;
   }
 }
 
 .short-rowheight {
   .datagrid-multiline-text {
-    margin-bottom: -4px;
-    min-height: $datagrid-short-row-height + 6;
-    padding: 0 20px;
+    min-height: $datagrid-short-row-height;
+    padding: 2px 20px;
   }
 }
 

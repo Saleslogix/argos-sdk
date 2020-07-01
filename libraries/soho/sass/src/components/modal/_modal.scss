@@ -134,14 +134,13 @@
   }
 
   .field:last-child input:not(.spinbox):not(.colorpicker):not(.searchfield),
-  .field:last-child .dropdown,
   .field:last-child textarea,
   .field:last-child .spinbox-wrapper,
   .field:last-child .colorpicker-container {
     margin-bottom: 10px;
 
     + .error-message {
-      margin-top: -10px;
+      margin-top: -3px;
     }
   }
 
@@ -149,7 +148,7 @@
     margin-bottom: 0 !important;
 
     + .error-message {
-      margin-top: 10px !important;
+      margin-top: 7px !important;
     }
   }
 
@@ -282,8 +281,8 @@
       h1 {
         @include line-clamp(2);
 
-        max-width: 300px;
         white-space: initial;
+        width: inherit;
       }
     }
   }
@@ -293,6 +292,46 @@
       .modal-content {
         h1 {
           max-width: 450px;
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  .searchfield-wrapper {
+    + .error-message {
+      margin-top: 7px;
+    }
+  }
+
+  .editor {
+    &.required.error {
+      margin-bottom: 0;
+
+      + .error-message {
+        margin-top: 7px;
+      }
+    }
+  }
+}
+
+// Fix tab error icons inside of modal
+.modal {
+  .tab-container {
+    &.horizontal {
+      .tab-list-container {
+        .tab:not(.last-child) {
+          &.is-error {
+            .icon-error,
+            .icon-info,
+            .icon-alert {
+              margin-left: 0;
+              margin-right: 11px;
+              margin-top: -4px;
+              position: absolute;
+            }
+          }
         }
       }
     }

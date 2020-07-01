@@ -36,6 +36,10 @@
       &:focus {
         @include focus-state();
       }
+
+      &.error {
+        border-color: $error-border-color;
+      }
     }
   }
 
@@ -72,6 +76,28 @@
 .field-short {
   .lookup-wrapper {
     margin-bottom: 0;
+  }
+}
+
+.lookup-wrapper {
+  .searchfield-wrapper {
+    > .icon.close {
+      right: 30px;
+    }
+
+    &.non-collapsible {
+      svg.icon {
+        &:not(.close) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .has-close-icon-button {
+    .lookup {
+      padding-right: 50px;
+    }
   }
 }
 
@@ -266,5 +292,27 @@ html[dir='rtl'] {
     padding-right: 10px;
     text-align: right;
     text-overflow: ellipsis;
+  }
+
+  .lookup-wrapper {
+    .searchfield-wrapper {
+      > .icon.close {
+        left: 30px;
+      }
+
+      &.non-collapsible {
+        svg.icon {
+          &:not(.close) {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .has-close-icon-button {
+      .lookup {
+        padding-left: 50px;
+      }
+    }
   }
 }

@@ -1,7 +1,7 @@
 /*! 
- *  IDS Enterprise Components - v4.28.2
- *  Date: 2020-05-29T17:42:39.649Z
- *  Revision: e69e29cede773113b01999cd6a3392961f3c1c2f
+ *  IDS Enterprise Components - v4.29.3
+ *  Date: 2020-06-11T14:54:35.877Z
+ *  Revision: 59d24aa907a522cf6ea79a33a591105a628f46ee
  *  
  *  
  *  Apache License
@@ -314,7 +314,35 @@ var Soho = (function (exports) {
     });
   })([Element.prototype, CharacterData.prototype, DocumentType.prototype]);
 
-  var version = "4.28.2";
+  /**
+   * Polyfills passive event support in jQuery
+   * This eliminates a ton of console warnings when doing scrolling.
+   * - https://github.com/jquery/jquery/issues/2871
+   * - https://github.com/infor-design/enterprise/issues/414
+   */
+  jQuery.event.special.touchstart = {
+    setup: function setup(_, ns, handle) {
+      this.addEventListener('touchstart', handle, {
+        passive: true
+      });
+    }
+  };
+  jQuery.event.special.touchmove = {
+    setup: function setup(_, ns, handle) {
+      this.addEventListener('touchmove', handle, {
+        passive: true
+      });
+    }
+  };
+  jQuery.event.special.mousewheel = {
+    setup: function setup(_, ns, handle) {
+      this.addEventListener('mousewheel', handle, {
+        passive: true
+      });
+    }
+  };
+
+  var version = "4.29.3";
 
   function _typeof(obj) {
     "@babel/helpers - typeof";
@@ -680,36 +708,33 @@ var Soho = (function (exports) {
    */
 
 
-  DOM.classNameExists = function classNameExists(element) {
+  DOM.hasAnyClass = function hasAnyClass(element) {
     var cn = element.className;
     return cn && cn.length > 0;
   };
   /**
    * Checks the element for the existence of a particular class.
-   * @param {HTMLElement|SVGElement} el a element being checked.
+   * @param {HTMLElement|SVGElement} elem a element being checked.
    * @param {string} className a string representing a class name to check for.
    * @returns {boolean} whether or not the element's class attribute contains the string.
    */
 
 
-  DOM.hasClass = function hasClass(el, className) {
-    if (!el.classList) {
-      return false;
-    } // Use `className` if there's no `classList`
+  DOM.hasClass = function hasClass(elem, className) {
+    var r = false;
 
-
-    if (el.className) {
-      return new RegExp("\\b".concat(className, "\\b")).test(el.className);
-    } // If no `className`, this element is probably an SVG or other namespace element
-
-
-    var classAttr = el.getAttribute('class');
-
-    if (!classAttr || !classAttr.length) {
-      return false;
+    if (!(elem === null || elem === void 0 ? void 0 : elem == null ? void 0 : elem.getAttribute)) {
+      return r;
     }
 
-    return classAttr.indexOf(className) > -1;
+    if ('classList' in elem) {
+      r = elem.classList.contains(className);
+    } else {
+      var classAttr = elem.getAttribute('class');
+      r = classAttr ? classAttr.split(/\s+/).indexOf(className) !== -1 : false;
+    }
+
+    return r;
   };
   /**
    * Add a class to any element and handle multiple classes.
@@ -1015,6 +1040,22 @@ var Soho = (function (exports) {
     }
 
     return undefined;
+  };
+  /**
+   * Get the sibling elements.
+   * @param {HTMLElement/SVGElement} el The element to get siblings
+   * @returns {array} Array of sibling elements
+   */
+
+
+  DOM.getSiblings = function getSiblings(el) {
+    if (el instanceof $ && el.length) {
+      el = el[0];
+    }
+
+    return [].slice.call(el.parentNode.children).filter(function (child) {
+      return child !== el;
+    });
   };
   /**
    * Returns a simple CSS selector string that represents an existing page element.
@@ -2299,7 +2340,9 @@ var Soho = (function (exports) {
     if (window.clipboardData && window.clipboardData.setData) {
       // IE specific code path to prevent textarea being shown while dialog is visible.
       return window.clipboardData.setData('Text', text);
-    } else if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
+    }
+
+    if (document.queryCommandSupported && document.queryCommandSupported('copy')) {
       var textarea = document.createElement('textarea');
       textarea.textContent = text;
       textarea.style.position = 'fixed'; // Prevent scrolling to bottom of page in MS Edge.
@@ -2608,8 +2651,6 @@ var Soho = (function (exports) {
 
 
     var merge = function merge(obj) {
-      var emptyObj = Array.isArray(obj) ? [] : {};
-
       for (var prop in obj) {
         //eslint-disable-line
         if (obj.hasOwnProperty(prop)) {
@@ -2619,8 +2660,10 @@ var Soho = (function (exports) {
             // Needed for now until jQuery is fully dropped
             extended[prop] = $(obj[prop]);
           } else if (deep && Object.prototype.toString.call(obj[prop]) === '[object Object]') {
-            var isPlain = utils.isPlainObject(obj[prop]);
-            extended[prop] = isPlain ? extend(true, emptyObj, extended[prop], obj[prop]) : obj[prop];
+            var newObj = obj[prop];
+            var isPlain = utils.isPlainObject(newObj);
+            var emptyObj = Array.isArray(newObj) ? [] : {};
+            extended[prop] = isPlain ? extend(true, emptyObj, extended[prop], newObj) : newObj;
           } else {
             if (Array.isArray(obj[prop])) {
               //eslint-disable-line
@@ -3040,29 +3083,6 @@ var Soho = (function (exports) {
     }
   };
   /**
-   * Function to check if element has css class
-   * @private
-   * @param {object} elem The DOM element
-   * @param {string} classStr The css class name to check
-   * @returns {boolean} true if found given css class
-   */
-
-
-  utils.hasClass = function hasClass(elem, classStr) {
-    var r = false;
-
-    if (elem) {
-      if ('classList' in elem) {
-        r = elem.classList.contains(classStr);
-      } else {
-        var classAttr = elem.getAttribute('class');
-        r = classAttr ? classAttr.split(/\s+/).indexOf(classStr) !== -1 : false;
-      }
-    }
-
-    return r;
-  };
-  /**
    * Returns the sign of a number, indicating whether the number is positive, negative or zero
    * @param {number} x A number.
    * @returns {number} A number representing the sign of the given argument. If the argument is a positive number, negative number, positive zero or negative zero, the function will return 1, -1, 0 or -0 respectively. Otherwise, NaN is returned.
@@ -3124,31 +3144,7 @@ var Soho = (function (exports) {
 
 
   utils.deepCopy = function (arrayOrObject) {
-    var references = new Map();
-
-    var copy = function copy(input) {
-      if (_typeof(input) !== 'object' || input === null) {
-        return input; // Return the value if input is not an object
-      } // If an object has already been cloned then return a
-      // reference to that clone to avoid an infinite loop
-
-
-      if (references.has(input) === true) {
-        return references.get(input);
-      } // Create an array or object to hold the values
-
-
-      var output = Array.isArray(input) ? [] : {};
-      references.set(arrayOrObject, input);
-      Object.keys(input).forEach(function (key) {
-        var value = input[key]; // Recursively (deep) copy for nested objects, including arrays
-
-        output[key] = _typeof(value) === 'object' && value !== null ? copy(value) : value;
-      });
-      return output;
-    };
-
-    return copy(arrayOrObject);
+    return utils.extend(true, Array.isArray(arrayOrObject) ? [] : {}, arrayOrObject);
   };
   /**
    * Check if the event is subscribed to
@@ -3184,6 +3180,33 @@ var Soho = (function (exports) {
   utils.isInViewport = function isInViewport(element) {
     var b = element.getBoundingClientRect();
     return b.top >= 0 && b.left >= 0 && b.bottom <= (window.innerHeight || document.documentElement.clientHeight) && b.right <= (window.innerWidth || document.documentElement.clientWidth);
+  };
+  /**
+   * Get siblings height for given element.
+   * @privateel
+   * @param {object} el The element to get siblings height.
+   * @returns {number} The calculated height.
+   */
+
+
+  utils.getSiblingsHeight = function getSiblingsHeight(el) {
+    var siblings = DOM.getSiblings(el);
+    return siblings.map(function (sibling) {
+      return sibling.offsetHeight;
+    }).reduce(function (a, h) {
+      return a + h;
+    }, 0);
+  };
+  /**
+   * Get parent available height for given element.
+   * @privateel
+   * @param {object} el The element to get parent available height.
+   * @returns {number} The calculated height.
+   */
+
+
+  utils.getParentAvailableHeight = function getParentAvailableHeight(el) {
+    return el.parentNode.offsetHeight - utils.getSiblingsHeight(el);
   };
 
   var objectUtils = {};
@@ -3437,6 +3460,317 @@ var Soho = (function (exports) {
 
     return number.toString().split('.')[1].length || 0;
   };
+
+  /* eslint-disable yoda */
+  var colorUtils = {}; // Safely converts a single RGBA color component (R, G, B, or A) to
+  // its corresponding two-digit hexidecimal value.
+
+  function componentToHex(c) {
+    var hex = Number(c).toString(16);
+    return hex.length === 1 ? "0".concat(hex) : hex;
+  }
+  /**
+   * Convert the provided hex to an RGBA with an opacity.
+   * @private
+   * @param {string} hex to set.
+   * @param {string} opacity to check.
+   * @returns {string} converted rgba
+   */
+
+
+  colorUtils.hexToRgba = function hexToRgba(hex, opacity) {
+    var c;
+
+    if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+      c = hex.substring(1).split('');
+
+      if (c.length === 3) {
+        c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+      }
+
+      c = "0x".concat(c.join('')); // eslint-disable-next-line
+
+      return "rgba(".concat([c >> 16 & 255, c >> 8 & 255, c & 255].join(','), ",").concat(opacity.toString(), ")");
+    }
+
+    return '';
+  };
+  /**
+   * Converts a hex color to an object containing separate R, G, and B values.
+   * @param {string} hex string representing a hexidecimal color
+   * @returns {object|null} containing separate "r", "g", and "b" values.
+   */
+
+
+  colorUtils.hexToRgb = function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  };
+  /**
+   * Takes separate R, G, and B values, and converts them to a hexidecimal string
+   * @param {number|string|obj} r a number between 0-255 representing the amount of red. Can also be an object with `r`, `g`, and `b` values.
+   * @param {number|string} g a number between 0-255 representing the amount of green
+   * @param {number|string} b a number between 0-255 representing the amount of blue
+   * @returns {string} containing the matching hexidecimal color value
+   */
+
+
+  colorUtils.rgbToHex = function rgbToHex(r, g, b) {
+    if (_typeof(r) === 'object' && (typeof r.r === 'number' || typeof r.r === 'string')) {
+      g = r.g;
+      b = r.b;
+      r = r.r;
+    }
+
+    return "#".concat(componentToHex(r)).concat(componentToHex(g)).concat(componentToHex(b));
+  };
+  /**
+   * Converts an RGB color value to an HSL color value
+   * @param {number|string|obj} r a number between 0-255 representing the amount of red. Can also be an object with `r`, `g`, and `b` values.
+   * @param {number|string} g a number between 0-255 representing the amount of green
+   * @param {number|string} b a number between 0-255 representing the amount of blue
+   * @returns {object} containing hue/saturation/lightness values (h, s, l).
+   */
+
+
+  colorUtils.rgbToHsl = function rgbToHsl(r, g, b) {
+    if (_typeof(r) === 'object' && (typeof r.r === 'number' || typeof r.r === 'string')) {
+      g = r.g;
+      b = r.b;
+      r = r.r;
+    } // Ensure all values are numbers
+
+
+    r = Number(r);
+    g = Number(g);
+    b = Number(b); // Make all the values fractions
+
+    r /= 255;
+    g /= 255;
+    b /= 255; // Find greatest/smallest channel values
+
+    var cmin = Math.min(r, g, b);
+    var cmax = Math.max(r, g, b);
+    var delta = cmax - cmin;
+    var h = 0;
+    var s = 0;
+    var l = 0; // Calculate Hue
+    // delta of `0` means there is no adjustment.
+
+    if (delta === 0) {
+      h = 0;
+    } else if (cmax === r) {
+      // Red is max
+      h = (g - b) / delta % 6;
+    } else if (cmax === g) {
+      // Green is Max
+      h = (b - r) / delta + 2;
+    } else {
+      // Blue is Max
+      h = (r - g) / delta + 4;
+    }
+
+    h = Math.round(h * 60); // If the hue comes out negative, make it a positive
+
+    if (h < 0) {
+      h += 360;
+    } // Calculate Lightness
+
+
+    l = (cmax + cmin) / 2; // Calculate Saturation
+
+    if (delta !== 0) {
+      s = delta / (1 - Math.abs(2 * l - 1));
+    } // multiply the final saturation/lightness values by 100 (make them percentages)
+
+
+    s = +(s * 100).toFixed(1);
+    l = +(l * 100).toFixed(1);
+    return {
+      h: h,
+      s: s,
+      l: l
+    };
+  };
+  /**
+   * Converts an HSL color value to an RGB color value
+   * @param {number|string|obj} h a number between 0-255 representing the amount of red. Can also be an object with `h`, `s`, and `l` properties.
+   * @param {number|string} s a number between 0-255 representing the amount of green
+   * @param {number|string} l a number between 0-255 representing the amount of blue
+   * @returns {object} containing hue/saturation/lightness values (h, s, l).
+   */
+
+
+  colorUtils.hslToRgb = function hslToRgb(h, s, l) {
+    if (_typeof(h) === 'object' && (typeof h.h === 'number' || typeof h.h === 'string')) {
+      h = h.h;
+      s = h.s;
+      l = h.l;
+    } // Ensure all values are numbers
+
+
+    h = Number(h);
+    s = Number(s);
+    l = Number(l); // make saturation/lightness fractions of 1
+
+    s /= 100;
+    l /= 100; // chroma (c), second largest component (x),
+    // and amount to add to each channel to match lightness (m)
+
+    var c = (1 - Math.abs(2 * l - 1)) * s;
+    var x = c * (1 - Math.abs(h / 60 % 2 - 1));
+    var m = l - c / 2;
+    var r = 0;
+    var g = 0;
+    var b = 0; // whichever 60deg slice of an entire 360deg pie the hue lies within
+    // determines the values for r/g/b
+
+    if (0 <= h && h < 60) {
+      r = c;
+      g = x;
+      b = 0;
+    } else if (60 <= h && h < 120) {
+      r = x;
+      g = c;
+      b = 0;
+    } else if (120 <= h && h < 180) {
+      r = 0;
+      g = x;
+      b = c;
+    } else if (180 <= h && h < 240) {
+      r = 0;
+      g = x;
+      b = c;
+    } else if (240 <= h && h < 300) {
+      r = x;
+      g = 0;
+      b = c;
+    } else if (300 <= h && h < 360) {
+      r = c;
+      g = 0;
+      b = x;
+    } // Add (m) to all channels, multiply each by 255, and round to get final values.
+
+
+    r = Math.round((r + m) * 255);
+    g = Math.round((g + m) * 255);
+    b = Math.round((b + m) * 255);
+    return {
+      r: r,
+      g: g,
+      b: b
+    };
+  };
+  /**
+  * Takes a color and performs a change in luminosity of that color programatically.
+  * @private
+  * @param {string} hex  The original Hexadecimal base color.
+  * @param {string} lum  A percentage used to set luminosity
+  * change on the base color:  -0.1 would be 10% darker, 0.2 would be 20% brighter
+  * @returns {string} hexadecimal color.
+  */
+
+
+  colorUtils.getLuminousColorShade = function getLuminousColorShade(hex, lum) {
+    // validate hex string
+    hex = this.validateHex(hex).substr(1);
+    lum = lum || 0; // convert to decimal and change luminosity
+
+    var rgb = '#';
+    var c;
+    var i;
+
+    for (i = 0; i < 3; i++) {
+      c = parseInt(hex.substr(i * 2, 2), 16);
+      c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
+      rgb += "00".concat(c).substr(c.length);
+    }
+
+    return rgb;
+  };
+  /**
+   * Validates a string containing a hexadecimal number
+   * @private
+   * @param {string} hex A hex color.
+   * @returns {string} a validated hexadecimal string.
+   */
+
+
+  colorUtils.validateHex = function validateHex(hex) {
+    hex = String(hex).replace(/[^0-9a-f]/gi, '');
+
+    if (hex.length < 6) {
+      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+
+    return "#".concat(hex);
+  };
+  /**
+   * Get calculated contrast color
+   * @private
+   * @param {string} hex A hex color.
+   * @param {string} light Optional a custom hex color to return.
+   * @param {string} dark Optional a custom hex color to return.
+   * @returns {string} a calculated contrast color string.
+   */
+
+
+  colorUtils.getContrastColor = function getContrastColor(hex, light, dark) {
+    hex = hex ? hex.replace('#', '') : '';
+
+    var parse = function parse(x) {
+      return parseInt(hex.substr(x, 2), 16);
+    };
+
+    var r = parse(0);
+    var g = parse(2);
+    var b = parse(4);
+    var diff = (r * 299 + g * 587 + b * 114) / 1000;
+    return diff >= 128 ? dark || 'black' : light || 'white';
+  };
+  /**
+   * Returns a less saturated shade of a provided color.
+   * @param {string} hex the starting hexadecimal color
+   * @param {number} [sat=1] a number representing a percentage change (between 0 and 1) of saturation.
+   * @returns {string} the modified hexidecimal color
+   */
+
+
+  colorUtils.getDesaturatedColor = function getDesaturatedColor(hex) {
+    var sat = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+    hex = hex ? hex.replace('#', '') : '';
+    var col = colorUtils.hexToRgb(hex); // Grayscale constants
+    // https://en.m.wikipedia.org/wiki/Grayscale#Luma_coding_in_video_systems
+
+    var gray = col.r * 0.3086 + col.g * 0.6094 + col.b * 0.0820;
+    col.r = Math.round(col.r * sat + gray * (1 - sat));
+    col.g = Math.round(col.g * sat + gray * (1 - sat));
+    col.b = Math.round(col.b * sat + gray * (1 - sat));
+    return colorUtils.rgbToHex(col.r, col.g, col.b);
+  };
+  /**
+   * Compares the luminosity of two hex colors.
+   * @param {string|obj} baseColorHex a string representing a hexadecimal color
+   * @param {string|obj} compareColorHex a string representing a hexadecimal color
+   * @returns {boolean} true if the base color is more luminous, false if the compared color is more luminous.
+   */
+
+
+  colorUtils.isLighter = function isLighter(baseColorHex, compareColorHex) {
+    // Convert to RGB Objects
+    var baseColorRGB = colorUtils.hexToRgb(baseColorHex);
+    var compareColorRGB = colorUtils.hexToRgb(compareColorHex); // Convert to HSL Objects
+
+    var baseColorHSL = colorUtils.rgbToHsl(baseColorRGB);
+    var compareColorHSL = colorUtils.rgbToHsl(compareColorRGB); // Compare the HSL
+
+    return baseColorHSL.l <= compareColorHSL.l;
+  };
+   //eslint-disable-line
 
   /* eslint-disable */
   // Modified version of Amro Osama's code. From at https://github.com/kbwood/calendars/blob/master/src/js/jquery.calendars.ummalqura.js
@@ -4146,18 +4480,18 @@ var Soho = (function (exports) {
       var seconds = value instanceof Array ? value[5] : value.getSeconds();
       var millis = value instanceof Array ? value[6] : value.getMilliseconds();
 
-      if (cal && cal.conversions) {
-        if (options.fromGregorian) {
-          var islamicParts = this.gregorianToUmalqura(value);
-          day = islamicParts[2];
-          month = islamicParts[1];
-          year = islamicParts[0];
-        } else if (options.toGregorian) {
-          var gregorianDate = this.umalquraToGregorian(year, month, day);
-          day = gregorianDate.getDate();
-          month = gregorianDate.getMonth();
-          year = gregorianDate.getFullYear();
-        }
+      if (options.fromGregorian) {
+        var islamicParts = this.gregorianToUmalqura(value);
+        day = islamicParts[2];
+        month = islamicParts[1];
+        year = islamicParts[0];
+      }
+
+      if (options.toGregorian) {
+        var gregorianDate = this.umalquraToGregorian(year, month, day);
+        day = gregorianDate.getDate();
+        month = gregorianDate.getMonth();
+        year = gregorianDate.getFullYear();
       } // Special
 
 
@@ -5397,6 +5731,17 @@ var Soho = (function (exports) {
      */
     isRTL: function isRTL() {
       return !this.currentLanguage ? false : this.currentLanguage.direction === 'right-to-left';
+    },
+
+    /**
+     * Describes whether or not the default calendar is islamic.
+     * @param {string} locale The locale to check if not the current.
+     * @returns {boolean} whether or not this locale is "right-to-left".
+     */
+    isIslamic: function isIslamic(locale) {
+      var _this$calendar;
+
+      return ((_this$calendar = this.calendar(locale)) === null || _this$calendar === void 0 ? void 0 : _this$calendar == null ? void 0 : _this$calendar.name) === 'islamic-umalqura';
     },
 
     /**
@@ -6673,102 +7018,8 @@ var Soho = (function (exports) {
 
   var modalManager = new ModalManager();
 
-  var colorUtils = {};
-  /**
-   * Convert the provided hex to an RGBA with an opacity.
-   * @private
-   * @param {string} hex to set.
-   * @param {string} opacity to check.
-   * @returns {string} converted rgba
-   */
-
-  colorUtils.hexToRgba = function hexToRgba(hex, opacity) {
-    var c;
-
-    if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-      c = hex.substring(1).split('');
-
-      if (c.length === 3) {
-        c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-      }
-
-      c = "0x".concat(c.join('')); // eslint-disable-next-line
-
-      return "rgba(".concat([c >> 16 & 255, c >> 8 & 255, c & 255].join(','), ",").concat(opacity.toString(), ")");
-    }
-
-    return '';
-  };
-  /**
-  * Takes a color and performs a change in luminosity of that color programatically.
-  * @private
-  * @param {string} hex  The original Hexadecimal base color.
-  * @param {string} lum  A percentage used to set luminosity
-  * change on the base color:  -0.1 would be 10% darker, 0.2 would be 20% brighter
-  * @returns {string} hexadecimal color.
-  */
-
-
-  colorUtils.getLuminousColorShade = function getLuminousColorShade(hex, lum) {
-    // validate hex string
-    hex = this.validateHex(hex).substr(1);
-    lum = lum || 0; // convert to decimal and change luminosity
-
-    var rgb = '#';
-    var c;
-    var i;
-
-    for (i = 0; i < 3; i++) {
-      c = parseInt(hex.substr(i * 2, 2), 16);
-      c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
-      rgb += "00".concat(c).substr(c.length);
-    }
-
-    return rgb;
-  };
-  /**
-   * Validates a string containing a hexadecimal number
-   * @private
-   * @param {string} hex A hex color.
-   * @returns {string} a validated hexadecimal string.
-   */
-
-
-  colorUtils.validateHex = function validateHex(hex) {
-    hex = String(hex).replace(/[^0-9a-f]/gi, '');
-
-    if (hex.length < 6) {
-      hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-    }
-
-    return "#".concat(hex);
-  };
-  /**
-   * Get calculated contrast color
-   * @private
-   * @param {string} hex A hex color.
-   * @param {string} light Optional a custom hex color to return.
-   * @param {string} dark Optional a custom hex color to return.
-   * @returns {string} a calculated contrast color string.
-   */
-
-
-  colorUtils.getContrastColor = function getContrastColor(hex, light, dark) {
-    hex = hex ? hex.replace('#', '') : '';
-
-    var parse = function parse(x) {
-      return parseInt(hex.substr(x, 2), 16);
-    };
-
-    var r = parse(0);
-    var g = parse(2);
-    var b = parse(4);
-    var diff = (r * 299 + g * 587 + b * 114) / 1000;
-    return diff >= 128 ? dark || 'black' : light || 'white';
-  };
-   //eslint-disable-line
-
   var color = {
+  	themeName: "theme-soho",
   	palette: {
   		amber: {
   			"10": {
@@ -7179,12 +7430,33 @@ var Soho = (function (exports) {
   			contrast: {
   				name: "theme-color-brand-secondary-contrast",
   				value: "#383838"
+  			}
+  		}
+  	},
+  	components: {
+  		body: {
+  			primary: {
+  				background: {
+  					name: "body-color-primary-background",
+  					value: "#f0f0f0"
+  				},
+  				font: {
+  					name: "body-color-primary-font",
+  					value: "#1a1a1a"
+  				}
+  			},
+  			secondary: {
+  				background: {
+  					name: "body-color-secondary-background",
+  					value: "#ffffff"
+  				}
   			}
   		}
   	}
   };
 
   var color$1 = {
+  	themeName: "theme-soho-dark",
   	palette: {
   		amber: {
   			"10": {
@@ -7597,10 +7869,31 @@ var Soho = (function (exports) {
   				value: "#383838"
   			}
   		}
+  	},
+  	components: {
+  		body: {
+  			primary: {
+  				background: {
+  					name: "body-color-primary-background",
+  					value: "#313236"
+  				},
+  				font: {
+  					name: "body-color-primary-font",
+  					value: "#ffffff"
+  				}
+  			},
+  			secondary: {
+  				background: {
+  					name: "body-color-secondary-background",
+  					value: "#414247"
+  				}
+  			}
+  		}
   	}
   };
 
   var color$2 = {
+  	themeName: "theme-soho-contrast",
   	palette: {
   		amber: {
   			"10": {
@@ -8013,10 +8306,31 @@ var Soho = (function (exports) {
   				value: "#383838"
   			}
   		}
+  	},
+  	components: {
+  		body: {
+  			primary: {
+  				background: {
+  					name: "body-color-primary-background",
+  					value: "#d8d8d8"
+  				},
+  				font: {
+  					name: "body-color-primary-font",
+  					value: "#000000"
+  				}
+  			},
+  			secondary: {
+  				background: {
+  					name: "body-color-secondary-background",
+  					value: "#d8d8d8"
+  				}
+  			}
+  		}
   	}
   };
 
   var color$3 = {
+  	themeName: "theme-uplift",
   	palette: {
   		amber: {
   			"10": {
@@ -8429,10 +8743,31 @@ var Soho = (function (exports) {
   				value: "#3E3E42"
   			}
   		}
+  	},
+  	components: {
+  		body: {
+  			primary: {
+  				background: {
+  					name: "body-color-primary-background",
+  					value: "#EFEFF0"
+  				},
+  				font: {
+  					name: "body-color-primary-font",
+  					value: "#2F2F32"
+  				}
+  			},
+  			secondary: {
+  				background: {
+  					name: "body-color-secondary-background",
+  					value: "#ffffff"
+  				}
+  			}
+  		}
   	}
   };
 
   var color$4 = {
+  	themeName: "theme-uplift-dark",
   	palette: {
   		amber: {
   			"10": {
@@ -8845,10 +9180,31 @@ var Soho = (function (exports) {
   				value: "#3E3E42"
   			}
   		}
+  	},
+  	components: {
+  		body: {
+  			primary: {
+  				background: {
+  					name: "body-color-primary-background",
+  					value: "#3E3E42"
+  				},
+  				font: {
+  					name: "body-color-primary-font",
+  					value: "#EFEFF0"
+  				}
+  			},
+  			secondary: {
+  				background: {
+  					name: "body-color-secondary-background",
+  					value: "#47474C"
+  				}
+  			}
+  		}
   	}
   };
 
   var color$5 = {
+  	themeName: "theme-uplift-contrast",
   	palette: {
   		amber: {
   			"10": {
@@ -9261,6 +9617,26 @@ var Soho = (function (exports) {
   				value: "#3E3E42"
   			}
   		}
+  	},
+  	components: {
+  		body: {
+  			primary: {
+  				background: {
+  					name: "body-color-primary-background",
+  					value: "#EEEEEE"
+  				},
+  				font: {
+  					name: "body-color-primary-font",
+  					value: "#3E3E42"
+  				}
+  			},
+  			secondary: {
+  				background: {
+  					name: "body-color-secondary-background",
+  					value: "#ffffff"
+  				}
+  			}
+  		}
   	}
   };
 
@@ -9455,7 +9831,7 @@ var Soho = (function (exports) {
     setTheme: function setTheme(themeId) {
       var result = this.themes().filter(function (themeObj) {
         return themeObj.id === themeId || themeObj.legacyId && themeObj.legacyId === themeId;
-      });
+      }); //eslint-disable-line
 
       if (result.length === 0) {
         return '';
@@ -9475,7 +9851,9 @@ var Soho = (function (exports) {
   };
 
   function personalizeStyles(colors) {
-    return "\n\n.tab-container.module-tabs.is-personalizable {\n  border-top: 1px solid ".concat(colors.darkest, " !important;\n  border-bottom: 1px solid ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .tab:not(:first-child) {\n  border-left: 1px solid ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.accordion.panel .accordion-header.is-selected {\n  background-color: ").concat(colors.lighter, " !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.builder-header.is-personalizable{\n  background-color: ").concat(colors.lighter, ";\n}\n\n.header.is-personalizable {\n  background-color: ").concat(colors.base, ";\n}\n\n.header.is-personalizable .title {\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable h1 {\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable button:not(:disabled),\n.header.is-personalizable button:not(:disabled) .icon,\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable .header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable button:not(:disabled):hover,\n.header.is-personalizable button:not(:disabled):hover .icon,\n.header.is-personalizable button:not(:disabled):hover .app-header.icon > span,\n.header.is-personalizable .toolbar [class*='btn']:hover:not([disabled]) {\n  color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\n.header.is-personalizable .go-button.is-personalizable {\n  background-color: ").concat(colors.lightest, ";\n  border-color:").concat(colors.lightest, ";\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab.is-selected:not(.is-disabled) {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled),\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)  {\n  color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\nhtml[class*=\"theme-uplift-\"] .header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\nhtml[class*=\"theme-uplift-\"] .is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  opacity: 1;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)::before {\n  background-color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .animated-bar {\n  background-color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .tab-list-container .tab.is-selected:not(.is-disabled):hover::before {\n  background-color: ").concat(colors.contrast, " !important;\n}\n\n.subheader.is-personalizable .go-button.is-personalizable {\n  background-color: ").concat(colors.dark, ";\n  border-color: ").concat(colors.dark, ";\n  color: ").concat(colors.contrast, ";\n}\n\n.module-tabs.is-personalizable .tab-more {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more:hover {\n  background-color: ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-open {\n  background-color: ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield {\n  background-color: ").concat(colors.hover, " !important;\n  border-bottom-color: ").concat(colors.hover, " !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield-category-button {\n  background-color: ").concat(colors.hover, " !important;\n  border-bottom-color: ").concat(colors.hover, " !important;\n}\n\n.subheader.is-personalizable {\n  background-color: ").concat(colors.lighter, " !important;\n}\n\n.builder .sidebar .header {\n  border-right: 1px solid ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab:hover {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.has-toolbar.is-personalizable .tab-list-container + .toolbar {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable [class^=\"btn\"] {\n  background-color: transparent !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled {\n  background-color: ").concat(colors.darker, " !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled > svg {\n  fill: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button:hover {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > .searchfield {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > svg {\n  fill: ").concat(colors.contrast, " !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::before,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::before {\n  background-image: linear-gradient(to right, ").concat(colors.base, " , ").concat(colorUtils.hexToRgba(colors.base, 0), ") !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::after,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::after {\n  background-image: linear-gradient(to right, ").concat(colorUtils.hexToRgba(colors.base, 0), ", ").concat(colors.base, ") !important;\n}\n\n.hero-widget.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .hero-bottom {\n  background-color: ").concat(colors.base, ";\n}\n\n.hero-widget.is-personalizable .hero-footer .hero-footer-nav li::before {\n  color: ").concat(colors.light, ";\n}\n\n.hero-widget.is-personalizable .chart-container .arc {\n  stroke: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .chart-container .bar {\n  stroke: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .chart-container.line-chart .dot {\n  stroke: ").concat(colors.lighter, ";\n}\n\n.application-menu.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n  border-right: ").concat(colors.light, ";\n}\n\n.application-menu.is-personalizable .application-menu-header {\n  background-color: ").concat(colors.lighter, ";\n  border-bottom-color: ").concat(colors.light, ";\n}\n\n.application-menu.is-personalizable .application-menu-footer {\n  background-color: ").concat(colors.lighter, ";\n  border-top-color: ").concat(colors.light, ";\n}\n\n.application-menu.is-personalizable button .icon,\n.application-menu.is-personalizable button span,\n.application-menu.is-personalizable .hyperlink {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable button:not(:disabled):hover .icon,\n.application-menu.is-personalizable button:not(:disabled):hover span,\n.application-menu.is-personalizable .hyperlink:hover {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .accordion.panel {\n  background-color: ").concat(colors.lighter, ";\n}\n\n.application-menu.is-personalizable .name-xl,\n.application-menu.is-personalizable .name,\n.application-menu.is-personalizable .accordion-heading {\n  color: ").concat(colors.contrast, ";\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header {\n  background-color: ").concat(colors.lighter, " !important;\n  border: 1px solid transparent !important;\n  color: ").concat(colors.contrast, ";\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header .icon {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected .icon {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header:hover {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-focused:not(.hide-focus) {\n  border: 1px solid ").concat(colors.contrast, " !important;\n  box-shadow: none !important;\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: ").concat(colors.lighter, ";\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  border: 1px solid ").concat(colors.lighter, ";\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before,\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ").concat(colors.contrast, ";\n}\n\n.application-menu.is-personalizable button:focus:not(.hide-focus),\n.application-menu.is-personalizable .hyperlink:focus:not(.hide-focus)::after {\n  border-color: ").concat(colors.contrast, " !important;\n  box-shadow: none !important;\n}\n\n.application-menu .application-menu-header button:hover,\n.application-menu .application-menu-footer button:hover {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .accordion-header.has-filtered-children > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.has-filtered-children.is-focused {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield::placeholder {\n  color: ").concat(colors.contrast, ";\n  opacity: .5;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .icon {\n  color: ").concat(colors.contrast, ";\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper.active .icon {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header {\n  background-color: ").concat(colors.base, " !important;\n  border-top-color: transparent;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header:hover {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion-heading {\n  border-top-color: ").concat(colors.darkest, ";\n}\n\n.application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ").concat(colors.base, ";\n  border-bottom: none !important;\n}\n\nhtml[dir='rtl'] .application-menu.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n  border-left: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ").concat(colors.dark, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header {\n  background-color: transparent !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header:hover {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header.is-selected {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before {\n  background-color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: transparent !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded {\n  background-color: ").concat(colors.dark, " !important;\n  color: ").concat(colors.subtext, " !important;\n}\n\nhtml[class*=\"theme-uplift\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-focused:not(.hide-focus):not(.is-expanded) {\n  border-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-uplift\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-focused.is-expanded {\n  border-color: transparent !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-selected::before {\n  background-color: ").concat(colors.darker, " !important;\n  border-color: ").concat(colors.darker, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-focused::before {\n  border-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded + .accordion-pane {\n  background-color: ").concat(colors.dark, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded:hover::before {\n  border-color: ").concat(colors.darkest, " !important;\n  background-color: ").concat(colors.darkest, " !important;\n}\n\n.is-personalizable .personalize-header,\n.is-personalizable.tab-container {\n  background-color: ").concat(colors.dark, " !important;\n}\n\n.is-personalizable .personalize-subheader {\n  background-color: ").concat(colors.lighter, " !important;\n}\n\n.is-personalizable .personalize-text {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.is-personalizable .personalize-actionable,\n.is-personalizable .personalize-actionable svg {\n  color: ").concat(colors.contrast, ";\n  opacity: .8;\n}\n\n.is-personalizable .personalize-actionable:hover:not([disabled]),\n.is-personalizable .personalize-actionable:hover:not([disabled]) svg {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\n.is-personalizable .personalize-actionable.is-focused:not(.hide-focus),\n.is-personalizable .personalize-actionable:focus:not(.hide-focus) {\n  border-color: ").concat(colors.contrast, ";\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-actionable.hyperlink:focus:not(.hide-focus)::after {\n  border-color: ").concat(colors.contrast, ";\n  opacity: 1;\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-vertical-border {\n  border-color: ").concat(colors.light, ";\n}\n\n.is-personalizable .personalize-horizontal-bottom-border {\n  border-bottom: 1px solid ").concat(colors.darkest, ";\n}\n\n.is-personalizable .personalize-horizontal-top-border {\n  border-top: 1px solid: ").concat(colors.darkest, ";\n}\n\n.is-personalizable .personalize-chart-targeted .total.bar {\n  background-color: rgba(255, 255, 255, .8);\n}\n\n.is-personalizable .personalize-chart-targeted .chart-percent-text,\n.is-personalizable .personalize-chart-targeted .label {\n  color: ").concat(colors.text, ";\n}\n\n.is-personalizable .info-message,\n.is-personalizable .info-message .icon,\n.is-personalizable .info-message p {\n  color: ").concat(colors.text, " !important;\n}\n\n.is-personalizable .personalize-actionable-disabled,\n.is-personalizable .personalize-actionable-disabled:hover {\n  opacity: .4 !important;\n  cursor: default;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .arc,\n.hero-widget.is-personalizable .hero-header .chart-container .bar,\n.hero-widget.is-personalizable .hero-header .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-content .chart-container .arc,\n.hero-widget.is-personalizable .hero-content .chart-container .bar,\n.hero-widget.is-personalizable .hero-content .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-footer .chart-container .arc,\n.hero-widget.is-personalizable .hero-footer .chart-container .bar,\n.hero-widget.is-personalizable .hero-footer .chart-container.line-chart .dot {\n    stroke: ").concat(colors.lighter, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container text,\n.hero-widget.is-personalizable .hero-content .chart-container text,\n.hero-widget.is-personalizable .hero-footer .chart-container text {\n    fill: ").concat(colors.text, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-content .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-footer .chart-container .chart-legend-item-text {\n  color: ").concat(colors.text, ";\n  fill: ").concat(colors.text, ";\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .axis path, .chart-container .axis line,\n.hero-widget.is-personalizable .hero-header .chart-container .axis .tick0 line {\n  stroke: ").concat(colors.subtext, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .title,\n.hero-widget.is-personalizable .hero-content .title,\n.hero-widget.is-personalizable .hero-footer .title {\n  color: ").concat(colors.subtext, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-content .btn-tertiary,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-header .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon\n {\n  color: ").concat(colors.subtext, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon\n {\n  color: ").concat(colors.text, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.subtext, ",\n    0 0 2px 1px ").concat(colors.subtext, ";\n}\n\n.header.is-personalizable .toolbar [class*='btn']:focus:not(.hide-focus),\n.header.is-personalizable .flex-toolbar [class*='btn']:focus:not(.hide-focus),\n.subheader.is-personalizable .toolbar [class*='btn']:focus:not(.hide-focus),\n.subheader.is-personalizable .flex-toolbar [class*='btn']:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.subtext, ",\n    0 0 2px 1px ").concat(colors.subtext, ";\n}\n\n.tooltip.is-personalizable {\n  background-color: ").concat(colors.darkest, ";\n  border-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable .chart-swatch .swatch-row div {\n  border-bottom-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable,\n.tooltip.is-personalizable p,\n.tooltip.is-personalizable .chart-swatch .swatch-row span,\n.tooltip.is-personalizable .chart-swatch .swatch-row b {\n  color: ").concat(colors.tooltipText, ";\n}\n.tooltip.is-personalizable.top .arrow::after {\n  border-top-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.right .arrow::after {\n  border-right-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.bottom .arrow::after {\n  border-bottom-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.left .arrow::after {\n  border-left-color: ").concat(colors.darkest, ";\n}\n\n    ");
+    var baseColorObj = colorUtils.hexToRgb(colors.base);
+    var hyperlinkColorObj = colorUtils.hexToRgb(colors.hyperlinkText);
+    return "\n\n.is-personalizable ::selection {\n  background: ".concat(colors.selection, " !important\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane),\n.btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane).is-personalizable {\n  background-color: ").concat(colors.base, " !important;\n  border-color: ").concat(colors.base, " !important;\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):disabled,\n.btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane).is-personalizable:disabled {\n  background-color: ").concat(colors.baseDisabled, " !important;\n  border-color: ").concat(colors.baseDisabled, " !important;\n}\n\n.is-personalizable .btn-link:not(:disabled),\n.btn-link.is-personalizable:not(:disabled) {\n  color: ").concat(colors.light, " !important;\n}\n\n.is-personalizable .btn-link:not(:disabled) .icon,\n.btn-link.is-personalizable:not(:disabled) .icon {\n  color: ").concat(colors.light, " !important;\n}\n\n.is-personalizable button.is-pressed,\nbutton.is-personalizable.is-pressed {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable button.is-pressed .icon,\nbutton.is-personalizable.is-pressed .icon {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled),\n.btn-primary.is-personalizable:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled) {\n  background-color: ").concat(colors.darker, " !important;\n  border-color: ").concat(colors.darker, " !important;\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled),\n.btn-primary.is-personalizable:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled) {\n  background-color: ").concat(colors.darker, " !important;\n  border-color: ").concat(colors.darker, " !important;\n}\n\n.is-personalizable button:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):focus:not(.hide-focus),\nbutton.is-personalizable button:focus:not(.hide-focus),\n.is-personalizable a.btn:focus:not(.hide-focus),\na.btn.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-menu:focus:not(.hide-focus),\na.btn-menu.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-icon:focus:not(.hide-focus),\na.btn-icon.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-tertiary:focus:not(.hide-focus),\na.btn-tertiary.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-close:focus:not(.hide-focus),\na.btn-close.is-personalizable:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.base, ",\n    0 0 4px 2px rgba(").concat(baseColorObj.r, ", ").concat(baseColorObj.g, ", ").concat(baseColorObj.b, ", 0.3);\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):focus:not(.hide-focus),\n.btn-primary.is-personalizable button:focus:not(.hide-focus),\n.is-personalizable .btn-secondary:focus:not(.hide-focus),\n.btn-secondary.is-personalizable button:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px ").concat(colors.theme.bg, ",\n    0 0 0 3px ").concat(colors.base, ",\n    0 0 4px 2px rgba(").concat(baseColorObj.r, ", ").concat(baseColorObj.g, ", ").concat(baseColorObj.b, ", 0.3);\n}\n\n.is-personalizable .btn-menu:not(.btn-primary):not(.btn-secondary).is-open,\n.btn-menu:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open,\n.is-personalizable .btn-actions:not(.btn-primary):not(.btn-secondary).is-open,\n.btn-actions:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable .btn-menu:not(.btn-primary):not(.btn-secondary).is-open .icon,\n.btn-menu:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open .icon,\n.is-personalizable .btn-actions:not(.btn-primary):not(.btn-secondary).is-open .icon,\n.btn-actions:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open .icon {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable .hyperlink:not(.today),\n.hyperlink:not(.today).is-personalizable {\n  color: ").concat(colors.hyperlinkText, "\n}\n.is-personalizable .hyperlink:not(.today):hover,\n.hyperlink:not(.today).is-personalizable:hover {\n  color: ").concat(colors.hyperlinkTextHover, ";\n}\n.is-personalizable .hyperlink:not(.today):focus:not(.hide-focus),\n.hyperlink:not(.today).is-personalizable:focus:not(.hide-focus) {\n  border-color: ").concat(colors.hyperlinkText, ";\n  box-shadow: 0 0 4px 3px rgba(").concat(hyperlinkColorObj.r, ", ").concat(hyperlinkColorObj.g, ", ").concat(hyperlinkColorObj.b, ", 0.3);\n}\n\n.is-personalizable button:not(.btn-monthyear-pane) svg.ripple-effect,\nbutton:not(.btn-monthyear-pane).is-personalizable svg.ripple-effect,\n.is-personalizable a svg.ripple-effect,\na.is-personalizable svg.ripple-effect {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.is-personalizable .btn-primary svg.ripple-effect,\n.btn-primary.is-personalizable svg.ripple-effect,\n.is-personalizable .btn-secondary svg.ripple-effect,\n.btn-secondary.is-personalizable svg.ripple-effect {\n  background-color: ").concat(colors.contrast, " !important;\n  border-color: ").concat(colors.contrast, " !important;\n}\n\n.tab-container.module-tabs.is-personalizable {\n  border-top: 1px solid ").concat(colors.darkest, " !important;\n  border-bottom: 1px solid ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .tab:not(:first-child) {\n  border-left: 1px solid ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.tab-container.vertical.is-personalizable > .tab-list-container > .tab-list > .tab.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.tab-container.vertical.is-personalizable .tab-focus-indicator.is-visible {\n  border-color: ").concat(colors.base, " !important;\n  box-shadow: 0 0 4px 3px rgba(").concat(baseColorObj.r, ", ").concat(baseColorObj.g, ", ").concat(baseColorObj.b, ", 0.3);\n}\n\n.accordion.panel .accordion-header.is-selected {\n  background-color: ").concat(colors.lighter, " !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.builder-header.is-personalizable{\n  background-color: ").concat(colors.lighter, ";\n}\n\n.header.is-personalizable {\n  background-color: ").concat(colors.base, ";\n}\n\n.header.is-personalizable .title {\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable h1 {\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable button svg.ripple-effect {\n  background-color: ").concat(colors.contrast, " !important;\n}\n\n.header.is-personalizable button:not(:disabled),\n.header.is-personalizable button:not(:disabled) .icon,\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable .header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable button:not(:disabled):hover,\n.header.is-personalizable button:not(:disabled):hover .icon,\n.header.is-personalizable button:not(:disabled):hover .app-header.icon > span,\n.header.is-personalizable .toolbar [class*='btn']:hover:not([disabled]) {\n  color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\n.header.is-personalizable .go-button.is-personalizable {\n  background-color: ").concat(colors.lightest, ";\n  border-color:").concat(colors.lightest, ";\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab.is-selected:not(.is-disabled) {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled),\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)  {\n  color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\nhtml[class*=\"theme-uplift-\"] .header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\nhtml[class*=\"theme-uplift-\"] .is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  opacity: 1;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)::before {\n  background-color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .animated-bar {\n  background-color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .tab-list-container .tab.is-selected:not(.is-disabled):hover::before {\n  background-color: ").concat(colors.contrast, " !important;\n}\n\n.subheader.is-personalizable .go-button.is-personalizable {\n  background-color: ").concat(colors.dark, ";\n  border-color: ").concat(colors.dark, ";\n  color: ").concat(colors.contrast, ";\n}\n\n.module-tabs.is-personalizable .tab-more {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more:hover {\n  background-color: ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-open {\n  background-color: ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield {\n  background-color: ").concat(colors.hover, " !important;\n  border-bottom-color: ").concat(colors.hover, " !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield-category-button {\n  background-color: ").concat(colors.hover, " !important;\n  border-bottom-color: ").concat(colors.hover, " !important;\n}\n\n.subheader.is-personalizable {\n  background-color: ").concat(colors.lighter, " !important;\n}\n\n.builder .sidebar .header {\n  border-right: 1px solid ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab:hover {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.has-toolbar.is-personalizable .tab-list-container + .toolbar {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable [class^=\"btn\"] {\n  background-color: transparent !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled {\n  background-color: ").concat(colors.darker, " !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled > svg {\n  fill: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button:hover {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > .searchfield {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > svg {\n  fill: ").concat(colors.contrast, " !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::before,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::before {\n  background-image: linear-gradient(to right, ").concat(colors.dark, " , ").concat(colorUtils.hexToRgba(colors.dark, 0), ") !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::after,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::after {\n  background-image: linear-gradient(to right, ").concat(colorUtils.hexToRgba(colors.dark, 0), ", ").concat(colors.dark, ") !important;\n}\n\n.hero-widget.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .hero-bottom {\n  background-color: ").concat(colors.base, ";\n}\n\n.hero-widget.is-personalizable .hero-footer .hero-footer-nav li::before {\n  color: ").concat(colors.light, ";\n}\n\n.hero-widget.is-personalizable .chart-container .arc {\n  stroke: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .chart-container .bar {\n  stroke: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .chart-container.line-chart .dot {\n  stroke: ").concat(colors.lighter, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button .icon,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button span,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .hyperlink {\n  color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button:not(:disabled):hover .icon,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button:not(:disabled):hover span,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .hyperlink:hover {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel {\n  background-color: ").concat(colors.lighter, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .name-xl,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .name,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion-heading {\n  color: ").concat(colors.contrast, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel .accordion-header {\n  background-color: ").concat(colors.lighter, " !important;\n  border: 1px solid transparent !important;\n  color: ").concat(colors.contrast, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel .accordion-header .icon {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .btn-icon:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.lighter, ",\n    0 0 2px 1px ").concat(colors.lighter, ";\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover {\n  border-bottom-color: ").concat(colors.dark, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected .icon {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-focused:not(.hide-focus) {\n  border: 1px solid ").concat(colors.contrast, " !important;\n  box-shadow: none !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: ").concat(colors.lighter, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  border: 1px solid ").concat(colors.lighter, ";\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before,\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ").concat(colors.contrast, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button:focus:not(.hide-focus),\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .hyperlink:focus:not(.hide-focus)::after {\n  border-color: ").concat(colors.contrast, " !important;\n  box-shadow: none !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu .application-menu-header button:hover,\nhtml[class*=\"theme-uplift-\"] .application-menu .application-menu-footer button:hover {\n  background-color: ").concat(colors.base, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .searchfield-wrapper .searchfield {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .accordion-header.has-filtered-children > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.has-filtered-children.is-focused {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield::placeholder {\n  color: ").concat(colors.contrast, ";\n  opacity: .5;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .icon {\n  color: ").concat(colors.contrast, ";\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper.active .icon {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header {\n  background-color: ").concat(colors.base, " !important;\n  border-top-color: transparent;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header:hover {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion-heading {\n  border-top-color: ").concat(colors.darkest, ";\n}\n\n.application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ").concat(colors.base, ";\n  border-bottom: none !important;\n}\n\nhtml[dir='rtl'] .application-menu.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n  border-left: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button svg.ripple-effect {\n  background-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n  border-right: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .application-menu-header {\n  background-color: ").concat(colors.lighter, ";\n  border-bottom-color: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .application-menu-footer {\n  background-color: ").concat(colors.lighter, ";\n  border-top-color: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ").concat(colors.dark, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header {\n  background-color: transparent !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header:hover {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header.is-selected {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before {\n  background-color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: transparent !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded {\n  background-color: ").concat(colors.dark, " !important;\n  color: ").concat(colors.subtext, " !important;\n}\n\nhtml[class*=\"theme-uplift\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-focused:not(.hide-focus):not(.is-expanded) {\n  border-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-uplift\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-focused.is-expanded {\n  border-color: transparent !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-selected::before {\n  background-color: ").concat(colors.darker, " !important;\n  border-color: ").concat(colors.darker, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-focused::before {\n  border-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded + .accordion-pane {\n  background-color: ").concat(colors.dark, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded:hover::before {\n  border-color: ").concat(colors.darkest, " !important;\n  background-color: ").concat(colors.darkest, " !important;\n}\n\n.is-personalizable .personalize-header,\n.is-personalizable.tab-container {\n  background-color: ").concat(colors.dark, " !important;\n}\n\n.is-personalizable .personalize-subheader {\n  background-color: ").concat(colors.lighter, " !important;\n}\n\n.is-personalizable .personalize-text {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.is-personalizable .personalize-actionable,\n.is-personalizable .personalize-actionable svg {\n  color: ").concat(colors.contrast, ";\n  opacity: .8;\n}\n\n.is-personalizable .personalize-actionable:hover:not([disabled]),\n.is-personalizable .personalize-actionable:hover:not([disabled]) svg {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\n.is-personalizable .personalize-actionable.is-focused:not(.hide-focus),\n.is-personalizable .personalize-actionable:focus:not(.hide-focus) {\n  border-color: ").concat(colors.contrast, ";\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-actionable.hyperlink:focus:not(.hide-focus)::after {\n  border-color: ").concat(colors.contrast, ";\n  opacity: 1;\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-vertical-border {\n  border-color: ").concat(colors.light, ";\n}\n\n.is-personalizable .personalize-horizontal-bottom-border {\n  border-bottom: 1px solid ").concat(colors.darkest, ";\n}\n\n.is-personalizable .personalize-horizontal-top-border {\n  border-top: 1px solid: ").concat(colors.darkest, ";\n}\n\n.is-personalizable .personalize-chart-targeted .total.bar {\n  background-color: rgba(255, 255, 255, .8);\n}\n\n.is-personalizable .personalize-chart-targeted .chart-percent-text,\n.is-personalizable .personalize-chart-targeted .label {\n  color: ").concat(colors.text, ";\n}\n\n.is-personalizable .info-message,\n.is-personalizable .info-message .icon,\n.is-personalizable .info-message p {\n  color: ").concat(colors.text, " !important;\n}\n\n.is-personalizable .personalize-actionable-disabled,\n.is-personalizable .personalize-actionable-disabled:hover {\n  opacity: .4 !important;\n  cursor: default;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .arc,\n.hero-widget.is-personalizable .hero-header .chart-container .bar,\n.hero-widget.is-personalizable .hero-header .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-content .chart-container .arc,\n.hero-widget.is-personalizable .hero-content .chart-container .bar,\n.hero-widget.is-personalizable .hero-content .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-footer .chart-container .arc,\n.hero-widget.is-personalizable .hero-footer .chart-container .bar,\n.hero-widget.is-personalizable .hero-footer .chart-container.line-chart .dot {\n    stroke: ").concat(colors.lighter, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container text,\n.hero-widget.is-personalizable .hero-content .chart-container text,\n.hero-widget.is-personalizable .hero-footer .chart-container text {\n    fill: ").concat(colors.text, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-content .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-footer .chart-container .chart-legend-item-text {\n  color: ").concat(colors.text, ";\n  fill: ").concat(colors.text, ";\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .axis path, .chart-container .axis line,\n.hero-widget.is-personalizable .hero-header .chart-container .axis .tick0 line {\n  stroke: ").concat(colors.subtext, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .title,\n.hero-widget.is-personalizable .hero-content .title,\n.hero-widget.is-personalizable .hero-footer .title {\n  color: ").concat(colors.subtext, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-content .btn-tertiary,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-header .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon\n {\n  color: ").concat(colors.subtext, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon\n {\n  color: ").concat(colors.text, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.subtext, ",\n    0 0 2px 1px ").concat(colors.subtext, ";\n}\n\n.header.is-personalizable .toolbar [class*='btn']:focus:not(.hide-focus),\n.header.is-personalizable .flex-toolbar [class*='btn']:focus:not(.hide-focus),\n.subheader.is-personalizable .toolbar [class*='btn']:focus:not(.hide-focus),\n.subheader.is-personalizable .flex-toolbar [class*='btn']:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.subtext, ",\n    0 0 2px 1px ").concat(colors.subtext, ";\n}\n\n/*\n.tooltip.is-personalizable {\n  background-color: ").concat(colors.darkest, ";\n  border-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable .chart-swatch .swatch-row div {\n  border-bottom-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable,\n.tooltip.is-personalizable p,\n.tooltip.is-personalizable .chart-swatch .swatch-row span,\n.tooltip.is-personalizable .chart-swatch .swatch-row b {\n  color: ").concat(colors.tooltipText, ";\n}\n.tooltip.is-personalizable.top .arrow::after {\n  border-top-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.right .arrow::after {\n  border-right-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.bottom .arrow::after {\n  border-bottom-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.left .arrow::after {\n  border-left-color: ").concat(colors.darkest, ";\n}\n*/\n    ");
   }
 
   var COMPONENT_NAME = 'personalize'; // Component Defaults
@@ -9604,6 +9982,35 @@ var Soho = (function (exports) {
 
       var defaultColors = {
         header: '2578A9'
+      }; // Pass in a standard set of theme-specific colors.
+      // These colors aren't personalized, but they may need to be referenced
+      // within the personalization colors CSS generator.
+
+      var themeColors = theme.themeColors();
+      colors.theme = {};
+      colors.theme.bg = themeColors.components.body.primary.background.value;
+      colors.theme.altbg = themeColors.components.body.secondary.background.value;
+      colors.theme.text = themeColors.components.body.primary.font.value;
+      var dark = false;
+      var contrast = false;
+      var uplift = false;
+
+      if (themeColors.themeName.indexOf('contrast') > -1) {
+        contrast = true;
+      }
+
+      if (themeColors.themeName.indexOf('dark') > -1) {
+        dark = true;
+      }
+
+      if (themeColors.themeName.indexOf('uplift') > -1) {
+        uplift = true;
+      }
+
+      colors.theme.props = {
+        contrast: contrast,
+        dark: dark,
+        uplift: uplift
       }; // Force to be light text on custom colors { color: ['soho', 'uplift'] }
 
       var forceToBeLightTextOn = {
@@ -9630,11 +10037,13 @@ var Soho = (function (exports) {
       Object.keys(forceToBeLightTextOn).forEach(function (color) {
         foundColor = foundColor || forceToBeLightTextOn[color].indexOf(isDark) > -1;
       });
-      isDark = foundColor ? 'white' : null;
-      var lightest = colorUtils.validateHex(colors.lightest || colorUtils.getLuminousColorShade(colors.header || defaultColors.header, 0.3));
-      var contrast = colorUtils.getContrastColor(lightest, null, isDark);
+      isDark = foundColor ? 'white' : null; // Evaluate text contrast colors.
+      // If the primary color is too "bright", this will flip the text color to black.
 
-      if (contrast === 'white') {
+      var lightest = colorUtils.validateHex(colors.lightest || colorUtils.getLuminousColorShade(colors.header || defaultColors.header, 0.3));
+      var textContrastColor = colorUtils.getContrastColor(lightest, null, isDark);
+
+      if (textContrastColor === 'white') {
         defaultColors.text = 'ffffff';
         defaultColors.subtext = 'f0f0f0';
       } else {
@@ -9664,7 +10073,59 @@ var Soho = (function (exports) {
       colors.contrast = colors.text;
       colors.dark = colors.btnColorSubheader;
       colors.darker = colors.inactive;
-      colors.darkest = colors.horizontalBorder;
+      colors.darkest = colors.horizontalBorder; // Some disabled colors on some preset color schemes come out terrible,
+      // unless they are adjusted here. { color: ['soho', 'uplift'] }
+      // The alternate color is generally less luminous and less color-saturated (more gray).
+
+      var alternateDisabledColors = {
+        amber: ['#db7726', '#bb5500'],
+        // amber 09
+        amethyst: ['#9279a6', '#7834dd'],
+        // amethyst 06
+        emerald: ['#56932e', '#1f9254'],
+        // emerald 08
+        slate: ['#50535a', '#98949e'] // slate 06
+
+      };
+      var useAlternates = false;
+      var fixedVal = colorUtils.validateHex("".concat(colors.header || defaultColors.header).toLowerCase());
+      Object.keys(alternateDisabledColors).forEach(function (color) {
+        useAlternates = useAlternates || alternateDisabledColors[color].indexOf(fixedVal) > -1;
+      }); // Start with standard Soho values
+
+      var baseColor = colors.light;
+      var lum = useAlternates ? 0.5 : 0.7;
+      var sat = useAlternates ? 0.3 : 0.5;
+
+      if (!uplift) {
+        // Soho adjustments go here
+        if (dark) {
+          baseColor = colors.darkest;
+          lum = -0.1;
+        } else if (contrast) {
+          lum = 0.3;
+        }
+      } else {
+        // Uplift adjustments go here
+        lum = useAlternates ? 0.6 : 0.8;
+        sat = useAlternates ? 0.6 : 0.8;
+
+        if (dark) {
+          baseColor = colors.darkest;
+          lum = 0.1;
+        } else if (contrast) {
+          lum = 0.8;
+          sat = 0.4;
+        }
+      }
+
+      var disabledBGColor = colorUtils.getLuminousColorShade(baseColor, lum);
+      disabledBGColor = colorUtils.getDesaturatedColor(disabledBGColor, sat);
+      colors.baseDisabled = disabledBGColor; // Hyperlink/Text Selection
+
+      colors.hyperlinkText = dark ? colors.dark : colors.lighter;
+      colors.hyperlinkTextHover = dark ? colors.darker : colors.lightest;
+      colors.selection = dark ? colors.darker : colors.lightest;
       var tooltipContrast = colorUtils.getContrastColor(colors.darkest);
       defaultColors.tooltipText = tooltipContrast === 'white' ? 'ffffff' : '000000';
       colors.tooltipText = colorUtils.validateHex(colors.tooltipText || defaultColors.tooltipText);
@@ -9820,7 +10281,9 @@ var Soho = (function (exports) {
       originalCss.before(newCss); // record state of theme in settings
 
       this.settings.theme = incomingTheme;
-      theme.setTheme(incomingTheme);
+      theme.setTheme(incomingTheme); // Do another color reset, if applicable
+
+      this.setColors(this.settings.colors);
     },
 
     /**
@@ -10093,12 +10556,11 @@ var Soho = (function (exports) {
     var labels = labelText.closest('label, .label');
     labels.each(function () {
       control = $('input, textarea, select', this);
-      str = control.attr('class');
+      str = control.attr('class'); // Add "inline" and "inline-{control}" class to label
+      // assuming control class is first thing in class string
+
       $(this).addClass(function () {
-        return (// Add "inline" and "inline-{control}" class to label
-          // assuming control class is first thing in class string
-          "inline".concat(str ? " inline-".concat(str.indexOf(' ') === -1 ? str : str.substr(0, str.indexOf(' '))) : '')
-        );
+        return "inline".concat(str ? " inline-".concat(str.indexOf(' ') === -1 ? str : str.substr(0, str.indexOf(' '))) : '');
       });
     });
   }); // Fix: Radio buttons was not selecting when click and than use arrow keys on Firefox
@@ -10409,7 +10871,8 @@ var Soho = (function (exports) {
         }
 
         return this.isIe;
-      }).end().each(function () {
+      });
+      this.items.each(function () {
         $(this) // Drag start --------------------------------------------------------------------------
         .on(self.dragStart, function (e) {
           if (self.handle && !isHandle) {
@@ -12949,10 +13412,13 @@ var Soho = (function (exports) {
        */
 
       this.element.trigger('show', [this.tooltip]);
-      var mouseUpEventName = this.isTouch ? 'touchend' : 'mouseup'; // Personalizable the toolbar
+      var mouseUpEventName = this.isTouch ? 'touchend' : 'mouseup'; // Personalizable the tooltip
 
-      var isPersonalizable = self.element.closest('.is-personalizable').length > 0;
-      self.tooltip[0].classList[isPersonalizable ? 'add' : 'remove']('is-personalizable');
+      if (!self.settings.popover) {
+        var isPersonalizable = self.element.closest('.is-personalizable').length > 0;
+        self.tooltip[0].classList[isPersonalizable ? 'add' : 'remove']('is-personalizable');
+      }
+
       setTimeout(function () {
         $(document).on("".concat(mouseUpEventName, ".").concat(COMPONENT_NAME$5, "-").concat(self.uniqueId), function (e) {
           var target = $(e.target);
@@ -14526,7 +14992,9 @@ var Soho = (function (exports) {
 
       if (thisRawValue === masks.EMPTY_STRING || thisRawValue[0] === PREFIX[0] && rawValueLength === 1) {
         return PREFIX.split(masks.EMPTY_STRING).concat([masks.DIGITS_REGEX]).concat(SUFFIX.split(masks.EMPTY_STRING));
-      } else if (thisRawValue === DECIMAL && options.allowDecimal) {
+      }
+
+      if (thisRawValue === DECIMAL && options.allowDecimal) {
         return PREFIX.split(masks.EMPTY_STRING).concat(['0', DECIMAL, masks.DIGITS_REGEX]).concat(SUFFIX.split(masks.EMPTY_STRING));
       }
 
@@ -15304,7 +15772,8 @@ var Soho = (function (exports) {
 
         var intersection = leftHalfChars.filter(function (char) {
           return normalizedConformedValue.indexOf(char) !== -1;
-        }); // The last character in the intersection is the character we want to
+        }); //eslint-disable-line
+        // The last character in the intersection is the character we want to
         // look for in the conformed value and the one we want to adjust the caret close to
 
         targetChar = intersection[intersection.length - 1]; // Calculate the number of mask characters in the previous placeholder
@@ -15353,13 +15822,12 @@ var Soho = (function (exports) {
         }).length; // We need to know if the placeholder contains characters that look like
         // our `targetChar`, so we don't select one of those by mistake.
 
-        var countTargetCharInPlaceholder = opts.placeholder.substr(0, opts.placeholder.indexOf(opts.placeholderChar)).split(masks.EMPTY_STRING).filter(function (char, index) {
-          return (// Check if `char` is the same as our `targetChar`, so we account for it
-            char === targetChar && // but also make sure that both the `rawValue` and placeholder don't have the same
-            // character at the same index because if they are equal, that means we are already
-            // counting those characters in `countTargetCharInIntersection`
-            opts.rawValue[index] !== char
-          );
+        var countTargetCharInPlaceholder = opts.placeholder.substr(0, opts.placeholder.indexOf(opts.placeholderChar)).split(masks.EMPTY_STRING) // Check if `char` is the same as our `targetChar`, so we account for it
+        // but also make sure that both the `rawValue` and placeholder don't have the same
+        // character at the same index because if they are equal, that means we are already
+        // counting those characters in `countTargetCharInIntersection`
+        .filter(function (char, index) {
+          return char === targetChar && opts.rawValue[index] !== char;
         }).length; // The number of times we need to see occurrences of the `targetChar` before we
         // know it is the one we're looking for is:
 
@@ -15931,9 +16399,13 @@ var Soho = (function (exports) {
     _getSafeRawValue: function getSafeRawValue(inputValue) {
       if (utils.isString(inputValue)) {
         return inputValue;
-      } else if (utils.isNumber(inputValue)) {
+      }
+
+      if (utils.isNumber(inputValue)) {
         return String(inputValue);
-      } else if (inputValue === undefined || inputValue === null) {
+      }
+
+      if (inputValue === undefined || inputValue === null) {
         return '';
       }
 
@@ -16886,7 +17358,7 @@ var Soho = (function (exports) {
           }
 
           if (submenuWrapper instanceof HTMLElement) {
-            li.className += "".concat(DOM.classNameExists(li) ? ' ' : '', "submenu");
+            li.className += "".concat(DOM.hasAnyClass(li) ? ' ' : '', "submenu");
             submenu = $(submenuWrapper).children('ul')[0];
 
             if (submenu instanceof HTMLElement) {
@@ -18895,16 +19367,20 @@ var Soho = (function (exports) {
 
     /**
      * Teardown and remove any added markup and events.
+     * @param {boolean} [noModalDestroy=false] if true, skips the routine for destroying the modal (presumably because this is called from another method that destroys the modal manually)
      * @returns {void}
      */
-    destroy: function destroy() {
+    destroy: function destroy(noModalDestroy) {
       this.buttons.off();
       this.element.off('open.about');
-      var modalApi = this.modal.data('modal');
 
-      if (modalApi) {
-        modalApi.element.off('beforeopen.about');
-        modalApi.destroy();
+      if (noModalDestroy !== true) {
+        var modalApi = this.modal.data('modal');
+
+        if (modalApi) {
+          modalApi.element.off('beforeopen.about');
+          modalApi.destroy();
+        }
       }
 
       if (this.element.length > 0) {
@@ -19877,13 +20353,17 @@ var Soho = (function (exports) {
 
     /**
     * Expand the given Panel on the Accordion.
-    * @param {object} header The jquery header element.
+    * @param {object|string} header The jquery header element or the id of a header DOM element
     * @param {boolean} dontCollapseHeaders if defined, will not collapse any open accordion headers
     *  (generally used while filtering)
     * @returns {$.Deferred} resolved on the completion of an Accordion pane's
     *  collapse animation (or immediately, if animation is disabled).
     */
     expand: function expand(header, dontCollapseHeaders) {
+      if (typeof header === 'string') {
+        header = this.element.find("#".concat(header)).first();
+      }
+
       if (!header || !header.length) {
         return;
       }
@@ -20022,13 +20502,17 @@ var Soho = (function (exports) {
 
     /**
     * Collapse the given Panel on the Accordion.
-    * @param {object} header The jquery header element.
+    * @param {object|string} header The jquery header element or the id of a header DOM element
     * @param {boolean} closeChildren If true closeChildren elements that may be on the page. Skip for performance.
     * @returns {$.Deferred} resolved on the completion of an Accordion pane's
     *  collapse animation (or immediately, if animation is disabled).
     */
     collapse: function collapse(header) {
       var closeChildren = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
+      if (typeof header === 'string') {
+        header = this.element.find("#".concat(header)).first();
+      }
 
       if (!header || !header.length) {
         return;
@@ -21894,8 +22378,8 @@ var Soho = (function (exports) {
           output += code.replace(/{{{(.*?)}}}|{{(!?)(&?)(>?)(.*?)}}/g, function (match, raw, comment, isRaw, partial, name) {
             return raw ? get(ctx, raw) //eslint-disable-line
             : isRaw ? get(ctx, name) //eslint-disable-line
-            : partial ? render(get(ctx, name), ctx) //eslint-disable-line
-            : !comment ? new Option(get(ctx, name)).innerHTML : '';
+            : partial ? render(get(ctx, name), ctx) : //eslint-disable-line
+            !comment ? new Option(get(ctx, name)).innerHTML : '';
           });
           inverted = invert;
         } else {
@@ -23336,7 +23820,7 @@ var Soho = (function (exports) {
           }), "</span>\n          </button>\n        "));
         }
 
-        this.goButton.attr('id', utils.uniqueId(this.goButton, 'searchfield-go-button-'));
+        this.goButton[0].setAttribute('id', utils.uniqueId(this.goButton, 'searchfield-go-button-'));
         this.wrapper.addClass('has-go-button');
         this.element.after(this.goButton);
       } else {
@@ -25666,6 +26150,7 @@ var Soho = (function (exports) {
       $(document).off(['click.applicationmenu', 'open-applicationmenu', 'close-applicationmenu', 'dismiss-applicationmenu', 'keydown.applicationmenu'].join(' '));
       this.element.find('.expandable-area').off(['beforeexpand.applicationmenu', 'aftercollapse.applicationmenu', "keydown.".concat(COMPONENT_NAME$g, "-switcher")].join(' '));
       this.accordion.off(['blur.applicationmenu', 'selected.applicationmenu', 'followlink.applicationmenu', 'afterexpand.applicationmenu', 'aftercollapse.applicationmenu'].join(' '));
+      this.element.find('.application-menu-toolbar').off("click.".concat(COMPONENT_NAME$g));
 
       if (this.accordionAPI && typeof this.accordionAPI.destroy === 'function') {
         if (this.isFiltered) {
@@ -25806,8 +26291,17 @@ var Soho = (function (exports) {
 
           delete _this.keyboardChangedFocus;
         });
-      }
+      } // If application menu toolbars exist, clicking buttons on the toolbars
+      // should cause the menu to close in some conditions.
 
+
+      this.element.find('.application-menu-toolbar').on("click.".concat(COMPONENT_NAME$g), 'button', function (e) {
+        if (e.defaultPrevented) {
+          return;
+        }
+
+        _this.handleDismissOnClick();
+      });
       $(document).on('open-applicationmenu', function () {
         self.openMenu(undefined, true);
       }).on('close-applicationmenu', function () {
@@ -26797,6 +27291,7 @@ var Soho = (function (exports) {
 
   charts.formatToSettings = function formatToSettings(data, settings) {
     var d = data.data ? data.data : data;
+    var percentValue = settings.formatter && settings.formatter !== '.0f' ? d3.format(settings.formatter)(d.percent) : "".concat(isNaN(d.percentRound) ? 0 : d.percentRound, "%");
 
     if (settings.show === 'value') {
       return settings.formatter ? d3.format(settings.formatter)(d.value) : d.value;
@@ -26807,7 +27302,7 @@ var Soho = (function (exports) {
     }
 
     if (settings.show === 'label (percent)') {
-      return "".concat(d.name, " (").concat(isNaN(d.percentRound) ? 0 : d.percentRound, "%)");
+      return "".concat(d.name, " (").concat(percentValue, ")");
     }
 
     if (settings.show === 'label (value)') {
@@ -26815,7 +27310,7 @@ var Soho = (function (exports) {
     }
 
     if (settings.show === 'percent') {
-      return "".concat(isNaN(d.percentRound) ? 0 : d.percentRound, "%");
+      return percentValue;
     }
 
     if (typeof settings.show === 'function') {
@@ -27519,6 +28014,7 @@ var Soho = (function (exports) {
         var thisArcData = dataset && dataset[0] && dataset[0].data ? //eslint-disable-line
         dataset[0].data[o.i] : o.d ? o.d.data : o.d; //eslint-disable-line
 
+        thisArcData = thisArcData || {};
         thisArcData.selected = true;
         selector.classed('is-selected', true).classed('is-not-selected', false).attr('transform', 'scale(1.025, 1.025)');
         triggerData.push({
@@ -27944,11 +28440,17 @@ var Soho = (function (exports) {
 
         if (chartData.format && typeof chartData.format[type] === 'function') {
           return callback(chartData.format[type], d, i);
-        } else if (chartData.format && typeof chartData.format[type] === 'string') {
+        }
+
+        if (chartData.format && typeof chartData.format[type] === 'string') {
           return d3.format(chartData.format[type])(d);
-        } else if (_this.settings.format && typeof _this.settings.format[type] === 'function') {
+        }
+
+        if (_this.settings.format && typeof _this.settings.format[type] === 'function') {
           return callback(_this.settings.format[type], d, i);
-        } else if (_this.settings.format && typeof _this.settings.format[type] === 'string') {
+        }
+
+        if (_this.settings.format && typeof _this.settings.format[type] === 'string') {
           return d3.format(_this.settings.format[type])(d);
         }
 
@@ -29065,7 +29567,7 @@ var Soho = (function (exports) {
   * @param {string} [settings.title = null] The Main text to show.
   * @param {string} [settings.info = null] Longer paragraph text to show
   * @param {string} [settings.icon = null] The name of the icon to use. See {@link https://design.infor.com/code/ids-enterprise/latest/demo/icons/example-empty-widgets?font=source-sans} for options.
-  * @param {boolean} [settings.button = null] The button text and click event to add.
+  * @param {boolean} [settings.button = null] The button settings to use (click, isPrimary, cssClass ect)
   * @param {string} [settings.color = 'graphite']  Defaults to 'graphite' but can also be azure. Later may be expanded to all personalization colors.
   */
 
@@ -29204,6 +29706,7 @@ var Soho = (function (exports) {
    * the size on hover and stroke or even add a custom class.
    * Example `dots: { radius: 3, radiusOnHover: 4, strokeWidth: 0, class: 'custom-dots'}`
    * @param {string} [settings.formatterString] Use d3 format some examples can be found on http://bit.ly/1IKVhHh
+   * @pram {boolean} [settings.fitHeight=true] If true chart height will fit in parent available height.
    * @param {object} [settings.emptyMessage] An empty message will be displayed when there is no chart data.
    * This accepts an object of the form emptyMessage:
    * `{title: 'No Data Available',
@@ -29222,6 +29725,7 @@ var Soho = (function (exports) {
     hideDots: false,
     animate: true,
     redrawOnResize: true,
+    fitHeight: true,
     emptyMessage: {
       title: Locale ? Locale.translate('NoData') : 'No Data Available',
       info: '',
@@ -29368,6 +29872,11 @@ var Soho = (function (exports) {
       if (isViewSmall && !!xRotate.small) {
         isAxisXRotate = true;
         xRotate.use = xRotate.small;
+      } // If card action present then use instead fit height.
+
+
+      if (isCardAction) {
+        s.fitHeight = false;
       } // Get maxes
 
 
@@ -29395,11 +29904,14 @@ var Soho = (function (exports) {
         bottom: isAxisLabels.bottom ? isAxisXRotate ? 60 : 50 : xRotateMarginBot + 35,
         left: isAxisLabels.left ? 75 : 65
       };
+      var parentAvailableHeight = utils.getParentAvailableHeight(self.element[0]);
+      var useHeight = s.fitHeight ? parentAvailableHeight : parseInt(parent.height(), 10);
       var width = parent.width() - margin.left - margin.right;
-      var height = parent.height() - margin.top - margin.bottom - 30; // legend
+      var height = useHeight - margin.top - margin.bottom - 30; // legend
+      // let height = parent.height() - margin.top - margin.bottom - 30; // legend
 
       if (isCardAction) {
-        height -= 40;
+        height -= 42;
       }
 
       self.svg = d3.select(this.element[0]).append('svg').attr('width', width + margin.left + margin.right).attr('height', height + margin.top + margin.bottom).append('g').attr('transform', "translate(".concat(margin.left, ",").concat(margin.top, ")"));
@@ -30192,6 +30704,7 @@ var Soho = (function (exports) {
   * @param {string} [settings.format = null] The d3 axis format
   * @param {string} [settings.formatterString] Use d3 format some examples can be found on http://bit.ly/1IKVhHh
   * @param {number} [settings.ticks = 9] The number of ticks to show.
+  * @pram {boolean} [settings.fitHeight=true] If true chart height will fit in parent available height.
   * @param {function} [settings.xAxis.formatText] A function that passes the text element and a counter.
   * You can return a formatted svg markup element to replace the current element.
   * For example you could use tspans to wrap the strings or color them.
@@ -30214,6 +30727,7 @@ var Soho = (function (exports) {
     format: null,
     redrawOnResize: true,
     ticks: 9,
+    fitHeight: true,
     emptyMessage: {
       title: Locale ? Locale.translate('NoData') : 'No Data Available',
       info: '',
@@ -30291,8 +30805,10 @@ var Soho = (function (exports) {
         left: 45
       };
       var legendHeight = 40;
+      var parentAvailableHeight = utils.getParentAvailableHeight(self.element[0]);
+      var useHeight = this.settings.fitHeight ? parentAvailableHeight : parseInt(parent.height(), 10);
       var width = parent.width() - margin.left - margin.right - 10;
-      var height = parent.height() - margin.top - margin.bottom - (isSingle && dataset[0].name === undefined ? self.settings.isStacked || isPositiveNegative ? legendHeight - 10 : 0 : legendHeight);
+      var height = useHeight - margin.top - margin.bottom - (isSingle && dataset[0].name === undefined ? self.settings.isStacked || isPositiveNegative ? legendHeight - 10 : 0 : legendHeight);
       var yMinTarget;
       var yMaxTarget;
       var series;
@@ -30665,12 +31181,19 @@ var Soho = (function (exports) {
             var bandwidth = x0.bandwidth();
 
             if (!self.settings.isStacked && isGroupSmaller && bandwidth > barMaxWidth * dataArray.length * 2) {
-              x += x0.bandwidth() / 2 / dataArray.length / 2;
+              x += bandwidth / 2 / dataArray.length / 2;
             }
 
             if (self.isGrouped && !self.settings.isStacked) {
-              var barDiff = barMaxWidth / (x0.bandwidth() > 150 ? 2 : 4);
+              var barDiff = barMaxWidth / (bandwidth > 150 ? 2 : 4);
               x -= barDiff;
+            }
+
+            if (self.settings.isStacked && width < 290 && bandwidth < 40) {
+              var _dataArray$, _dataArray$$data;
+
+              var len = ((_dataArray$ = dataArray[0]) === null || _dataArray$ === void 0 ? void 0 : (_dataArray$$data = _dataArray$ == null ? void 0 : _dataArray$.data) === null || _dataArray$$data === void 0 ? void 0 : _dataArray$$data == null ? void 0 : _dataArray$$data.length) || 0;
+              x = (width - bandwidth * len) / len / 2;
             }
 
             return "translate(".concat(x, ",0)");
@@ -31430,6 +31953,7 @@ var Soho = (function (exports) {
    * @param {number} [settings.labelFactor=1.27] How far out than the outer circle should the labels be placed, this
    * may be useful to adjust for some labels.
    * @param {number} [settings.wrapWidth=60] The number of pixels after which a label needs to be given a new line.
+   * @pram {boolean} [settings.fitHeight=true] If true chart height will fit in parent available height.
    * You may want to change this based on label data.
    * @param {object} [settings.emptyMessage={
    *  title: (Locale ? Locale.translate('NoData') : 'No Data Available'),
@@ -31459,6 +31983,7 @@ var Soho = (function (exports) {
     showLines: true,
     labelFactor: 1.27,
     wrapWidth: 60,
+    fitHeight: true,
     emptyMessage: {
       title: Locale ? Locale.translate('NoData') : 'No Data Available',
       info: '',
@@ -31667,8 +32192,10 @@ var Soho = (function (exports) {
         });
       }); // influences the bar width
 
-      var height = parseInt(parent.height(), 10) - margins.top - margins.bottom - legendHeight;
-      var h = parseInt(parent.height(), 10) - margins.bottom - (s.isStacked ? 0 : legendHeight / 2);
+      var parentAvailableHeight = utils.getParentAvailableHeight(self.element[0]);
+      var useHeight = s.fitHeight ? parentAvailableHeight : parseInt(parent.height(), 10);
+      var height = useHeight - margins.top - margins.bottom - legendHeight;
+      var h = useHeight - margins.bottom - (s.isStacked ? 0 : legendHeight / 2);
       var w = parseInt(parent.width(), 10) - margins.left;
       var textWidth = charts.calculateTextRenderWidth(largestText);
 
@@ -31816,9 +32343,13 @@ var Soho = (function (exports) {
       .attr('mask', function (d, i) {
         if (dataset.length === 1 && dataset[0][i].pattern) {
           return "url(#".concat(dataset[0][i].pattern, ")");
-        } else if (s.isStacked && series[d.index].pattern) {
+        }
+
+        if (s.isStacked && series[d.index].pattern) {
           return "url(#".concat(series[d.index].pattern, ")");
-        } else if (!s.isStacked && legendMap[i] && legendMap[i].pattern) {
+        }
+
+        if (!s.isStacked && legendMap[i] && legendMap[i].pattern) {
           return "url(#".concat(legendMap[i].pattern, ")");
         }
 
@@ -32520,6 +33051,7 @@ var Soho = (function (exports) {
    * @param {string} [settings.tooltip.show='label (value)'] Controls what is visible in
     the tooltip, this can be value, label or percent or custom function.
    * @param {string} [settings.tooltip.formatter='.0f'] The d3.formatter string.
+   * @pram {boolean} [settings.fitHeight=true] If true chart height will fit in parent available height.
    * @param {object} [settings.emptyMessage] An empty message will be displayed when there is no chart data.
    * This accepts an object of the form emptyMessage:
    * `{title: 'No Data Available',
@@ -32555,6 +33087,7 @@ var Soho = (function (exports) {
       // value, label, label (value) or percent or custom function
       formatter: '.0f'
     },
+    fitHeight: true,
     emptyMessage: {
       title: Locale ? Locale.translate('NoData') : 'No Data Available',
       info: '',
@@ -32613,6 +33146,7 @@ var Soho = (function (exports) {
      */
     build: function build() {
       var self = this;
+      var s = this.settings;
       self.svg = d3.select(this.element[0]).append('svg');
       self.mainGroup = self.svg.append('g');
       self.mainGroup.append('g').attr('class', 'slices');
@@ -32620,12 +33154,12 @@ var Soho = (function (exports) {
       self.mainGroup.append('g').attr('class', 'lines');
       this.element.addClass('chart-pie');
 
-      if (this.settings.showMobile) {
-        this.settings.legendPlacement = 'bottom';
+      if (s.showMobile) {
+        s.legendPlacement = 'bottom';
       }
 
-      if (self.settings.legendPlacement) {
-        this.element.addClass("has-".concat(self.settings.legendPlacement, "-legend"));
+      if (s.legendPlacement) {
+        this.element.addClass("has-".concat(s.legendPlacement, "-legend"));
       }
 
       var w = parseInt(this.element.width(), 10);
@@ -32634,19 +33168,59 @@ var Soho = (function (exports) {
         height: h,
         width: w
       };
+      dims.isSmallView = dims.width < 360;
+      var legendBotOnSingleWidget = s.legendPlacement === 'bottom' && dims.isSmallView && !s.showMobile;
 
-      if (this.settings.lines.show === 'label' && this.settings.legendPlacement === 'bottom' || this.settings.lines.show === 'label' && this.settings.showLegend === 'false') {
+      if (legendBotOnSingleWidget) {
+        this.element.closest('.widget-content').css({
+          height: '',
+          'min-height': ''
+        });
+        h = parseInt(this.element.height(), 10);
+        dims.height = h;
+      }
+
+      if (!legendBotOnSingleWidget && s.fitHeight && dims.isSmallView) {
+        h = utils.getParentAvailableHeight(self.element[0]);
+        dims.height = h;
+      }
+
+      if (s.lines.show === 'label' && s.legendPlacement === 'bottom' || s.lines.show === 'label' && s.showLegend === 'false') {
         self.mainGroup.attr('transform', "translate(".concat(dims.width * 0.67777, ", ").concat(dims.height / 2, ")"));
       }
 
-      if (self.settings.legendPlacement === 'right') {
+      if (s.legendPlacement === 'right') {
         dims.width = w * 0.75;
       }
 
-      if (this.settings.showMobile) {
+      if (s.showMobile) {
         dims.height = h * 0.80; // make some more room for the legend
 
         this.element.addClass('is-mobile');
+      }
+
+      var heightAdjusted = 0;
+
+      if (legendBotOnSingleWidget) {
+        heightAdjusted = 35;
+        this.element.closest('.widget-content').css({
+          height: 'auto',
+          'min-height': 'auto'
+        });
+        var minHeight = dims.height - (23 + Math.round(s.dataset[0].data.length / 2) * 25);
+
+        if (this.element.closest('.auto-height ').length) {
+          minHeight += 78;
+        }
+
+        if (s.fitHeight) {
+          minHeight -= utils.getSiblingsHeight(self.element[0]);
+        }
+
+        $(this.svg.node()).css({
+          'min-height': minHeight
+        });
+        dims.height = parseInt(this.element.height(), 10) + heightAdjusted;
       }
 
       dims.radius = Math.min(dims.width, dims.height) / 2;
@@ -32654,11 +33228,30 @@ var Soho = (function (exports) {
       self.pie = d3.pie().sort(null).value(function (d) {
         return d.value;
       });
-      self.arc = d3.arc().outerRadius(dims.radius * 0.75).innerRadius(self.settings.isDonut ? dims.radius * 0.5 : 0); // Influences the label position
+      self.arc = d3.arc().outerRadius(dims.radius * 0.75).innerRadius(s.isDonut ? dims.radius * 0.5 : 0); // Influences the label position
 
       self.outerArc = d3.arc().innerRadius(dims.radius * 0.75).outerRadius(dims.radius * 0.75 + 20);
-      self.svg.attr('width', self.settings.legendPlacement === 'right' ? '75%' : '100%').attr('height', self.settings.showMobile ? '80%' : '100%');
-      self.mainGroup.attr('transform', "translate(".concat(dims.width / 2, ",").concat(dims.height / 2, ")")); // move the origin of the group's coordinate space to the center of the SVG element
+      self.svg.attr('width', s.legendPlacement === 'right' ? '75%' : '100%').attr('height', s.showMobile ? '80%' : '100%');
+      self.mainGroup.attr('transform', "translate(".concat(dims.width / 2, ",").concat((dims.height - heightAdjusted) / 2, ")"));
+
+      if (dims.isSmallView) {
+        if (!legendBotOnSingleWidget) {
+          self.svg.attr('height', "".concat(dims.height, "px"));
+          this.element.css({
+            height: 'auto'
+          });
+        }
+
+        if (!s.fitHeight) {
+          this.element.closest('.widget-content').css({
+            height: ''
+          });
+          this.element.css({
+            height: 'auto'
+          });
+        }
+      } // move the origin of the group's coordinate space to the center of the SVG element
+
 
       dims.center = {
         x: dims.width / 2,
@@ -32669,8 +33262,8 @@ var Soho = (function (exports) {
         return d.data.name;
       };
 
-      var isEmpty = !self.settings.dataset || self.settings.dataset.length === 0;
-      this.chartData = !isEmpty ? self.settings.dataset[0].data : [];
+      var isEmpty = !s.dataset || s.dataset.length === 0;
+      this.chartData = !isEmpty ? s.dataset[0].data : [];
       this.sum = d3.sum(this.chartData, function (d) {
         return d.value;
       }); // Calculate the percentages
@@ -32704,16 +33297,16 @@ var Soho = (function (exports) {
 
       self.updateData(self.chartData);
 
-      if (self.settings.showTooltips) {
+      if (s.showTooltips) {
         charts.appendTooltip('is-pie');
       }
 
-      if (this.settings.showLegend) {
+      if (s.showLegend) {
         var series = self.chartData.map(function (d) {
-          var name = charts.formatToSettings(d, self.settings.legend);
+          var name = charts.formatToSettings(d, s.legend);
 
-          if (self.settings.legendFormatter) {
-            name = "".concat(d.name, " (").concat(d3.format(self.settings.legendFormatter)(d.value), ")");
+          if (s.legendFormatter) {
+            name = "".concat(d.name, " (").concat(d3.format(s.legendFormatter)(d.value), ")");
           }
 
           if (d.name === 'Empty-Pie') {
@@ -32723,12 +33316,14 @@ var Soho = (function (exports) {
           return {
             name: name,
             display: 'twocolumn',
-            placement: self.settings.legendPlacement,
+            placement: s.legendPlacement,
             color: d.color
           };
         });
-        this.settings.svg = self.svg;
-        charts.addLegend(series, 'pie', this.settings, this.element);
+        s.svg = self.svg;
+        charts.addLegend(series, 'pie', s, this.element);
+        var setClass = heightAdjusted > 0 ? 'addClass' : 'removeClass';
+        this.element.find('.chart-legend')[setClass]('adjusted-height');
       }
 
       this.setInitialSelected();
@@ -32800,12 +33395,25 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     updateData: function updateData(data) {
+      var _self$settings$toolti, _self$settings$lines;
+
       // Pie Slices
       var self = this;
       var isPersonalizable = this.element.closest('.is-personalizable').length > 0;
       var tooltipInterval;
       var isEmpty = !self.settings.dataset || self.settings.dataset.length === 0;
       var slice = self.svg.select('.slices').selectAll('path.slice').data(self.pie(data), self.key);
+      var formatters = {
+        str: null,
+        isTooltip: ((_self$settings$toolti = self.settings.tooltip) === null || _self$settings$toolti === void 0 ? void 0 : _self$settings$toolti == null ? void 0 : _self$settings$toolti.formatter) && self.settings.tooltip.formatter !== PIE_DEFAULTS.tooltip.formatter,
+        isLines: ((_self$settings$lines = self.settings.lines) === null || _self$settings$lines === void 0 ? void 0 : _self$settings$lines == null ? void 0 : _self$settings$lines.formatter) && self.settings.lines.formatter !== PIE_DEFAULTS.lines.formatter
+      };
+
+      if (formatters.isTooltip) {
+        formatters.str = self.settings.tooltip.formatter;
+      } else if (formatters.isLines) {
+        formatters.str = self.settings.lines.formatter;
+      }
 
       var getOffset = function getOffset(node) {
         var body = document.body;
@@ -32917,10 +33525,14 @@ var Soho = (function (exports) {
         };
 
         var value = charts.formatToSettings(d, self.settings.tooltip);
-        content = d.data.tooltip || value;
-        content = content.replace('{{percent}}', "".concat(d.data.percentRound, "%"));
+        var formatted = {
+          value: formatters.str && !formatters.isTooltip ? d3.format(formatters.str)(d.value) : value,
+          percent: formatters.str ? d3.format(formatters.str)(d.data.percent) : "".concat(isNaN(d.data.percentRound) ? 0 : d.data.percentRound, "%")
+        };
+        content = d.data.tooltip || formatted.value;
+        content = content.replace('{{percent}}', "".concat(formatted.percent));
         content = content.replace('{{value}}', d.value);
-        content = content.replace('%percent%', "".concat(d.data.percentRound, "%"));
+        content = content.replace('%percent%', "".concat(formatted.percent));
         content = content.replace('%value%', d.value);
 
         if (content.indexOf('<b>') === -1) {
@@ -34401,7 +35013,13 @@ var Soho = (function (exports) {
     };
 
     var parseDate = function parseDate(dtStr) {
-      return Locale.parseDate(dtStr, parseDateOpts);
+      var retDate = Locale.parseDate(dtStr, parseDateOpts);
+
+      if (Locale.isIslamic(locale.name)) {
+        retDate = new Date(retDate[0], retDate[1], retDate[2], retDate[3], retDate[4], retDate[5], retDate[6]);
+      }
+
+      return retDate;
     };
 
     var translate = function translate(str) {
@@ -34455,6 +35073,11 @@ var Soho = (function (exports) {
     if (event.starts) {
       var startsLocale = parseDate(event.starts);
       event.startsLocale = formatDate(startsLocale);
+
+      if (Locale.isIslamic(locale.name)) {
+        event.startsLocale = formatDate(Locale.gregorianToUmalqura(startsLocale));
+      }
+
       event.startsHourLocale = formatDate(startsLocale, {
         date: 'hour'
       });
@@ -34469,6 +35092,11 @@ var Soho = (function (exports) {
     if (event.ends) {
       var endsLocale = parseDate(event.ends);
       event.endsLocale = formatDate(endsLocale);
+
+      if (Locale.isIslamic(locale.name)) {
+        event.endsLocale = formatDate(Locale.gregorianToUmalqura(endsLocale));
+      }
+
       event.endsHourLocale = formatDate(endsLocale, {
         date: 'hour'
       });
@@ -34747,10 +35375,6 @@ var Soho = (function (exports) {
     }
   };
    //eslint-disable-line
-
-  // Simply setup the Popover to be the same thing as the Tooltip.
-
-  $.fn.popover = $.fn.tooltip;
 
   var COMPONENT_NAME$s = 'tag'; // Tag style states
 
@@ -35505,6 +36129,7 @@ var Soho = (function (exports) {
   * even if no selectable options are present underneath.
   * @param {boolean} [settings.showSelectAll] if true, shows a `Select All` option at the top of a multiselect.
   * @param {boolean} [settings.showTags] if true, replaces the text-based pseudo-element in the page with a dismissible, tag-based display.
+  * @param {boolean} [settings.showSearchUnderSelected=false] if true, moves the Searchfield in the Dropdown list from directly on top of the pseudo-element to underneath/above, providing visibility into the currently selected results.  When configured as a Multiselect with Tags, this is the default option.
   * @param {boolean} [settings.source]  A function that can do an ajax call.
   * @param {boolean} [settings.sourceArguments = {}]  If a source method is defined, this flexible object can be
   * passed into the source method, and augmented with parameters specific to the implementation.
@@ -35518,6 +36143,8 @@ var Soho = (function (exports) {
   * @param {object} [settings.placementOpts = null]  Gets passed to this control's Place behavior
   * @param {function} [settings.onKeyDown = null]  Allows you to hook into the onKeyDown. If you do you can access the keydown event data. And optionally return false to cancel the keyDown action.
   * @param {object} [settings.tagSettings] if defined, passes along 'clickHandler' and 'dismissHandler' functions to any Tags in the Taglist
+  * @param {string} [settings.allTextString]  Custom text string for `All` text header use in MultiSelect.
+  * @param {string} [settings.selectedTextString]  Custom text string for `Selected` text header use in MultiSelect.
   */
 
   var DROPDOWN_DEFAULTS = {
@@ -35534,6 +36161,7 @@ var Soho = (function (exports) {
     showEmptyGroupHeaders: false,
     showSelectAll: false,
     showTags: false,
+    showSearchUnderSelected: false,
     source: undefined,
     sourceArguments: {},
     reload: reloadSourceStyles[0],
@@ -35542,7 +36170,9 @@ var Soho = (function (exports) {
     maxWidth: null,
     placementOpts: null,
     onKeyDown: null,
-    tagSettings: {}
+    tagSettings: {},
+    allTextString: null,
+    selectedTextString: null
   };
 
   function Dropdown(element, settings) {
@@ -35769,6 +36399,9 @@ var Soho = (function (exports) {
 
 
       if (this.settings.showTags) {
+        // Force searchfield to be beneath/above the pseudo element
+        // to prevent conflicts with the Tag List.
+        this.settings.showSearchUnderSelected = true;
         this.pseudoElem[0].classList.add('has-tags');
         this.renderTagList();
       }
@@ -36230,6 +36863,7 @@ var Soho = (function (exports) {
      */
     updateList: function updateList(term) {
       var self = this;
+      var s = this.settings;
       var isMobile = self.isMobile();
       var listExists = self.list !== undefined && self.list !== null && self.list.length > 0;
       var listContents = '';
@@ -36240,6 +36874,13 @@ var Soho = (function (exports) {
       var isMultiselect = this.settings.multiple === true;
       var moveSelected = "".concat(this.settings.moveSelected);
       var showSelectAll = this.settings.showSelectAll === true;
+      var headerText = {
+        all: Locale.translate('All'),
+        selected: Locale.translate('Selected'),
+        labelText: self.isInlineLabel ? self.inlineLabelText.text() : this.label.text()
+      };
+      headerText.all = typeof s.allTextString === 'string' && s.allTextString !== '' ? self.settings.allTextString : "".concat(headerText.all, " ").concat(headerText.labelText);
+      headerText.selected = typeof s.selectedTextString === 'string' && s.selectedTextString !== '' ? self.settings.selectedTextString : "".concat(headerText.selected, " ").concat(headerText.labelText);
 
       if (this.element[0].classList.contains('text-align-reverse')) {
         reverseText = ' text-align-reverse';
@@ -36358,7 +36999,7 @@ var Soho = (function (exports) {
         opts = opts.not(selectedOpts); // Show a "selected" header if there are selected options
 
         if (selectedOpts.length > 0) {
-          ulContents += buildLiHeader("".concat(Locale.translate('Selected'), " ").concat(self.isInlineLabel ? self.inlineLabelText.text() : this.label.text()));
+          ulContents += buildLiHeader(headerText.selected);
         }
 
         selectedOpts.each(function (i) {
@@ -36368,7 +37009,7 @@ var Soho = (function (exports) {
         // are no other optgroups present
 
         if (!hasOptGroups && opts.length > 0) {
-          ulContents += buildLiHeader("".concat(Locale.translate('All'), " ").concat(self.isInlineLabel ? self.inlineLabelText.text() : this.label.text()));
+          ulContents += buildLiHeader(headerText.all);
         }
       }
 
@@ -36479,7 +37120,10 @@ var Soho = (function (exports) {
         }
       }
 
-      this.setPlaceholder(text); // Set the "previousActiveDescendant" to the first of the items
+      if (!this.settings.showSearchUnderSelected) {
+        this.setPlaceholder(text);
+      } // Set the "previousActiveDescendant" to the first of the items
+
 
       this.previousActiveDescendant = opts.first().val();
       this.updateItemIcon(opts);
@@ -37326,7 +37970,7 @@ var Soho = (function (exports) {
       this.pseudoElem.attr('aria-expanded', 'true').addClass('is-open');
       this.searchInput.attr('aria-activedescendant', current.children('a').attr('id'));
 
-      if (this.settings.showTags) {
+      if (this.settings.showSearchUnderSelected) {
         this.list.find('.trigger').find('.icon').attr('class', 'icon search').changeIcon('search');
       } // In a grid cell
 
@@ -37362,7 +38006,7 @@ var Soho = (function (exports) {
 
       if (typeof this.filterTerm === 'string' && this.filterTerm.length > 0) {
         this.searchInput.val(this.filterTerm);
-      } else if (!this.settings.showTags) {
+      } else if (!this.settings.showSearchUnderSelected) {
         var selectedOpts = $(this.selectedOptions);
         var text = this.getOptionText(selectedOpts);
         this.searchInput.val(text);
@@ -37603,9 +38247,10 @@ var Soho = (function (exports) {
 
       positionOpts.parent = parentElement;
       positionOpts.useParentWidth = useParentWidth; // Use negative height of the pseudoElem to get the Dropdown list to overlap the input.
-      // Ignore this for Tag List Display and always position below/above the field.
+      // This is used when rendering a tag list, or if the Dropdown is explicitly configured for placing the Search outside the pseudo-element.
+      // Otherwise, always position below/above the field.
 
-      if (!this.settings.showTags) {
+      if (!this.settings.showSearchUnderSelected) {
         var isRetina = window.devicePixelRatio > 1;
         var isChrome = Environment.browser.name === 'chrome';
         positionOpts.y = -(parseInt(parentElement[0].clientHeight, 10) + parseInt(parentElementStyle.borderTopWidth, 10) + parseInt(parentElementStyle.borderBottomWidth, 10) - (!isChrome && isRetina ? 1 : 0));
@@ -38376,7 +39021,8 @@ var Soho = (function (exports) {
           if (option.label !== undefined && option.label.length) {
             option.label = replaceDoubleQuotes(option.label);
             textContent = option.label;
-          }
+          } // Detect whether or not the `<option>` should be selected
+
 
           var selectedValues = self.selectedValues;
           var hasSelectedValues = selectedValues.indexOf(val) > -1;
@@ -38385,11 +39031,13 @@ var Soho = (function (exports) {
             val.forEach(function (value) {
               if (value === option.value) {
                 option.selected = true;
-                selected = ' selected';
               }
             });
           } else if (option.value === val || hasSelectedValues) {
             option.selected = true;
+          }
+
+          if (option.selected) {
             selected = ' selected';
           } // Make sure that text content is populated.
           // If all else fails, just use the value.
@@ -38483,7 +39131,9 @@ var Soho = (function (exports) {
     getDataAttributes: function getDataAttributes(attr, attrToExclude) {
       if (!attr) {
         return;
-      } else if (typeof attr === 'string') {
+      }
+
+      if (typeof attr === 'string') {
         attr = [attr];
       }
 
@@ -38795,7 +39445,8898 @@ var Soho = (function (exports) {
     });
   };
 
-  var COMPONENT_NAME$v = 'timepicker'; // Timepicker Modes
+  var COMPONENT_NAME$v = 'colorpicker';
+  /**
+   * The ColorPicker Component is a trigger field with a listing colors that can be selected.
+   * @class ColorPicker
+   * @param {jQuery[]|HTMLElement} element The plugin element for the constuctor
+   * @param {object} [settings] The settings element.
+   * @param {object} [settings.themes={}] Themes available for ColorPicker
+   * @param {array} [settings.colors=[]] An array of objects of the form. {label: 'Azure', number: '01', value: 'CBEBF4'}
+   * that can be used to populate the color grid.
+   * @param {boolean} [settings.showLabel=false]  Show the label if true vs the hex value if false.
+   * @param {boolean} [settings.editable=true]  If false, the field is readonly and transparent. I.E. The value
+   * cannot be typed only editable by selecting.
+   * @param {boolean} [settings.uppercase=true] If false, lower case hex is allowed. If true upper case hex is allowed.
+   * If showLabel is true this setting is ignored.
+   * @param {boolean} [settings.colorOnly=false] If true the field will be shrunk to only show the color portion.
+   * @param {boolean} [settings.clearable=true] If true will add clearable option.
+   * @param {string} [settings.clearableText] The text to show in tooltip.
+   * @param {object} [settings.popupmenuSettings] optional Popupmenu settings that will supersede the defaults.
+   */
+
+  var COLORPICKER_DEFAULTS = {
+    // Theme key: MUST match with theme file name (ie: [filename: 'light-theme.css' -> 'light-theme'])
+    // BORDERS
+    // Use (,) commas to separate themes or single entry for border as:
+    // colors[{label: 'Slate', number: '01', value: 'F0F0F0',
+    // border: 'light-theme, contrast-theme'}]
+    // and assign which swatch theborder should apply ['all' or 'matched-only']
+    // themes: { 'contrast-theme': {'border': 'all'} }
+    // CHECKMARKS
+    // checkmark: {'one': [1, 2], 'two': [3, 10]}
+    // will add class as "checkmark-{key}", where current colors number is in range
+    // [{value[0]} to {value[1]}]
+    // will add class "checkmark-one", where current colors number is in range [1 to 3]
+    // and will add class "checkmark-two", where current colors number is in range [3 to 10]
+    themes: {
+      light: {
+        border: 'matched-only',
+        checkmark: {
+          one: [1, 2],
+          two: [3, 10]
+        }
+      },
+      dark: {
+        border: 'matched-only',
+        checkmark: {
+          one: [1, 2],
+          two: [3, 10]
+        }
+      },
+      contrast: {
+        border: 'all',
+        checkmark: {
+          one: [1, 3],
+          two: [4, 10]
+        }
+      }
+    },
+    customColors: false,
+    colors: [{
+      label: 'Slate',
+      number: '10',
+      value: '1a1a1a'
+    }, {
+      label: 'Slate',
+      number: '09',
+      value: '292929'
+    }, {
+      label: 'Slate',
+      number: '08',
+      value: '383838',
+      border: 'dark'
+    }, {
+      label: 'Slate',
+      number: '07',
+      value: '454545',
+      border: 'dark'
+    }, {
+      label: 'Slate',
+      number: '06',
+      value: '5C5C5C'
+    }, {
+      label: 'Slate',
+      number: '05',
+      value: '737373'
+    }, {
+      label: 'Slate',
+      number: '04',
+      value: '999999'
+    }, {
+      label: 'Slate',
+      number: '03',
+      value: 'BDBDBD'
+    }, {
+      label: 'Slate',
+      number: '02',
+      value: 'D8D8D8'
+    }, {
+      label: 'Slate',
+      number: '01',
+      value: 'F0F0F0',
+      border: 'light, contrast'
+    }, {
+      label: 'Amber',
+      number: '10',
+      value: 'D66221'
+    }, {
+      label: 'Amber',
+      number: '09',
+      value: 'DE7223'
+    }, {
+      label: 'Amber',
+      number: '08',
+      value: 'E68425'
+    }, {
+      label: 'Amber',
+      number: '07',
+      value: 'EB9728'
+    }, {
+      label: 'Amber',
+      number: '06',
+      value: 'EFAA30'
+    }, {
+      label: 'Amber',
+      number: '05',
+      value: 'F2BC41'
+    }, {
+      label: 'Amber',
+      number: '04',
+      value: 'F4C951'
+    }, {
+      label: 'Amber',
+      number: '03',
+      value: 'F7D475'
+    }, {
+      label: 'Amber',
+      number: '02',
+      value: 'F8E09C'
+    }, {
+      label: 'Amber',
+      number: '01',
+      value: 'FBE9BF'
+    }, {
+      label: 'Ruby',
+      number: '10',
+      value: '880E0E'
+    }, {
+      label: 'Ruby',
+      number: '09',
+      value: '941E1E'
+    }, {
+      label: 'Ruby',
+      number: '08',
+      value: 'A13030'
+    }, {
+      label: 'Ruby',
+      number: '07',
+      value: 'AD4242'
+    }, {
+      label: 'Ruby',
+      number: '06',
+      value: 'B94E4E'
+    }, {
+      label: 'Ruby',
+      number: '05',
+      value: 'C65F5F'
+    }, {
+      label: 'Ruby',
+      number: '04',
+      value: 'D26D6D'
+    }, {
+      label: 'Ruby',
+      number: '03',
+      value: 'DE8181'
+    }, {
+      label: 'Ruby',
+      number: '02',
+      value: 'EB9D9D'
+    }, {
+      label: 'Ruby',
+      number: '01',
+      value: 'F4BCBC'
+    }, {
+      label: 'Turquoise',
+      number: '10',
+      value: '0E5B52'
+    }, {
+      label: 'Turquoise',
+      number: '09',
+      value: '206B62'
+    }, {
+      label: 'Turquoise',
+      number: '08',
+      value: '317C73'
+    }, {
+      label: 'Turquoise',
+      number: '07',
+      value: '448D83'
+    }, {
+      label: 'Turquoise',
+      number: '06',
+      value: '579E95'
+    }, {
+      label: 'Turquoise',
+      number: '05',
+      value: '69ADA3'
+    }, {
+      label: 'Turquoise',
+      number: '04',
+      value: '7BBFB5'
+    }, {
+      label: 'Turquoise',
+      number: '03',
+      value: '8ED1C6'
+    }, {
+      label: 'Turquoise',
+      number: '02',
+      value: 'A9E1D6'
+    }, {
+      label: 'Turquoise',
+      number: '01',
+      value: 'C0EDE3'
+    }, {
+      label: 'Emerald',
+      number: '10',
+      value: '397514'
+    }, {
+      label: 'Emerald',
+      number: '09',
+      value: '44831F'
+    }, {
+      label: 'Emerald',
+      number: '08',
+      value: '56932E'
+    }, {
+      label: 'Emerald',
+      number: '07',
+      value: '66A140'
+    }, {
+      label: 'Emerald',
+      number: '06',
+      value: '76B051'
+    }, {
+      label: 'Emerald',
+      number: '05',
+      value: '89BF65'
+    }, {
+      label: 'Emerald',
+      number: '04',
+      value: '9CCE7C'
+    }, {
+      label: 'Emerald',
+      number: '03',
+      value: 'AFDC91'
+    }, {
+      label: 'Emerald',
+      number: '02',
+      value: 'C3E8AC'
+    }, {
+      label: 'Emerald',
+      number: '01',
+      value: 'D5F6C0'
+    }, {
+      label: 'Amethyst',
+      number: '10',
+      value: '4B2A5E'
+    }, {
+      label: 'Amethyst',
+      number: '09',
+      value: '5A3A6F'
+    }, {
+      label: 'Amethyst',
+      number: '08',
+      value: '6C4B81'
+    }, {
+      label: 'Amethyst',
+      number: '07',
+      value: '7D5F92'
+    }, {
+      label: 'Amethyst',
+      number: '06',
+      value: '8E72A4'
+    }, {
+      label: 'Amethyst',
+      number: '05',
+      value: 'A189B8'
+    }, {
+      label: 'Amethyst',
+      number: '04',
+      value: 'B59ECA'
+    }, {
+      label: 'Amethyst',
+      number: '03',
+      value: 'C7B4DB'
+    }, {
+      label: 'Amethyst',
+      number: '02',
+      value: 'DACCEC'
+    }, {
+      label: 'Amethyst',
+      number: '01',
+      value: 'EDE3FC'
+    }, {
+      label: 'Azure',
+      number: '10',
+      value: '133C59'
+    }, {
+      label: 'Azure',
+      number: '09',
+      value: '134D71'
+    }, {
+      label: 'Azure',
+      number: '08',
+      value: '1D5F8A'
+    }, {
+      label: 'Azure',
+      number: '07',
+      value: '2876A8'
+    }, {
+      label: 'Azure',
+      number: '06',
+      value: '2578A9'
+    }, {
+      label: 'Azure',
+      number: '05',
+      value: '4EA0D1'
+    }, {
+      label: 'Azure',
+      number: '04',
+      value: '69B5DD'
+    }, {
+      label: 'Azure',
+      number: '03',
+      value: '8DC9E6'
+    }, {
+      label: 'Azure',
+      number: '02',
+      value: 'ADD8EB'
+    }, {
+      label: 'Azure',
+      number: '01',
+      value: 'C8E9F4'
+    }],
+    placeIn: null,
+    // null|'editor'
+    showLabel: false,
+    editable: true,
+    disabled: false,
+    uppercase: true,
+    colorOnly: false,
+    clearable: true,
+    clearableText: null,
+    popupmenuSettings: {}
+  };
+
+  function ColorPicker(element, settings) {
+    this.settings = utils.mergeSettings(element, settings, COLORPICKER_DEFAULTS); // Merge Settings does deep copy we want to replace here
+
+    if (settings && settings.colors) {
+      this.settings.colors = settings.colors;
+    }
+
+    this.element = $(element);
+    this.init();
+  } // Plugin Methods
+
+
+  ColorPicker.prototype = {
+    init: function init() {
+      this.isIe = Environment.browser.name === 'ie';
+      this.isIeEdge = Environment.browser.name === 'edge';
+      this.isIe11 = this.isIe && Environment.browser.version === '11';
+      this.inlineLabel = this.element.closest('label');
+      this.inlineLabelText = this.inlineLabel.find('.label-text');
+      this.isInlineLabel = this.element.parent().is('.inline'); // Set default clearable text
+
+      if (!this.settings.clearableText) {
+        this.settings.clearableText = Locale ? Locale.translate('None') : 'None';
+      }
+
+      this.build();
+      this.handleEvents();
+      this.setCustomWidth();
+    },
+    // Add the extra markup
+    build: function build() {
+      this.isEditor = this.settings.placeIn === 'editor';
+      var colorpicker = this.element;
+      var initialValue = this.isEditor ? this.element.attr('data-value') : this.element.val();
+      var classList = "swatch".concat(!initialValue || $.trim(initialValue) === '' ? ' is-empty' : '');
+
+      if (!this.isEditor) {
+        // Add Button
+        if (this.isInlineLabel) {
+          this.inlineLabel.addClass('colorpicker-container');
+        } else {
+          this.container = $('<span class="colorpicker-container"></span>');
+          colorpicker.wrap(this.container);
+        }
+
+        this.container = colorpicker.parent();
+        this.swatch = $("<span class=\"".concat(classList, "\"></span>")).prependTo(this.container); // Add Masking to show the #.
+        // Remove the mask if using the "showLabel" setting
+
+        if (!this.settings.showLabel) {
+          var pattern = ['#', /[0-9a-fA-F]/, /[0-9a-fA-F]/, /[0-9a-fA-F]/, /[0-9a-fA-F]/, /[0-9a-fA-F]/, /[0-9a-fA-F]/];
+          colorpicker.mask({
+            pattern: pattern
+          });
+        } else {
+          var maskAPI = colorpicker.data('mask');
+
+          if (maskAPI && typeof maskAPI.destroy === 'function') {
+            maskAPI.destroy();
+          }
+        }
+      }
+
+      var trigger = this.element.children('.trigger');
+
+      if (this.container && this.container.length) {
+        trigger = this.container.children('.trigger');
+      }
+
+      if (!trigger || !trigger.length || !trigger.children('.icon').length) {
+        this.icon = $.createIconElement('dropdown').appendTo(this.isEditor ? this.element : this.container);
+        this.icon.wrap('<span class="trigger"></span>');
+      } // Handle initial values
+
+
+      if (initialValue) {
+        this.setColor(initialValue);
+      }
+
+      if (this.element.is(':disabled') || this.settings.disabled) {
+        this.disable();
+      }
+
+      if (this.element.prop('readonly')) {
+        this.readonly();
+      }
+
+      if (!this.settings.editable && !this.settings.disabled) {
+        this.readonly();
+      }
+
+      if (this.settings.colorOnly) {
+        this.element.parent().addClass('color-only');
+      }
+
+      this.element.attr('autocomplete', 'off');
+      this.addAria();
+    },
+
+    /**
+    * Get the hex value based on a label. Does not handle duplicates.
+    * @param {string} label  The label to search for in the color labels.
+    * @returns {void}
+    */
+    getHexFromLabel: function getHexFromLabel(label) {
+      for (var i = 0; i < this.settings.colors.length; i++) {
+        var data = this.settings.colors[i];
+        var translated = Locale.translate(data.label, true);
+
+        if (label === data.label + data.number || label === translated + data.number) {
+          var hex = data.value;
+
+          if (hex.substr(0, 1) !== '#') {
+            hex = "#".concat(hex);
+          }
+
+          return hex;
+        }
+      }
+
+      return '';
+    },
+
+    /**
+    * Get the label value based on a hex. Does not handle duplicates.
+    * Can pass with or without the #
+    *
+    * @param {string} hex The hex to search for in the color set.
+    * @returns {void}
+    */
+    getLabelFromHex: function getLabelFromHex(hex) {
+      if (!hex) {
+        return '';
+      }
+
+      for (var i = 0; i < this.settings.colors.length; i++) {
+        var data = this.settings.colors[i];
+
+        if (hex.replace('#', '') === data.value.replace('#', '')) {
+          return this.translateColorLabel(data.label) + data.number;
+        }
+      }
+
+      return '';
+    },
+
+    /**
+    * Set custom width.
+    * @private
+    * @returns {void}
+    */
+    setCustomWidth: function setCustomWidth() {
+      if (this.element[0].style && this.element[0].style.width) {
+        var w = parseInt(this.element[0].style.width, 10);
+        this.container.css({
+          width: w
+        });
+        this.element.css({
+          width: w - 4 - this.swatch.width()
+        });
+      }
+    },
+
+    /**
+    * Get the currently set hex value.
+    * @returns {string} A string containing the hex
+    */
+    getHexValue: function getHexValue() {
+      return this.element.attr('value');
+    },
+
+    /**
+    * Get the currently set label value.
+    * @returns {string} A string containing the hex
+    */
+    getLabelValue: function getLabelValue() {
+      return this.settings.showLabel ? this.element.val() : this.getLabelFromHex(this.element.val());
+    },
+
+    /**
+    * Add the necessary aria for accessibility.
+    * @private
+    * @returns {void}
+    */
+    addAria: function addAria() {
+      this.element.attr({
+        role: 'combobox',
+        'aria-autocomplete': 'list'
+      });
+      $("label[for=\"".concat(this.element.attr('id'), "\"]")).append("<span class=\"audible\">".concat(Locale.translate('UseArrow'), "</span>"));
+    },
+
+    /**
+    * Toggle / Open the List of Colors
+    * @returns {void}
+    */
+    toggleList: function toggleList() {
+      var _this = this;
+
+      var menu = $('#colorpicker-menu');
+
+      if (this.element.is(':disabled') || this.element.prop('readonly') && this.settings.editable) {
+        return;
+      }
+
+      if (menu.length && this.isPickerOpen) {
+        return;
+      } // Append Color Menu
+
+
+      menu = this.updateColorMenu();
+      var popupmenuOpts = utils.extend({}, {
+        ariaListbox: true,
+        menuId: 'colorpicker-menu',
+        trigger: 'immediate',
+        attachToBody: true,
+        placementOpts: {
+          containerOffsetX: 10,
+          containerOffsetY: 10,
+          parentXAlignment: Locale.isRTL() ? 'right' : 'left',
+          strategies: ['flip', 'nudge', 'shrink']
+        },
+        offset: {
+          x: 0,
+          y: 10
+        }
+      }, this.settings.popupmenuSettings); // Show Menu
+
+      this.element.popupmenu(popupmenuOpts).on('open.colorpicker', function () {
+        _this.element.parent().addClass('is-open');
+
+        _this.isPickerOpen = true;
+      }).on('close.colorpicker', function () {
+        var links = [].slice.call(_this.menu[0].querySelectorAll('a'));
+        links.forEach(function (link) {
+          var tooltipApi = $(link).data('tooltip');
+
+          if (tooltipApi) {
+            tooltipApi.hide();
+          }
+        });
+        menu.on('destroy.colorpicker', function () {
+          _this.element.off('open.colorpicker selected.colorpicker close.colorpicker');
+
+          _this.menu.off('destroy.colorpicker').remove();
+        });
+
+        _this.element.parent().removeClass('is-open');
+
+        _this.isPickerOpen = false;
+
+        _this.element.trigger('listclosed', 'select');
+      }).on('selected.colorpicker', function (e, item) {
+        if (!_this.isEditor) {
+          _this.setColor(item.data('value'), item.data('label'));
+        }
+
+        _this.element.focus();
+
+        _this.element.trigger('change');
+      }); // Append Buttons
+
+      this.menu = $('#colorpicker-menu');
+      setTimeout(function () {
+        _this.menu.find('.is-selected').focus();
+      }, 1);
+    },
+
+    /**
+    * Set the visible color in the field
+    * @param {string} hex The hex value to use (can have the # or not).
+    * @param {string} label The text to display
+    * @returns {void}
+    */
+    setColor: function setColor(hex, label) {
+      hex = hex || '';
+      var s = this.settings;
+      var colorHex = hex;
+      var colorLabel = label; // Make sure there is always a hash
+
+      if (hex.substr(0, 1) !== '#' && hex !== '') {
+        colorHex = "#".concat(colorHex);
+      }
+
+      var isValidHex = /(^#[0-9a-fA-F]{6}$)|(^#[0-9a-fA-F]{3}$)/i.test(colorHex); // Simply return out if hex isn't valid
+
+      if (s.showLabel && label === s.clearableText) {
+        this.setValueOnField({
+          hex: colorHex,
+          label: s.clearableText,
+          isEmpty: true
+        });
+        return;
+      }
+
+      if (!isValidHex) {
+        if (!s.showLabel) {
+          colorHex = colorHex !== '#' ? colorHex : '';
+          this.setValueOnField({
+            hex: colorHex,
+            invalid: true
+          });
+          return;
+        }
+
+        colorLabel = hex.replace('#', '');
+        colorHex = this.getHexFromLabel(colorLabel);
+      }
+
+      if (!colorLabel) {
+        colorLabel = this.getLabelFromHex(colorHex);
+      }
+
+      this.setValueOnField({
+        hex: colorHex,
+        label: colorLabel
+      });
+    },
+
+    /**
+     * Set the value on the field
+     * @private
+     * @param {object} [o] Options
+     * @param {string} [o.hex] The hex value to use
+     * @param {string} [o.label] The text to display
+     * @param {boolean} [o.isEmpty] if true will set empty value for all
+     * @param {boolean} [o.invalid] if true will set empty value for swatch only
+     * @returns {void}
+     */
+    setValueOnField: function setValueOnField(o) {
+      var s = this.settings;
+      var targetAttr = this.isEditor ? 'data-value' : 'value';
+      var hex = '';
+
+      if (!o.isEmpty && typeof o.hex === 'string') {
+        hex = s.uppercase ? o.hex.toUpperCase() : o.hex.toLowerCase();
+      }
+
+      if (this.swatch) {
+        if (o.isEmpty || o.invalid) {
+          this.swatch.addClass(o.isEmpty ? 'is-empty' : 'is-invalid');
+          this.swatch[0].style.backgroundColor = '';
+        } else {
+          this.swatch.removeClass('is-empty is-invalid');
+          this.swatch[0].style.backgroundColor = hex;
+        }
+      }
+
+      this.element[0].value = s.showLabel ? o.label : hex;
+      this.element[0].setAttribute(targetAttr, hex);
+      this.element[0].setAttribute('aria-describedby', o.label || '');
+    },
+
+    /**
+     * @private
+     * @param {string} colorText the original text color
+     * @returns {string} the translated text color
+     */
+    translateColorLabel: function translateColorLabel(colorText) {
+      if (!colorText) {
+        return '';
+      }
+
+      var translatedText = Locale.translate(colorText, true);
+      return typeof translatedText === 'string' ? Locale.translate(colorText, true) : colorText;
+    },
+
+    /**
+     * Make basic theme variants backwards/forwards compatible
+     * @param {string} activeTheme The active theme to get the variant for
+     * @returns {string} The theme variants's border property value
+     * @example (i.e. match "theme-uplift-light" with "light" and return "themes.light.border")
+     */
+    getThemeVariant: function getThemeVariant(activeTheme) {
+      var legacyThemes = Object.keys(COLORPICKER_DEFAULTS.themes);
+      var res = legacyThemes.filter(function (legacyTheme) {
+        return activeTheme.indexOf(legacyTheme) > -1;
+      });
+      var variant = 'light';
+
+      if (res.length > 0) {
+        variant = res[0];
+      }
+
+      return variant;
+    },
+
+    /**
+     * Refresh and Append the Color Menu
+     * @private
+     * @returns {jQuery} the menu to be appended
+     */
+    updateColorMenu: function updateColorMenu() {
+      var _this2 = this;
+
+      var s = this.settings;
+      var isMenu = !!$('#colorpicker-menu').length;
+      var menu = $('<ul id="colorpicker-menu" class="popupmenu colorpicker"></ul>');
+      var activeTheme = personalization.currentTheme;
+      var themeVariant = this.getThemeVariant(activeTheme);
+      var isBorderAll = s.themes[themeVariant].border === 'all';
+      var checkThemes = s.themes[themeVariant].checkmark;
+      var checkmarkClass = '';
+
+      var _loop = function _loop(i, l) {
+        var li = $('<li></li>');
+        var a = $('<a href="#"><span class="swatch"></span></a>').appendTo(li);
+        var colorText = (_this2.translateColorLabel(s.colors[i].label) || s.colors[i].label) + (s.colors[i].number || '');
+        var colorNum = parseInt(s.colors[i].number, 10);
+        var regexp = new RegExp("\\b".concat(activeTheme, "\\b"));
+        var colorValue = s.colors[i].value;
+        var isBorder = false;
+        var elemValue = _this2.isEditor ? _this2.element.attr('data-value') : _this2.element.val();
+
+        if (s.showLabel && !_this2.isEditor) {
+          elemValue = _this2.getHexFromLabel(elemValue);
+        } // Set border to this swatch
+
+
+        if (isBorderAll || regexp.test(s.colors[i].border)) {
+          isBorder = true;
+        }
+
+        if (elemValue && "".concat(elemValue).toLowerCase().replace('#', '') === "".concat(colorValue).toLowerCase()) {
+          // Set checkmark color class
+          if (checkThemes) {
+            /* eslint-disable no-loop-func */
+            $.each(checkThemes, function (k, v) {
+              // checkmark: {'one': [1, 2], 'two': [3, 10]}
+              // will add class "checkmark-one", where current colors number is in range [1 to 3]
+              // and will add class "checkmark-two", where current colors number is in range [3 to 10]
+              if (colorNum >= v[0] && colorNum <= v[1]) {
+                checkmarkClass = " checkmark-".concat(k);
+              }
+            });
+            /* eslint-disable no-loop-func */
+          }
+
+          a.addClass("is-selected".concat(checkmarkClass));
+        }
+
+        colorValue = s.uppercase ? colorValue.toUpperCase() : colorValue.toLowerCase();
+        var swatch = a.find('.swatch');
+
+        if (swatch[0]) {
+          swatch[0].style.backgroundColor = "#".concat(colorValue);
+        }
+
+        swatch.addClass(isBorder ? 'is-border' : '');
+        a.data('label', colorText).data('value', colorValue).attr('title', "".concat(colorText, " #").concat(colorValue)).tooltip();
+
+        if (!isMenu) {
+          menu.append(li);
+        }
+      };
+
+      for (var i = 0, l = s.colors.length; i < l; i++) {
+        _loop(i);
+      }
+
+      if (!isMenu) {
+        // Add clearable swatch to popupmenu
+        if (s.clearable) {
+          var li = $('<li></li>');
+          var resetColorValue = this.element.attr('data-action') === 'foreColor' ? '000000' : '';
+          var a = $("<a href=\"#\" title=\"".concat(s.clearableText, "\"><span class=\"swatch is-empty").concat(isBorderAll ? ' is-border' : '', "\"></span></a>")).appendTo(li);
+          a.data('label', s.clearableText).data('value', resetColorValue).tooltip();
+          menu.append(li);
+        }
+
+        $('body').append(menu);
+      }
+
+      return menu;
+    },
+
+    /**
+    * Change the color picker from enabled to disabled.
+    * @returns {void}
+    */
+    enable: function enable() {
+      this.element.prop('disabled', false);
+      this.element.prop('readonly', false);
+      this.element.parent().removeClass('is-disabled is-readonly');
+    },
+
+    /**
+    * Make the color picker disabled
+    * @returns {void}
+    */
+    disable: function disable() {
+      this.element.prop('disabled', true);
+
+      if (!this.settings.placeIn) {
+        this.element.parent().addClass('is-disabled');
+      }
+    },
+
+    /**
+    * Make the color picker readonly
+    * @returns {void}
+    */
+    readonly: function readonly() {
+      this.enable();
+      this.element.prop('readonly', true);
+      this.element.parent().addClass('is-readonly');
+
+      if (!this.settings.editable) {
+        this.element.parent().addClass('is-not-editable');
+      }
+    },
+
+    /**
+    * Returns true if the color picker is disabled.
+    * @returns {void}
+    */
+    isDisabled: function isDisabled() {
+      return this.element.prop('disabled');
+    },
+
+    /**
+    * Gets the decimal as a rgb value so it can be shown in the editor
+    * @private
+    * @param {string} n Decimal value to convert to rgb.
+    * @returns {void}
+    */
+    decimal2rgb: function decimal2rgb(n) {
+      if (typeof n !== 'number') {
+        return n;
+      }
+      /* eslint-disable no-bitwise */
+
+
+      return "rgb(".concat(n & 0xFF, ", ").concat((n & 0xFF00) >> 8, ", ").concat((n & 0xFF0000) >> 16, ")");
+    },
+    rgb2hex: function rgb2hex(rgb) {
+      if (!rgb || rgb.search('rgb') === -1) {
+        return rgb;
+      }
+
+      if (rgb === 'rgba(0, 0, 0, 0)') {
+        return 'transparent';
+      }
+
+      var hex = function hex(x) {
+        return "0".concat(parseInt(x, 10).toString(16)).slice(-2);
+      };
+
+      var newRgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
+      return "#".concat(hex(newRgb[1])).concat(hex(newRgb[2])).concat(hex(newRgb[3]));
+    },
+
+    /**
+    * Update the component and optionally apply new settings.
+    *
+    * @param  {object} settings the settings to update to.
+    * @returns {object} The plugin api for chaining.
+    */
+    updated: function updated(settings) {
+      if (settings) {
+        this.settings = utils.mergeSettings(this.element, settings, this.settings);
+      }
+
+      this.teardown();
+      return this.init();
+    },
+    teardown: function teardown() {
+      this.element.off(["keypress.".concat(COMPONENT_NAME$v), "keyup.".concat(COMPONENT_NAME$v), "blur.".concat(COMPONENT_NAME$v), "openlist.".concat(COMPONENT_NAME$v), "change.".concat(COMPONENT_NAME$v), "paste.".concat(COMPONENT_NAME$v)].join(' '));
+
+      if (this.swatch && this.swatch.length) {
+        this.swatch.off("click.".concat(COMPONENT_NAME$v));
+        this.swatch.remove();
+        delete this.swatch;
+      }
+
+      var maskAPI = this.element.data('mask');
+
+      if (maskAPI) {
+        maskAPI.destroy();
+      }
+
+      if (this.icon && this.icon.length) {
+        var trigger = this.icon.parent('.trigger');
+        this.icon.off().remove();
+        trigger.off().remove();
+        delete this.icon;
+      }
+
+      if (this.container && this.container.length) {
+        this.container.find('.trigger').remove();
+        this.element.unwrap();
+        delete this.container;
+      }
+    },
+
+    /**
+    * Detach events and restore DOM to default.
+    * @returns {object} The plugin api (this).
+    */
+    destroy: function destroy() {
+      this.teardown();
+      $.removeData(this.element[0], COMPONENT_NAME$v);
+      return this;
+    },
+
+    /**
+    * Detach events and restore DOM to default.
+    * @private
+    * @returns {void}
+    */
+    handleEvents: function handleEvents() {
+      var _this3 = this;
+
+      var elem = this.element;
+      var elemParent = elem.parent();
+      var originalVal;
+      this.icon.parent().on('click.colorpicker', function () {
+        _this3.toggleList();
+      });
+      elem.on('focus.colorpicker', function () {
+        originalVal = elem.val();
+        elemParent.addClass('is-focused');
+      }).on('blur.colorpicker', function () {
+        elemParent.removeClass('is-focused'); // Fix: Force to change event
+        // IE-Edge not firing `change event` after updated input-s values
+
+        if (_this3.isIeEdge && !elem.is('.is-open') && originalVal !== elem.val()) {
+          elem.triggerHandler('change');
+        }
+      }).on('openlist.colorpicker', function () {
+        _this3.toggleList();
+      });
+      var eventStr = 'blur.colorpicker paste.colorpicker change.colorpicker';
+      eventStr += this.isIe11 ? 'keypress.colorpicker' : 'keyup.colorpicker';
+      elem.on(eventStr, function () {
+        var val = _this3.isEditor ? elem.attr('data-value') : elem.val();
+
+        if (_this3.settings.showLabel) {
+          _this3.setColor(elem.attr('value'), val);
+
+          return;
+        }
+
+        _this3.setColor(val);
+      }); // Handle Key Down to open
+
+      elem.on('keydown.colorpicker', function (e) {
+        if (e.keyCode === 38 || e.keyCode === 40) {
+          _this3.toggleList();
+        }
+
+        if (e.keyCode === 13) {
+          _this3.setColor(elem.val());
+        }
+      });
+    }
+  };
+
+  /**
+   * jQuery Component Wrapper for Colorpicker
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+
+  $.fn.colorpicker = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$v);
+
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$v, new ColorPicker(this, settings));
+      }
+    });
+  };
+
+  var COMPONENT_NAME$w = 'toolbarflexitem'; // Filters out buttons located inside of Searchfield wrappers.
+  // Only `input` elements should be picked up by the item detector.
+
+  function buttonFilter(elem) {
+    var searchfieldWrapper = $(elem).parents('.searchfield-wrapper, .toolbar-searchfield-wrapper');
+    return !searchfieldWrapper.length;
+  } // Filters out hyperlinks that are part of menu/action button components
+
+
+  function hyperlinkFilter(elem) {
+    if (elem.nodeName !== 'A') {
+      throw new Error('Unspecified error occured');
+    }
+
+    var wrapped = $(elem);
+    return wrapped.parents('.popupmenu').length < 1;
+  } // Toolbar Focusable Element Selectors.
+  // Any of these element/class types are valid toolbar items.
+  // TODO: Designate between "button" and "menu button"
+
+
+  var TOOLBAR_ELEMENTS = [{
+    type: 'button',
+    selector: 'button:not(.btn-menu):not(.btn-actions):not(.colorpicker-editor-button), input[type="button"]:not(.btn-menu):not(.btn-actions):not(.colorpicker-editor-button)',
+    filter: buttonFilter
+  }, {
+    type: 'menubutton',
+    selector: '.btn-menu'
+  }, {
+    type: 'actionbutton',
+    selector: '.btn-actions'
+  }, {
+    type: 'colorpicker',
+    selector: '.colorpicker-editor-button'
+  }, {
+    type: 'hyperlink',
+    selector: 'a[href]',
+    filter: hyperlinkFilter
+  }, {
+    type: 'checkbox',
+    selector: 'input[type="checkbox"]'
+  }, {
+    type: 'radio',
+    selector: 'input[type="radio"]'
+  }, {
+    type: 'searchfield',
+    selector: '.searchfield'
+  }, {
+    type: 'toolbarsearchfield',
+    selector: '.toolbarsearchfield'
+  } // temporary
+  ]; // Mappings from toolbar item type to component API
+
+  var TOOLBAR_COMPONENT_APIS = {
+    actionbutton: 'popupmenu',
+    colorpicker: 'colorpicker',
+    menubutton: 'popupmenu',
+    hyperlink: 'hyperlink',
+    searchfield: 'searchfield',
+    toolbarsearchfield: 'searchfield'
+  };
+  /**
+   * Default Settings
+   * @namespace
+   */
+
+  var TOOLBAR_FLEX_ITEM_DEFAULTS = {
+    disabled: false,
+    readOnly: false,
+    hidden: false,
+    componentSettings: undefined,
+    allowTabs: false
+  };
+  /**
+   * Gets the type of Toolbar Item that an element represents.
+   * @param {HTMLElement} element being checked for a toolbar item.
+   * @returns {string} representing the type
+   */
+
+  function getToolbarItemType(element) {
+    var type = false;
+    TOOLBAR_ELEMENTS.forEach(function (elemObj) {
+      if (!$(element).is(elemObj.selector)) {
+        return;
+      }
+
+      if (typeof elemObj.filter === 'function' && !elemObj.filter(element)) {
+        return;
+      }
+
+      type = elemObj.type;
+    });
+
+    if (!type) {
+      throw new Error("Element ".concat(element, " is not a valid Toolbar Item Type."));
+    }
+
+    return type;
+  }
+  /**
+   * Toolbar Item Wrapper Component
+   * @constructor
+   * @param {HTMLElement} element the base element
+   * @param {object} [settings] incoming settings
+   */
+
+
+  function ToolbarFlexItem(element, settings) {
+    this.element = element;
+    this.settings = utils.mergeSettings(this.element, settings, TOOLBAR_FLEX_ITEM_DEFAULTS);
+    this.init();
+  }
+
+  ToolbarFlexItem.prototype = {
+    /**
+     * @property {string} type used to determine the type of toolbar item.  Certain toolbar item types
+     *  have certain special properties.
+     * @property {HTMLElement} section the parent toolbar section that this item is housed in.
+     * @property {HTMLElement} toolbar the parent toolbar's base element.
+     */
+    type: undefined,
+
+    /**
+     * @property {boolean} a different type to check if the object is a ToolbarFlexItem.
+     */
+    isToolbarFlexItem: true,
+
+    /**
+     * @private
+     * @returns {void}
+     */
+    init: function init() {
+      // internal flags
+      this.type = getToolbarItemType(this.element);
+      this.section = this.element.parentElement;
+      this.toolbar = this.section.parentElement;
+      this.trueSelected = false;
+    },
+
+    /**
+     * @returns {boolean} whether or not the toolbar item is currently able to be focused, based
+     *  on its `disabled`, `overflowed`, and `visible` properties.
+     */
+    get focusable() {
+      if (this.disabled === true) {
+        return false;
+      }
+
+      if (this.type === 'searchfield') {
+        return true;
+      }
+
+      if (this.type === 'actionbutton' && this.hasNoOverflowedItems === true) {
+        return false;
+      }
+
+      if (this.overflowed === true) {
+        return false;
+      }
+
+      return this.visible;
+    },
+
+    /**
+     * @returns {boolean} whether or not the toolbar item is the one that will currently be focused
+     */
+    get focused() {
+      return this.element.tabIndex === 0;
+    },
+
+    /**
+     * @param {boolean} boolean, if provided, sets a focused state on the toolbar item.
+     * @returns {void}
+     */
+    set focused(boolean) {
+      if (boolean) {
+        this.element.tabIndex = 0;
+        return;
+      }
+
+      this.element.tabIndex = -1;
+    },
+
+    /**
+     * @returns {boolean} whether or not the Toolbar item is selected.
+     */
+    get selected() {
+      return this.trueSelected;
+    },
+
+    /**
+     * @param {boolean} boolean, if provided, sets a selected state on the toolbar item.
+     * @returns {void}
+     */
+    set selected(boolean) {
+      if (boolean) {
+        this.trueSelected = true;
+        this.element.classList.add('is-selected');
+        this.triggerSelectedEvent();
+
+        if (this.selectedAnchor) {
+          delete this.selectedAnchor;
+        }
+
+        return;
+      }
+
+      this.trueSelected = false;
+      this.element.classList.remove('is-selected');
+    },
+
+    /**
+     * Retrieves an item's main Soho Component instance.
+     * @returns {object} Soho Component instance, if applicable
+     */
+    get componentAPI() {
+      var $element = $(this.element);
+      var componentType = TOOLBAR_COMPONENT_APIS[this.type];
+
+      if (!componentType) {
+        return undefined;
+      }
+
+      return $element.data(componentType);
+    },
+
+    /**
+     * @returns {ToolbarFlex} the parent toolbar API
+     */
+    get toolbarAPI() {
+      if (this.settings.toolbarAPI) {
+        return this.settings.toolbarAPI;
+      }
+
+      return $(this.toolbar).data('toolbar-flex');
+    },
+
+    /**
+     * @fires selected
+     * @returns {void}
+     */
+    triggerSelectedEvent: function triggerSelectedEvent() {
+      // Searchfields and Colorpickers aren't "selectable" in the same way actionable
+      // items are, so they shouldn't fire the "selected" event.
+      var disallowedTypes = ['colorpicker', 'searchfield', 'toolbarsearchfield'];
+
+      if (disallowedTypes.indexOf(this.type) > -1) {
+        return;
+      }
+
+      var eventArgs = [this]; // MenuButton types pass the currently-selected anchor
+
+      var selectedAnchorTypes = ['menubutton', 'actionbutton'];
+
+      if (selectedAnchorTypes.indexOf(this.type) > -1 && this.selectedAnchor) {
+        eventArgs.push(this.selectedAnchor);
+      }
+
+      $(this.element).trigger('selected', eventArgs);
+    },
+
+    /**
+     * Causes the toolbar item to become visible.
+     * @returns {void}
+     */
+    show: function show() {
+      this.visible = true;
+    },
+
+    /**
+     * Causes the toolbar item to become hidden.
+     * @returns {void}
+     */
+    hide: function hide() {
+      this.visible = false;
+    },
+
+    /**
+     * Toggles the Toolbar item's visiblity.
+     * @param {boolean} boolean whether or not the `hidden` class should be set.
+     */
+    set visible(boolean) {
+      // NOTE: Temporary until Searchfield handles this better internally.
+      var isSearchfield = this.type === 'searchfield' || this.type === 'toolbarsearchfield';
+
+      if (boolean) {
+        if (isSearchfield) {
+          this.element.parentNode.classList.remove('hidden');
+        }
+
+        this.element.classList.remove('hidden');
+        return;
+      }
+
+      if (isSearchfield) {
+        this.element.parentNode.classList.add('hidden');
+      }
+
+      this.element.classList.add('hidden');
+    },
+
+    /**
+     * @returns {boolean} whether or not the Toolbar Item is visible.
+     */
+    get visible() {
+      return this.element.className.indexOf('hidden') === -1;
+    },
+
+    /**
+     * @returns {void}
+     */
+    enable: function enable() {
+      this.disabled = false;
+
+      if (this.hasReadOnly) {
+        this.readOnly = false;
+      }
+    },
+
+    /**
+     * @returns {boolean} whether or not the element is disabled
+     */
+    get disabled() {
+      return this.element.disabled;
+    },
+
+    /**
+     * @param {boolean} boolean, if provided, sets a disabled state on the toolbar item.
+     * @returns {void}
+     */
+    set disabled(boolean) {
+      if (boolean) {
+        this.element.disabled = true;
+        this.element.setAttribute('aria-disabled', true);
+        this.element.readOnly = false;
+        return;
+      }
+
+      this.element.disabled = false;
+      this.element.removeAttribute('aria-disabled');
+    },
+
+    /**
+     * @returns {boolean} whether or not `readOnly` as a property exists on this HTMLElement type.
+     */
+    get hasReadOnly() {
+      return 'readOnly' in this.element;
+    },
+
+    /**
+     * @returns {boolean} element's readOnly prop
+     */
+    get readOnly() {
+      if (!this.hasReadOnly) {
+        return false;
+      }
+
+      return this.element.readOnly;
+    },
+
+    /**
+     * @param {boolean} boolean, if provided, sets a readOnly state on the toolbar item, if possible.
+     * @returns {void}
+     */
+    set readOnly(boolean) {
+      if (!this.hasReadOnly) {
+        return;
+      }
+
+      if (boolean) {
+        this.disabled = false;
+        this.element.disabled = false;
+        this.element.readOnly = true;
+        return;
+      }
+
+      this.element.readOnly = false;
+    },
+
+    /**
+     * @returns {boolean} whether or not the item is pushed into overflow by the boundaries
+     *  of its container element.
+     */
+    get overflowed() {
+      var isRTL = Environment.rtl;
+      var elemRect = this.element.getBoundingClientRect();
+      var sectionRect = this.section.getBoundingClientRect();
+
+      if (isRTL) {
+        return elemRect.left < sectionRect.left;
+      }
+
+      return elemRect.right > sectionRect.right;
+    },
+
+    /**
+     * @param {boolean} isTrue whether or not the more actions menu has overflowed items, causing it to become displayed
+     * @returns {void}
+     */
+    set hasNoOverflowedItems(isTrue) {
+      if (this.type !== 'actionbutton' || !this.componentAPI) {
+        return;
+      }
+
+      var popupmenuLength = this.componentAPI.toData({
+        noMenuWrap: true
+      }).length;
+      var menuIsEmpty = popupmenuLength - this.predefinedItems.length < 1;
+
+      if (isTrue && menuIsEmpty) {
+        this.element.classList.add('no-overflowed-items');
+        this.trueHasNoOverflowedItems = true;
+
+        if (this.focused) {
+          this.toolbarAPI.focusedItem = this;
+          this.toolbarAPI.navigate(-1, undefined);
+        }
+
+        return;
+      }
+
+      this.trueHasNoOverflowedItems = false;
+      this.element.classList.remove('no-overflowed-items');
+    },
+
+    /**
+     *
+     */
+    get hasNoOverflowedItems() {
+      if (!this.componentAPI) {
+        return true;
+      }
+
+      return this.trueHasNoOverflowedItems;
+    },
+
+    /**
+     * Sets up all event listeners for this element.
+     * @returns {void}
+     */
+    handleEvents: function handleEvents() {
+      var _this = this;
+
+      var self = this;
+      var $element = $(this.element);
+      var popupmenuConsumers = ['menubutton', 'actionbutton', 'colorpicker'];
+
+      if (popupmenuConsumers.indexOf(this.type) > -1) {
+        // Listen to the Popupmenu's selected event
+        $element.on("selected.".concat(COMPONENT_NAME$w), function (e, anchor) {
+          if (_this.selectedAnchor) {
+            return;
+          }
+
+          e.stopPropagation();
+
+          if (_this.type === 'actionbutton') {
+            var li = $(anchor).parent();
+            var itemLink = li.data('originalButton');
+            var itemLinkAPI = $(itemLink).data('toolbarflexitem');
+            var elementLink;
+
+            if (li.parents('ul').length > 1) {
+              elementLink = li.data('original-menu-element');
+              itemLink = li.parents('li').last().data('originalButton');
+              itemLinkAPI = $(itemLink).data('toolbarflexitem');
+            } // If this item is linked to another toolbar item, trigger its `selected` event instead
+            // of the one on the item in this menu.
+
+
+            if (itemLinkAPI) {
+              if (elementLink) {
+                e.preventDefault();
+                itemLinkAPI.selectedAnchor = $(elementLink).children('a');
+              } else {
+                // case of a menu button overflowed into more actions
+                itemLinkAPI.selectedAnchor = anchor;
+              }
+
+              itemLinkAPI.selected = true;
+              return;
+            }
+          }
+
+          self.selectedAnchor = anchor;
+          self.selected = true;
+        });
+      }
+
+      if (this.type === 'actionbutton') {
+        $element.on("beforeopen.".concat(COMPONENT_NAME$w), this.handleActionButtonBeforeOpen.bind(this));
+        $('body').off("resize.".concat(COMPONENT_NAME$w)).on("resize.".concat(COMPONENT_NAME$w), this.handleActionButtonResize.bind(this));
+      }
+
+      if (!this.settings.allowTabs) {
+        $element.on("focus.".concat(COMPONENT_NAME$w), this.handleFocus.bind(this));
+      }
+    },
+
+    /**
+     * If this element is an Action Button, this listener runs before its popupmenu is opened
+     * To determine which elements need to be shown/hidden.
+     * @private
+     * @returns {void}
+     */
+    handleActionButtonBeforeOpen: function handleActionButtonBeforeOpen() {
+      this.refreshMoreActionsMenu();
+    },
+
+    /**
+     * If this element is an Action Button, this listener runs whenever Soho's custom resize event
+     * on the `<body>` tag fires, to determine which elements need to be shown/hidden.
+     * @private
+     * @returns {void}
+     */
+    handleActionButtonResize: function handleActionButtonResize() {
+      this.refreshMoreActionsMenu();
+    },
+
+    /**
+     * @private
+     * @param {FocusEvent} e `focus`
+     * @returns {void}
+     */
+    handleFocus: function handleFocus(e) {
+      if (e.target && e.target === this.element) {
+        this.toolbarAPI.focusedItem = this;
+      }
+    },
+
+    /**
+     * Renders extra markup or anything else needed on the toolbar item
+     * @returns {void}
+     */
+    render: function render() {
+      // eslint-disable-next-line
+      this.disabled = this.disabled;
+
+      if (this.hasReadOnly) {
+        // eslint-disable-next-line
+        this.readonly = this.readonly;
+      } // Setup component APIs, if applicable.
+      // NOTE: Soho Initializer doesn't invoke these automatically, by nature of the
+      // base elements existing inside the Flex Toolbar.
+
+
+      var $element = $(this.element);
+      var componentType = TOOLBAR_COMPONENT_APIS[this.type];
+
+      if (componentType) {
+        var api = $element.data(componentType);
+
+        if (!api) {
+          $element[componentType](this.settings.componentSettings);
+        } else {
+          api.updated(this.settings.componentSettings);
+        }
+      } // Action Buttons need more stuff
+
+
+      if (this.type === 'actionbutton') {
+        this.renderMoreActionsMenu();
+        this.refreshMoreActionsMenu();
+      }
+
+      this.handleEvents();
+    },
+
+    /**
+     * Uses data from Toolbar Items to build Toolbar-linked, pre-defined items for the More Actions menu.
+     * NOTE: This method only runs when this toolbar item is a "More Actions" button
+     * @private
+     * @returns {void}
+     */
+    renderMoreActionsMenu: function renderMoreActionsMenu() {
+      var menuAPI = this.componentAPI;
+
+      if (!menuAPI || !this.toolbarAPI) {
+        return;
+      } // If the menu doesn't already exist, pre-define it.
+
+
+      var $menu = menuAPI.menu;
+
+      if (!$menu || !$menu.length) {
+        $menu = $('<ul class="popupmenu"></ul>').insertAfter(this.element);
+      }
+
+      this.teardownPredefinedItems(); // Get Popupmenu data equivalent of the current set of Toolbar items.
+      // Menu item data is scrubbed for IDs that would otherwise be duplicated
+
+      function removeMenuIds(item, isSubmenu) {
+        if (item.menuId) {
+          delete item.menuId;
+        }
+
+        var menuTarget = isSubmenu ? 'submenu' : 'menu';
+
+        if (Array.isArray(item[menuTarget])) {
+          item[menuTarget].forEach(function (subitem) {
+            removeMenuIds(subitem, true);
+          });
+        }
+      }
+
+      var data = this.toolbarAPI.toPopupmenuData();
+      removeMenuIds(data); // Add Toolbar Items as predefined items to the Popupmenu.
+
+      var menuItems = $(menuAPI.renderItem(data));
+      this.predefinedItems = menuItems;
+      this.linkToolbarItems(data); // Notify the Popupmenu of predefined items
+
+      $menu.prepend(this.predefinedItems);
+      menuAPI.updated({
+        menu: $menu,
+        predefined: menuItems
+      });
+      this.menuRendered = true;
+    },
+
+    /**
+     * Refreshes the state of menu items in a "More Actions" menu that were constructed by the Flex Toolbar.
+     * @private
+     * @returns {void}
+     */
+    refreshMoreActionsMenu: function refreshMoreActionsMenu() {
+      if (this.type !== 'actionbutton') {
+        return;
+      }
+
+      var menuAPI = this.componentAPI;
+
+      if (!menuAPI || !this.toolbarAPI || menuAPI.isOpen) {
+        return;
+      }
+
+      this.hasNoOverflowedItems = true; // If there are toolbar items, but no predefined items, render the more-actions menu
+
+      if (!menuAPI.settings.beforeOpen && (!this.predefinedItems || !this.predefinedItems.length) && this.toolbarAPI.items.length) {
+        this.renderMoreActionsMenu();
+      }
+
+      var hasNoOverflowedItems = true; // Called at the end of the item refresh.
+      // Uses the Popupmenu's API to add overflow information.
+
+      function itemRefreshCallback(menuItem, data) {
+        if (data.isSubmenuItem) {
+          return;
+        }
+
+        if (data.overflowed === true) {
+          menuItem.classList.add('is-overflowed');
+
+          if (data.visible) {
+            menuItem.classList.remove('hidden');
+          }
+
+          hasNoOverflowedItems = false;
+          return;
+        }
+
+        menuItem.classList.remove('is-overflowed');
+        menuItem.classList.add('hidden');
+      } // Each Linked Toolbar Item will be refreshed by the Popupmenu API
+
+
+      this.toolbarAPI.items.forEach(function (item) {
+        if (!item.actionButtonLink) {
+          return;
+        }
+
+        var itemData = item.toPopupmenuData();
+        itemData.overflowed = item.overflowed;
+
+        if (itemData.id) {
+          delete itemData.id;
+        }
+
+        menuAPI.refreshMenuItem(item.actionButtonLink, itemData, itemRefreshCallback);
+      }); // Set a record for display
+
+      this.hasNoOverflowedItems = hasNoOverflowedItems;
+    },
+
+    /**
+     * Removes links between the current set of Toolbar Items to `More Actions` menu items.
+     * @private
+     * @returns {void}
+     */
+    unlinkToolbarItems: function unlinkToolbarItems() {
+      if (this.type !== 'actionbutton' || !this.menuRendered || !this.predefinedItems || !this.predefinedItems.length) {
+        return;
+      }
+
+      function doUnlinkSubmenuItem(actionMenuElement) {
+        var $originalMenuElement = $($(actionMenuElement).data('original-menu-element'));
+        $originalMenuElement.removeData('action-button-link');
+        $(actionMenuElement).removeData('original-menu-element');
+
+        if ($originalMenuElement.hasClass('submenu')) {
+          var submenuItems = actionMenuElement.querySelector('.popupmenu').children;
+
+          for (var j = 0; j < submenuItems.length; j++) {
+            doUnlinkSubmenuItem(submenuItems[j]);
+          }
+        }
+      }
+
+      function doUnlinkToolbarItems(i, itemElement) {
+        var originalButton = $(itemElement).data('originalButton');
+        var originalButtonAPI = $(originalButton).data('toolbarflexitem');
+        originalButtonAPI.actionButtonLink = null;
+        $(itemElement).removeData('original-button');
+
+        if (originalButtonAPI.type === 'menubutton') {
+          var submenuItems = itemElement.querySelector('.popupmenu').children;
+
+          for (var j = 0; j < submenuItems.length; j++) {
+            doUnlinkSubmenuItem(submenuItems[j]);
+          }
+        }
+      }
+
+      this.predefinedItems.each(doUnlinkToolbarItems);
+    },
+
+    /**
+     * Links the current set of Toolbar Items to the `More Actions` menu items.
+     * @private
+     * @param {object} popupmenuData incoming popupmenu data
+     * @returns {void}
+     */
+    linkToolbarItems: function linkToolbarItems(popupmenuData) {
+      if (this.type !== 'actionbutton' || !popupmenuData) {
+        return;
+      }
+
+      if (!Array.isArray(popupmenuData)) {
+        popupmenuData = popupmenuData.menu;
+      }
+
+      function doLinkSubmenuItem(menuItemData, actionMenuElement) {
+        var originalMenuElement = menuItemData.elementLink;
+        $(originalMenuElement).data('action-button-link', actionMenuElement);
+        $(actionMenuElement).data('original-menu-element', originalMenuElement);
+        var submenu = menuItemData.submenu;
+
+        if (submenu && submenu.length) {
+          var submenuItems = actionMenuElement.querySelector('.popupmenu').children;
+
+          for (var j = 0; j < submenuItems.length; j++) {
+            doLinkSubmenuItem(submenu[j], submenuItems[j]);
+          }
+        }
+      }
+
+      function doLinkToolbarItems(i, itemElement) {
+        var originalButtonAPI = popupmenuData[i].itemLink;
+        originalButtonAPI.actionButtonLink = itemElement;
+        $(itemElement).data('original-button', originalButtonAPI.element);
+        var submenu = popupmenuData[i].submenu;
+
+        if (submenu && submenu.length) {
+          var submenuItems = itemElement.querySelector('.popupmenu').children;
+
+          for (var j = 0; j < submenuItems.length; j++) {
+            doLinkSubmenuItem(submenu[j], submenuItems[j]);
+          }
+        }
+      }
+
+      this.predefinedItems.each(doLinkToolbarItems);
+    },
+
+    /**
+     * Converts the contents of the Toolbar Item to a data structure that's compatible with a Popupmenu component.
+     * This data structure can be used to populate the contents of a "More Actions" menu.
+     * @returns {object} an object representation of the Toolbar Item as a Popupmenu Item.
+     */
+    toPopupmenuData: function toPopupmenuData() {
+      if (this.type === 'searchfield' || this.type === 'toolbarsearchfield' || this.type === 'actionbutton') {
+        return undefined;
+      }
+
+      var itemData = {
+        itemLink: this,
+        disabled: this.disabled,
+        visible: this.visible
+      };
+      var icon = this.element.querySelector('.icon:not(.close):not(.icon-dropdown) > use');
+
+      if (icon && icon.getAttribute('href')) {
+        itemData.icon = icon.getAttribute('href').replace('#icon-', '');
+      }
+
+      if (icon && icon.getAttribute('xlink:href')) {
+        itemData.icon = icon.getAttribute('xlink:href').replace('#icon-', '');
+      }
+
+      if (this.type === 'button' || this.type === 'menubutton') {
+        itemData.text = this.element.textContent.trim();
+      }
+
+      function addMenuElementLinks(menu, data) {
+        var elems = menu.querySelectorAll('li:not(.heading)');
+        data.forEach(function (item, i) {
+          item.elementLink = elems[i];
+
+          if (item.submenu) {
+            var submenu = elems[i].querySelector('.popupmenu');
+            item.submenu = addMenuElementLinks(submenu, item.submenu);
+          }
+        });
+        return data;
+      } // Add links to the menubutton's menu item elements to the Popupmenu data
+
+
+      if (this.type === 'menubutton') {
+        var menuElem = this.componentAPI.menu;
+
+        if (!menuElem.length) {
+          // Act as if this menubutton is simply empty.
+          itemData.submenu = [];
+        } else {
+          // Get a data representation of the existing menu content
+          var originalSubmenuData = this.componentAPI.toData({
+            noMenuWrap: true
+          });
+          var targetId = this.componentAPI.element[0].id;
+
+          if (targetId) {
+            // NOTE: don't pass the same ID here, which would cause duplicates
+            itemData.id = "".concat(this.toolbarAPI.uniqueId, "-").concat(targetId);
+          }
+
+          itemData.submenu = addMenuElementLinks(menuElem[0], originalSubmenuData);
+        }
+      }
+
+      return itemData;
+    },
+
+    /**
+     * Converts the current state of the toolbar item to an object structure that can be
+     * easily passed back/forth and tested.
+     * @returns {object} containing the current Toolbar Item state.
+     */
+    toData: function toData() {
+      var itemData = {
+        type: this.type,
+        disabled: this.disabled,
+        focused: this.focused,
+        selected: this.selected,
+        overflowed: this.overflowed,
+        visible: this.visible
+      };
+
+      if (this.hasReadOnly) {
+        itemData.readOnly = this.readOnly;
+      }
+
+      if (this.actionButtonLink) {
+        itemData.actionButtonLink = this.actionButtonLink;
+      }
+
+      if (this.componentAPI) {
+        itemData.componentAPI = this.componentAPI;
+      }
+
+      var icon = this.element.querySelector('.icon:not(.close):not(.icon-dropdown) > use');
+
+      if (icon && icon.getAttribute('href')) {
+        itemData.icon = icon.getAttribute('href').replace('#icon-', '');
+      }
+
+      if (icon && icon.getAttribute('xlink:href')) {
+        itemData.icon = icon.getAttribute('xlink:href').replace('#icon-', '');
+      }
+
+      if (this.type === 'button' || this.type === 'menubutton') {
+        itemData.text = this.element.textContent.trim();
+      }
+
+      if (this.type === 'actionbutton') {
+        itemData.predefinedItems = this.predefinedItems;
+      }
+
+      if (this.type === 'menubutton' || this.type === 'actionbutton') {
+        // TODO: Need to convert a Popupmenu's contents to the object format with this method
+        itemData.submenu = this.componentAPI.toData({
+          noMenuWrap: true
+        });
+      }
+
+      return itemData;
+    },
+
+    /**
+     * Completely updates this component with (optional) new settings.
+     * @param {object} [settings] incoming settings
+     */
+    updated: function updated(settings) {
+      if (settings) {
+        this.settings = utils.mergeSettings(this.element, settings, this.settings);
+      }
+
+      this.teardown();
+      this.init();
+    },
+
+    /**
+     * @private
+     * @returns {void}
+     */
+    teardownPredefinedItems: function teardownPredefinedItems() {
+      if (this.type !== 'actionbutton') {
+        return;
+      }
+
+      this.unlinkToolbarItems();
+
+      if (this.predefinedItems && this.predefinedItems.length) {
+        this.predefinedItems.remove();
+      }
+    },
+
+    /**
+     * Unbinds events and removes preset internal flags for this component.
+     * @returns {void}
+     */
+    teardown: function teardown() {
+      $(this.element).off("selected.".concat(COMPONENT_NAME$w)).off("beforeopen.".concat(COMPONENT_NAME$w)).off("focus.".concat(COMPONENT_NAME$w));
+      $('body').off("resize.".concat(COMPONENT_NAME$w));
+      this.teardownPredefinedItems();
+      delete this.type;
+      delete this.selected;
+      delete this.focusable;
+      delete this.visible;
+      delete this.disabled;
+      delete this.readOnly;
+      delete this.section;
+      delete this.toolbar;
+      delete this.trueSelected;
+      delete this.menuRendered;
+    }
+  };
+
+  /**
+   * jQuery component wrapper for Toolbar Flex Item Component
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+
+  $.fn.toolbarflexitem = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$w);
+
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$w, new ToolbarFlexItem(this, settings)); // Remove the jQuery Component reference from $.data
+
+        var oldDestroy = instance.destroy;
+
+        instance.destroy = function () {
+          if (typeof oldDestroy === 'function') {
+            oldDestroy.call(this);
+          }
+
+          $.removeData(this, COMPONENT_NAME$w);
+        };
+      }
+    });
+  };
+
+  var COMPONENT_NAME$x = 'toolbar-flex';
+  /**
+   * Component Default Settings
+   * @namespace
+   */
+
+  var TOOLBAR_FLEX_DEFAULTS = {
+    allowTabs: false,
+    beforeMoreMenuOpen: null,
+    moreMenuSettings: {}
+  };
+  /**
+   * @constructor
+   * @param {HTMLElement} element the base element
+   * @param {object} [settings] incoming settings
+   * @param {function} [settings.beforeMoreMenuOpen=null] Ajax function to be called before the more menu is opened
+   * @param {boolean} [settings.allowTabs] Allows tab to navigate the toolbar
+   * @param {object} [settings.moreMenuSettings] if defined on a toolbar containing a More Actions menu, this will pass settings into this toolbar's More Actions menu
+   */
+
+  function ToolbarFlex(element, settings) {
+    this.element = element;
+    this.settings = utils.mergeSettings(this.element, settings, TOOLBAR_FLEX_DEFAULTS);
+    this.init();
+  }
+
+  ToolbarFlex.prototype = {
+    /**
+     * @private
+     */
+    trueFocusedItem: undefined,
+    sections: [],
+    items: [],
+
+    /**
+     * @private
+     * @returns {void}
+     */
+    init: function init() {
+      var _this = this;
+
+      this.uniqueId = utils.uniqueId(this.element);
+      this.sections = utils.getArrayFromList(this.element.querySelectorAll('.toolbar-section'));
+      this.items = this.getElements().map(function (item) {
+        var itemComponentSettings = {};
+        var isActionButton = $(item).hasClass('btn-actions');
+
+        if (isActionButton) {
+          itemComponentSettings = _this.settings.moreMenuSettings || itemComponentSettings;
+
+          if (_this.settings.beforeMoreMenuOpen) {
+            warnAboutDeprecation('settings.moreMenuSettings.beforeOpen', 'settings.beforeMoreMenuOpen', 'Flex Toolbar');
+            itemComponentSettings.beforeOpen = _this.settings.beforeMoreMenuOpen;
+          }
+        }
+
+        $(item).toolbarflexitem({
+          toolbarAPI: _this,
+          componentSettings: itemComponentSettings,
+          allowTabs: _this.settings.allowTabs
+        });
+        return $(item).data('toolbarflexitem');
+      });
+
+      if (!this.items) {
+        return;
+      } // Check for a focused item
+
+
+      if (!this.settings.allowTabs) {
+        this.items.forEach(function (item) {
+          if (item.focused) {
+            if (_this.focusedItem === undefined) {
+              _this.focusedItem = item;
+            } else {
+              item.focused = false;
+            }
+          }
+        });
+
+        if (!this.focusedItem) {
+          this.focusedItem = this.items[0];
+        }
+      }
+
+      this.render();
+      this.handleEvents();
+    },
+
+    /**
+     * @returns {void}
+     */
+    render: function render() {
+      this.element.setAttribute('role', 'toolbar');
+      this.items.forEach(function (item) {
+        item.render();
+      });
+    },
+
+    /**
+     * @private
+     * @returns {void}
+     */
+    handleEvents: function handleEvents() {
+      var _this2 = this;
+
+      if (!this.settings.allowTabs) {
+        this.keydownListener = this.handleKeydown.bind(this);
+        this.element.addEventListener('keydown', this.keydownListener);
+        this.keyupListener = this.handleKeyup.bind(this);
+        this.element.addEventListener('keyup', this.keyupListener);
+        this.clickListener = this.handleClick.bind(this);
+        this.element.addEventListener('click', this.clickListener);
+      }
+
+      $(this.element).on("selected.".concat(COMPONENT_NAME$x), function (e) {
+        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
+      }); // Inlined Searchfields can cause navigation requiring a focus change to occur on collapse.
+
+      $(this.element).on("collapsed-responsive.".concat(COMPONENT_NAME$x), function (e, direction) {
+        e.stopPropagation();
+
+        _this2.navigate(direction, null, true);
+      });
+    },
+
+    /**
+     * Event Handler for internal `keydown` events.
+     * @private
+     * @param {KeyboardEvent} e `keydown`
+     * @returns {void}
+     */
+    handleKeydown: function handleKeydown(e) {
+      var target = e.target; // Toolbar Items get handled separately.
+
+      if ($(target).data('toolbarflexitem')) {
+        this.handleItemKeydown(e);
+      }
+    },
+
+    /**
+     * Event Handler for internal `keydown` events, specifically on Toolbar Items.
+     * @private
+     * @param {KeyboardEvent} e `keydown`
+     * @returns {void}
+     */
+    handleItemKeydown: function handleItemKeydown(e) {
+      var isRTL = Locale.isRTL();
+      var key = e.key;
+      var item = this.getItemFromElement(e.target);
+
+      function preventScrolling() {
+        e.preventDefault();
+      } // NOTE: 'Enter' and 'SpaceBar' are purposely not handled on keydown, since
+      // a `click` event will be fired on Toolbar items while pressing either of these keys.
+
+
+      if (key === 'Enter') {
+        this.clickByEnterKey = true;
+        return;
+      }
+
+      if (key === ' ') {
+        // SpaceBar
+        if (item.type === 'hyperlink') {
+          this.select(e.target);
+        }
+
+        return;
+      } // Left Navigation
+
+
+      var leftNavKeys = ['ArrowLeft', 'Left', 'ArrowUp', 'Up'];
+
+      if (leftNavKeys.indexOf(key) > -1) {
+        if (item.type === 'searchfield' && (key === 'ArrowLeft' || key === 'Left')) {
+          return;
+        }
+
+        this.navigate(isRTL ? 1 : -1, undefined, true);
+        preventScrolling();
+        return;
+      } // Right Navigation
+
+
+      var rightNavKeys = ['ArrowRight', 'Right', 'ArrowDown', 'Down'];
+
+      if (rightNavKeys.indexOf(key) > -1) {
+        if (item.type === 'searchfield' && (key === 'ArrowRight' || key === 'Right')) {
+          return;
+        }
+
+        this.navigate(isRTL ? -1 : 1, undefined, true);
+        preventScrolling();
+      }
+    },
+
+    /**
+     * Event Handler for internal `keyup` events
+     * @private
+     * @param {KeyboardEvent} e `keyup`
+     * @returns {void}
+     */
+    handleKeyup: function handleKeyup(e) {
+      this.clearClickByEnter(e);
+    },
+
+    /**
+     * Event Handler for internal `click` events
+     * @private
+     * @param {MouseEvent} e `click`
+     * @returns {void}
+     */
+    handleClick: function handleClick(e) {
+      var target = e.target; // Toolbar Items get handled separately.
+
+      if ($(target).data('toolbarflexitem')) {
+        this.handleItemClick(e);
+      }
+
+      this.clearClickByEnter();
+    },
+
+    /**
+     * Event Handler for internal `click` events, specifically on Toolbar Items.
+     * @private
+     * @param {MouseEvent} e `click`
+     * @returns {void}
+     */
+    handleItemClick: function handleItemClick(e) {
+      var item = this.getItemFromElement(e.target);
+      this.select(item);
+      this.focusedItem = item;
+    },
+
+    /**
+     * @private
+     * @param {Event} e incoming event of multiple types
+     * @returns {void}
+     */
+    clearClickByEnter: function clearClickByEnter(e) {
+      // Gets set in `this.handleItemKeydown` by pressing 'Enter'.
+      if (this.clickByEnterKey) {
+        // Prevents the enter key from triggering a `selected` event on the menu button.
+        if (this.type === 'menubutton' || this.type === 'actionbutton') {
+          e.preventDefault();
+        }
+
+        delete this.clickByEnterKey;
+      }
+    },
+
+    /**
+     * Gets all the elements currently inside the Toolbar Markup.
+     * The array of items produced is ordered by Toolbar Section.
+     * @returns {array} of Toolbar Items
+     */
+    getElements: function getElements() {
+      var items = [];
+      var allSelectors = []; // Build a really big selector containing all possible matches
+
+      TOOLBAR_ELEMENTS.forEach(function (elemObj) {
+        allSelectors.push(elemObj.selector);
+      });
+      allSelectors = allSelectors.join(', '); // Get all possible Toolbar Element matches
+      // NOTE: Important that the toolbar items are picked up by the querySelector
+      // in their actual, physical DOM order.
+
+      var thisElems = utils.getArrayFromList(this.element.querySelectorAll(allSelectors)); // Check each element for each type of toolbar item.
+      // If there's a match, push to the item array.
+
+      thisElems.forEach(function (elem) {
+        var defined = false;
+        TOOLBAR_ELEMENTS.forEach(function (elemObj) {
+          if (defined || !$(elem).is(elemObj.selector)) {
+            return;
+          }
+
+          if (typeof elemObj.filter === 'function') {
+            if (!elemObj.filter(elem)) {
+              return;
+            }
+          }
+
+          defined = true;
+          items.push(elem);
+        });
+      });
+      return items;
+    },
+
+    /**
+     * @param {HTMLElement|ToolbarFlexItem} element the element to be checked
+     * @returns {ToolbarFlexItem} an instance of a Toolbar item
+     */
+    getItemFromElement: function getItemFromElement(element) {
+      if (element instanceof ToolbarFlexItem || element.isToolbarFlexItem) {
+        return element;
+      }
+
+      var item;
+
+      for (var i = 0; i < this.items.length; i++) {
+        // Simple comparison of innerHTML to figure out if the elements match up
+        if (this.items[i].element.innerHTML === element.innerHTML) {
+          item = this.items[i];
+        }
+      }
+
+      if (!item) {
+        throw new Error("No Toolbar Item instance available for element ".concat(element, "."));
+      }
+
+      return item;
+    },
+
+    /**
+     * If this toolbar contains a searchfield, this alias returns a reference to its ComponentAPI property.
+     * If no searchfield exists, it returns `undefined`
+     * @returns {Searchfield|undefined} a reference to the componentAPI of the searchfield item.
+     */
+    get searchfieldAPI() {
+      for (var i = 0; i < this.items.length; i++) {
+        if (this.items[i].type === 'searchfield') {
+          return this.items[i].componentAPI;
+        }
+      }
+
+      return undefined;
+    },
+
+    /**
+     * @returns {ToolbarFlexItem|undefined} either a toolbar item, or undefined if one
+     *  wasn't previously focused.
+     */
+    get focusedItem() {
+      if (this.trueFocusedItem) {
+        return this.trueFocusedItem;
+      }
+
+      for (var i = 0; i < this.items.length; i++) {
+        if (this.items[i].focused === true) {
+          return this.items[i];
+        }
+      }
+
+      return undefined;
+    },
+
+    /**
+     * Sets the currently focused item
+     * @param {ToolbarFlexItem} item the item to be focused
+     */
+    set focusedItem(item) {
+      if (this.items.length === 0) {
+        return;
+      }
+
+      for (var i = 0; i < this.items.length; i++) {
+        this.items[i].focused = false;
+      }
+
+      item.focused = true;
+      this.trueFocusedItem = item;
+    },
+
+    // Flag for figuring out if a Toolbar's items are all completely unavailable for keyboard focus.
+    get hasFocusableItems() {
+      for (var i = 0; i < this.items.length; i++) {
+        if (this.items[i].focusable === true) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+
+    /**
+     * @returns {boolean} determining whether or not the Flex Toolbar has the authority to currently control focus
+     */
+    get canManageFocus() {
+      var activeElement = document.activeElement;
+
+      if (this.element.contains(activeElement)) {
+        return true;
+      } // If the searchfield currently has focus, return true
+
+
+      for (var i = 0; i < this.items.length; i++) {
+        if (this.items[i].type === 'searchfield' && this.items[i].componentAPI.isFocused) {
+          return true;
+        }
+      }
+
+      if (activeElement.tagName === 'BODY') {
+        return true;
+      }
+
+      return false;
+    },
+
+    /**
+     * @returns {ToolbarFlexItem[]} all overflowed items in the toolbar
+     */
+    get overflowedItems() {
+      var overflowed = [];
+
+      for (var i = 0; i < this.items.length; i++) {
+        if (this.items[i].overflowed === true) {
+          overflowed.push(this.items[i]);
+        }
+      }
+
+      return overflowed;
+    },
+
+    /**
+     * Navigates among toolbar items and gets a reference to a potential target for focus.
+     * @param {number} direction positive/negative value representing how many spaces to move
+     * @param {number} [currentIndex] the index to start checking from
+     *  the current focus either right/left respectively.
+     * @param {boolean} [doSetFocus=false] if set to true, will cause navigation to also set focus.
+     */
+    navigate: function navigate(direction, currentIndex, doSetFocus) {
+      if (this.hasFocusableItems === false) {
+        return;
+      } // reference the original direction for later, if placement fails.
+
+
+      var originalDirection = 0 + direction;
+
+      if (currentIndex === undefined || currentIndex === null) {
+        currentIndex = this.items.indexOf(this.focusedItem);
+      }
+
+      while (direction !== 0) {
+        if (direction > 0) {
+          if (currentIndex === this.items.length - 1) {
+            currentIndex = 0;
+          } else {
+            currentIndex++;
+          }
+
+          --direction;
+        }
+
+        if (direction < 0) {
+          if (currentIndex === 0) {
+            currentIndex = this.items.length - 1;
+          } else {
+            --currentIndex;
+          }
+
+          direction++;
+        }
+      }
+
+      var targetItem = this.items[currentIndex];
+
+      if (targetItem.focusable === false) {
+        this.navigate(originalDirection > 0 ? 1 : -1, currentIndex, doSetFocus);
+        return;
+      } // Retain a reference to the focused item and set focus, if applicable.
+
+
+      this.focusedItem = targetItem;
+
+      if (doSetFocus && this.canManageFocus) {
+        this.focusedItem.element.focus();
+      }
+    },
+
+    /**
+     * @param {HTMLElement|ToolbarFlexItem} element an HTMLElement representing a
+     *  Toolbar Item, or an actual ToolbarFlexItem API to use.
+     * @returns {void}
+     */
+    select: function select(element) {
+      var item = this.getItemFromElement(element);
+
+      switch (item.type) {
+        case 'searchfield':
+        case 'actionbutton':
+        case 'menubutton':
+          {
+            if (this.clickByEnterKey) {
+              return;
+            }
+
+            item.selected = true;
+            break;
+          }
+
+        default:
+          item.selected = true;
+          break;
+      }
+    },
+
+    /**
+     * Exports everything in the current `items` array as Popupmenu-friendly data to be
+     * converted to menu items.
+     * NOTE: Searchfields and other Action Buttons are ignored
+     * @returns {object} containing JSON-friendly Popupmenu data
+     */
+    toPopupmenuData: function toPopupmenuData() {
+      var data = {
+        noMenuWrap: true
+      };
+
+      function getItemData(item) {
+        var itemData = item.toPopupmenuData();
+
+        if (itemData) {
+          // Pass along some properties to the top level data object
+          if (itemData.icon) {
+            data.hasIcons = true;
+          }
+
+          if (itemData.selectable) {
+            data.selectable = itemData.selectable;
+          }
+        }
+
+        return itemData;
+      }
+
+      data.menu = this.items.filter(function (item) {
+        if (item.type === 'actionbutton' || item.type === 'searchfield') {
+          return false;
+        }
+
+        return true;
+      }).map(function (item) {
+        return getItemData(item);
+      });
+      return data;
+    },
+
+    /**
+     * Exports everything in the current `items` array as a Flex Toolbar object structure
+     * @returns {object} containing JSON-friendly Flex Toolbar data
+     */
+    toData: function toData() {
+      var data = {};
+      data.items = this.items.map(function (item) {
+        return item.toData();
+      });
+      return data;
+    },
+
+    get disabled() {
+      return this.trueDisabled;
+    },
+
+    set disabled(bool) {
+      this.trueDisabled = bool;
+
+      if (bool === true) {
+        this.element.classList.add('is-disabled');
+        return;
+      }
+
+      this.element.classList.remove('is-disabled');
+    },
+
+    /**
+     * Detects whether or not a toolbar item is currently overflowed.
+     * @param {ToolbarFlexItem|jQuery[]|HTMLElement} item the Toolbar Item or Element to check for overlflow.
+     * @returns {boolean} whether or not the item is overflowed.
+     */
+    isItemOverflowed: function isItemOverflowed(item) {
+      if (!item) {
+        return false;
+      } // If we get an HTMLElement or jQuery object, rzesolve the ToolbarFlex Item
+      // from either of those, if applicable. Otherwise, it's not overflowed.
+
+
+      var targetItem;
+
+      if (item instanceof HTMLElement || item instanceof $) {
+        targetItem = $(item).data('toolbarflexitem');
+
+        if (!targetItem) {
+          return false;
+        }
+
+        item = targetItem;
+      } // If this item isn't inside this toolbar, it's definitely not overflowed.
+
+
+      if (this.items.indexOf(item) < 0) {
+        return false;
+      }
+
+      return item.overflowed;
+    },
+
+    /**
+     * @param {object} [settings] incoming settings
+     * @returns {void}
+     */
+    updated: function updated(settings) {
+      if (_typeof(settings) === 'object') {
+        this.settings = utils.mergeSettings(this.element, settings, this.settings);
+      }
+
+      this.teardown();
+      this.init();
+    },
+
+    /**
+     * @returns {void}
+     */
+    teardown: function teardown() {
+      if (!this.settings.allowTabs) {
+        this.element.removeEventListener('keydown', this.keydownListener);
+        this.element.removeEventListener('keyup', this.keyupListener);
+        this.element.removeEventListener('click', this.clickListener);
+      }
+
+      $(this.element).off("selected.".concat(COMPONENT_NAME$x));
+      $(this.element).off("collapsed-responsive.".concat(COMPONENT_NAME$x));
+      this.items.forEach(function (item) {
+        item.teardown();
+      });
+      delete this.items;
+      delete this.sections;
+    },
+
+    /**
+     * @returns {void}
+     */
+    destroy: function destroy() {
+      this.teardown();
+    }
+  };
+
+  /**
+   * jQuery component wrapper for Toolbar Flex Component
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+
+  $.fn.toolbarflex = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$x);
+
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$x, new ToolbarFlex(this, settings)); // Remove the jQuery Component reference from $.data
+
+        var oldDestroy = instance.destroy;
+
+        instance.destroy = function () {
+          if (typeof oldDestroy === 'function') {
+            oldDestroy.call(this);
+          }
+
+          $.removeData(this, COMPONENT_NAME$x);
+        };
+      }
+    });
+  };
+
+  var COMPONENT_NAME$y = 'calendartoolbar';
+  /**
+   * The Calendar Toolbar Displays a toolbar above calendars and week views.
+   * @class CalendarToolbar
+   * @constructor
+   *
+   * @param {jQuery[]|HTMLElement} element The component element.
+   * @param {object} [settings] The component settings.
+   * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
+   * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale's language will be used.
+   * @param {number} [settings.month] The month to show.
+   * @param {number} [settings.year] The year to show.
+   * @param {boolean} [settings.showToday=true] If true the today button is shown on the header.
+   * @param {function} [settings.onOpenCalendar] Call back for when the calendar is open on the toolbar datepicker, allows you to set the date.
+   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
+   * @param {boolean} [settings.isAlternate] Alternate style for the datepicker popup.
+   * @param {boolean} [settings.isMenuButton] Show the month/year as a menu button object, works if isAlternate is true.
+   * @param {boolean} [settings.isMonthPicker] Indicates this is a month picker on the month and week view. Has some slight different behavior.
+   * @param {boolean} [settings.showViewChanger=false] If false the dropdown to change views will not be shown.
+   * @param {string} [settings.viewChangerValue='month'] The value to show selected in the view changer. Can be month, week, day or schedule.
+  */
+
+  var COMPONENT_DEFAULTS = {
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+    locale: null,
+    showToday: true,
+    onOpenCalendar: null,
+    onChangeView: null,
+    isAlternate: false,
+    isMenuButton: true,
+    showViewChanger: false,
+    viewChangerValue: 'month',
+    isMonthPicker: false
+  };
+
+  function CalendarToolbar(element, settings) {
+    this.element = $(element);
+    this.settings = utils.mergeSettings(this.element[0], settings, COMPONENT_DEFAULTS);
+    this.init();
+  } // CalendarToolbar Methods
+
+
+  CalendarToolbar.prototype = {
+    init: function init() {
+      this.setLocale().build().handleEvents();
+    },
+
+    /**
+     * Set up the toolbar to the settings.
+     * @private
+     * @returns {void}
+     */
+    build: function build() {
+      this.element[0].classList.add('flex-toolbar');
+      this.element[0].setAttribute('data-init', 'false');
+
+      if (this.settings.isAlternate) {
+        this.element[0].classList.add('is-alternate');
+        var monthYearPaneButton = "<button type=\"button\" class=\"btn btn-monthyear-pane expandable-area-trigger\" id=\"btn-monthyear-pane\">\n        <span class=\"month\">november</span>\n        <span class=\"year\">2019</span>\n        <svg class=\"icon icon-closed\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\">\n          <use href=\"#icon-dropdown\"></use>\n        </svg>\n        <svg class=\"icon icon-opened\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\">\n          <use href=\"#icon-dropdown\"></use>\n        </svg>\n      </button>";
+        this.element[0].innerHTML = "\n        <div class=\"toolbar-section\">\n          ".concat(this.settings.isMenuButton ? monthYearPaneButton : '<span class="month">november</span><span class="year">2015</span>', "\n        </div>\n        <div class=\"toolbar-section buttonset l-align-").concat(this.isRTL ? 'left' : 'right', "\">\n          ").concat(this.settings.showToday ? "<a class=\"hyperlink today\" href=\"#\">".concat(Locale.translate('Today', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</a>") : '', "\n          <button type=\"button\" class=\"btn-icon prev\">\n            <svg class=\"icon\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\"><use href=\"#icon-caret-left\"></use></svg>\n            <span>").concat(Locale.translate('PreviousMonth', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</span>\n            </button>\n          <button type=\"button\" class=\"btn-icon next\">\n              <svg class=\"icon\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\"><use href=\"#icon-caret-right\"></use></svg>\n              <span>").concat(Locale.translate('NextMonth', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</span>\n          </button>\n        </div>\n      ");
+      } else {
+        this.element[0].innerHTML = "\n        <div class=\"toolbar-section\">\n          <button type=\"button\" class=\"btn-icon prev\">\n            <svg class=\"icon\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\"><use href=\"#icon-caret-left\"></use></svg>\n            <span>".concat(Locale.translate('PreviousMonth', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</span>\n            </button>\n          <button type=\"button\" class=\"btn-icon next\">\n              <svg class=\"icon\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\"><use href=\"#icon-caret-right\"></use></svg>\n              <span>").concat(Locale.translate('NextMonth', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</span>\n          </button>\n          <span class=\"monthview-datepicker\">\n            <span class=\"hidden month\" data-month=\"9\">9</span>\n            <span class=\"hidden year\">2019</span>\n            <span class=\"audible\">").concat(Locale.translate('SelectDay'), "</span>\n            <span tabindex=\"0\" aria-label=\"").concat(Locale.translate('Today', {
+          locale: this.locale.name,
+          language: this.language
+        }), "\" id=\"monthview-datepicker-field\" class=\"datepicker input-auto\" data-validation=\"\">October 2019</span>\n          </span>\n          ").concat(this.settings.showToday ? "<a class=\"hyperlink today\" href=\"#\">".concat(Locale.translate('Today', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</a>") : '', "\n        </div>\n        <div class=\"toolbar-section buttonset l-align-right\">\n          ").concat(!this.settings.showViewChanger ? '' : "<label for=\"calendar-view-changer\" class=\"label audible\">".concat(Locale.translate('ChangeView', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</label>\n            <select id=\"calendar-view-changer\" name=\"calendar-view-changer\" class=\"dropdown\">\n              <option value=\"month\"").concat(this.settings.viewChangerValue === 'month' ? ' selected' : '', ">").concat(Locale.translate('Month', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</option>\n              <option value=\"week\"").concat(this.settings.viewChangerValue === 'week' ? ' selected' : '', ">").concat(Locale.translate('Week', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</option>\n              <option value=\"day\" ").concat(this.settings.viewChangerValue === 'day' ? ' selected' : '', ">").concat(Locale.translate('Day', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</option>\n            </select>\n          </div>"), "\n        </div>\n      ");
+      } // Invoke the toolbar
+
+
+      this.element.toolbarflex({
+        allowTabs: true
+      }); // Setup the datepicker
+
+      this.monthPicker = this.element.find('#monthview-datepicker-field').datepicker({
+        dateFormat: Locale.calendar(this.locale.name, this.settings.language, this.settings.calendarName).dateFormat.year,
+        locale: this.settings.locale,
+        language: this.settings.language,
+        onOpenCalendar: this.settings.onOpenCalendar,
+        isMonthPicker: this.settings.isMonthPicker,
+        showToday: this.settings.showToday
+      });
+
+      if (this.settings.showViewChanger) {
+        this.viewChanger = this.element.find('#calendar-view-changer').dropdown();
+      }
+
+      this.todayLink = this.element.find('.hyperlink.today');
+      this.monthPickerApi = this.monthPicker.data('datepicker'); // Hide focus on buttons
+
+      this.element.find('button, a').hideFocus();
+      this.setInternalDate(this.isIslamic ? [this.settings.year, this.settings.month, 1] : new Date(this.settings.year, this.settings.month, 1));
+      return this;
+    },
+
+    /**
+     * Set the internal date state.
+     * @private
+     * @param {date} date The date to set.
+     * @returns {void}
+     */
+    setInternalDate: function setInternalDate(date) {
+      if (Locale.isIslamic(this.locale.name)) {
+        this.currentYear = date[0];
+        this.currentMonth = date[1];
+        this.currentDay = date[2];
+        this.currentDateIslamic = date;
+      } else {
+        this.currentYear = date.getFullYear();
+        this.currentMonth = date.getMonth();
+        this.currentDay = date.getDate();
+        this.currentDate = date;
+      }
+
+      this.monthPicker.text(Locale.formatDate(new Date(this.currentYear, this.currentMonth, this.currentDay), {
+        date: 'year',
+        locale: this.locale.name,
+        language: this.settings.language
+      }));
+
+      if (!this.currentCalendar || !this.currentCalendar.months) {
+        this.currentCalendar = Locale.calendar(this.locale.name, this.settings.language, this.settings.calendarName);
+      }
+
+      var monthName = this.currentCalendar.months ? this.currentCalendar.months.wide[this.currentMonth] : '';
+      this.element.find('span.month').attr('data-month', this.currentMonth).text(monthName);
+      this.element.find('span.year').text(" ".concat(this.currentYear)); // Some locales set the year first
+
+      var yearFirst = this.currentCalendar.dateFormat.year && this.currentCalendar.dateFormat.year.substr(1, 1) === 'y';
+
+      if (yearFirst) {
+        var translation = Locale.formatDate(this.currentDate, {
+          date: 'year',
+          locale: this.locale.name
+        });
+        var justYear = translation.split(' ')[0];
+        this.element.find('span.year').text("".concat(justYear, " "));
+        this.element.find('span.year').insertBefore(this.element.find('span.month'));
+      }
+
+      return this;
+    },
+
+    /**
+     * Set current calendar
+     * @private
+     * @returns {this} Rhe object for chaining
+     */
+    setCurrentCalendar: function setCurrentCalendar() {
+      this.currentCalendar = Locale.calendar(this.locale.name, this.settings.language, this.settings.calendarName);
+      this.isIslamic = this.currentCalendar.name === 'islamic-umalqura';
+      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
+      return this;
+    },
+
+    /**
+     * Set current locale to be used if different than the set locale.
+     * @private
+     * @returns {void}
+     */
+    setLocale: function setLocale() {
+      var _this = this;
+
+      if (this.settings.language) {
+        Locale.getLocale(this.settings.language);
+        this.language = this.settings.language;
+      } else {
+        this.language = Locale.currentLanguage.name;
+      }
+
+      if (this.settings.locale && (!this.locale || this.locale.name !== this.settings.locale)) {
+        Locale.getLocale(this.settings.locale).done(function (locale) {
+          _this.locale = Locale.cultures[locale];
+          _this.language = _this.settings.language || _this.locale.language;
+
+          _this.setCurrentCalendar();
+        });
+      } else if (!this.settings.locale) {
+        this.locale = Locale.currentLocale;
+        this.setCurrentCalendar();
+      }
+
+      return this;
+    },
+
+    /**
+     * Set the view changer dropdown value
+     * @private
+     * @param {string} viewChangerValue The view changer value to use (month, day or week)
+     * @returns {void}
+     */
+    setViewChangerValue: function setViewChangerValue(viewChangerValue) {
+      this.settings.viewChangerValue = viewChangerValue;
+      this.viewChanger.val(viewChangerValue).trigger('updated');
+    },
+
+    /**
+     * Attach Events used by the Component.
+     * @private
+     * @returns {void}
+     */
+    handleEvents: function handleEvents() {
+      var _this2 = this;
+
+      var self = this;
+      this.monthPicker.off('change.calendar-toolbar-p').on('change.calendar-toolbar-p', function () {
+        var picker = $(this).data('datepicker');
+        self.setInternalDate(picker.isIslamic ? picker.currentDateIslamic : picker.currentDate);
+        self.element.trigger('change-date', {
+          selectedDate: picker.currentDate,
+          isToday: false
+        });
+      });
+      this.todayLink.off('click.calendar-toolbar-t').on('click.calendar-toolbar-t', function (e) {
+        _this2.element.trigger('change-date', {
+          selectedDate: _this2.currentDate,
+          isToday: true
+        });
+
+        e.preventDefault();
+      });
+      this.element.find('.prev').off('click.calendar-toolbar-b').on('click.calendar-toolbar-b', function () {
+        _this2.element.trigger('change-prev', {
+          selectedDate: _this2.currentDate,
+          isToday: false
+        });
+      });
+      this.element.find('.next').off('click.calendar-toolbar-b').on('click.calendar-toolbar-b', function () {
+        _this2.element.trigger('change-next', {
+          selectedDate: _this2.currentDate,
+          isToday: false
+        });
+      });
+
+      if (this.settings.onChangeView) {
+        this.element.find('#calendar-view-changer').off('change.calendar-toolbar-v').on('change.calendar-toolbar-v', function (e) {
+          _this2.settings.onChangeView({
+            viewName: e.currentTarget.value,
+            elem: e.currentTarget,
+            api: _this2
+          });
+        });
+      }
+
+      return this;
+    },
+
+    /**
+     * Resync the UI and Settings.
+     * @param {object} settings The settings to apply.
+     * @returns {object} The api
+     */
+    updated: function updated(settings) {
+      if (typeof settings !== 'undefined') {
+        this.settings = utils.mergeSettings(this.element, settings, COMPONENT_DEFAULTS);
+      }
+
+      return this.teardown().init();
+    },
+
+    /**
+     * Teardown all event handles.
+     * @returns {void}
+     */
+    teardown: function teardown() {
+      this.element.off();
+      this.monthPicker.off();
+      this.todayLink.off();
+      this.element.find('.prev .next').off();
+      return this;
+    },
+
+    /**
+     * Destroy this component instance and remove the link from its base element.
+     * @returns {void}
+     */
+    destroy: function destroy() {
+      this.unbind();
+      $.removeData(this.element[0], COMPONENT_NAME$y);
+    }
+  };
+
+  var COMPONENT_NAME$z = 'monthview';
+  var COMPONENT_NAME_DEFAULTS = {
+    locale: null,
+    language: null,
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+    day: new Date().getDate(),
+    activeDate: null,
+    activeDateIslamic: null,
+    isPopup: false,
+    headerStyle: 'full',
+    firstDayOfWeek: null,
+    disable: {
+      callback: null,
+      dates: [],
+      years: [],
+      minDate: '',
+      maxDate: '',
+      dayOfWeek: [],
+      isEnable: false,
+      restrictMonths: false
+    },
+    legend: [{
+      name: 'Public Holiday',
+      color: 'azure06',
+      dates: []
+    }, {
+      name: 'Weekends',
+      color: 'turquoise06',
+      dayOfWeek: []
+    }],
+    hideDays: false,
+    // TODO
+    showMonthYearPicker: true,
+    yearsAhead: 5,
+    yearsBack: 4,
+    range: {
+      useRange: false,
+      // true - if datepicker using range dates
+      start: '',
+      // Start date '03/05/2018'
+      end: '',
+      // End date '03/21/2018'
+      separator: ' - ',
+      // separator string between two dates
+      minDays: 0,
+      // Minimum days
+      maxDays: 0,
+      // Maximum days
+      selectForward: false,
+      // Only in forward direction
+      selectBackward: false,
+      // Only in backward direction
+      includeDisabled: false // if true range will include disable dates in it
+
+    },
+    selectable: true,
+    onSelected: null,
+    onKeyDown: null,
+    showToday: true,
+    onChangeView: null,
+    isMonthPicker: false
+  };
+  /**
+   * MonthView - Renders a Month calendar
+   * @class MonthView
+   * @param {string} element The plugin element for the constuctor
+   * @param {object} [settings] The settings element.
+   * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
+   * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale will be used or the passed locale will be used.
+   * @param {number} [settings.month] The month to show.
+   * @param {number} [settings.year] The year to show.
+   * @param {number} [settings.day] The initial selected day to show.
+   * @param {number} [settings.activeDate] The date to highlight as selected/today.
+   * @param {number} [settings.activeDateIslamic] The date to highlight as selected/today (as an array for islamic)
+   * @param {number} [settings.isPopup] Is it in a popup (datepicker using it)
+   * @param {number} [settings.headerStyle] Configure the header, this can be 'simple' or 'full'. Full adds a picker and today link.
+   * @param {boolean} [settings.isMonthPicker] Indicates this is a month picker on the month and week view. Has some slight different behavior.
+   * @param {number} [settings.firstDayOfWeek=null] Set first day of the week. '1' would be Monday.
+   * @param {object} [settings.disable] Disable dates in various ways.
+   * For example `{minDate: 'M/d/yyyy', maxDate: 'M/d/yyyy'}`. Dates should be in format M/d/yyyy
+   * or be a Date() object or string that can be converted to a date with new Date().
+   * @param {function} [settings.disable.callback] return true to disable passed dates.
+   * @param {array} [settings.disable.dates] Disable specific dates.
+   * Example `{dates: ['12/31/2018', '01/01/2019']}`.
+   * @param {array} [settings.disable.years] Disable specific years.
+   * Example `{years: [2018, 2019]}`.
+   * @param {string|date} [settings.disable.minDate] Disable up to a minimum date.
+   * Example `{minDate: '12/31/2016'}`.
+   * @param {string|date} [settings.disable.maxDate] Disable up to a maximum date.
+   * Example `{minDate: '12/31/2019'}`.
+   * @param {array} [settings.disable.dayOfWeek] Disable a specific of days of the week 0-6.
+   * Example `{dayOfWeek: [0,6]}`.
+   * @param {boolean} [settings.disable.isEnable=false] Inverse the disable settings.
+   * If true all the disable settings will be enabled and the rest will be disabled.
+   * So you can inverse the settings.
+   * @param {boolean} [settings.disable.retrictMonths=false] Restrict month selections on datepicker.
+   * It requires minDate and maxDate for the feature to activate.
+   * For example if you have more non specific dates to disable then enable ect.
+   * @param {object} [settings.range] Range between two dates with various options.
+   * @param {boolean} [settings.range.useRange=false] Use range of two dates options.
+   * @param {string|date} [settings.range.start] Start date in range.
+   * @param {string|date} [settings.range.end] End date in range.
+   * @param {string} [settings.range.separator=' - '] Visual separator between two dates.
+   * @param {number} [settings.range.minDays=0] Minimum days to be in range.
+   * @param {number} [settings.range.maxDays=0] Maximum days to be in range.
+   * @param {boolean} [settings.range.selectForward=false] Range only in forward direction.
+   * @param {boolean} [settings.range.selectBackward=false] Range only in backward direction.
+   * @param {boolean} [settings.range.includeDisabled=false] Include disable dates in range of dates.
+   * @param {boolean} [settings.hideDays=false] If true the days portion of the calendar will be hidden. Usefull for Month/Year only formats.
+   * @param {boolean} [settings.showMonthYearPicker=true] If false the year and month switcher will be disabled.
+   * @param {number} [settings.yearsAhead=5] The number of years ahead to show in the month/year picker should total 9 with yearsBack.
+   * @param {number} [settings.yearsBack=4] The number of years back to show in the month/year picker should total 9 with yearsAhead.
+   * @param {array} [settings.legend]  Legend Build up
+   * for example `[{name: 'Public Holiday', color: '#76B051', dates: []},
+   * {name: 'Weekends', color: '#EFA836', dayOfWeek: []}]`
+   * @param {boolean} [settings.selectable=false] If true the month days can be clicked to select
+   * @param {boolean} [settings.onSelected=false] Callback that fires when a month day is clicked.
+   * @param {boolean} [settings.onKeyDown=false] Callback that fires when a key is pressed down.
+   * @param {boolean} [settings.showToday=true] If true the today button is shown on the header.
+   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
+   */
+
+  function MonthView(element, settings) {
+    this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS);
+    this.element = $(element);
+    this.init();
+  } // Plugin Methods
+
+
+  MonthView.prototype = {
+    /**
+     * Do initialization, build up and / or add events ect.
+     * @private
+     * @returns {object} The Component prototype, useful for chaining.
+     */
+    init: function init() {
+      return this.setLocaleThenBuild();
+    },
+
+    /**
+     * Set current locale to be used
+     * @private
+     * @returns {void}
+     */
+    setLocaleThenBuild: function setLocaleThenBuild() {
+      var _this = this;
+
+      var languageDf = Locale.getLocale(this.settings.language);
+      var localeDf = Locale.getLocale(this.settings.locale);
+      $.when(localeDf, languageDf).done(function (locale, lang) {
+        _this.locale = Locale.cultures[locale] || Locale.currentLocale;
+        _this.language = lang || _this.settings.language || _this.locale.language;
+        _this.settings.language = _this.language;
+
+        _this.setCurrentCalendar();
+
+        _this.build().handleEvents();
+      });
+    },
+
+    /**
+     * Add any needed markup to the component.
+     * @private
+     * @returns {object} The Calendar prototype, useful for chaining.
+     */
+    build: function build() {
+      var _this2 = this;
+
+      if (this.settings.showMonthYearPicker === 'false') {
+        this.settings.showMonthYearPicker = false;
+      }
+
+      this.setCurrentCalendar(); // Calendar Html in Popups
+
+      this.prevButton = '' + "<button type=\"button\" class=\"btn-icon prev\">\n        ".concat($.createIcon('caret-left'), "\n        <span>").concat(Locale.translate('PreviousMonth', {
+        locale: this.locale.name,
+        language: this.language
+      }), "</span>\n      </button>");
+      this.nextButton = '' + "<button type=\"button\" class=\"btn-icon next\">\n        ".concat($.createIcon('caret-right'), "\n        <span>").concat(Locale.translate('NextMonth', {
+        locale: this.locale.name,
+        language: this.language
+      }), "</span>\n      </button>");
+      this.table = $("<table class=\"monthview-table\" aria-label=\"".concat(Locale.translate('Calendar', {
+        locale: this.locale.name
+      }), "\" role=\"application\"></table>"));
+      this.dayNames = $('' + "<thead>\n        <tr>\n          <th>SU</th>\n          <th>MO</th>\n          <th>TU</th>\n          <th>WE</th>\n          <th>TH</th>\n          <th>FR</th>\n          <th>SA</th>\n        </tr>\n      </thead>").appendTo(this.table);
+      this.days = $('' + "<tbody>\n        <tr>\n          <td class=\"alternate\">26</td>\n          <td class=\"alternate\">27</td>\n          <td class=\"alternate\">28</td>\n          <td class=\"alternate\">29</td>\n          <td class=\"alternate\" >30</td>\n          <td class=\"alternate\">31</td>\n          <td>1</td>\n        </tr><tr>\n          <td>2</td>\n          <td>3</td>\n          <td>4</td>\n          <td>5</td>\n          <td>6</td>\n          <td>7</td>\n          <td>8</td>\n        </tr><tr>\n          <td>9</td>\n          <td>10</td>\n          <td>11</td>\n          <td>12</td>\n          <td>13</td>\n          <td>14</td>\n          <td>15</td>\n        </tr><tr>\n          <td>16</td>\n          <td>17</td>\n          <td>18</td>\n          <td>19</td>\n          <td class=\"is-today\">20</td>\n          <td>21</td>\n          <td>22</td>\n        </tr><tr>\n          <td>23</td>\n          <td>24</td>\n          <td>25</td>\n          <td>26</td>\n          <td>27</td>\n          <td>28</td>\n          <td class=\"alternate\">1</td>\n        </tr><tr>\n          <td class=\"alternate\">2</td>\n          <td class=\"alternate\">3</td>\n          <td class=\"alternate\">4</td>\n          <td class=\"alternate\">5</td>\n          <td class=\"alternate\">6</td>\n          <td class=\"alternate\">7</td>\n          <td class=\"alternate\">8</td>\n        </tr>\n      </tbody>").appendTo(this.table);
+      this.monthYearPane = $(!this.settings.showMonthYearPicker ? '' : "<div class=\"monthview-monthyear-pane expandable-area ".concat(this.settings.hideDays ? ' is-expanded' : '', "\">\n      <div class=\"expandable-pane\">\n        <div class=\"content\"><div class=\"picklist-section is-month\"></div><div class=\"picklist-section is-year\"></div></div>\n      </div>\n    </div>"));
+
+      if (this.settings.hideDays) {
+        this.table = '';
+      } // Reconfigure the header
+
+
+      this.header = $('<div class="monthview-header"><div class="calendar-toolbar"></div></div>');
+
+      if (this.settings.headerStyle === 'full') {
+        this.monthPicker = this.header.find('#monthview-datepicker-field');
+      } else if (this.settings.showToday) {
+        this.header.find('.btn-icon.prev').before("<a class=\"hyperlink today\" href=\"#\">".concat(Locale.translate('Today', {
+          locale: this.locale.name,
+          language: this.language
+        }), "</a>"));
+      }
+
+      this.showMonth(this.settings.month, this.settings.year);
+      this.calendar = this.element.addClass('monthview').append(this.header, this.monthYearPane, this.table);
+
+      if (!this.settings.isPopup) {
+        this.element.addClass('is-fullsize');
+      } // Add Legend
+
+
+      this.addLegend(); // Invoke the toolbar
+
+      this.calendarToolbarEl = this.header.find('.calendar-toolbar');
+      this.calendarToolbarAPI = new CalendarToolbar(this.calendarToolbarEl[0], {
+        onOpenCalendar: function onOpenCalendar() {
+          return _this2.currentDate;
+        },
+        locale: this.settings.locale,
+        language: this.settings.language,
+        year: this.currentYear,
+        month: this.currentMonth,
+        showToday: this.settings.showToday,
+        isMonthPicker: this.settings.headerStyle === 'full',
+        isAlternate: this.settings.headerStyle !== 'full',
+        isMenuButton: this.settings.headerStyle !== 'full' ? this.settings.showMonthYearPicker : false,
+        showViewChanger: this.settings.showViewChanger,
+        onChangeView: this.settings.onChangeView
+      });
+      this.handleEvents();
+      return this;
+    },
+
+    /**
+     * Set current calendar
+     * @private
+     * @returns {void}
+     */
+    setCurrentCalendar: function setCurrentCalendar() {
+      this.currentCalendar = Locale.calendar(this.locale.name, this.language, this.settings.calendarName);
+      this.isIslamic = this.currentCalendar.name === 'islamic-umalqura';
+      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
+      this.conversions = this.currentCalendar.conversions;
+    },
+
+    /**
+     * Update the calendar to show the given month and year
+     * @param {number} month The zero based month to display
+     * @param {number} year The year to display
+     * @returns {void}
+     */
+    showMonth: function showMonth(month, year) {
+      var _this3 = this;
+
+      var self = this;
+      var s = this.settings;
+      var now = new Date();
+      now.setHours(0);
+      now.setMinutes(0);
+      now.setSeconds(0);
+      var elementDate = s.activeDate && s.activeDate.getDate() ? s.activeDate : now;
+      this.setCurrentCalendar();
+
+      if (this.isIslamic) {
+        if (!s.activeDateIslamic) {
+          var gregorianDate = new Date(year, month, this.currentDay || this.settings.day);
+          var islamicDate = Locale.gregorianToUmalqura(gregorianDate);
+          this.todayDateIslamic = Locale.gregorianToUmalqura(now);
+          s.activeDateIslamic = [];
+          s.activeDateIslamic[0] = islamicDate[0];
+          s.activeDateIslamic[1] = islamicDate[1];
+          s.activeDateIslamic[2] = islamicDate[2];
+          year = islamicDate[0];
+          month = islamicDate[1];
+          elementDate = islamicDate;
+          this.currentDay = islamicDate[2];
+        } else {
+          elementDate = s.activeDateIslamic;
+        }
+      }
+
+      if (year.toString().length < 4) {
+        year = new Date().getFullYear();
+      }
+
+      if (month === 12) {
+        year++;
+        month = 0;
+        this.currentMonth = month;
+        this.currentYear = year;
+        this.currentDate.setFullYear(year);
+        this.currentDate.setMonth(month);
+      }
+
+      if (month < 0) {
+        year--;
+        month = 11;
+        this.currentMonth = month;
+        this.currentYear = year;
+        this.currentDate.setFullYear(year);
+        this.currentDate.setMonth(month);
+      }
+
+      this.currentDay = this.currentDay || this.settings.day;
+
+      if (!this.currentCalendar || !this.currentCalendar.days) {
+        this.currentCalendar = Locale.calendar(this.locale.name, this.language, this.settings.calendarName);
+      }
+
+      var days = this.currentCalendar.days.narrow;
+      days = days || this.currentCalendar.days.abbreviated;
+
+      if (!s.isPopup) {
+        days = this.currentCalendar.days.abbreviated;
+      }
+
+      var monthName = this.currentCalendar.months.wide[month];
+      this.currentMonth = month;
+      this.currentYear = year; // Set the Days of the week
+
+      var firstDayofWeek = this.currentCalendar.firstDayofWeek || 0;
+
+      if (s.firstDayOfWeek) {
+        firstDayofWeek = s.firstDayOfWeek;
+      }
+
+      this.dayNames.find('th').each(function (i) {
+        $(this).text(days[(i + firstDayofWeek) % 7]);
+      }); // Localize Month Name
+
+      this.yearFirst = this.currentCalendar.dateFormat.year && this.currentCalendar.dateFormat.year.substr(1, 1) === 'y';
+      this.header.find('.month').attr('data-month', month).text("".concat(xssUtils.stripTags(monthName), " "));
+      this.header.find('.year').text(" ".concat(year));
+
+      if (this.yearFirst && !this.isIslamic && !this.isRTL) {
+        elementDate.setFullYear(year);
+        var translation = Locale.formatDate(elementDate, {
+          date: 'year',
+          locale: this.locale.name
+        });
+        var justYear = translation.split(' ')[0];
+        this.header.find('.year').text("".concat(justYear, " "));
+        this.header.find('.year').insertBefore(this.header.find('.month'));
+      }
+
+      if (s.headerStyle === 'full' && this.calendarToolbarAPI) {
+        this.calendarToolbarAPI.setInternalDate(this.isIslamic ? [year, month, 1] : new Date(year, month, 1));
+      }
+
+      this.appendMonthYearPicker(month, year); // Adjust days of the week
+      // lead days
+
+      var firstDayOfMonth = this.firstDayOfMonth(year, month);
+      var leadDays = (firstDayOfMonth - firstDayofWeek + 7) % 7;
+      var lastMonthDays = this.daysInMonth(year, month + (this.isIslamic ? 1 : 0));
+      var thisMonthDays = this.daysInMonth(year, month + (this.isIslamic ? 0 : 1));
+      var nextMonthDayCnt = 1;
+      var dayCnt = 1;
+      var exYear;
+      var exMonth;
+      var exDay;
+      var foundSelected = false; // Set selected state
+
+      var setSelected = function setSelected(el, isFound) {
+        foundSelected = isFound;
+        el.addClass("is-selected".concat(s.range.useRange ? ' range' : '')).attr('aria-selected', 'true').attr('tabindex', '0');
+      };
+
+      this.dayMap = [];
+      this.days.find('td').each(function (i) {
+        var th = $(this).removeClass('alternate prev-month next-month is-selected range is-today');
+        th.removeAttr('aria-selected');
+        th.removeAttr('tabindex');
+
+        if (i < leadDays) {
+          exDay = lastMonthDays - leadDays + 1 + i;
+          exMonth = month === 0 ? 11 : month - 1;
+          exYear = month === 0 ? year - 1 : year;
+          self.setDisabled(th, exYear, exMonth, exDay);
+          self.setLegendColor(th, exYear, exMonth, exDay);
+          self.dayMap.push({
+            key: stringUtils.padDate(exYear, exMonth, exDay),
+            elem: th
+          });
+          th.addClass('alternate prev-month').html("<span class=\"day-container\"><span aria-hidden=\"true\" class=\"day-text\">".concat(xssUtils.stripTags(exDay), "</span></span>"));
+          th.attr('data-key', stringUtils.padDate(exYear, exMonth, exDay));
+        }
+
+        if (i >= leadDays && dayCnt <= thisMonthDays) {
+          self.dayMap.push({
+            key: stringUtils.padDate(year, month, dayCnt),
+            elem: th
+          });
+          th.html("<span class=\"day-container\"><span aria-hidden=\"true\" class=\"day-text\">".concat(xssUtils.stripTags(dayCnt), "</span></span>"));
+          th.attr('data-key', stringUtils.padDate(year, month, dayCnt)); // Add Selected Class to Selected Date
+
+          if (self.isIslamic) {
+            if (dayCnt === elementDate[2]) {
+              setSelected(th, true);
+            }
+          } else {
+            var tHours = elementDate.getHours();
+            var tMinutes = elementDate.getMinutes();
+            var tSeconds = self.isSeconds ? elementDate.getSeconds() : 0;
+
+            var setHours = function setHours(el) {
+              return el ? el.setHours(tHours, tMinutes, tSeconds, 0) : 0;
+            };
+
+            var newDate = setHours(new Date(year, month, dayCnt));
+
+            if (newDate === setHours(elementDate) || newDate === setHours(self.currentDate)) {
+              setSelected(th, true);
+            }
+          }
+
+          if (dayCnt === self.todayDay && self.currentMonth === self.todayMonth && self.currentYear === self.todayYear) {
+            th.addClass('is-today');
+          }
+
+          th.attr('aria-label', Locale.formatDate(new Date(self.currentYear, self.currentMonth, dayCnt), {
+            date: 'full',
+            locale: self.locale.name
+          }));
+          var startKey = stringUtils.padDate(self.currentYear, self.currentMonth, dayCnt);
+          th.attr('data-key', startKey);
+          self.setDisabled(th, year, month, dayCnt);
+          self.setLegendColor(th, year, month, dayCnt);
+          th.attr('role', 'link');
+          dayCnt++;
+          return;
+        }
+
+        if (dayCnt >= thisMonthDays + 1) {
+          exDay = nextMonthDayCnt;
+          exMonth = month === 11 ? 0 : month + 1;
+          exYear = month === 11 ? year + 1 : year;
+          self.dayMap.push({
+            key: stringUtils.padDate(exYear, exMonth, exDay),
+            elem: th
+          });
+          self.setDisabled(th, exYear, exMonth, exDay);
+          self.setLegendColor(th, exYear, exMonth, exDay);
+          th.addClass('alternate next-month').html("<span class=\"day-container\"><span aria-hidden=\"true\" class=\"day-text\">".concat(nextMonthDayCnt, "</span></span>"));
+          th.attr('data-key', stringUtils.padDate(exYear, exMonth, exDay));
+          nextMonthDayCnt++;
+        }
+      });
+
+      if (!foundSelected && !s.range.useRange) {
+        var firstDay = self.dayMap.filter(function (d) {
+          return d.key === stringUtils.padDate(year, month, _this3.settings.day);
+        });
+
+        if (firstDay.length) {
+          setSelected(firstDay[0].elem, false);
+        }
+      } // Hide 6th Row if all disabled
+
+
+      var row = this.days.find('tr').eq(5);
+
+      if (row.find('td.alternate').length === 7) {
+        row.hide();
+      } else {
+        row.show();
+      }
+
+      if (!this.currentDate) {
+        if (this.isIslamic) {
+          this.currentDateIslamic = [this.currentYear, this.currentMonth, this.currentDay];
+          this.currentDate = Locale.umalquraToGregorian(this.currentYear, this.currentMonth, this.currentDay);
+        } else {
+          this.currentDate = new Date(this.currentYear, this.currentMonth, this.currentDay);
+        }
+      }
+
+      this.setRangeSelection();
+      this.validatePrevNext(); // Allow focus on the same day as last month
+
+      if (!s.range.useRange && this.element.find('td.is-selected').length === 0) {
+        this.element.find('td[tabindex]').removeAttr('tabindex');
+        this.element.find('td:not(.alternate) .day-text').first().closest('td').attr('tabindex', '0');
+      }
+      /**
+      * Fires as the calendar popup is opened.
+      * @event monthrendered
+      * @memberof MonthView
+      * @property {object} event - The jquery event object
+      * @property {object} args - The event arguments
+      * @property {number} args.year - The rendered year
+      * @property {object} args.elem - The DOM object
+      * @property {object} args.api - The MonthView api
+      */
+
+
+      this.element.trigger('monthrendered', {
+        year: year,
+        month: month,
+        elem: this.element,
+        api: this
+      });
+    },
+
+    /**
+     * Set range selection
+     * @private
+     * @returns {void}
+     */
+    setRangeSelection: function setRangeSelection() {
+      if (this.settings.range.useRange) {
+        var range = {};
+        range.date = new Date(this.currentYear, this.currentMonth, 1);
+        range.date.setDate(range.date.getDate() - (this.days.find('.prev-month:visible').length + 1));
+        range.formatedDate = Locale.formatDate(range.date, {
+          date: 'full',
+          locale: this.locale.name
+        });
+        range.cell = this.days.find("[aria-label=\"".concat(range.formatedDate, "\"]"));
+        this.setRangeOnCell(this.settings.range.second ? false : range.cell);
+      }
+    },
+
+    /**
+     * Append month year picker
+     * @private
+     * @param {number} month The month to show in the picker
+     * @param {number} year The year to show in the picker
+     * @returns {void}
+     */
+    appendMonthYearPicker: function appendMonthYearPicker(month, year) {
+      if (!this.settings.showMonthYearPicker) {
+        return;
+      }
+
+      var monthList = '<ul class="picklist is-month">';
+      var wideMonths = this.currentCalendar.months.wide;
+      wideMonths.map(function (monthMap, i) {
+        // eslint-disable-line
+        monthList += "<li class=\"picklist-item".concat(i === month ? ' is-selected ' : '', "\"><a href=\"#\" ").concat(i === month ? 'tabindex="0" ' : 'tabindex="-1" ', "data-month=\"").concat(i, "\">").concat(monthMap, "</a></li>");
+      });
+      monthList += '</ul>';
+      this.monthYearPane.find('.picklist-section.is-month').empty().append(monthList);
+      var years = [];
+      var yearList = '<ul class="picklist is-year">';
+      yearList += '<li class="picklist-item up"><a href="#" tabindex="0"><svg class="icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-caret-up"></use></svg></a></li>';
+
+      for (var i = this.settings.yearsBack; i >= 1; i--) {
+        years.push(parseInt(year, 10) - i);
+      }
+
+      years.push(year);
+
+      for (var j = 1; j <= this.settings.yearsAhead; j++) {
+        years.push(parseInt(year, 10) + j);
+      } // eslint-disable-next-line
+
+
+      years.map(function (yearMap) {
+        yearList += "<li class=\"picklist-item".concat(year === yearMap ? ' is-selected ' : '', "\"><a href=\"#\" ").concat(year === yearMap ? 'tabindex="0" ' : 'tabindex="-1" ', "data-year=\"").concat(yearMap, "\">").concat(yearMap, "</a></li>");
+      });
+      yearList += '<li class="picklist-item down"><a tabindex="0"><svg class="icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-caret-down"></use></svg></a></li>';
+      yearList += '</ul>';
+      this.monthYearPane.find('.picklist-section.is-year').empty().append(yearList);
+
+      if (this.yearFirst) {
+        this.monthYearPane.addClass('is-yearfirst');
+      }
+    },
+
+    /**
+     * Find first day of the week for a given month
+     * @private
+     * @param {number} year The year to use with the month
+     * @param {number} month The month to find the first day for
+     * @returns {number} day
+     */
+    firstDayOfMonth: function firstDayOfMonth(year, month) {
+      if (this.isIslamic) {
+        var firstDay = Locale.umalquraToGregorian(year, month, 1);
+        return firstDay === null ? 1 : firstDay.getDay();
+      }
+
+      return new Date(year, month, 1).getDay();
+    },
+
+    /**
+     * Find the date of the Month (29, 30, 31 ect)
+     * @private
+     * @param {number} year The year to use with the month
+     * @param {number} month The month to find the days in month for
+     * @returns {number} date
+     */
+    daysInMonth: function daysInMonth(year, month) {
+      if (this.isIslamic) {
+        var monthLengthBitmap = this.conversions.yearInfo[this.islamicYearIndex(year)][0];
+        var monthDayCount = 0;
+
+        for (var M = 0; M <= month; M++) {
+          // eslint-disable-next-line
+          monthDayCount = 29 + (monthLengthBitmap & 1);
+
+          if (M === month) {
+            return monthDayCount;
+          } // eslint-disable-next-line
+
+
+          monthLengthBitmap = monthLengthBitmap >> 1;
+        }
+
+        return 0;
+      }
+
+      return new Date(year, month, 0).getDate();
+    },
+
+    /**
+     * Get the islamic year index
+     * @private
+     * @param {number} islamicYear Year to test.
+     * @returns {number} index
+     */
+    islamicYearIndex: function islamicYearIndex(islamicYear) {
+      var yearIdx = islamicYear - 1318;
+
+      if (yearIdx < 0 || yearIdx >= this.conversions.yearInfo.length) {
+        return 0; // for an out-of-range year, simply returns 0
+      }
+
+      return yearIdx;
+    },
+
+    /**
+     * Set disable Date
+     * @private
+     * @param {object} elem Node element to set.
+     * @param {string} year to check.
+     * @param {string} month to check.
+     * @param {string} date to check.
+     * @returns {void}
+     */
+    setDisabled: function setDisabled(elem, year, month, date) {
+      var s = this.settings;
+
+      function makeDisable() {
+        elem.addClass('is-disabled').attr('aria-disabled', 'true').removeClass('is-selected range').removeAttr('aria-selected');
+      } // Reset
+
+
+      elem.removeClass('is-disabled').removeAttr('aria-disabled');
+
+      if (typeof s.disable.callback === 'function') {
+        $.when(this.isDateDisabled(year, month, date)).then(function (dateIsDisabled) {
+          if (dateIsDisabled) {
+            makeDisable();
+          }
+        });
+      } else {
+        var dateIsDisabled = this.isDateDisabled(year, month, date);
+
+        if (dateIsDisabled && !s.disable.isEnable || !dateIsDisabled && s.disable.isEnable) {
+          makeDisable();
+        }
+      }
+    },
+
+    /**
+     * Check through the options to see if the date is disabled
+     * @private
+     * @param {string} year to check.
+     * @param {string} month to check.
+     * @param {string} date to check.
+     * @returns {boolean} true if the date is disabled
+     */
+    isDateDisabled: function isDateDisabled(year, month, date) {
+      var s = this.settings;
+
+      if (typeof s.disable.callback === 'function') {
+        var deferred = $.Deferred();
+        $.when(s.disable.callback(year, month, date)).then(function (results) {
+          deferred.resolve(results);
+        });
+        return deferred.promise();
+      }
+
+      var min = new Date(s.disable.minDate).setHours(0, 0, 0, 0);
+      var max = new Date(s.disable.maxDate).setHours(0, 0, 0, 0);
+      var d2 = this.isIslamic ? Locale.umalquraToGregorian(year, month, date) : new Date(year, month, date);
+
+      if (!d2) {
+        return false;
+      } // dayOfWeek
+
+
+      if (s.disable.dayOfWeek.indexOf(d2.getDay()) !== -1) {
+        return true;
+      }
+
+      var thisYear = d2.getFullYear();
+      d2 = d2.setHours(0, 0, 0, 0); // min and max
+
+      if (d2 <= min || d2 >= max) {
+        return true;
+      } // years
+
+
+      if (/string|number/.test(_typeof(s.disable.years))) {
+        s.disable.years = [s.disable.years];
+      }
+
+      for (var i = 0, l = s.disable.years.length; i < l; i++) {
+        if (thisYear === Number(s.disable.years[i])) {
+          return true;
+        }
+      } // dates
+
+
+      if (s.disable.dates.length && typeof s.disable.dates === 'string') {
+        s.disable.dates = [s.disable.dates];
+      }
+
+      for (var _i = 0, _l = s.disable.dates.length; _i < _l; _i++) {
+        var d = new Date(s.disable.dates[_i]);
+
+        if (d2 === d.setHours(0, 0, 0, 0)) {
+          return true;
+        }
+      }
+
+      return false;
+    },
+
+    /**
+     * Get array of dates between two dates
+     * @private
+     * @param {object} startDate .
+     * @param {object} endDate .
+     * @param {boolean} includeDisabled .
+     * @returns {array} dates between two dates
+     */
+    getDateRange: function getDateRange(startDate, endDate, includeDisabled) {
+      var dates = [];
+      var current = new Date(startDate);
+      includeDisabled = typeof includeDisabled !== 'undefined' ? includeDisabled : this.settings.range.includeDisabled;
+
+      while (endDate.getTime() >= current.getTime()) {
+        if (includeDisabled || !includeDisabled && !this.isDateDisabled(current.getFullYear(), current.getMonth(), current.getDate())) {
+          dates.push(new Date(current));
+        }
+
+        current.setDate(current.getDate() + 1);
+      }
+
+      return dates;
+    },
+
+    /**
+     * Set Color for the Legend settings
+     * @private
+     * @param {object} elem to set.
+     * @param {string} year to check.
+     * @param {string} month to check.
+     * @param {string} date to check.
+     * @returns {void}
+     */
+    setLegendColor: function setLegendColor(elem, year, month, date) {
+      if (!this.settings.showLegend || !elem[0]) {
+        return;
+      }
+
+      var hex = this.getLegendColor(year, month, date);
+      elem[0].style.backgroundColor = '';
+      elem.off('mouseenter.legend mouseleave.legend');
+
+      if (hex) {
+        if (hex.indexOf('#') === -1) {
+          var name = hex.replace(/[0-9]/g, '');
+          var number = hex.substr(hex.length - 2, 2) * 10;
+          hex = theme.themeColors().palette[name][number].value;
+        } // set color on elem at .3 of provided color as per design
+
+
+        elem.addClass('is-colored');
+        elem[0].style.backgroundColor = colorUtils.hexToRgba(hex, 0.3);
+        var normalColor = colorUtils.hexToRgba(hex, 0.3);
+        var hoverColor = colorUtils.hexToRgba(hex, 0.7); // handle hover states
+
+        elem.on('mouseenter.legend', function () {
+          var thisElem = $(this);
+          thisElem[0].style.backgroundColor = hoverColor;
+          thisElem.find('span')[0].style.backgroundColor = 'transparent';
+          thisElem.find('.day-text')[0].style.backgroundColor = 'transparent';
+        }).on('mouseleave.legend', function () {
+          var thisElem = $(this);
+          thisElem[0].style.backgroundColor = normalColor;
+          thisElem.find('span')[0].style.backgroundColor = '';
+          thisElem.find('.day-text')[0].style.backgroundColor = '';
+        });
+      }
+    },
+
+    /**
+     * Process Color Options to get the date color
+     * @private
+     * @param {string} year .
+     * @param {string} month .
+     * @param {string} date .
+     * @returns {string} date color
+     */
+
+    /* eslint-disable consistent-return */
+    getLegendColor: function getLegendColor(year, month, date) {
+      var s = this.settings;
+
+      if (!s.showLegend) {
+        return;
+      }
+
+      var checkDate = new Date(year, month, date);
+      var checkHours = checkDate.setHours(0, 0, 0, 0);
+
+      for (var i = 0; i < s.legend.length; i++) {
+        var series = s.legend[i]; // Check Day of week
+
+        if (series.dayOfWeek && series.dayOfWeek.indexOf(checkDate.getDay()) !== -1) {
+          return series.color;
+        } // Check for dates that match
+
+
+        if (series.dates) {
+          for (var j = 0; j < series.dates.length; j++) {
+            var d = new Date(series.dates[j]);
+
+            if (checkHours === d.setHours(0, 0, 0, 0)) {
+              return series.color;
+            }
+          }
+        }
+      }
+
+      return '';
+    },
+
+    /* eslint-enable consistent-return */
+
+    /**
+     * Sets up event handlers for this component and its sub-elements.
+     * @returns {object} The Calendar prototype, useful for chaining.
+     * @private
+     */
+    handleEvents: function handleEvents() {
+      var _this4 = this;
+
+      var self = this;
+      var s = this.settings;
+      this.element.off("updated.".concat(COMPONENT_NAME$z)).on("updated.".concat(COMPONENT_NAME$z), function () {
+        _this4.updated();
+      }); // Change Month Events
+
+      this.header.off('click.monthview').on('click.monthview', '.btn-icon', function () {
+        var isNext = $(this).is('.next');
+        var range = {};
+        var d = {
+          month: self.currentMonth,
+          year: self.currentYear
+        };
+
+        if (s.range.useRange) {
+          if (isNext) {
+            range.date = new Date(d.year, d.month + 1, self.element.find('.next-month:visible').length + 1);
+          } else {
+            range.date = new Date(d.year, d.month, 1);
+            range.date.setDate(range.date.getDate() - (self.days.find('.prev-month:visible').length + 1));
+          }
+
+          d.month += isNext ? 1 : -1;
+        } else {
+          self.currentMonth += isNext ? 1 : -1;
+          self.currentDate.setMonth(self.currentMonth);
+          self.currentYear = parseInt(self.element[0].querySelector('span.year').innerText, 10);
+          self.currentDate.setFullYear(self.currentYear);
+          d.month = self.currentMonth;
+          d.year = self.currentYear;
+        }
+
+        self.showMonth(d.month, d.year);
+
+        if (s.range.useRange) {
+          range.formatedDate = Locale.formatDate(range.date, {
+            date: 'full',
+            locale: self.locale.name
+          });
+          range.cell = self.days.find("[aria-label=\"".concat(range.formatedDate, "\"]"));
+          self.setRangeOnCell(s.range.second ? false : range.cell);
+        }
+      });
+
+      if (s.range.useRange) {
+        this.header.off('mouseover.datepicker').on('mouseover.datepicker', 'button', function () {
+          if (s.range.extra) {
+            self.setRangeOnCell($(this).is('.next') ? s.range.extra.maxCell : s.range.extra.minCell);
+          }
+        }).off('focus.datepicker').on('focus.datepicker', 'button:not(.hide-focus)', function () {
+          if (s.range.extra) {
+            self.setRangeOnCell($(this).is('.next') ? s.range.extra.maxCell : s.range.extra.minCell);
+          }
+        });
+        this.days.off('mouseover.datepicker').on('mouseover.datepicker', 'td', function () {
+          self.setRangeOnCell(this);
+        });
+      }
+
+      if (this.calendarToolbarEl) {
+        this.calendarToolbarEl.off('change-date.monthview').on('change-date.monthview', function (e, args) {
+          if (args.isToday && _this4.settings.isPopup) {
+            return;
+          }
+
+          if (args.isToday) {
+            _this4.setToday();
+
+            return;
+          }
+
+          _this4.selectDay(args.selectedDate, false, true);
+        });
+      } // Allow dates to be selected
+
+
+      if (s.selectable) {
+        this.element.addClass('is-selectable').off('click.monthview-day').on('click.monthview-day', 'td', function (e) {
+          var key = e.currentTarget.getAttribute('data-key');
+          _this4.lastClickedKey = key;
+
+          if (e.currentTarget.classList.contains('is-disabled')) {
+            return;
+          }
+
+          _this4.selectDay(key, false, true);
+        });
+      }
+
+      this.handleMonthYearPane().handleKeys();
+      return this;
+    },
+
+    /**
+     * Handle events and keys on the month year pane
+     * @private
+     * @returns {object} The component for chaining.
+     */
+    handleMonthYearPane: function handleMonthYearPane() {
+      var _this5 = this;
+
+      var s = this.settings;
+
+      var appendYear = function appendYear(upDown) {
+        var yearContainer = _this5.monthYearPane[0].querySelector('.picklist.is-year');
+
+        var yearList = yearContainer.children;
+        var year = yearList[upDown === 'up' ? 1 : yearList.length - 2].querySelector('a').getAttribute('data-year');
+        var nextYear = parseInt(year, 10) + (upDown === 'up' ? -1 : 1);
+        DOM.remove(yearList[upDown === 'up' ? yearList.length - 2 : 1]);
+        var a = document.createElement('a');
+        a.setAttribute('href', '#');
+        a.setAttribute('tabindex', '-1');
+        a.setAttribute('data-year', nextYear);
+        a.innerHTML = nextYear;
+        var li = document.createElement('li');
+        DOM.addClass(li, 'picklist-item');
+        li.appendChild(a);
+        yearContainer.insertBefore(li, yearList[upDown === 'up' ? 1 : yearList.length - 1]); // Set selected
+
+        if (!_this5.monthYearPane[0].querySelector('.picklist.is-year li.is-selected')) {
+          DOM.addClass(li, 'is-selected');
+          a.setAttribute('tabindex', '0');
+        }
+      }; // Handle Long Press
+
+
+      var intervalId = null;
+      this.monthYearPane.off('touchstart.monthviewpane mousedown.monthviewpane').on('touchstart.monthviewpane mousedown.monthviewpane', '.picklist.is-year li', function (e) {
+        intervalId = setInterval(function () {
+          if (e.currentTarget.classList.contains('up')) {
+            appendYear('up');
+          }
+
+          if (e.currentTarget.classList.contains('down')) {
+            appendYear('down');
+          }
+
+          e.stopImmediatePropagation();
+          e.stopPropagation();
+          return false;
+        }, 200);
+        return true;
+      }).off('touchend.monthviewpane touchcancel.monthviewpane mouseup.monthviewpane mouseout.monthviewpane').on('touchend.monthviewpane touchcancel.monthviewpane mouseup.monthviewpane mouseout.monthviewpane', '.picklist.is-year li', function () {
+        clearInterval(intervalId);
+        return true;
+      });
+
+      var selectPicklistItem = function selectPicklistItem(target, cssClass) {
+        var selectedElem = _this5.monthYearPane[0].querySelector(".picklist.".concat(cssClass, " .is-selected"));
+
+        DOM.removeClass(selectedElem, 'is-selected');
+        selectedElem.querySelector('a').setAttribute('tabindex', '-1');
+        DOM.addClass(target.parentNode, 'is-selected');
+        target.setAttribute('tabindex', '0');
+      }; // Set selecting the month or year
+      // by click, keyboard from `monthYearPane`
+      // target: clicked or keyed element
+      // cssClass: target option `is-month` or `is-year`
+
+
+      var setMonthYearPane = function setMonthYearPane(target, cssClass) {
+        var elem = function elem(sel) {
+          return _this5.monthYearPane[0].querySelector(".is-".concat(sel, " .is-selected a"));
+        };
+
+        var d = cssClass === 'is-month' ? {
+          month: parseInt(target.getAttribute('data-month'), 10),
+          year: parseInt(elem('year').getAttribute('data-year'), 10)
+        } : {
+          month: parseInt(elem('month').getAttribute('data-month'), 10),
+          year: parseInt(target.getAttribute('data-year'), 10)
+        };
+
+        if (!s.range.useRange) {
+          _this5.currentMonth = d.month;
+
+          _this5.currentDate.setMonth(_this5.currentMonth);
+
+          _this5.currentYear = d.year;
+
+          _this5.currentDate.setFullYear(_this5.currentYear);
+
+          d.month = _this5.currentMonth;
+          d.year = _this5.currentYear;
+        }
+
+        selectPicklistItem(target, cssClass);
+
+        if (_this5.element.hasClass("".concat(cssClass, "only"))) {
+          _this5.monthYearPane.parent().find('button.is-select-month').click();
+        }
+      }; // Handle selecting a year, or month
+
+
+      this.monthYearPane.off('click.picklist-month').on('click.picklist-month', '.picklist.is-month li', function (e) {
+        setMonthYearPane(e.target, 'is-month');
+        e.preventDefault();
+      });
+      this.monthYearPane.off('click.picklist-month-a').on('click.picklist-month-a', '.picklist.is-month li a', function (e) {
+        e.preventDefault();
+      });
+      this.monthYearPane.off('click.picklist-year').on('click.picklist-year', '.picklist.is-year li', function (e) {
+        if (e.currentTarget.classList.contains('up')) {
+          appendYear('up');
+          return;
+        }
+
+        if (e.currentTarget.classList.contains('down')) {
+          appendYear('down');
+          return;
+        }
+
+        setMonthYearPane(e.target, 'is-year');
+        e.preventDefault();
+      });
+      this.monthYearPane.off('click.picklist-year-a').on('click.picklist-year-a', '.picklist.is-year li a', function (e) {
+        e.preventDefault();
+      }); // Handle behaviors when expanding and collapsing like disabling buttons and setting height
+
+      this.monthYearPane.on('expand.monthviewpane', function () {
+        // Disable the main page buttons for tabbing
+        if (!s.hideDays) {
+          _this5.element.find('.btn-icon, td.is-selected').attr('disabled', 'true');
+
+          _this5.element.find('td.is-selected').removeAttr('tabindex'); // Set the height
+
+
+          _this5.monthYearPane.find('.content').css('height', _this5.header.parent().height() - _this5.header.height() - 55); // 45 is the footer height
+          // Rename some buttons
+
+
+          _this5.element.find('.hyperlink.today').hide();
+
+          _this5.element.find('.is-select').removeClass('is-select').addClass('is-select-month-pane');
+
+          _this5.element.find('.is-cancel').removeClass('is-cancel').addClass('is-cancel-month-pane').text(Locale.translate('Cancel', {
+            locale: _this5.locale.name,
+            language: _this5.language
+          }));
+        } // Focus the month
+
+
+        setTimeout(function () {
+          var selectedMonth = _this5.monthYearPane.find('.is-month .is-selected a');
+
+          selectedMonth.focus();
+
+          if (_this5.monthYearPane.parent().hasClass('is-yearonly')) {
+            _this5.monthYearPane.find('.is-year .is-selected a').focus();
+          }
+        });
+      }).on('collapse.monthviewpane', function () {
+        // Enable it all again
+        if (!s.hideDays) {
+          _this5.element.find('.btn-icon').removeAttr('disabled');
+
+          _this5.element.find('td.is-selected').attr('tabindex', '0');
+
+          _this5.element.find('.hyperlink.today').show();
+
+          _this5.element.find('.is-select-month-pane').addClass('is-select').removeClass('is-select-month-pane');
+
+          _this5.element.find('.is-cancel-month-pane').addClass('is-cancel').removeClass('is-cancel-month-pane').text(Locale.translate('Clear', {
+            locale: _this5.locale.name,
+            language: _this5.language
+          }));
+        }
+      }); // Handle keyboard on the month year pane
+
+      var moveToItem = function moveToItem(e, nextPrev) {
+        var a = e.currentTarget;
+        var li = e.currentTarget.parentNode;
+        var adjacentLi = nextPrev === 'prev' ? li.previousSibling : li.nextSibling;
+
+        if (!adjacentLi) {
+          adjacentLi = li.parentNode.children[nextPrev === 'prev' ? li.parentNode.children.length - 1 : 0];
+        }
+
+        var adjacentA = adjacentLi.querySelector('a');
+        a.setAttribute('tabindex', '-1');
+        li.parentNode.querySelector('.is-selected').classList.remove('is-selected');
+        DOM.addClass(adjacentLi, 'is-selected');
+        adjacentA.setAttribute('tabindex', '0');
+        adjacentA.focus();
+      };
+
+      this.monthYearPane.off('keydown.monthviewpane').on('keydown.monthviewpane', '.picklist-item a', function (e) {
+        var isUp = e.currentTarget.parentNode.classList.contains('up');
+        var isDown = e.currentTarget.parentNode.classList.contains('down');
+        var isYear = e.currentTarget.parentNode.parentNode.classList.contains('is-year');
+        var isMonth = e.currentTarget.parentNode.parentNode.classList.contains('is-month');
+        var handle = false;
+
+        if (e.key === 'ArrowUp' && (isYear || isMonth)) {
+          moveToItem(e, 'prev');
+          handle = true;
+        } else if (e.key === 'ArrowDown' && (isYear || isMonth)) {
+          moveToItem(e, 'next');
+          handle = true;
+        } else if (e.key === 'Enter') {
+          if (isUp || isDown) {
+            appendYear(isUp ? 'up' : 'down');
+            handle = true;
+          } else if (isYear || isMonth) {
+            setMonthYearPane(e.target, isYear ? 'is-year' : 'is-month');
+            handle = true;
+          }
+        }
+
+        if (handle) {
+          e.preventDefault();
+        }
+      });
+      return this;
+    },
+
+    /**
+     * Select a specific date visually.
+     * @private
+     * @param {date | string} date specific date or a date key (hash string of the date)
+     * @param {boolean} closePopup Send a flag to close the popup
+     * @param {boolean} insertDate Send a flag to insert the date in the field
+    */
+    selectDay: function selectDay(date, closePopup, insertDate) {
+      if (this.isIslamic && typeof date !== 'string') {
+        this.currentDateIslamic = Locale.gregorianToUmalqura(date);
+        date = stringUtils.padDate(this.currentDateIslamic[0], this.currentDateIslamic[1], this.currentDateIslamic[2]);
+      }
+
+      if (!this.isIslamic && typeof date !== 'string') {
+        date = stringUtils.padDate(date.getFullYear(), date.getMonth(), date.getDate());
+      }
+
+      var dayObj = this.dayMap.filter(function (dayFilter) {
+        return dayFilter.key === date;
+      });
+      var year = parseInt(date.substr(0, 4), 10);
+      var month = parseInt(date.substr(4, 2), 10) - 1;
+      var day = parseInt(date.substr(6, 2), 10);
+
+      if (this.isIslamic) {
+        this.currentDateIslamic = date;
+        this.currentDate = Locale.umalquraToGregorian(year, month, day);
+      } else {
+        this.currentDate = new Date(year, month, day);
+      }
+
+      this.currentYear = year;
+      this.currentMonth = month;
+      this.currentDay = day;
+
+      if (dayObj.length === 0 || dayObj[0].elem.hasClass('alternate')) {
+        // Show month
+        this.showMonth(month, year);
+        dayObj = this.dayMap.filter(function (dayFilter) {
+          return dayFilter.key === date;
+        });
+      } // Error - date not found
+
+
+      if (!dayObj.length === 0) {
+        return;
+      }
+
+      var node = dayObj[0].elem[0];
+      var args = {
+        node: node,
+        key: date,
+        day: day,
+        month: month,
+        year: year,
+        close: closePopup
+      };
+      delete this.isKeyClick;
+      this.element.find('td.is-selected').removeClass('is-selected').removeAttr('tabindex');
+      $(node).addClass('is-selected').attr('tabindex', '0').focus();
+      insertDate = this.settings.headerStyle === 'full' ? true : insertDate;
+
+      if (insertDate && this.settings.onSelected) {
+        this.settings.onSelected(node, args);
+      }
+
+      if (insertDate) {
+        this.element.trigger('selected', args);
+      }
+    },
+
+    /**
+     * Select todays date visually.
+     */
+    setToday: function setToday() {
+      this.selectDay(new Date(), false, true);
+    },
+
+    /**
+     * Attach keyboard events for the calendar.
+     * @private
+     */
+    handleKeys: function handleKeys() {
+      var _this6 = this;
+
+      var s = this.settings;
+      this.element.off('keydown.monthview').on('keydown.monthview', '.monthview-table', function (e) {
+        var key = e.keyCode || e.charCode || 0;
+        var cell = $(e.target);
+
+        var allCell = _this6.days.find('td:visible');
+
+        var allCellLength = allCell.length;
+        var idx = null;
+        var selector = null;
+        var handled = false;
+        var minDate = new Date(s.disable.minDate);
+        var maxDate = new Date(s.disable.maxDate);
+
+        var resetRange = function resetRange() {
+          if (_this6.datepickerApi && s.range.useRange && s.range.first && s.range.first.date && s.range.second && s.range.second.date) {
+            _this6.datepickerApi.resetRange({
+              isData: true
+            });
+          }
+        };
+
+        if (_this6.settings.onKeyDown) {
+          var callbackResult = _this6.settings.onKeyDown({
+            e: e,
+            key: key,
+            cell: cell,
+            node: _this6.element
+          });
+
+          if (callbackResult === false) {
+            e.stopPropagation();
+            e.preventDefault();
+            return false;
+          }
+        } // Arrow Down: select same day of the week in the next week
+
+
+        if (key === 40) {
+          handled = true;
+
+          if (s.range.useRange) {
+            idx = allCell.index(e.target) + 7;
+            selector = allCell.eq(idx);
+
+            if (idx < allCellLength) {
+              resetRange();
+
+              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
+
+              _this6.setRangeSelBeforeFirstSel(selector);
+
+              _this6.activeTabindex(selector, true);
+            }
+          } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
+            if (_this6.currentDate.getMonth() < maxDate.getMonth()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() + 7);
+            } else if (maxDate.getDate() - 1 >= _this6.currentDate.getDate() + 7) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() + 7);
+            }
+
+            _this6.selectDay(_this6.currentDate, false, false);
+          } else {
+            _this6.currentDate.setDate(_this6.currentDate.getDate() + 7);
+
+            _this6.selectDay(_this6.currentDate, false, false);
+          }
+        } // Arrow Up: select same day of the week in the previous week
+
+
+        if (key === 38) {
+          handled = true;
+
+          if (s.range.useRange) {
+            idx = allCell.index(e.target) - 7;
+            selector = allCell.eq(idx);
+
+            if (idx > -1) {
+              resetRange();
+
+              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
+
+              _this6.setRangeSelBeforeFirstSel(selector);
+
+              _this6.activeTabindex(selector, true);
+            }
+          } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
+            if (_this6.currentDate.getMonth() > minDate.getMonth()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() - 7);
+            } else if (minDate.getDate() + 1 <= _this6.currentDate.getDate() - 7) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() - 7);
+            }
+
+            _this6.selectDay(_this6.currentDate, false, false);
+          } else {
+            _this6.currentDate.setDate(_this6.currentDate.getDate() - 7);
+
+            _this6.selectDay(_this6.currentDate, false, false);
+          }
+        } // Arrow Left
+
+
+        if (key === 37) {
+          handled = true;
+
+          if (s.range.useRange) {
+            idx = allCell.index(e.target) - 1;
+            selector = allCell.eq(idx);
+
+            if (idx > -1) {
+              resetRange();
+
+              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
+
+              _this6.setRangeSelBeforeFirstSel(selector);
+
+              _this6.activeTabindex(selector, true);
+            }
+          } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
+            if (_this6.currentDate.getMonth() > minDate.getMonth()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() - 1);
+            } else if (minDate.getDate() + 1 !== _this6.currentDate.getDate()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() - 1);
+            }
+
+            _this6.selectDay(_this6.currentDate, false, false);
+          } else {
+            _this6.currentDate.setDate(_this6.currentDate.getDate() - 1);
+
+            _this6.selectDay(_this6.currentDate, false, false);
+          }
+        } // Arrow Right
+
+
+        if (key === 39) {
+          handled = true;
+
+          if (s.range.useRange) {
+            idx = allCell.index(e.target) + 1;
+            selector = allCell.eq(idx);
+
+            if (idx < allCellLength) {
+              resetRange();
+
+              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
+
+              _this6.setRangeSelBeforeFirstSel(selector);
+
+              _this6.activeTabindex(selector, true);
+            }
+          } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
+            if (_this6.currentDate.getMonth() < maxDate.getMonth()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() + 1);
+            } else if (maxDate.getDate() - 1 !== _this6.currentDate.getDate()) {
+              _this6.currentDate.setDate(_this6.currentDate.getDate() + 1);
+            }
+
+            _this6.selectDay(_this6.currentDate, false, false);
+          } else {
+            _this6.currentDate.setDate(_this6.currentDate.getDate() + 1);
+
+            _this6.selectDay(_this6.currentDate, false, false);
+          }
+        } // Page Up Selects Same Day Prev Month
+
+
+        if (key === 33 && !e.altKey) {
+          handled = true;
+          resetRange();
+
+          if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
+            if (minDate.getMonth() !== _this6.currentDate.getMonth()) {
+              _this6.currentDate.setMonth(_this6.currentDate.getMonth() - 1);
+
+              _this6.selectDay(_this6.currentDate, false, false);
+            }
+          } else {
+            _this6.currentDate.setMonth(_this6.currentDate.getMonth() - 1);
+
+            _this6.selectDay(_this6.currentDate, false, false);
+          }
+        } // Page Down Selects Same Day Next Month
+
+
+        if (key === 34 && !e.altKey) {
+          handled = true;
+          resetRange();
+
+          if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
+            if (_this6.currentDate.getMonth() !== maxDate.getMonth()) {
+              _this6.currentDate.setMonth(_this6.currentDate.getMonth() + 1);
+
+              _this6.selectDay(_this6.currentDate, false, false);
+            }
+          } else {
+            _this6.currentDate.setMonth(_this6.currentDate.getMonth() + 1);
+
+            _this6.selectDay(_this6.currentDate, false, false);
+          }
+        } // ctrl + Page Up Selects Same Day previous Year
+
+
+        if (key === 33 && e.ctrlKey) {
+          handled = true;
+          resetRange();
+
+          _this6.currentDate.setFullYear(_this6.currentDate.getFullYear() - 1);
+
+          _this6.selectDay(_this6.currentDate, false, false);
+        } // ctrl + Page Down Selects Same Day next Year
+
+
+        if (key === 34 && e.ctrlKey) {
+          handled = true;
+          resetRange();
+
+          _this6.currentDate.setFullYear(_this6.currentDate.getFullYear() + 1);
+
+          _this6.selectDay(_this6.currentDate, false, false);
+        } // Home Moves to Start of the month
+
+
+        if (key === 36) {
+          handled = true;
+          var d = _this6.currentDate;
+          var firstDay;
+          resetRange();
+
+          if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
+            if (minDate.getMonth() !== _this6.currentDate.getMonth()) {
+              firstDay = new Date(d.getFullYear(), d.getMonth(), 1);
+            } else {
+              firstDay = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate());
+              firstDay.setDate(firstDay.getDate() + 1);
+            }
+          } else {
+            firstDay = new Date(d.getFullYear(), d.getMonth(), 1);
+          }
+
+          _this6.currentDate = firstDay;
+
+          if (_this6.isIslamic) {
+            _this6.currentDateIslamic = Locale.gregorianToUmalqura(_this6.currentDate);
+          }
+
+          _this6.selectDay(_this6.currentDate, false, false);
+        } // End Moves to End of the month
+
+
+        if (key === 35) {
+          handled = true;
+          var _d = _this6.currentDate;
+          var lastDay;
+          resetRange();
+
+          if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
+            if (_this6.currentDate.getMonth() !== maxDate.getMonth()) {
+              lastDay = new Date(_d.getFullYear(), _d.getMonth() + 1, 0);
+            } else {
+              lastDay = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
+              lastDay.setDate(lastDay.getDate() - 1);
+            }
+          } else {
+            lastDay = new Date(_d.getFullYear(), _d.getMonth() + 1, 0);
+          }
+
+          _this6.currentDate = lastDay;
+
+          if (_this6.isIslamic) {
+            _this6.currentDateIslamic = Locale.gregorianToUmalqura(_this6.currentDate);
+          }
+
+          _this6.selectDay(_this6.currentDate, false, false);
+        } // 't' selects today
+
+
+        if (key === 84) {
+          if (s.range.useRange && _this6.datepickerApi) {
+            resetRange();
+            var keepFocus = !(s.range.first && s.range.first.date && (!s.range.second || s.range.second && !s.range.second.date));
+
+            _this6.datepickerApi.setToday(keepFocus);
+
+            if (!keepFocus && _this6.datepickerApi && typeof _this6.datepickerApi.closeCalendar === 'function') {
+              _this6.datepickerApi.closeCalendar();
+            }
+          } else {
+            _this6.setToday();
+          }
+
+          handled = true;
+        } // Space or Enter closes Date Picker, selecting the Date
+
+
+        if (key === 32 || key === 13) {
+          handled = true;
+
+          if (s.range.useRange) {
+            if (!s.range.first || s.range.first && !s.range.first.date) {
+              allCell.removeClass('is-selected');
+            }
+
+            cell.focus().trigger('click');
+            return false;
+          }
+
+          var _d2 = _this6.getCellDate(cell);
+
+          if (_this6.isIslamic) {
+            _this6.currentDateIslamic = [_d2.year, _d2.month, _d2.day];
+            _this6.currentDate = Locale.umalquraToGregorian(_this6.currentDateIslamic[0], _this6.currentDateIslamic[1], _this6.currentDateIslamic[2]);
+          } else {
+            _this6.currentDate = new Date(_d2.year, _d2.month, _d2.day);
+          }
+
+          _this6.selectDay(_this6.currentDate, true, true);
+        }
+
+        if (handled) {
+          e.stopPropagation();
+          e.preventDefault();
+          return false;
+        }
+
+        return true;
+      });
+    },
+
+    /**
+     * Validate the Previous and Next Button availability.
+     * @private
+     */
+    validatePrevNext: function validatePrevNext() {
+      if (!this.settings.disable.restrictMonths || !this.settings.disable.minDate || !this.settings.disable.maxDate) {
+        return;
+      }
+
+      var minDate = new Date(this.settings.disable.minDate);
+      var maxDate = new Date(this.settings.disable.maxDate);
+      this.element.find('.prev').prop('disabled', false);
+      this.element.find('.next').prop('disabled', false); // Wierd edge case, the user probably should use validation.
+
+      if (minDate.getFullYear() > this.currentYear || this.currentYear > maxDate.getFullYear()) {
+        this.element.find('.prev').prop('disabled', true);
+        this.element.find('.next').prop('disabled', true);
+        return;
+      }
+
+      if (this.currentMonth - 1 < minDate.getMonth()) {
+        this.element.find('.prev').prop('disabled', true);
+      }
+
+      if (this.currentMonth + 1 > maxDate.getMonth()) {
+        this.element.find('.next').prop('disabled', true);
+      }
+    },
+
+    /**
+     * Add a Legend below the table
+     * @private
+     * @returns {void}
+     */
+    addLegend: function addLegend() {
+      var s = this.settings;
+
+      if (!s.showLegend) {
+        return;
+      } // Remove Legend
+
+
+      if (this.legend && this.legend.length) {
+        this.legend.remove();
+      }
+
+      this.legend = $('<div class="monthview-legend"></div>');
+
+      for (var i = 0; i < s.legend.length; i++) {
+        var series = s.legend[i];
+        var hex = series.color;
+
+        if (hex.indexOf('#') === -1) {
+          var name = hex.replace(/[0-9]/g, '');
+          var number = hex.substr(hex.length - 2, 2) * 10;
+          hex = theme.themeColors().palette[name][number].value;
+        }
+
+        var item = '' + "<div class=\"monthview-legend-item\">\n          <span class=\"monthview-legend-swatch\" style=\"background-color: ".concat(colorUtils.hexToRgba(hex, 0.3), "\"></span>\n          <span class=\"monthview-legend-text\">").concat(series.name, "</span>\n        </div>");
+        this.legend.append(item);
+      }
+
+      this.table.after(this.legend);
+    },
+
+    /**
+     * Set range on given cell -or- current month/year.
+     * @private
+     * @param {object} cell to set range.
+     * @returns {void}
+     */
+    setRangeOnCell: function setRangeOnCell(cell) {
+      var self = this;
+      var s = this.settings;
+
+      if (s.range.useRange && s.range.first && !s.range.second) {
+        var first = s.range.first;
+        var extra = s.range.extra;
+        var len = extra.cellLength - 1;
+        var firstCell = first.rowIdx + first.cellIdx + len * first.rowIdx;
+        cell = $(cell); // First date selected cell element
+
+        if (cell.length && !cell.is('.is-disabled, .is-selected')) {
+          var row = cell.closest('tr');
+          var cellIdx = cell.index();
+          var rowIdx = row.index();
+          var thisCell = rowIdx + cellIdx + len * rowIdx;
+          var d = self.getCellDate(cell);
+          var cellDate = new Date(d.year, d.month, d.day);
+          var max = this.getDifferenceToDate(s.range.first.date, s.range.maxDays);
+          self.days.find('td:visible').each(function (i) {
+            var thisTd = $(this);
+
+            if (cellDate > s.range.first.date && !s.range.selectBackward && (!s.range.maxDays || s.range.maxDays > 0 && cellDate.getTime() <= max.aftertime) && (i > firstCell && i <= thisCell || cellDate > extra.max && i <= thisCell)) {
+              thisTd.addClass('range-next');
+            } else if (cellDate < s.range.first.date && !s.range.selectForward && (!s.range.maxDays || s.range.maxDays > 0 && cellDate.getTime() >= max.beforetime) && (i < firstCell && i >= thisCell || cellDate < extra.min && i >= thisCell)) {
+              thisTd.addClass('range-prev');
+            } else {
+              thisTd.removeClass('range-next range-prev');
+            }
+          });
+        } else if (!cell.length) {
+          self.days.find('td').removeClass('range-next range-prev');
+        }
+      }
+
+      if (!cell && s.range.second) {
+        self.setRangeSelected();
+      }
+    },
+
+    /**
+     * Get difference to given date
+     * @private
+     * @param {object} date .
+     * @param {number} days .
+     * @param {boolean} includeDisabled .
+     * @returns {object} before/after difference to given date
+     */
+    getDifferenceToDate: function getDifferenceToDate(date, days, includeDisabled) {
+      var _this7 = this;
+
+      var difference = {};
+
+      var move = function move(d, daystomove, isNext) {
+        d = new Date(d);
+
+        while (daystomove > 0) {
+          d.setDate(d.getDate() + (isNext ? 1 : -1));
+
+          if (includeDisabled || !includeDisabled && !_this7.isDateDisabled(d.getFullYear(), d.getMonth(), d.getDate())) {
+            daystomove--;
+            difference[isNext ? 'after' : 'before'] = new Date(d);
+          }
+        }
+
+        if (isNext && difference.after) {
+          difference.aftertime = difference.after.getTime();
+        } else if (difference.before) {
+          difference.beforetime = difference.before.getTime();
+        }
+      };
+
+      includeDisabled = typeof includeDisabled !== 'undefined' ? includeDisabled : this.settings.range.includeDisabled;
+      move(date, days); // previous
+
+      move(date, days, true); // next
+
+      return difference;
+    },
+
+    /**
+     * Set range selected value
+     * @private
+     * @returns {void}
+     */
+    setRangeSelected: function setRangeSelected() {
+      var self = this;
+      var s = this.settings;
+
+      var dateObj = function dateObj(d) {
+        return new Date(d.year, d.month, d.day);
+      };
+
+      if (s.range.useRange && s.range.second && s.range.second.date && this.days && this.days.length) {
+        this.days.find('td').removeClass('range range-next range-prev range-selection end-date is-selected');
+        this.days.find('td:visible').each(function () {
+          var cell = $(this);
+          var isDisabled = cell.is('.is-disabled') && !s.range.includeDisabled;
+          var includeDisabled = cell.is('.is-disabled') && s.range.includeDisabled;
+          var includeDisableClass = includeDisabled ? ' include-disabled' : '';
+
+          var getTime = function getTime(d) {
+            d = new Date(d);
+            d.setHours(0, 0, 0);
+            return d.getTime();
+          };
+
+          var date = getTime(dateObj(self.getCellDate(cell)));
+          var d1 = getTime(s.range.first.date);
+          var d2 = getTime(s.range.second.date);
+
+          if ((date === d1 || date === d2) && !isDisabled) {
+            cell.addClass("is-selected".concat(includeDisableClass).concat(d1 !== d2 ? " range-selection".concat(date === d2 ? ' end-date' : '') : ''));
+          } else if (date > d1 && date < d2 && !isDisabled) {
+            cell.addClass("range-selection".concat(includeDisableClass));
+          }
+        });
+      }
+    },
+
+    /**
+     * Set range selection to active cell with click.
+     * @private
+     * @returns {number} status
+     */
+    setRangeSelByClick: function setRangeSelByClick() {
+      // 0: cell did not found
+      // 1: cell found but not changed and not clicked
+      // 2: cell found and changed but not clicked
+      // 3: cell found and clicked
+      var status = 0;
+      var s = this.settings;
+
+      if (s.range.useRange) {
+        if (s.range.first && s.range.first.date && s.range.second && s.range.second.date) {
+          if (s.showTime && this.datepickerApi) {
+            var getTime = function getTime(d) {
+              return new Date(d).getTime();
+            };
+
+            var d = {
+              time1: getTime(s.range.first.date),
+              time2: getTime(s.range.second.date),
+              first: this.datepickerApi.setTime(s.range.first.date),
+              second: this.datepickerApi.setTime(s.range.second.date)
+            };
+
+            if (d.time1 !== getTime(d.first)) {
+              this.datepickerApi.setRangeToElem(d.first, true);
+              this.datepickerApi.setRangeToElem(d.second, false);
+              status = 2; // 2: cell found and changed but not clicked
+            }
+          } // 1: cell found but not changed and not clicked
+
+
+          status = status === 0 ? 1 : status;
+        } else {
+          var cell;
+
+          if (!s.range.first || s.range.first && !s.range.first.date) {
+            cell = this.dayMap.filter(function (d) {
+              return d.elem.is('.is-selected');
+            });
+
+            if (cell && cell.length) {
+              this.days.find('td:visible').removeClass('is-selected').removeAttr('aria-selected');
+              cell[0].elem.focus().trigger('click');
+              status = 3; // 3: cell found and clicked
+            }
+          } else if (!s.range.second || s.range.second && !s.range.second.date) {
+            cell = this.days.find('td.range-prev:visible').first();
+
+            if (!cell.length) {
+              cell = this.days.find('td.range-next:visible').last();
+            }
+
+            if (!cell.length) {
+              cell = this.dayMap.filter(function (d) {
+                return d.elem.is('.is-selected');
+              });
+            }
+
+            if (cell && cell.length) {
+              var elem = cell[0].elem || cell;
+              elem.focus().trigger('click');
+              status = 3; // 3: cell found and clicked
+            }
+          }
+        }
+      }
+
+      return status;
+    },
+
+    /**
+     * Get date from given cell.
+     * @private
+     * @param {object} cell to get date.
+     * @returns {object} as: year, month, day
+     */
+    getCellDate: function getCellDate(cell) {
+      var day = parseInt(cell.text(), 10);
+      var month = parseInt(this.header.find('.month').attr('data-month'), 10);
+      var year = parseInt(this.header.find('.year').text(), 10);
+
+      if (cell.hasClass('prev-month')) {
+        if (month === 0) {
+          month = 11;
+          year--;
+        } else {
+          month--;
+        }
+      } else if (cell.hasClass('next-month')) {
+        if (month === 11) {
+          month = 0;
+          year++;
+        } else {
+          month++;
+        }
+      }
+
+      return {
+        year: year,
+        month: month,
+        day: day
+      };
+    },
+
+    /**
+     * Set range selection before first date selected
+     * @private
+     * @param {object} elem to set selection
+     * @returns {void}
+     */
+    setRangeSelBeforeFirstSel: function setRangeSelBeforeFirstSel(elem) {
+      var s = this.settings;
+
+      if (s.range.useRange && $('#monthview-popup:visible')) {
+        if (!s.range.first) {
+          $('td', this.element).removeClass('is-selected');
+          elem.addClass('is-selected');
+        }
+      }
+    },
+
+    /**
+     * Check if file type allowed
+     * @private
+     * @param {object} elem to set fouus
+     * @param {boolean} isFocus true if need to set foucs
+     * @returns {object} element passed in
+     */
+    activeTabindex: function activeTabindex(elem, isFocus) {
+      $('td', this.element).removeAttr('tabindex');
+      elem.attr('tabindex', 0);
+
+      if (isFocus) {
+        elem.focus();
+      }
+
+      return elem;
+    },
+
+    /**
+     * Handle updated settings and values.
+     * @returns {object} [description]
+     */
+    updated: function updated() {
+      return this.teardown().init();
+    },
+
+    /**
+     * Simple Teardown - remove events & rebuildable markup.
+     * @returns {object} The Component prototype, useful for chaining.
+     * @private
+     */
+    teardown: function teardown() {
+      this.header.off();
+      this.days.off();
+      this.element.off();
+
+      if (this.monthYearPane) {
+        this.monthYearPane.off();
+        this.monthYearPane = null;
+      }
+
+      return this;
+    },
+
+    /**
+     * Teardown - Remove added markup and events.
+     * @private
+     * @returns {object} The prototype.
+     */
+    destroy: function destroy() {
+      this.teardown();
+
+      if (this.element) {
+        this.element.empty();
+        $.removeData(this.element[0], COMPONENT_NAME$z);
+      }
+
+      return this;
+    }
+  };
+
+  var COMPONENT_NAME$A = 'weekview';
+  var COMPONENT_NAME_DEFAULTS$1 = {
+    eventTypes: [{
+      id: 'example',
+      label: 'Example',
+      color: 'emerald07',
+      checked: true,
+      click: function click() {}
+    }],
+    filteredTypes: [],
+    events: [],
+    locale: null,
+    language: null,
+    firstDayOfWeek: 0,
+    startDate: null,
+    endDate: null,
+    showAllDay: true,
+    showTimeLine: true,
+    startHour: 7,
+    endHour: 19,
+    showToday: true,
+    showViewChanger: true,
+    onChangeView: null,
+    onChangeWeek: null,
+    onRenderWeek: null,
+    eventTooltip: 'overflow',
+    iconTooltip: 'overflow'
+  };
+  /**
+   * WeekView - Renders a Week View Calendar
+   * @class WeekView
+   * @param {string} element The plugin element for the constuctor
+   * @param {object} [settings] The settings element.
+   * @param {array} [settings.eventTypes] An array of objects with data for the event types.
+   * @param {array} [settings.events] An array of objects with data for the events.
+   * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
+   * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale will be used or the passed locale will be used.
+   * @param {date} [settings.startDate] Start of the week to show.
+   * @param {date} [settings.endDate] End of the week to show.
+   * @param {boolean} [settings.firstDayOfWeek=0] Set first day of the week. '1' would be Monday.
+   * @param {boolean} [settings.showAllDay=true] Detemines if the all day events row should be shown.
+   * @param {boolean} [settings.showTimeLine=true] Shows a bar across the current time.
+   * @param {number} [settings.startHour=7] The hour (0-24) to end on each day.
+   * @param {number} [settings.endHour=19] The hour (0-24) to end on each day.
+   * @param {boolean} [settings.showToday=true] Deterimines if the today button should be shown.
+   * @param {boolean} [settings.showViewChanger] If false the dropdown to change views will not be shown.
+   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
+   * @param {function} [settings.onChangeWeek] Call back for when the week is changed.
+   * @param {function} [settings.onRenderMonth] Fires when a week is rendered, allowing you to pass back events or event types to show.
+  * @param {string | function} [settings.eventTooltip] The content of event tooltip. Default value is 'overflow'
+   * @param {string | function} [settings.iconTooltip] The content of event icon tooltip. Default value is 'overflow'
+   */
+
+  function WeekView(element, settings) {
+    this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS$1);
+    this.element = $(element);
+    this.init();
+  } // Plugin Methods
+
+
+  WeekView.prototype = {
+    /**
+     * Do initialization, build up and / or add events ect.
+     * @private
+     * @returns {object} The Component prototype, useful for chaining.
+     */
+    init: function init() {
+      // Do initialization. Build or Events ect
+      if (!this.settings.startDate) {
+        this.settings.startDate = dateUtils.firstDayOfWeek(new Date(), this.settings.firstDayOfWeek);
+      }
+
+      if (!this.settings.endDate) {
+        this.settings.endDate = dateUtils.lastDayOfWeek(new Date(), this.settings.firstDayOfWeek);
+      }
+
+      return this.setLocaleThenBuild();
+    },
+
+    /**
+     * Set current locale to be used
+     * @private
+     * @returns {void}
+     */
+    setLocaleThenBuild: function setLocaleThenBuild() {
+      var _this = this;
+
+      var languageDf = Locale.getLocale(this.settings.language);
+      var localeDf = Locale.getLocale(this.settings.locale);
+      $.when(localeDf, languageDf).done(function (locale, lang) {
+        _this.locale = Locale.cultures[locale] || Locale.currentLocale;
+        _this.language = lang || _this.settings.language || _this.locale.language;
+        _this.settings.language = _this.language;
+
+        _this.setCurrentCalendar();
+
+        _this.build();
+      });
+      return this;
+    },
+
+    /**
+     * Set current calendar
+     * @private
+     * @returns {void}
+     */
+    setCurrentCalendar: function setCurrentCalendar() {
+      this.currentCalendar = Locale.calendar(this.locale.name, this.settings.language, this.settings.calendarName);
+      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
+      this.conversions = this.currentCalendar.conversions;
+      return this;
+    },
+
+    /**
+     * Add any needed markup to the component.
+     * @private
+     * @returns {object} The WeekView prototype, useful for chaining.
+     */
+    build: function build() {
+      this.addToolbar();
+      this.showWeek(this.settings.startDate, this.settings.endDate);
+      this.handleEvents();
+      return this;
+    },
+
+    /**
+     * Render all the events in the current view.
+     * @param {boolean} isCallback Will be set to true when a callback occurs
+     * @private
+     */
+    renderAllEvents: function renderAllEvents(isCallback) {
+      if (this.settings.onRenderWeek && !isCallback) {
+        this.callOnRenderWeek();
+        return;
+      } // Clone and sort the array
+
+
+      var eventsSorted = this.settings.events.slice(0);
+      eventsSorted.sort(function (a, b) {
+        return a.starts < b.starts ? -1 : a.starts > b.starts ? 1 : 0;
+      }); // eslint-disable-line
+
+      this.removeAllEvents();
+
+      for (var i = 0; i < eventsSorted.length; i++) {
+        var event = eventsSorted[i];
+
+        if (this.settings.filteredTypes.indexOf(event.type) > -1) {
+          continue;
+        }
+
+        this.renderEvent(event);
+      }
+    },
+
+    /**
+     * Execute onRenderWeek and handle the call back.
+     * @private
+     */
+    callOnRenderWeek: function callOnRenderWeek() {
+      var self = this;
+
+      function response(events, eventTypes) {
+        if (eventTypes && eventTypes.length > 0) {
+          self.settings.eventTypes = eventTypes;
+        }
+
+        if (events && events.length > 0) {
+          self.settings.events = events;
+          self.renderAllEvents(true);
+        }
+      }
+
+      this.settings.onRenderWeek(this.element, response, {
+        api: self,
+        settings: this.settings
+      });
+    },
+
+    /**
+     * Remove all events from the month.
+     * @private
+     */
+    removeAllEvents: function removeAllEvents() {
+      var events = this.element[0].querySelectorAll('.calendar-event');
+
+      for (var i = 0; i < events.length; i++) {
+        events[i].parentNode.removeChild(events[i]);
+      }
+
+      for (var _i = 0; _i < this.dayMap.length; _i++) {
+        this.dayMap[_i].events = [];
+      }
+    },
+
+    /**
+     * Render a single event on the ui, use in the loop and other functions.
+     * @private
+     * @param  {object} event The event object.
+     */
+    renderEvent: function renderEvent(event) {
+      var startDate = new Date(event.starts);
+      var startKey = stringUtils.padDate(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+
+      if (Locale.isIslamic(this.locale.name)) {
+        var startDateIslamic = Locale.gregorianToUmalqura(startDate);
+        startKey = stringUtils.padDate(startDateIslamic[0], startDateIslamic[1], startDateIslamic[2]);
+      }
+
+      var endDate = new Date(event.ends);
+      var endKey = stringUtils.padDate(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+
+      if (Locale.isIslamic(this.locale.name)) {
+        var endDateIslamic = Locale.gregorianToUmalqura(endDate);
+        endKey = stringUtils.padDate(endDateIslamic[0], endDateIslamic[1], endDateIslamic[2]);
+      }
+
+      var days = this.dayMap.filter(function (day) {
+        return day.key >= startKey && day.key <= endKey;
+      });
+      event.endKey = endKey;
+      event.startKey = startKey;
+      event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes); // Event is only on this day
+
+      if (days.length === 1 && !event.isAllDay) {
+        this.appendEventToHours(days[0].elem, event);
+      }
+
+      if (days.length === 1 && event.isAllDay) {
+        this.appendEventToAllDay(days[0].elem, event);
+      } // Event extends multiple days or is all day
+
+
+      if (days.length > 1) {
+        // TODO
+        for (var i = 0; i < days.length; i++) {
+          var cssClass = i === 0 ? 'calendar-event-start' : 'calendar-event-continue';
+
+          if (i === days.length - 1) {
+            cssClass = 'calendar-event-ends';
+          }
+
+          this.appendEventToAllDay(days[i].elem, event, cssClass);
+        }
+      }
+    },
+
+    /*
+     * Add the ui event to the container event day
+     * @private
+     * @param {object} container The container to append to
+     * @param {object} event The event data object.
+     * @param {string} cssClass An extra css class
+     */
+    appendEventToAllDay: function appendEventToAllDay(container, event, cssClass) {
+      var allDayContainer = container.querySelector('.week-view-all-day-wrapper');
+
+      if (!allDayContainer) {
+        return;
+      }
+
+      var node = document.createElement('a');
+      DOM.addClass(node, 'calendar-event', event.color, cssClass);
+      node.setAttribute('data-id', event.id);
+      node.setAttribute('data-key', event.startKey);
+      node.setAttribute('href', '#');
+
+      if (cssClass === 'calendar-event-continue' || cssClass === 'calendar-event-ends') {
+        node.setAttribute('tabindex', '-1');
+      }
+
+      node.innerHTML = "<div class=\"calendar-event-content\">\n      ".concat(event.icon ? "<span class=\"calendar-event-icon\"><svg class=\"icon ".concat(event.icon, "\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\" data-status=\"").concat(event.status, "\"><use href=\"#").concat(event.icon, "\"></use></svg></span>") : '', "\n      <span class=\"calendar-event-title\">").concat(event.shortSubject || event.subject, "</span>\n    </div>");
+      var containerEvents = allDayContainer.querySelectorAll('.calendar-event');
+      var eventCount = containerEvents.length;
+
+      if (eventCount >= 1) {
+        node.style.top = "".concat(22 * eventCount, "px");
+      }
+
+      if (eventCount > 2) {
+        var nodes = this.element[0].querySelectorAll('.week-view-all-day-wrapper');
+
+        for (var i = 0; i < nodes.length; i++) {
+          nodes[i].style.height = "".concat(44 + (eventCount - 1) * 23, "px");
+        }
+      }
+
+      allDayContainer.appendChild(node);
+      this.attachTooltip(node, event);
+    },
+
+    /**
+     * Add the ui event to the container spanning hours
+     * @private
+     * @param {object} container The container to append to
+     * @param {object} event The event data object.
+     */
+    appendEventToHours: function appendEventToHours(container, event) {
+      var dayHourContainers = this.element[0].querySelectorAll("td:nth-child(".concat(container.cellIndex + 1, ")"));
+
+      for (var i = 0; i < dayHourContainers.length; i++) {
+        var tdEl = dayHourContainers[i];
+        var hour = parseFloat(tdEl.parentNode.getAttribute('data-hour'), 10);
+        var rStartsHour = Math.round(event.startsHour);
+        var isUp = rStartsHour > event.startsHour;
+        var startsHere = isUp ? hour === rStartsHour - 0.5 : hour === rStartsHour;
+
+        if (startsHere) {
+          var duration = event.endsHour - event.startsHour;
+          var displayedTime = '';
+          var node = document.createElement('a');
+          DOM.addClass(node, 'calendar-event', event.color);
+          node.setAttribute('data-id', event.id);
+          node.setAttribute('data-key', event.startKey);
+          node.setAttribute('href', '#');
+
+          if (duration < 0.5) {
+            DOM.addClass(node, 'reduced-padding', event.color);
+          }
+
+          if (duration < 1.5) {
+            DOM.addClass(node, 'is-ellipsis');
+          }
+
+          if (duration > 2) {
+            displayedTime = " ".concat(Locale.formatHourRange(event.startsHour, event.endsHour, {
+              locale: this.locale
+            }));
+          } // Max out at the bottom and show the time
+
+
+          if (event.startsHour + duration > this.settings.endHour) {
+            DOM.addClass(node, 'is-cutoff', event.color);
+            duration = this.settings.endHour + 1 - event.startsHour;
+          }
+
+          if (duration < 0.25) {
+            duration = 0.25;
+          } // Set css top property if there extra starting time
+
+
+          if (event.startsHour > hour) {
+            var unit = 0.016666666666666784; // unit for one minute
+
+            var extra = event.startsHour - hour; // extract extra minutes
+
+            var height = tdEl.parentNode.offsetHeight; // container height
+            // calculate top value
+
+            node.style.top = "".concat(extra / unit * (height / 30), "px"); // 30-minutes each row
+          } // Add one per half hour + 1 px for each border crossed
+
+
+          node.style.height = "".concat(25 * (duration * 2) + 1.5 * duration, "px");
+          node.innerHTML = "<div class=\"calendar-event-content\">\n          ".concat(event.icon ? "<span class=\"calendar-event-icon\"><svg class=\"icon ".concat(event.icon, "\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\" data-status=\"").concat(event.status, "\"><use href=\"#").concat(event.icon, "\"></use></svg></span>") : '', "\n          <span class=\"calendar-event-title\">").concat(event.shortSubject || event.subject).concat(displayedTime, "</span>\n        </div>");
+          var containerWrapper = tdEl.querySelector('.week-view-cell-wrapper');
+          var containerEvents = tdEl.querySelectorAll('.calendar-event');
+          var eventCount = containerEvents.length;
+
+          if (eventCount > 0) {
+            var width = 100 / (eventCount + 1);
+            var j = 0;
+
+            for (j = 0; j < eventCount; j++) {
+              containerEvents[j].style.width = "".concat(width, "%");
+
+              if (j > 0 && this.isRTL) {
+                containerEvents[j].style.right = "".concat(width * j, "%");
+              }
+
+              if (j > 0 && !this.isRTL) {
+                containerEvents[j].style.left = "".concat(width * j, "%");
+              }
+            }
+
+            node.style.width = "".concat(width, "%");
+
+            if (this.isRTL) {
+              node.style.right = "".concat(width * j, "%");
+            } else {
+              node.style.left = "".concat(width * j, "%");
+            }
+          }
+
+          containerWrapper.appendChild(node);
+          this.attachTooltip(node, event);
+        }
+      }
+    },
+
+    /**
+     * Add the tooltip functionality.
+     * @private
+     * @param {object} node The dom element.
+     * @param {object} event The event data object.
+     */
+    attachTooltip: function attachTooltip(node, event) {
+      var _this2 = this;
+
+      if (this.settings.iconTooltip !== 'overflow') {
+        var icon = node.querySelector('.calendar-event-icon');
+
+        if (icon) {
+          if (typeof this.settings.iconTooltip === 'function') {
+            this.settings.iconTooltip({
+              settings: this.settings,
+              event: event
+            });
+          } else if (event[this.settings.iconTooltip]) {
+            icon.setAttribute('title', event[this.settings.iconTooltip]);
+            $(icon).tooltip({
+              content: icon.innerText
+            });
+          }
+        }
+      }
+
+      if (this.settings.eventTooltip !== 'overflow') {
+        if (typeof this.settings.eventTooltip === 'function') {
+          this.settings.eventTooltip({
+            settings: this.settings,
+            event: event
+          });
+        } else if (event[this.settings.eventTooltip]) {
+          node.setAttribute('title', event[this.settings.eventTooltip]);
+          $(node).tooltip({
+            content: node.innerText
+          });
+        }
+      }
+
+      if (!event.shortSubject && (this.settings.eventTooltip === 'overflow' || this.settings.iconToolTip === 'overflow')) {
+        // Show the full text if cut off
+        node.setAttribute('title', event.subject);
+        $(node).tooltip({
+          beforeShow: function beforeShow(response, ui) {
+            var title = ui[0].querySelector('.calendar-event-title');
+            var icon = ui[0].querySelector('.calendar-event-icon');
+            var iconStatus = icon ? icon.querySelector('.icon').getAttribute('data-status') : '';
+
+            if (title.offsetWidth > ui[0].scrollWidth - (icon ? icon.offsetWidth : 0)) {
+              response("".concat(title.innerText).concat(iconStatus ? " (".concat(Locale.translate(iconStatus, {
+                locale: _this2.locale.name
+              }, false), ")") : ''));
+              return;
+            }
+
+            response(false);
+          }
+        });
+      }
+    },
+
+    /**
+     * Update the weekview to show the given range of days.
+     * @param {date} startDate The start of the week or range.
+     * @param {date} endDate The end of the week or range.
+     * @returns {void}
+     */
+    showWeek: function showWeek(startDate, endDate) {
+      var _this3 = this;
+
+      this.numberOfDays = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
+      var gregStartDate = new Date(startDate.getTime());
+      var gregEndDate = new Date(endDate.getTime());
+
+      if (Locale.isIslamic(this.locale.name)) {
+        startDate = Locale.gregorianToUmalqura(startDate);
+        startDate = new Date(startDate[0], startDate[1], startDate[2], startDate[3], startDate[4], startDate[5], startDate[6]);
+        endDate = Locale.gregorianToUmalqura(endDate);
+        endDate = new Date(endDate[0], endDate[1], endDate[2], endDate[3], endDate[4], endDate[5], endDate[6]);
+      }
+
+      this.dayMap = [];
+      this.isDayView = false;
+      this.element.removeClass('is-day-view');
+
+      if (this.numberOfDays === 0 || this.numberOfDays === 1) {
+        this.element.addClass('is-day-view');
+        this.isDayView = true;
+        this.element.find('#calendar-view-changer').val('day').trigger('updated');
+      }
+
+      this.hasIrregularDays = this.numberOfDays !== 7; // Create the header consisting of days in the range
+
+      this.weekHeader = "<thead class=\"week-view-table-header\"><tr><th><div class=\"week-view-header-wrapper\"><span class=\"audible\">".concat(Locale.translate('Hour'), "</span></div>");
+
+      if (this.settings.showAllDay) {
+        this.weekHeader += "<div class=\"week-view-all-day-wrapper\">".concat(Locale.translate('AllDay', this.locale.name), "</div>");
+      }
+
+      this.weekHeader += '</th>';
+
+      for (var day = new Date(startDate.getTime()); day <= endDate; day.setDate(day.getDate() + 1)) {
+        // TODO if this is 'dd EEEE' has wierd overflow
+        var dayValue = Locale.formatDate(day, {
+          pattern: 'd',
+          locale: this.locale.name
+        });
+        var dayNameValue = Locale.formatDate(day, {
+          pattern: 'EEE',
+          locale: this.locale.name
+        });
+        var dayOfWeekSetting = this.currentCalendar.dateFormat.dayOfWeek;
+        var emphasis = dayOfWeekSetting ? dayOfWeekSetting.split(' ')[0] === 'EEE' : 'd EEE';
+        this.weekHeader += "<th data-key=\"".concat(stringUtils.padDate(day.getFullYear(), day.getMonth(), day.getDate()), "\"><div class=\"week-view-header-wrapper").concat(dateUtils.isToday(day) ? ' is-today' : '', "\"><span class=\"week-view-header-day-of-week").concat(emphasis ? '' : ' is-emphasis', "\">").concat(emphasis ? dayNameValue : dayValue, "</span><span class=\"week-view-header-day-of-week").concat(emphasis ? ' is-emphasis' : '', "\">").concat(emphasis ? dayValue : dayNameValue, "</span></div>");
+
+        if (this.settings.showAllDay) {
+          this.weekHeader += '<div class="week-view-all-day-wrapper"></div>';
+        }
+
+        this.weekHeader += '</th>';
+      }
+
+      this.weekHeader += '</tr></thead>'; // Show the hours in the days
+
+      this.weekBody = '<tbody>';
+
+      for (var hour = this.settings.startHour; hour <= this.settings.endHour; hour++) {
+        var weekRow = "<tr class=\"week-view-hour-row\" data-hour=\"".concat(hour, "\"><td><div class=\"week-view-cell-wrapper\">").concat(Locale.formatHour(hour, {
+          locale: this.locale
+        }), "</div></td>");
+        var halfHourRow = "<tr class=\"week-view-half-hour-row\" data-hour=\"".concat(hour, ".5\"><td><div class=\"week-view-cell-wrapper\"></div></td>");
+
+        for (var _day = new Date(startDate.getTime()); _day <= endDate; _day.setDate(_day.getDate() + 1)) {
+          //eslint-disable-line
+          weekRow += '<td><div class="week-view-cell-wrapper"></div></td>';
+          halfHourRow += '<td><div class="week-view-cell-wrapper"></div></td>';
+        }
+
+        weekRow += '</tr>';
+        halfHourRow += '</tr>';
+        this.weekBody += weekRow + halfHourRow;
+      }
+
+      this.weekBody += '</tbody>'; // Render the table and show the event
+
+      this.weekContainer = "<div class=\"week-view-container\"><table class=\"week-view-table\">".concat(this.weekHeader).concat(this.weekBody, "</table></div>");
+      this.element.find('.week-view-container').remove();
+      var args = {
+        isDayView: this.isDayView,
+        startDate: Locale.isIslamic(this.locale.name) ? gregStartDate : startDate,
+        endDate: Locale.isIslamic(this.locale.name) ? gregEndDate : endDate,
+        elem: this.element,
+        api: this
+      };
+      /**
+      * Fires as the calendar popup is opened.
+      * @event weekrendered
+      * @memberof WeekView
+      * @property {object} event - The jquery event object
+      * @property {object} args - The event arguments
+      * @property {boolean} args.isDayView - True if one day is showing.
+      * @property {object} args.startDate - The start date of the event
+      * @property {object} args.endDate - The start date of the event
+      * @property {object} args.elem - The current element.
+      * @property {object} args.api - The WeekView api
+      */
+
+      this.element.append(this.weekContainer).trigger('weekrendered', args);
+
+      if (this.settings.onChangeWeek) {
+        this.settings.onChangeWeek(args);
+      }
+
+      this.element.find('th').each(function (i, elem) {
+        var key = elem.getAttribute('data-key');
+
+        if (key) {
+          _this3.dayMap.push({
+            key: key,
+            elem: elem
+          });
+        }
+      }); // Add the time line and update the text on the month
+
+      this.addTimeLine();
+      this.showToolbarMonth(startDate, endDate);
+      this.renderAllEvents(); // Update currently set start and end date
+
+      this.settings.startDate = Locale.isIslamic(this.locale.name) ? gregStartDate : startDate;
+      this.settings.endDate = Locale.isIslamic(this.locale.name) ? gregEndDate : endDate;
+    },
+
+    /**
+     * Update the weekview toolbar to show month(s) being show.
+     * @private
+     * @param {date} startDate The start of the week or range.
+     * @param {date} endDate The end of the week or range.
+     * @returns {void}
+     */
+    showToolbarMonth: function showToolbarMonth(startDate, endDate) {
+      var startMonth = Locale.formatDate(startDate, {
+        pattern: 'MMMM',
+        locale: this.locale.name
+      });
+      var endMonth = Locale.formatDate(endDate, {
+        pattern: 'MMMM',
+        locale: this.locale.name
+      });
+      var startYear = Locale.formatDate(startDate, {
+        pattern: 'yyyy',
+        locale: this.locale.name
+      });
+      var endYear = Locale.formatDate(endDate, {
+        pattern: 'yyyy',
+        locale: this.locale.name
+      });
+      var monthStr = Locale.formatDate(endDate, {
+        date: 'year',
+        locale: this.locale.name
+      });
+
+      if (endMonth !== startMonth) {
+        monthStr = "".concat(Locale.formatDate(startDate, {
+          pattern: 'MMM',
+          locale: this.locale.name
+        }), " - ").concat(Locale.formatDate(endDate, {
+          pattern: 'MMMM yyyy',
+          locale: this.locale.name
+        }));
+      }
+
+      if (endYear !== startYear) {
+        monthStr = "".concat(Locale.formatDate(startDate, {
+          pattern: 'MMM yyyy',
+          locale: this.locale.name
+        }), " - ").concat(Locale.formatDate(endDate, {
+          pattern: 'MMM yyyy',
+          locale: this.locale.name
+        }));
+      }
+
+      this.monthField.text(monthStr);
+    },
+
+    /**
+     * Add a time line on the weekview which moves.
+     * @private
+     */
+    addTimeLine: function addTimeLine() {
+      var _this4 = this;
+
+      if (!this.settings.showTimeLine) {
+        return;
+      }
+
+      var setTime = function setTime() {
+        var now = new Date();
+        var hours = now.getHours();
+        var mins = now.getMinutes();
+        var diff = hours - _this4.settings.startHour + mins / 60; // 53 is the size of one whole hour (25 + two borders)
+
+        _this4.markers.css('top', diff * 52);
+      };
+
+      if (!this.timeMarker) {
+        this.element.find('.week-view-hour-row:nth-child(1) td').prepend('<div class="week-view-time-marker"></div>');
+        this.markers = $('.week-view-time-marker');
+        setTime();
+        this.timer = setInterval(function () {
+          setTime();
+        }, 30 * 1000);
+      }
+    },
+
+    /**
+     * Add and invoke the toolbar
+     * @private
+     */
+    addToolbar: function addToolbar() {
+      var _this5 = this;
+
+      // Invoke the toolbar
+      this.header = $('<div class="week-view-header"><div class="calendar-toolbar"></div></div>').appendTo(this.element);
+      this.calendarToolbarEl = this.header.find('.calendar-toolbar');
+      this.calendarToolbarAPI = new CalendarToolbar(this.calendarToolbarEl[0], {
+        onOpenCalendar: function onOpenCalendar() {
+          return _this5.settings.startDate;
+        },
+        locale: this.settings.locale,
+        language: this.settings.language,
+        year: this.currentYear,
+        month: this.currentMonth,
+        showToday: this.settings.showToday,
+        isAlternate: false,
+        isMenuButton: true,
+        showViewChanger: this.settings.showViewChanger,
+        onChangeView: this.settings.onChangeView,
+        viewChangerValue: !this.isDayView ? 'week' : 'day'
+      });
+      this.monthField = this.header.find('#monthview-datepicker-field');
+    },
+
+    /**
+     * Sets up event handlers for this component and its sub-elements.
+     * @returns {object} The Calendar prototype, useful for chaining.
+     * @private
+     */
+    handleEvents: function handleEvents() {
+      var _this6 = this;
+
+      this.element.off("updated.".concat(COMPONENT_NAME$A)).on("updated.".concat(COMPONENT_NAME$A), function () {
+        _this6.updated();
+      });
+      this.element.off("change-date.".concat(COMPONENT_NAME$A)).on("change-date.".concat(COMPONENT_NAME$A), function (e, args) {
+        var startDate = args.isToday ? new Date() : args.selectedDate;
+
+        if (_this6.isDayView) {
+          _this6.settings.startDate = startDate;
+          _this6.settings.endDate = startDate;
+        } else {
+          _this6.settings.startDate = _this6.hasIrregularDays ? startDate : dateUtils.firstDayOfWeek(startDate, _this6.settings.firstDayOfWeek);
+
+          _this6.settings.startDate.setHours(0, 0, 0, 0);
+
+          _this6.settings.endDate = new Date(_this6.settings.startDate);
+
+          _this6.settings.endDate.setDate(_this6.settings.endDate.getDate() + _this6.numberOfDays - 1);
+
+          _this6.settings.endDate.setHours(23, 59, 59, 59);
+        }
+
+        _this6.showWeek(_this6.settings.startDate, _this6.settings.endDate);
+      });
+      this.element.off("change-next.".concat(COMPONENT_NAME$A)).on("change-next.".concat(COMPONENT_NAME$A), function () {
+        _this6.advanceDays(true);
+      });
+      this.element.off("change-prev.".concat(COMPONENT_NAME$A)).on("change-prev.".concat(COMPONENT_NAME$A), function () {
+        _this6.advanceDays(false);
+      });
+
+      var fireEvent = function fireEvent(target, eventName) {
+        var eventId = target.getAttribute('data-id');
+
+        var eventData = _this6.settings.events.filter(function (event) {
+          return event.id === eventId;
+        });
+
+        if (!eventData || eventData.length === 0) {
+          return;
+        }
+        /**
+        * Fires as the calendar popup is opened.
+        * @event eventclick
+        * @memberof WeekView
+        * @property {object} event - The jquery event object
+        * @property {object} args - The event arguments
+        * @property {object} args.settings - The current settings including start and end date.
+        * @property {object} args.event - The event data.
+        */
+
+        /**
+        * Fires as the calendar popup is opened.
+        * @event eventdblclick
+        * @memberof WeekView
+        * @property {object} event - The jquery event object
+        * @property {object} args - The event arguments
+        * @property {object} args.settings - The current settings including start and end date.
+        * @property {object} args.event - The event data.
+        */
+
+
+        _this6.element.trigger(eventName, {
+          settings: _this6.settings,
+          event: eventData[0]
+        });
+      };
+
+      this.element.off("click.".concat(COMPONENT_NAME$A)).on("click.".concat(COMPONENT_NAME$A), '.calendar-event', function (e) {
+        fireEvent(e.currentTarget, 'eventclick');
+        e.preventDefault();
+      });
+      this.element.off("dblclick.".concat(COMPONENT_NAME$A)).on("dblclick.".concat(COMPONENT_NAME$A), '.calendar-event', function (e) {
+        fireEvent(e.currentTarget, 'eventdblclick');
+      });
+      return this;
+    },
+
+    /**
+     * Handle updated settings and values.
+     * @param {boolean} advance Whether to go up or down in days.
+     */
+    advanceDays: function advanceDays(advance) {
+      var diff = this.isDayView ? 1 : this.numberOfDays;
+
+      if (!advance) {
+        diff = -diff;
+      }
+
+      this.settings.startDate.setDate(this.settings.startDate.getDate() + diff);
+
+      if (this.isDayView) {
+        this.settings.endDate = new Date(this.settings.startDate);
+        this.settings.startDate.setHours(0, 0, 0, 0);
+        this.settings.endDate.setHours(23, 59, 59, 999);
+      } else {
+        this.settings.endDate.setDate(this.settings.endDate.getDate() + diff);
+      }
+
+      this.showWeek(this.settings.startDate, this.settings.endDate);
+    },
+
+    /**
+     * Add a new event via the event object and show it if it should be visible in the calendar.
+     * @param {object} event The event object with common event properties.
+     */
+    addEvent: function addEvent(event) {
+      if (!event.startsLocale) {
+        event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes);
+      }
+
+      calendarShared.cleanEventData(event, true, this.settings.startDate, this.locale, this.language, this.settings.events, this.settings.eventTypes);
+      this.settings.events.push(event);
+      this.renderEvent(event);
+    },
+
+    /**
+     * Select header for given date
+     * @private
+     * @param {object|string} d The date or key use for attribute in header `data-kay`.
+     * @returns {void}
+     */
+    selectHeader: function selectHeader(d) {
+      var key = d instanceof Date ? stringUtils.padDate(d.getFullYear(), d.getMonth(), d.getDate()) : d;
+      var selector = {
+        all: '.week-view-table-header th'
+      };
+      selector.current = "".concat(selector.all, "[data-key=\"").concat(key, "\"]");
+      var headers = [].slice.call(this.element[0].querySelectorAll(selector.all));
+      headers.forEach(function (header) {
+        header.classList.remove('is-selected');
+      });
+      var thisHeader = this.element[0].querySelector(selector.current);
+
+      if (thisHeader) {
+        thisHeader.classList.add('is-selected');
+      }
+    },
+
+    /**
+     * Remove all events from the calendar
+     */
+    clearEvents: function clearEvents() {
+      this.settings.events = [];
+      this.renderAllEvents();
+    },
+
+    /**
+     * Update an event via the event object and show it if it should be visible in the calendar.
+     * It uses the event id to do this.
+     * @param {object} event The event object with common event properties.
+     */
+    updateEvent: function updateEvent(event) {
+      var eventId = event.id;
+
+      for (var i = this.settings.events.length - 1; i >= 0; i--) {
+        if (this.settings.events[i].id === eventId) {
+          this.settings.events[i] = utils.extend(true, this.settings.events[i], event);
+          calendarShared.cleanEventData(this.settings.events[i], true, this.settings.startDate, this.locale, this.language, this.settings.events, this.settings.eventTypes);
+        }
+      }
+
+      this.renderAllEvents();
+    },
+
+    /**
+     * Remove an event from the dataset and page. It uses the id property.
+     * @param {object} event The event object with common event properties.
+     */
+    deleteEvent: function deleteEvent(event) {
+      var eventId = event.id;
+
+      for (var i = this.settings.events.length - 1; i >= 0; i--) {
+        if (this.settings.events[i].id === eventId) {
+          this.settings.events.splice(i, 1);
+        }
+      }
+
+      this.renderAllEvents();
+    },
+
+    /**
+     * Handle updated settings and values.
+     * @param {object} settings The new settings object to use.
+     * @returns {object} [description]
+     */
+    updated: function updated(settings) {
+      if (!settings) {
+        settings = {};
+      }
+
+      if (settings) {
+        this.settings = utils.mergeSettings(this.element[0], settings, this.settings);
+      }
+
+      if (settings.locale) {
+        this.destroy().init();
+        return this;
+      }
+
+      this.renderAllEvents();
+      return this;
+    },
+
+    /**
+     * Simple Teardown - remove events & rebuildable markup.
+     * @returns {object} The Component prototype, useful for chaining.
+     * @private
+     */
+    teardown: function teardown() {
+      this.element.off();
+      clearInterval(this.timer);
+      this.timer = null;
+      return this;
+    },
+
+    /**
+     * Destroy - Remove added markup and events.
+     * @returns {object} The prototype.
+     */
+    destroy: function destroy() {
+      this.teardown();
+      this.element.empty();
+      $.removeData(this.element[0], COMPONENT_NAME$A);
+      return this;
+    }
+  };
+
+  var COMPONENT_NAME$B = 'calendar';
+  var COMPONENT_NAME_DEFAULTS$2 = {
+    eventTypes: [{
+      id: 'example',
+      label: 'Example',
+      color: 'emerald07',
+      checked: true,
+      click: function click() {}
+    }],
+    events: [],
+    locale: null,
+    language: null,
+    month: new Date().getMonth(),
+    year: new Date().getFullYear(),
+    day: new Date().getDate(),
+    showViewChanger: true,
+    onRenderMonth: null,
+    template: null,
+    mobileTemplate: null,
+    upcomingEventDays: 14,
+    modalTemplate: null,
+    menuId: null,
+    menuSelected: null,
+    eventTooltip: 'overflow',
+    iconTooltip: 'overflow',
+    newEventDefaults: {
+      title: 'NewEvent',
+      subject: '',
+      isAllDay: true,
+      comments: ''
+    },
+    onChangeView: null,
+    showToday: true,
+    weekViewSettings: {
+      firstDayOfWeek: 0,
+      startHour: 7,
+      endHour: 19,
+      showAllDay: true,
+      showTimeLine: true
+    }
+  };
+  /**
+   * Calendar - Full eventing calendar.
+   * @class Calendar
+   * @param {string} element The plugin element for the constuctor
+   * @param {string} [settings] The settings element.
+   * @param {array} [settings.eventTypes] An array of objects with data for the event types.
+   * @param {array} [settings.events] An array of objects with data for the events.
+   * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
+   * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale will be used or the passed locale will be used.
+   * @param {array} [settings.year] Initial year to show.
+   * @param {array} [settings.month] Initial month to show.
+   * @param {number} [settings.day] The initial selected day to show.
+   * @param {array} [settings.upcomingEventDays=14] How many days in advance should we show in the upcoming events pane.
+   * @param {boolean} [settings.showViewChanger] If false the dropdown to change views will not be shown.
+   * @param {function} [settings.onRenderMonth] Fires when a month is rendered, allowing you to pass back events or event types to show.
+   * @param {function} [settings.onSelected] Fires when a month day is clicked. Allowing you to do something.
+   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
+   * @param {string} [settings.template] The ID of the template used for the events.
+   * @param {string} [settings.mobileTemplate] The ID of the template on mobile responsive used for the events.
+   * @param {string} [settings.modalTemplate] The ID of the template used for the modal dialog on events.
+   * @param {string} [settings.menuId=null] ID of the menu to use for an event right click context menu
+   * @param {string} [settings.menuSelected=null] Callback for the  right click context menu
+   * @param {string} [settings.newEventDefaults] Initial event properties for the new events dialog.
+   * @param {string | function} [settings.eventTooltip] The content of event tooltip. Default value is 'overflow'
+   * @param {string | function} [settings.iconTooltip] The content of event icon tooltip. Default value is 'overflow'
+   * @param {boolean} [settings.showToday=true] Deterimines if the today button should be shown.
+   * @param {object} [settings.weekViewSettings = {}] an object containing settings for the internal weekview component.
+   * @param {boolean} [settings.weekViewSettings.firstDayOfWeek=0] Set first day of the week. '1' would be Monday.
+   * @param {number} [settings.weekViewSettings.startHour=7] The hour (0-24) to end on each day.
+   * @param {number} [settings.weekViewSettings.endHour=19] The hour (0-24) to end on each day.
+   * @param {boolean} [settings.weekViewSettings.showAllDay=true] Detemines if the all day events row should be shown.
+   * @param {boolean} [settings.weekViewSettings.showTimeLine=true] Shows a bar across the current time.
+   */
+
+  function Calendar(element, settings) {
+    this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS$2);
+    this.element = $(element);
+    this.init();
+  } // Plugin Methods
+
+
+  Calendar.prototype = {
+    /**
+     * Do initialization, build up and / or add events ect.
+     * @returns {object} The Component prototype, useful for chaining.
+     */
+    init: function init() {
+      return this.setLocaleThenBuild();
+    },
+
+    /**
+     * Add any needed markup to the component.
+     * @returns {object} The Calendar prototype, useful for chaining.
+     * @private
+     */
+    build: function build() {
+      this.setCurrentCalendar().renderEventTypes().renderMonthView().renderWeekView().handleEvents().addEventLegend();
+      return this;
+    },
+
+    /**
+     * Set current locale to be used.
+     * @private
+     * @returns {void}
+     */
+    setLocaleThenBuild: function setLocaleThenBuild() {
+      var _this = this;
+
+      var languageDf = Locale.getLocale(this.settings.language);
+      var localeDf = Locale.getLocale(this.settings.locale);
+      $.when(localeDf, languageDf).done(function (locale, lang) {
+        _this.locale = Locale.cultures[locale] || Locale.currentLocale;
+        _this.language = lang || _this.settings.language || _this.locale.language;
+        _this.settings.language = _this.language;
+
+        _this.setCurrentCalendar();
+
+        _this.build().handleEvents();
+      });
+      return this;
+    },
+
+    /**
+     * Set current calendar data to to be used.
+     * @private
+     * @returns {void}
+     */
+    setCurrentCalendar: function setCurrentCalendar() {
+      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
+      return this;
+    },
+
+    /**
+     * Display event legends below the calendar table on mobile view.
+     * @private
+     * @returns {void}
+     */
+    addEventLegend: function addEventLegend() {
+      var s = this.settings;
+      this.eventLegend = $('<div class="calendar-event-legend"></div>');
+      this.monthviewTable = $('.monthview-table');
+
+      for (var i = 0; i < s.eventTypes.length; i++) {
+        var event = s.eventTypes[i];
+        var color = event.color;
+        var legend = '' + "<div class=\"calendar-event-legend-item\">\n          <span class=\"calendar-event-legend-swatch ".concat(color, "\"></span>\n          <span class=\"calendar-event-legend-text\">").concat(event.label, "</span>\n        </div>");
+        this.eventLegend.append(legend);
+      }
+
+      this.monthviewTable.after(this.eventLegend);
+    },
+
+    /**
+     * Render the eventType Section
+     * @returns {object} The Calendar prototype, useful for chaining.
+     * @private
+     */
+    renderEventTypes: function renderEventTypes() {
+      this.eventTypeContainer = document.querySelector('.calendar-event-types');
+
+      if (!this.eventTypeContainer) {
+        return this;
+      }
+
+      var eventTypeMarkup = '';
+
+      for (var i = 0; i < this.settings.eventTypes.length; i++) {
+        var eventType = this.settings.eventTypes[i];
+        eventTypeMarkup += "<input type=\"checkbox\" class=\"checkbox ".concat(eventType.color, "07\" name=\"").concat(eventType.id, "\" id=\"").concat(eventType.id, "\" ").concat(eventType.checked ? 'checked="true"' : '', " ").concat(eventType.disabled ? 'disabled="true"' : '', " />\n        <label for=\"").concat(eventType.id, "\" class=\"checkbox-label\">").concat(eventType.translationKey ? Locale.translate(eventType.translationKey, {
+          locale: this.locale.name,
+          language: this.language
+        }) : eventType.label, "</label><br/>");
+      }
+
+      this.eventTypeContainer.innerHTML = eventTypeMarkup;
+      return this;
+    },
+
+    /**
+     * Render the monthview calendar
+     * @returns {object} The Calendar prototype, useful for chaining.
+     * @private
+     */
+    renderMonthView: function renderMonthView() {
+      var _this2 = this;
+
+      this.monthViewContainer = document.querySelector('.calendar .calendar-monthview'); // Handle changing view
+
+      this.activeView = 'month';
+
+      this.onChangeToMonth = function (args) {
+        if (_this2.settings.onChangeView) {
+          _this2.settings.onChangeView(args);
+
+          return;
+        }
+
+        _this2.changeView(args.viewName);
+      };
+
+      this.monthView = new MonthView(this.monthViewContainer, {
+        onRenderMonth: this.settings.onRenderMonth,
+        onSelected: this.settings.onSelected,
+        selectable: true,
+        locale: this.settings.locale,
+        language: this.settings.language,
+        month: this.settings.month,
+        year: this.settings.year,
+        day: this.settings.day,
+        eventTooltip: this.eventTooltip,
+        iconTooltip: this.iconTooltip,
+        showToday: this.settings.showToday,
+        showViewChanger: this.settings.showViewChanger,
+        onChangeView: this.onChangeToMonth
+      });
+      this.monthViewHeader = document.querySelector('.calendar .monthview-header');
+      this.renderAllEvents();
+      return this;
+    },
+
+    /**
+     * Render the weekview calendar
+     * @returns {object} The Calendar prototype, useful for chaining.
+     * @private
+     */
+    renderWeekView: function renderWeekView() {
+      var _this3 = this;
+
+      this.weekViewContainer = document.querySelector('.calendar .calendar-weekview');
+
+      if (!this.weekViewContainer) {
+        return this;
+      } // Handle changing view
+
+
+      this.weekViewContainer.classList.add('week-view');
+      this.weekViewContainer.classList.add('hidden');
+
+      this.onChangeToWeekDay = function (args) {
+        if (_this3.settings.onChangeView) {
+          _this3.settings.onChangeView(args);
+
+          return;
+        }
+
+        _this3.changeView(args.viewName);
+      };
+
+      var startDate = dateUtils.firstDayOfWeek(new Date(this.currentDate()), this.settings.weekViewSettings.firstDayOfWeek);
+      var endDate = dateUtils.lastDayOfWeek(new Date(this.currentDate()), this.settings.weekViewSettings.firstDayOfWeek);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+      this.weekView = new WeekView(this.weekViewContainer, {
+        locale: this.settings.locale,
+        language: this.settings.language,
+        startDate: startDate,
+        endDate: endDate,
+        eventTypes: this.settings.eventTypes,
+        events: this.settings.events,
+        firstDayOfWeek: this.settings.weekViewSettings.firstDayOfWeek,
+        showAllDay: this.settings.weekViewSettings.showAllDay,
+        showTimeLine: this.settings.weekViewSettings.showTimeLine,
+        startHour: this.settings.weekViewSettings.startHour,
+        endHour: this.settings.weekViewSettings.endHour,
+        showToday: this.settings.showToday,
+        showViewChanger: this.settings.showViewChanger,
+        onChangeView: this.onChangeToWeekDay,
+        eventTooltip: this.settings.eventTooltip,
+        iconTooltip: this.settings.iconTooltip
+      });
+      this.weekViewHeader = document.querySelector('.calendar .calendar-weekview .monthview-header');
+      this.weekView.settings.filteredTypes = this.filterEventTypes();
+
+      this.weekView.settings.onChangeWeek = function (args) {
+        _this3.monthView.selectDay(args.startDate, false, true);
+      };
+
+      this.weekView.renderAllEvents();
+      return this;
+    },
+
+    /**
+     * Set the current view (day, week or month)
+     * @param {string} viewName to set selection
+     * @returns {void}
+     */
+    changeView: function changeView(viewName) {
+      if (viewName === this.activeView || !this.weekViewContainer) {
+        return;
+      }
+
+      var currentDate = this.currentDate();
+      var startDate = new Date(currentDate);
+      var endDate = new Date(currentDate);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+
+      switch (viewName) {
+        case 'day':
+          this.monthViewContainer.classList.add('hidden');
+          this.weekViewContainer.classList.remove('hidden');
+          this.activeView = 'day';
+          this.weekView.settings.filteredTypes = this.filterEventTypes();
+          this.weekView.showWeek(startDate, endDate);
+          this.clearEventDetails();
+          this.weekView.calendarToolbarAPI.setViewChangerValue(this.activeView);
+          break;
+
+        case 'week':
+          this.monthViewContainer.classList.add('hidden');
+          this.weekViewContainer.classList.remove('hidden');
+          this.activeView = 'week';
+          startDate = dateUtils.firstDayOfWeek(startDate, this.settings.firstDayOfWeek);
+          endDate = dateUtils.lastDayOfWeek(startDate, this.settings.firstDayOfWeek);
+          this.weekView.settings.filteredTypes = this.filterEventTypes();
+          this.weekView.showWeek(startDate, endDate);
+          this.weekView.calendarToolbarAPI.setViewChangerValue(this.activeView);
+          this.clearEventDetails();
+          this.monthView.selectDay(currentDate, false, true);
+          this.weekView.selectHeader(currentDate);
+          break;
+
+        case 'month':
+          this.monthViewContainer.classList.remove('hidden');
+          this.weekViewContainer.classList.add('hidden');
+          this.activeView = 'month';
+          this.monthView.showMonth(this.settings.month, this.settings.year);
+          this.monthView.calendarToolbarAPI.setViewChangerValue(this.activeView);
+          this.monthView.selectDay(currentDate, false, true);
+          break;
+      }
+    },
+
+    /**
+     * Render the upcoming events view
+     * @param {object} event The Calendar event to show.
+     * @private
+     */
+    appendUpcomingEvent: function appendUpcomingEvent(event) {
+      this.upcomingEventsContainer = document.querySelector('.calendar-upcoming-events');
+
+      if (!this.upcomingEventsContainer || event.daysUntil > 0) {
+        return;
+      }
+
+      var daysUntil = Math.abs(event.daysUntil);
+
+      if (daysUntil < 0 || daysUntil > this.settings.upcomingEventDays) {
+        return;
+      }
+
+      var upcomingEvent = document.createElement('a');
+      upcomingEvent.setAttribute('href', '#');
+      upcomingEvent.setAttribute('data-key', event.startKey);
+      DOM.addClass(upcomingEvent, 'calendar-upcoming-event');
+      var upcomingEventsMarkup = '';
+      var startDay = Locale.formatDate(event.starts, {
+        pattern: 'd',
+        locale: this.locale.name
+      });
+      var endDay = Locale.formatDate(event.ends, {
+        pattern: 'd',
+        locale: this.locale.name
+      });
+      var dateRange = "".concat(Locale.formatDate(event.starts, {
+        pattern: 'MMMM',
+        locale: this.locale.name
+      }), " ").concat(startDay === endDay ? startDay : "".concat(startDay, "-").concat(endDay), ", ").concat(Locale.formatDate(event.starts, {
+        pattern: 'yyyy',
+        locale: this.locale.name
+      }));
+
+      if (parseInt(endDay, 10) < parseInt(startDay, 10)) {
+        var nextMonth = new Date(event.starts);
+        nextMonth.setDate(1);
+        nextMonth.setMonth(nextMonth.getMonth() + 1);
+        var endYear = nextMonth.getFullYear();
+        dateRange = "".concat(Locale.formatDate(event.starts, {
+          pattern: 'MMMM',
+          locale: this.locale.name
+        }), " ").concat(startDay, " - ").concat(Locale.formatDate(nextMonth, {
+          pattern: 'MMMM',
+          locale: this.locale.name
+        }), " ").concat(endDay, ", ").concat(endYear);
+      }
+
+      upcomingEventsMarkup += "\n      <span class=\"calendar-upcoming-date\">".concat(dateRange, "</span>\n      <span class=\"calendar-upcoming-event-color ").concat(event.color || '', "\">").concat(event.color || '', "</span>\n      <span class=\"calendar-upcoming-description\">").concat(event.subject || '', "</span>\n      <span class=\"calendar-upcoming-status-text\">").concat(event.status || '', "</span>\n      <span class=\"calendar-upcoming-duration\">").concat(event.isDays ? event.duration : event.durationHours, " ").concat(event.durationUnits || '', "</span>");
+      upcomingEvent.innerHTML = upcomingEventsMarkup;
+      this.upcomingEventsContainer.appendChild(upcomingEvent);
+    },
+
+    /**
+     * Render or re-render the events details section, using on the readonly or default eventTemplate
+     * @param {string} eventId The event id
+     * @param {number} count The event count
+     * @private
+     */
+    renderEventDetails: function renderEventDetails(eventId, count) {
+      if (!this.settings.events || this.activeView !== 'month') {
+        return;
+      } // Find the event data
+
+
+      var eventData = this.settings.events.filter(function (event) {
+        return event.id === eventId;
+      });
+
+      if (!eventData || eventData.length === 0) {
+        return;
+      }
+
+      this.eventDetailsContainer = document.querySelector('.calendar-event-details');
+
+      if (!this.eventDetailsContainer) {
+        return;
+      }
+
+      var thisEvent = $.extend(true, {}, eventData[0]);
+
+      if (thisEvent.durationHours && !thisEvent.isDays) {
+        calendarShared.formateTimeString(thisEvent, this.locale, this.language);
+      }
+
+      this.renderTmpl(thisEvent, this.settings.template, this.eventDetailsContainer, count > 1);
+      this.eventDetailsMobileContainer = document.querySelector('.calendar-event-details-mobile.listview');
+
+      if (this.eventDetailsMobileContainer) {
+        this.renderTmpl(thisEvent, this.settings.mobileTemplate, this.eventDetailsMobileContainer, count > 1);
+      }
+
+      var api = $(this.eventDetailsContainer).data('accordion');
+
+      if (api) {
+        api.destroy();
+      }
+
+      $('.calendar .list-detail').css('display', 'block');
+      $(this.eventDetailsContainer).accordion();
+
+      if (this.eventDetailsMobileContainer) {
+        $(this.eventDetailsMobileContainer).addClass('listview').listview({
+          selectable: false,
+          hoverable: false
+        });
+        this.translate(this.eventDetailsMobileContainer);
+      }
+
+      if (DOM.hasClass(this.eventDetailsContainer, 'has-only-one')) {
+        $(this.eventDetailsContainer).find('.accordion-header, .accordion-header a').off('click');
+      }
+
+      this.translate(this.eventDetailsContainer);
+    },
+
+    /**
+     * Translate elements in a DOM object
+     * @private
+     * @param  {object} elem The DOM Element
+     */
+    translate: function translate(elem) {
+      var _this4 = this;
+
+      $(elem).find('[data-translate="text"]').each(function (i, item) {
+        var obj = $(item);
+        obj.text(Locale.translate(obj.attr('data-translate-key') || obj.text(), {
+          showAsUndefined: false,
+          showBrackets: false,
+          language: _this4.settings.language,
+          locale: _this4.settings.locale
+        }));
+      });
+    },
+
+    /**
+     * Render each of the events for the currently selected node
+     * @private
+     */
+    renderSelectedEventDetails: function renderSelectedEventDetails() {
+      var dayObj = this.getDayEvents();
+      this.clearEventDetails();
+
+      if (!dayObj.events || dayObj.events.length === 0) {
+        return;
+      }
+
+      for (var i = 0; i < dayObj.events.length; i++) {
+        this.renderEventDetails(dayObj.events[i].id, dayObj.events.length);
+      }
+    },
+
+    /**
+     * If a upcomming day is clicked render that day/year.
+     * @private
+     * @param {string} key The date as an index key.
+     */
+    renderDay: function renderDay(key) {
+      this.monthView.selectDay(key);
+      var startDate = new Date(this.currentDate());
+      var endDate = new Date(this.currentDate());
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(23, 59, 59, 999);
+
+      if (this.activeView === 'day') {
+        this.weekView.showWeek(startDate, endDate);
+      }
+
+      if (this.activeView === 'week') {
+        startDate = dateUtils.firstDayOfWeek(startDate, this.settings.firstDayOfWeek);
+        endDate = dateUtils.lastDayOfWeek(startDate, this.settings.firstDayOfWeek);
+        this.weekView.showWeek(startDate, endDate);
+      }
+    },
+
+    /**
+     * Clear all contents from the event details area.
+     * @private
+     */
+    clearEventDetails: function clearEventDetails() {
+      this.eventDetailsContainer = document.querySelector('.calendar-event-details');
+      this.eventDetailsMobileContainer = document.querySelector('.calendar-event-details-mobile.listview');
+
+      if (this.eventDetailsContainer) {
+        this.eventDetailsContainer.innerHTML = '';
+      }
+
+      if (this.eventDetailsMobileContainer) {
+        this.eventDetailsMobileContainer.innerHTML = '';
+      }
+    },
+
+    /**
+     * Clear all contents from the upcoming events area.
+     * @private
+     */
+    clearUpcomingEvents: function clearUpcomingEvents() {
+      if (this.upcomingEventsContainer) {
+        this.upcomingEventsContainer.innerHTML = '';
+      }
+    },
+
+    /**
+     * Get the currently unchecked filter types
+     * @returns {array} The active types.
+     * @private
+     */
+    filterEventTypes: function filterEventTypes() {
+      var types = [];
+
+      if (!this.eventTypeContainer) {
+        return types;
+      }
+
+      var checkboxes = this.eventTypeContainer.querySelectorAll('.checkbox');
+
+      for (var i = 0; i < checkboxes.length; i++) {
+        var input = checkboxes[i];
+
+        if (!input.checked) {
+          types.push(input.getAttribute('id'));
+        }
+      }
+
+      return types;
+    },
+
+    /**
+     * Render/ReRender the events attached to the settings.
+     * @private
+     * @param {boolean} isCallback Will be set to true when a callback occurs
+     * @returns {object} The Calendar prototype, useful for chaining.
+     */
+    renderAllEvents: function renderAllEvents(isCallback) {
+      if (this.settings.onRenderMonth && !isCallback) {
+        this.callOnRenderMonth();
+        return this;
+      }
+
+      var self = this;
+      var filters = this.filterEventTypes(); // Cleanup from previous renders
+
+      this.removeAllEvents();
+      this.clearUpcomingEvents();
+      this.clearEventDetails(); // Clone and sort the array.
+
+      var eventsSorted = this.settings.events.slice(0);
+      eventsSorted.sort(function (a, b) {
+        return a.starts < b.starts ? -1 : a.starts > b.starts ? 1 : 0;
+      });
+
+      for (var i = 0; i < eventsSorted.length; i++) {
+        var event = eventsSorted[i];
+
+        if (filters.indexOf(event.type) > -1) {
+          continue;
+        }
+
+        self.renderEvent(event);
+      }
+
+      this.renderSelectedEventDetails();
+
+      if (this.weekView) {
+        this.weekView.settings.filteredTypes = filters;
+        this.weekView.renderAllEvents();
+      }
+
+      return this;
+    },
+
+    /**
+     * Render a single event on the ui, use in the loop and other functions.
+     * @param  {object} event The event object.
+     */
+    renderEvent: function renderEvent(event) {
+      var self = this; // Check for events starting on this day , or only on this day.
+
+      var startDate = Locale.newDateObj(event.starts);
+      var isIslamic = Locale.isIslamic(this.locale.name);
+      var startKey = stringUtils.padDate(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+
+      if (isIslamic) {
+        var startDateIslamic = Locale.gregorianToUmalqura(startDate);
+        startKey = stringUtils.padDate(startDateIslamic[0], startDateIslamic[1], startDateIslamic[2]);
+      } // Check for events extending onto this day
+
+
+      var endDate = Locale.newDateObj(event.ends);
+      var endKey = stringUtils.padDate(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
+
+      if (isIslamic) {
+        var endDateIslamic = Locale.gregorianToUmalqura(endDate);
+        endKey = stringUtils.padDate(endDateIslamic[0], endDateIslamic[1], endDateIslamic[2]);
+      }
+
+      var days = self.monthView.dayMap.filter(function (day) {
+        return day.key >= startKey && day.key <= endKey;
+      });
+      event.endKey = endKey;
+      event.startKey = startKey;
+      event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes);
+      var idx = -1;
+
+      for (var i = 0; i < self.monthView.dayMap.length; ++i) {
+        if (self.monthView.dayMap[i].key >= startKey && self.monthView.dayMap[i].key <= endKey) {
+          idx = i;
+          break;
+        }
+      } // Event is only on this day
+
+
+      if (days.length === 1) {
+        self.appendEvent(days[0].elem[0], event, 'event-day-start-end', idx);
+      } // Event extends multiple days
+
+
+      if (days.length > 1) {
+        for (var l = 0; l < days.length; l++) {
+          var cssClass = l === 0 ? 'event-day-start' : 'event-day-span';
+
+          if (days.length - 1 === l) {
+            cssClass = 'event-day-end';
+          }
+
+          self.appendEvent(days[l].elem[0], event, cssClass, idx + l);
+        }
+      } // Event extends multiple days
+
+
+      this.appendUpcomingEvent(event, days, idx);
+    },
+
+    /**
+     * Remove all events from the month.
+     */
+    removeAllEvents: function removeAllEvents() {
+      var moreEvents = this.monthViewContainer.querySelectorAll('.calendar-event-more');
+
+      for (var i = 0; i < moreEvents.length; i++) {
+        moreEvents[i].parentNode.removeChild(moreEvents[i]);
+      }
+
+      var calendarEvents = this.monthViewContainer.querySelectorAll('.calendar-event');
+
+      for (var _i = 0; _i < calendarEvents.length; _i++) {
+        calendarEvents[_i].parentNode.removeChild(calendarEvents[_i]);
+      }
+
+      for (var _i2 = 0; _i2 < this.monthView.dayMap.length; _i2++) {
+        this.monthView.dayMap[_i2].events = [];
+      }
+    },
+
+    /**
+     * Add the ui event to the container.
+     * @private
+     * @param {object} container The container to append to
+     * @param {object} event The event data object.
+     * @param {string} type Type of event, can be event-day-start, event-day-start-end, event-day-span, event-day-end
+     * @param {number} idx The dayMap index
+     * @returns {object} The Calendar prototype, useful for chaining.
+     */
+    appendEvent: function appendEvent(container, event, type, idx) {
+      var _this5 = this;
+
+      var node;
+      var eventCnt = container.querySelectorAll('.calendar-event').length;
+
+      if (idx > -1) {
+        if (!this.monthView.dayMap[idx].events) {
+          this.monthView.dayMap[idx].events = [];
+        }
+
+        this.monthView.dayMap[idx].events.push(event);
+      }
+
+      if (eventCnt >= 2) {
+        var moreSpan = container.querySelector('.calendar-event-more');
+
+        var setMoreSpan = function setMoreSpan(elem, count) {
+          elem.setAttribute('data-count', count); // Wrap text in extra span here, so link should not expand more than text, because `more span` is styled as block level element
+
+          elem.innerHTML = "<span>+ ".concat(count, " ").concat(Locale.translate('More', {
+            locale: _this5.locale.name,
+            language: _this5.language
+          }).replace('...', ''), "</span>");
+        };
+
+        if (!moreSpan) {
+          node = document.createElement('span');
+          DOM.addClass(node, 'calendar-event-more');
+          setMoreSpan(node, 1);
+          container.querySelector('.day-container').appendChild(node); // Switch to day view on click
+
+          $(container).off("click.".concat(COMPONENT_NAME$B)).on("click.".concat(COMPONENT_NAME$B), '.calendar-event-more span', function () {
+            var thisDate = _this5.monthView.dayMap[idx].key;
+
+            _this5.monthView.selectDay(thisDate, false, true);
+
+            _this5.changeView('day');
+          });
+        } else {
+          setMoreSpan(moreSpan, parseInt(moreSpan.getAttribute('data-count'), 10) + 1);
+        }
+
+        return this;
+      }
+
+      node = document.createElement('a');
+      DOM.addClass(node, 'calendar-event', event.color, type);
+      node.setAttribute('data-id', event.id);
+      node.setAttribute('data-key', event.startKey);
+      node.innerHTML = "<div class=\"calendar-event-content\">\n      ".concat(event.icon ? "<span class=\"calendar-event-icon\"><svg class=\"icon ".concat(event.icon, "\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\" data-status=\"").concat(event.status, "\"><use href=\"#").concat(event.icon, "\"></use></svg></span>") : '', "\n      <span class=\"calendar-event-title\">").concat(event.shortSubject || event.subject, "</span>\n    </div>");
+      container.querySelector('.day-container').appendChild(node);
+
+      if (this.settings.iconTooltip !== 'overflow') {
+        var icon = node.querySelector('.calendar-event-icon');
+
+        if (icon) {
+          if (typeof this.settings.iconTooltip === 'function') {
+            this.settings.iconTooltip({
+              month: this.settings.month,
+              year: this.settings.year,
+              event: event
+            });
+          } else if (event[this.settings.iconTooltip]) {
+            icon.setAttribute('title', event[this.settings.iconTooltip]);
+            $(icon).tooltip({
+              content: icon.innerText
+            });
+          }
+        }
+      }
+
+      if (this.settings.eventTooltip !== 'overflow') {
+        if (typeof this.settings.eventTooltip === 'function') {
+          this.settings.eventTooltip({
+            month: this.settings.month,
+            year: this.settings.year,
+            event: event
+          });
+        } else if (event[this.settings.eventTooltip]) {
+          node.setAttribute('title', event[this.settings.eventTooltip]);
+          $(node).tooltip({
+            content: node.innerText
+          });
+        }
+      }
+
+      if (!event.shortSubject && (this.settings.eventTooltip === 'overflow' || this.settings.iconToolTip === 'overflow')) {
+        // Show the full text if cut off
+        node.setAttribute('title', event.subject);
+        $(node).tooltip({
+          beforeShow: function beforeShow(response, ui) {
+            var title = ui[0].querySelector('.calendar-event-title');
+            var icon = ui[0].querySelector('.calendar-event-icon');
+            var iconStatus = icon ? icon.querySelector('.icon').getAttribute('data-status') : '';
+
+            if (title.offsetWidth > ui[0].scrollWidth - (icon ? icon.offsetWidth : 0)) {
+              response("".concat(title.innerText).concat(iconStatus ? " (".concat(Locale.translate(iconStatus, {
+                locale: _this5.locale.name,
+                language: _this5.language
+              }, false), ")") : ''));
+              return;
+            }
+
+            response(false);
+          }
+        });
+      }
+
+      return this;
+    },
+
+    /**
+     * Find the matching type and get the color.
+     * @param {object} id The eventType id to find.
+     * @param {object} event The event data object.
+     * @returns {object} The Calendar prototype, useful for chaining.
+     */
+    getEventTypeLabel: function getEventTypeLabel(id) {
+      var type = '';
+
+      if (!id) {
+        return type;
+      }
+
+      var eventInfo = this.settings.eventTypes.filter(function (eventType) {
+        return eventType.id === id;
+      });
+
+      if (eventInfo.length === 1) {
+        type = eventInfo[0].label;
+      }
+
+      return type;
+    },
+
+    /**
+     * Sets up event handlers for this component and its sub-elements.
+     * @returns {object} The Calendar prototype, useful for chaining.
+     * @private
+     */
+    handleEvents: function handleEvents() {
+      var _this6 = this;
+
+      var self = this;
+      this.element.off("updated.".concat(COMPONENT_NAME$B)).on("updated.".concat(COMPONENT_NAME$B), function () {
+        _this6.updated();
+      });
+      this.isSwitchingMonth = false;
+      this.element.off("monthrendered.".concat(COMPONENT_NAME$B)).on("monthrendered.".concat(COMPONENT_NAME$B), function (e, args) {
+        _this6.isSwitchingMonth = true;
+
+        if (_this6.modalVisible()) {
+          _this6.removeModal();
+        }
+
+        _this6.settings.year = args.year;
+        _this6.settings.month = args.month;
+
+        _this6.renderAllEvents();
+
+        setTimeout(function () {
+          _this6.isSwitchingMonth = false;
+        }, 500);
+      });
+      this.element.off("change.".concat(COMPONENT_NAME$B)).on("change.".concat(COMPONENT_NAME$B), '.checkbox', function () {
+        _this6.renderAllEvents(true);
+      });
+      $(this.monthViewContainer).off("selected.".concat(COMPONENT_NAME$B)).on("selected.".concat(COMPONENT_NAME$B), function () {
+        _this6.renderSelectedEventDetails();
+      });
+      this.element.off("click.".concat(COMPONENT_NAME$B, "-upcoming")).on("click.".concat(COMPONENT_NAME$B, "-upcoming"), '.calendar-upcoming-event', function (e) {
+        var key = e.currentTarget.getAttribute('data-key');
+
+        _this6.renderDay(key);
+      });
+      this.element.off("contextmenu.".concat(COMPONENT_NAME$B)).on("contextmenu.".concat(COMPONENT_NAME$B), '.calendar-event', function (e) {
+        e.stopPropagation();
+
+        var hasMenu = function hasMenu() {
+          return self.settings.menuId && $("#".concat(self.settings.menuId)).length > 0;
+        };
+
+        var eventId = e.currentTarget.getAttribute('data-id');
+
+        var eventData = _this6.settings.events.filter(function (event) {
+          return event.id === eventId;
+        });
+
+        _this6.element.triggerHandler('contextmenu', {
+          originalEvent: e,
+          month: _this6.settings.month,
+          year: _this6.settings.year,
+          event: eventData[0]
+        });
+
+        if (!utils.isSubscribedTo(self.element[0], e, 'contextmenu', 'calendar') && !hasMenu()) {
+          return true;
+        }
+
+        e.preventDefault();
+        self.closePrevPopupmenu();
+
+        if (!hasMenu()) {
+          return true;
+        }
+
+        var event = $(e.currentTarget);
+        event.popupmenu({
+          attachToBody: true,
+          menuId: _this6.settings.menuId,
+          eventObj: e,
+          trigger: 'immediate',
+          offset: {
+            y: 5
+          }
+        });
+        event.off('selected.calendar').on('selected.calendar', function (evt, elem) {
+          // const eventId = this.getAttribute('data-id');
+          if (self.settings.menuSelected) {
+            self.settings.menuSelected(evt, elem, eventId);
+          }
+
+          if (elem.attr('data-action') === 'delete-event') {
+            self.deleteEvent({
+              id: eventId
+            });
+          }
+
+          if (elem.attr('data-action') === 'show-event') {
+            var key = this.getAttribute('data-key');
+            self.monthView.selectDay(key);
+          }
+        });
+        return false;
+      });
+      var timer = 0;
+      var delay = 100;
+      var prevent = false;
+      this.element.off("click.".concat(COMPONENT_NAME$B, "-event")).on("click.".concat(COMPONENT_NAME$B, "-event"), '.calendar-event', function (e) {
+        timer = setTimeout(function () {
+          if (!prevent) {
+            var eventId = e.currentTarget.getAttribute('data-id');
+
+            var eventData = _this6.settings.events.filter(function (event) {
+              return event.id === eventId;
+            });
+
+            if (!eventData || eventData.length === 0) {
+              return;
+            }
+
+            var target = $(e.currentTarget);
+            var eventTarget = target.find('.calendar-event-title');
+
+            if (e.currentTarget.classList.contains('event-day-span') || e.currentTarget.classList.contains('event-day-end')) {
+              eventTarget = self.element.find(".event-day-start[data-id=\"".concat(target.attr('data-id'), "\"] .calendar-event-title"));
+            }
+
+            _this6.showModalWithCallback(eventData[0], false, eventTarget);
+            /**
+             * Fires when an event in the calendar is clicked.
+             * @event eventclick
+             * @memberof Calendar
+             * @property {number} args.month - The zero based month number.
+             * @property {number} args.year - The year currently rendered in the calendar.
+             * @property {object} args.event - The data for the event.
+             */
+
+
+            _this6.element.triggerHandler('eventclick', {
+              month: _this6.settings.month,
+              year: _this6.settings.year,
+              event: eventData[0]
+            });
+          }
+
+          prevent = false;
+        }, delay);
+      });
+      this.element.off("dblclick.".concat(COMPONENT_NAME$B, "-event")).on("dblclick.".concat(COMPONENT_NAME$B, "-event"), '.calendar-event', function (e) {
+        clearTimeout(timer);
+        prevent = true;
+        var eventId = e.currentTarget.getAttribute('data-id');
+
+        var eventData = _this6.settings.events.filter(function (event) {
+          return event.id === eventId;
+        });
+
+        if (!eventData || eventData.length === 0) {
+          return;
+        }
+        /**
+         * Fires when an event in the calendar is double clicked.
+         * @event eventdblclick
+         * @memberof Calendar
+         * @property {number} args.month - The zero based month number.
+         * @property {number} args.year - The year currently rendered in the calendar.
+         * @property {object} args.event - The data for the event.
+         */
+
+
+        _this6.element.trigger('eventdblclick', {
+          month: _this6.settings.month,
+          year: _this6.settings.year,
+          event: eventData[0]
+        });
+      });
+      this.element.off("dblclick.".concat(COMPONENT_NAME$B)).on("dblclick.".concat(COMPONENT_NAME$B), 'td', function (e) {
+        var key = e.currentTarget.getAttribute('data-key');
+
+        if (!key || _this6.isSwitchingMonth) {
+          return;
+        }
+
+        var day = new Date(key.substr(0, 4), key.substr(4, 2) - 1, key.substr(6, 2));
+        var eventData = utils.extend({}, _this6.settings.newEventDefaults);
+        eventData.startKey = key;
+        eventData.endKey = key;
+        eventData.starts = day;
+        eventData.ends = day;
+        e.stopPropagation();
+        calendarShared.cleanEventData(eventData, false, _this6.currentDate(), _this6.locale, _this6.language, _this6.settings.events, _this6.settings.eventTypes);
+
+        _this6.showModalWithCallback(eventData, true);
+        /**
+         * Fires when the calendar day is double clicked.
+         * @event dblclick
+         * @memberof Calendar
+         * @param {object} eventData - Information about the calendar date double clicked.
+         * @param {object} api - Access to the Calendar API
+         */
+
+
+        _this6.element.triggerHandler('dblclick', {
+          eventData: eventData,
+          api: _this6
+        });
+      }); // Set up mobile list view events
+
+      this.element.find('.listview').off("click.".concat(COMPONENT_NAME$B, "-mobile")).on("click.".concat(COMPONENT_NAME$B, "-mobile"), function (e) {
+        var target = $(e.target).closest('li');
+        var mobileEventId = target.attr('data-id');
+
+        var mobileEventData = _this6.settings.events.filter(function (event) {
+          return event.id === mobileEventId;
+        });
+
+        if (!mobileEventData || mobileEventData.length === 0) {
+          return;
+        }
+
+        _this6.showModalWithCallback(mobileEventData[0], false, target);
+
+        _this6.element.triggerHandler('eventclick', {
+          month: _this6.settings.month,
+          year: _this6.settings.year,
+          event: mobileEventData[0]
+        });
+      });
+      return this;
+    },
+
+    /**
+     * Close any previous opened popupmenus.
+     * @private
+     * @returns {void}
+     */
+    closePrevPopupmenu: function closePrevPopupmenu() {
+      var nodes = [].slice.call(this.element[0].querySelectorAll('.is-open:not(.popupmenu)'));
+      nodes.forEach(function (node) {
+        var elem = $(node);
+
+        if (elem.data('popupmenu')) {
+          elem.trigger('close');
+        }
+      });
+    },
+
+    /**
+     * Execute onRenderMonth and handle the call back.
+     * @private
+     */
+    callOnRenderMonth: function callOnRenderMonth() {
+      var self = this;
+
+      function response(events, eventTypes) {
+        if (eventTypes && eventTypes.length > 0) {
+          self.settings.eventTypes = eventTypes;
+
+          if (self.weekView) {
+            self.weekView.settings.eventTypes = eventTypes;
+          }
+
+          self.renderEventTypes();
+        }
+
+        if (events && events.length > 0) {
+          self.settings.events = events;
+          self.renderAllEvents(true);
+
+          if (self.weekView) {
+            self.weekView.settings.events = events;
+            self.weekView.renderAllEvents(true);
+          }
+        }
+      }
+
+      this.settings.onRenderMonth(this.element, response, {
+        api: self,
+        month: this.settings.month,
+        year: this.settings.year
+      });
+    },
+
+    /**
+     * Get the current selected date on the calendar.
+     * @returns {date} the currently selected date on the control.
+     */
+    currentDate: function currentDate() {
+      var ret = this.isIslamic ? this.monthView.currentDateIslamic : this.monthView.currentDate;
+
+      if (!Locale.isValidDate(ret)) {
+        return new Date();
+      }
+
+      return ret;
+    },
+
+    /**
+     * Get the events and date for the currently selected calendar day.
+     * @param {date} date The date to find the events for.
+     * @returns {object} dayEvents An object with all the events and the event date.
+     */
+    getDayEvents: function getDayEvents(date) {
+      if (!date) {
+        date = this.currentDate();
+      }
+
+      if (typeof date !== 'string' && !this.isRTL) {
+        date = stringUtils.padDate(date.getFullYear(), date.getMonth(), date.getDate());
+      }
+
+      if (Locale.isIslamic(this.locale.name)) {
+        var dateIslamic = Locale.gregorianToUmalqura(date);
+        date = stringUtils.padDate(dateIslamic[0], dateIslamic[1], dateIslamic[2]);
+      }
+
+      var dayObj = this.monthView.dayMap.filter(function (dayFilter) {
+        return dayFilter.key === date;
+      });
+
+      if (this.activeView !== 'month') {
+        dayObj = this.weekView.dayMap.filter(function (dayFilter) {
+          return dayFilter.key === date;
+        });
+      }
+
+      var dayEvents = {
+        date: this.monthView.currentDate,
+        events: []
+      };
+
+      if (dayObj.length === 0) {
+        return [];
+      }
+
+      dayEvents.events = dayObj[0].events;
+      dayEvents.elem = dayObj[0].elem;
+      return dayEvents;
+    },
+
+    /**
+     * Render the template into the container.
+     * @param {object} event The event object with common event properties.
+     * @param {object} template The template id.
+     * @param {object} container The container to put it in.
+     * @param {boolean} append If true we append the template into the container.
+    */
+    renderTmpl: function renderTmpl(event, template, container, append) {
+      if (_typeof(Tmpl) !== 'object' || !template) {
+        return;
+      } // create a copy of the template
+
+
+      if (template instanceof $) {
+        template = "".concat(template.html());
+      } else if (typeof template === 'string') {
+        // If a string doesn't contain HTML elments,
+        // assume it's an element ID string and attempt to select with jQuery
+        if (!stringUtils.containsHTML(template)) {
+          template = $("#".concat(template)).html();
+        }
+      }
+
+      event.color = calendarShared.getEventTypeColor(event.type, this.settings.eventTypes);
+      event.startsLong = Locale.formatDate(event.starts, {
+        date: 'long',
+        locale: this.locale.name
+      });
+      event.endsLong = Locale.formatDate(event.ends, {
+        date: 'long',
+        locale: this.locale.name
+      });
+      event.startsHoursLong = "".concat(Locale.formatDate(event.starts, {
+        date: 'long',
+        locale: this.locale.name
+      }), " ").concat(Locale.formatDate(event.starts, {
+        date: 'hour',
+        locale: this.locale.name
+      }));
+      event.endsHoursLong = "".concat(Locale.formatDate(event.ends, {
+        date: 'long',
+        locale: this.locale.name
+      }), " ").concat(Locale.formatDate(event.ends, {
+        date: 'hour',
+        locale: this.locale.name
+      }));
+
+      if (Locale.isIslamic(this.locale.name)) {
+        var startsIslamic = Locale.gregorianToUmalqura(new Date(event.starts));
+        var endsIslamic = Locale.gregorianToUmalqura(new Date(event.ends));
+        event.startsLong = Locale.formatDate(startsIslamic, {
+          date: 'long',
+          locale: this.locale.name
+        });
+        event.endsLong = Locale.formatDate(endsIslamic, {
+          date: 'long',
+          locale: this.locale.name
+        });
+        event.startsHoursLong = "".concat(Locale.formatDate(startsIslamic, {
+          date: 'long',
+          locale: this.locale.name
+        }), " ").concat(Locale.formatDate(startsIslamic, {
+          date: 'hour',
+          locale: this.locale.name
+        }));
+        event.endsHoursLong = "".concat(Locale.formatDate(endsIslamic, {
+          date: 'long',
+          locale: this.locale.name
+        }), " ").concat(Locale.formatDate(endsIslamic, {
+          date: 'hour',
+          locale: this.locale.name
+        }));
+      }
+
+      event.typeLabel = this.getEventTypeLabel(event.type);
+      var renderedTmpl = Tmpl.compile(template, {
+        event: event
+      });
+      container.classList.remove('has-only-one');
+
+      if (append) {
+        DOM.append(container, renderedTmpl, '*');
+        return;
+      }
+
+      container.innerHTML = renderedTmpl;
+      container.classList.add('has-only-one');
+    },
+
+    /**
+     * Add a new event via the event object and show it if it should be visible in the calendar.
+     * @param {object} event The event object with common event properties.
+     */
+    addEvent: function addEvent(event) {
+      calendarShared.cleanEventData(event, true, this.currentDate(), this.locale, this.language, this.settings.events, this.settings.eventTypes);
+      this.settings.events.push(event);
+      this.renderEvent(event);
+      this.renderSelectedEventDetails();
+
+      if (this.weekView) {
+        this.weekView.addEvent(event);
+      }
+    },
+
+    /**
+     * Update an event via the event object and show it if it should be visible in the calendar.
+     * It uses the event id to do this.
+     * @param {object} event The event object with common event properties.
+     */
+    updateEvent: function updateEvent(event) {
+      var eventId = event.id;
+
+      for (var i = this.settings.events.length - 1; i >= 0; i--) {
+        if (this.settings.events[i].id === eventId) {
+          this.settings.events[i] = utils.extend(true, this.settings.events[i], event);
+          calendarShared.cleanEventData(this.settings.events[i], true, this.currentDate(), this.locale, this.language, this.settings.events, this.settings.eventTypes);
+        }
+      }
+
+      this.renderAllEvents();
+
+      if (this.weekView) {
+        this.weekView.updateEvent(event);
+      }
+    },
+
+    /**
+     * Remove an event from the dataset and page. It uses the id property.
+     * @param {object} event The event object with common event properties.
+     */
+    deleteEvent: function deleteEvent(event) {
+      var eventId = event.id;
+
+      for (var i = this.settings.events.length - 1; i >= 0; i--) {
+        if (this.settings.events[i].id === eventId) {
+          this.settings.events.splice(i, 1);
+        }
+      }
+
+      this.renderAllEvents();
+
+      if (this.weekView) {
+        this.weekView.deleteEvent(event);
+      }
+    },
+
+    /**
+     * Remove all events from the calendar
+     */
+    clearEvents: function clearEvents() {
+      this.settings.events = [];
+      this.renderAllEvents();
+
+      if (this.weekView) {
+        this.weekView.clearEvents();
+      }
+    },
+
+    /**
+     * Show a modal used to add/edit events. This uses the modalTemplate setting for the modal contents.
+     * @param {object} event The event object with common event properties for defaulting fields in the template.
+     * @param {function} done The callback for when the modal closes.
+     * @param {object} eventTarget The target element for the popup.
+     */
+    showEventModal: function showEventModal(event, done, eventTarget) {
+      var _this7 = this;
+
+      if (!this.settings.modalTemplate) {
+        return;
+      }
+
+      if (this.modalVisible()) {
+        this.removeModal();
+      }
+
+      this.modalContents = document.createElement('div');
+      DOM.addClass(this.modalContents, 'calendar-event-modal', 'hidden');
+      document.getElementsByTagName('body')[0].appendChild(this.modalContents);
+      event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes);
+      this.renderTmpl(event || {}, this.settings.modalTemplate, this.modalContents);
+      var dayObj = this.getDayEvents();
+      var isCancel = true;
+      dayObj.elem = $(dayObj.elem);
+      var placementArgs = dayObj.elem.index() === 6 ? this.isRTL ? 'right' : 'left' : this.isRTL ? 'left' : 'right';
+
+      if (!eventTarget && this.activeView === 'day') {
+        eventTarget = $('.week-view-header-wrapper');
+        placementArgs = this.isRTL ? 'left' : 'right';
+      }
+
+      if (!eventTarget) {
+        eventTarget = dayObj.elem;
+      }
+
+      var modalOptions = this.settings.modalOptions || {
+        content: $(this.modalContents),
+        closebutton: true,
+        popover: true,
+        placementOpts: {
+          parent: eventTarget,
+          strategies: ['flip', 'nudge', 'shrink-y'],
+          parentXAlignment: 'center',
+          parentYAlignment: 'center',
+          placement: placementArgs
+        },
+        title: event.title || event.subject,
+        trigger: 'immediate',
+        keepOpen: true,
+        extraClass: 'calendar-popup calendar-popup-mobile',
+        tooltipElement: '#calendar-popup',
+        headerClass: event.color,
+        initializeContent: false
+      };
+      eventTarget.off('hide.calendar').on('hide.calendar', function () {
+        if (isCancel) {
+          _this7.removeModal();
+
+          return;
+        }
+
+        done(_this7.modalContents, event);
+
+        _this7.element.trigger('hidemodal', {
+          elem: _this7.modalContents,
+          event: event
+        });
+
+        _this7.removeModal();
+
+        isCancel = true;
+      }).popover(modalOptions).off('show.calendar').on('show.calendar', function (evt, elem) {
+        _this7.element.trigger('showmodal', {
+          elem: _this7.modalContents,
+          event: event
+        }); // Wire the click on isAllDay to disable spinbox.
+
+
+        elem.find('#isAllDay').off().on('click.calendar', function (e) {
+          var isDisabled = $(e.currentTarget).prop('checked');
+
+          if (isDisabled) {
+            elem.find('#durationHours').prop('disabled', true);
+            elem.find('#endsHourLocale').prop('disabled', true);
+            elem.find('#startsHourLocale').prop('disabled', true);
+          } else {
+            elem.find('#durationHours').prop('disabled', false);
+            elem.find('#endsHourLocale').prop('disabled', false);
+            elem.find('#startsHourLocale').prop('disabled', false);
+          }
+        }); // Wire the correct type selector
+
+        elem.find('#type').val(event.type).dropdown(); // Wire the correct comments
+
+        elem.find('#comments').val(event.comments);
+        elem.find('#subject').focus(); // Wire the buttons
+
+        elem.find('button').on('click', function (e) {
+          var popupApi = eventTarget.data('tooltip');
+          var action = e.currentTarget.getAttribute('data-action');
+          isCancel = action !== 'submit';
+
+          if (popupApi) {
+            popupApi.hide(true);
+          }
+        }); // Init the contents
+
+        elem.find('.datepicker').datepicker({
+          locale: _this7.settings.locale,
+          language: _this7.settings.language
+        });
+        elem.find('.timepicker').timepicker({
+          locale: _this7.settings.locale,
+          language: _this7.settings.language
+        });
+
+        _this7.translate(elem);
+      });
+      $('#calendar-popup').one('tooltipafterplace.calendar', function (e, args) {
+        var arrow = args.element.find('.arrow');
+        var topValue = parseInt(arrow.css('margin-top'), 10);
+
+        if (dayObj.elem.parent().index() >= 3) {
+          var offsetTop = parseInt(args.element.offset().top, 10);
+          var diff = offsetTop + args.element.height();
+          var height = $('html').height() + 10;
+
+          if (diff > height) {
+            var adjustment = offsetTop - (diff - height) - 25;
+            args.element.css('top', "".concat(adjustment, "px"));
+            arrow.css('margin-top', "".concat(topValue + (offsetTop - adjustment) - 18, "px"));
+          }
+        } else if (args.element.height() > 580) {
+          arrow.css('margin-top', "".concat(topValue - 18, "px"));
+        }
+      });
+      this.activeElem = eventTarget;
+    },
+
+    /**
+     * Show the event modal and run a callback.
+     * @private
+     * @param {object} eventData Data from the event object
+     * @param {boolean} isAdd Open the modal in readnly mode vs edit mode
+     * @param {object} eventTarget The element to point the dialog at
+     * @returns {void}
+     */
+    showModalWithCallback: function showModalWithCallback(eventData, isAdd, eventTarget) {
+      var _this8 = this;
+
+      this.showEventModal(eventData, function (elem, event) {
+        // Collect the data and popuplate the event object
+        var inputs = elem.querySelectorAll('input, textarea, select');
+
+        for (var i = 0; i < inputs.length; i++) {
+          event[inputs[i].id] = inputs[i].getAttribute('type') === 'checkbox' ? inputs[i].checked : inputs[i].value;
+        }
+
+        if (isAdd) {
+          _this8.addEvent(event);
+        } else {
+          _this8.updateEvent(event);
+        }
+      }, eventTarget);
+    },
+
+    /**
+     * Used to check if a Modal is currently visible.
+     * @returns {boolean} whether or not the Modal is currently being displayed
+     */
+    modalVisible: function modalVisible() {
+      return document.querySelector('.calendar-event-modal') !== null;
+    },
+
+    /**
+     * Remove and destroy the modal.
+     * @private
+     */
+    removeModal: function removeModal() {
+      this.modalContents = null;
+
+      if (this.activeElem) {
+        this.activeElem.off();
+
+        if (this.activeElem.data('tooltip')) {
+          this.activeElem.data('tooltip').destroy();
+        }
+      }
+
+      DOM.remove(document.getElementById('calendar-popup'));
+      DOM.remove(document.querySelector('.calendar-event-modal'));
+      $('#timepicker-popup').hide();
+    },
+
+    /**
+     * Handle updated settings and values.
+     * @param {object} settings The new settings object to use.
+     * @returns {object} [description]
+     */
+    updated: function updated() {
+      var settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      if (!settings) {
+        settings = {};
+      }
+
+      if (settings) {
+        this.settings = utils.mergeSettings(this.element[0], settings, this.settings);
+      }
+
+      if (settings.locale || settings.template || settings.upcomingEventDays || settings.mobileTemplate) {
+        this.destroy().init();
+        return this;
+      } // Update weekview mapped settings.
+
+
+      if (this.weekView && settings.events) {
+        this.weekView.settings.events = settings.events;
+      }
+
+      if (this.weekView && settings.eventTypes) {
+        this.weekView.settings.events = settings.events;
+      }
+
+      if (this.weekView && settings.weekViewSettings) {
+        this.weekView.settings = utils.mergeSettings(this.element[0], settings.weekViewSettings, this.weekViews.settings);
+      }
+
+      this.monthView.showMonth(this.settings.month, this.settings.year);
+      this.renderAllEvents();
+
+      if (this.weekView && settings.weekViewSettings) {
+        this.weekView.renderAllEvents();
+      }
+
+      return this;
+    },
+
+    /**
+     * Simple Teardown - remove events & rebuildable markup.
+     * @private
+     * @returns {object} The Component prototype, useful for chaining.
+     */
+    teardown: function teardown() {
+      this.element.off();
+      $(this.monthViewContainer).off();
+
+      if (this.monthView) {
+        this.monthView.destroy();
+      }
+
+      if (this.weekView) {
+        this.weekView.destroy();
+      }
+
+      return this;
+    },
+
+    /**
+     * Teardown - Remove added markup and events.
+     * @private
+     * @returns {object} The Component prototype, useful for chaining.
+     */
+    destroy: function destroy() {
+      if (this.eventTypeContainer) {
+        this.eventTypeContainer.innerHTML = '';
+      }
+
+      if (this.monthViewContainer) {
+        this.monthViewContainer.innerHTML = '';
+      }
+
+      if (this.upcomingEventsContainer) {
+        this.upcomingEventsContainer.innerHTML = '';
+      }
+
+      if (this.eventDetailsContainer) {
+        this.eventDetailsContainer.innerHTML = '';
+      }
+
+      if (this.eventDetailsMobileContainer) {
+        this.eventDetailsMobileContainer.innerHTML = '';
+      }
+
+      this.removeModal();
+      this.teardown();
+      $.removeData(this.element[0], COMPONENT_NAME$B);
+      return this;
+    }
+  };
+
+  /**
+   * jQuery Component Wrapper for Calendar
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+
+  $.fn.calendar = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$B);
+
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$B, new Calendar(this, settings));
+      }
+    });
+  };
+
+  var COMPONENT_NAME$C = 'circlepager';
+  /**
+   * The Circle Pager Displays content in a sliding carousel and has paging buttons.
+   * @class CirclePager
+   * @constructor
+   *
+   * @param {jQuery[]|HTMLElement} element The component element.
+   * @param {object} [settings] The component settings.
+   * @param {Integer} [settings.slidesToShow=1] The number of slides to show in one view / pane
+   * @param {Integer} [settings.startingSlide] First showing slide/group, an 0-based integer
+   * @param {boolean} [settings.loop=false] Setting loop: true will loop back after next/previous reached to end
+   */
+
+  var CIRCLEPAGER_DEFAULTS = {
+    slidesToShow: 1,
+    startingSlide: null,
+    loop: false
+  };
+
+  function CirclePager(element, settings) {
+    this.element = $(element);
+    this.settings = utils.mergeSettings(this.element[0], settings, CIRCLEPAGER_DEFAULTS);
+    this.init();
+  } // CirclePager Methods
+
+
+  CirclePager.prototype = {
+    init: function init() {
+      this.setElements();
+
+      if (this.slides.length) {
+        this.createControls();
+        this.handleEvents();
+        this.initActiveSlide();
+        this.showCollapsedView();
+      }
+    },
+
+    /**
+     * Set elements
+     * @private
+     * @returns {void}
+     */
+    setElements: function setElements() {
+      var s = this.settings;
+      this.container = $('.slides', this.element);
+      this.slidesJQ = $('.slide', this.element);
+      this.slidesToShow = s.slidesToShow;
+      this.slides = [];
+      this.isVisible = true;
+
+      for (var i = 0, l = this.slidesJQ.length; i < l; i++) {
+        this.slides.push({
+          node: $(this.slidesJQ[i])
+        });
+      }
+
+      this.activeIndex = s.startingSlide !== null && s.startingSlide > -1 && s.startingSlide < this.slides.length ? s.startingSlide : 0;
+    },
+
+    /**
+     * Create controls
+     * @private
+     * @returns {void}
+     */
+    createControls: function createControls() {
+      var len = this.slides.length;
+      var html = '<div class="controls">';
+      var htmlContent = '';
+      var numOfButtons = 0;
+      var slide;
+      var temp;
+      var href;
+      var text;
+      var buttonText;
+      var last;
+      var lastIndex;
+      var isSingle;
+      var isDisabled;
+
+      for (var i = 0, l = len; i < l; i += this.slidesToShow) {
+        temp = '';
+        numOfButtons++;
+        isSingle = this.slidesToShow === 1 || len - i === 1;
+        text = Locale.translate(isSingle ? 'SlideOf' : 'SlidesOf'); // Keep href in english language only
+
+        href = isSingle ? '#slide {0} of {1}' : '#slides {0} and {1} of {2}'; // Collect as much bullets need to present
+
+        for (var g = 0; g < this.slidesToShow && i + g < len; g++) {
+          temp += "".concat(i + g + 1, ", ");
+        }
+
+        text = text.replace(isSingle ? '{1}' : '{2}', len);
+        href = href.replace(isSingle ? '{1}' : '{2}', len);
+        temp = temp.slice(0, -2);
+        lastIndex = temp.lastIndexOf(',');
+        last = temp.substr(lastIndex + 2); // Controls for single slide in view
+
+        if (isSingle) {
+          isDisabled = '';
+          slide = this.slides[i].node; // Set disabled
+
+          if (slide.is('.is-disabled, [disabled]') && !slide.is('[disabled="false"]')) {
+            isDisabled = ' disabled tabindex="-1"';
+            this.slides[i].isDisabled = true;
+          } // Set default starting slide
+
+
+          if (slide.is('.active') && this.settings.startingSlide === null && isDisabled === '') {
+            this.activeIndex = i;
+          } // Use custom text if supplied
+
+
+          buttonText = slide.attr('data-button-text');
+          text = buttonText && buttonText.length ? buttonText : text.replace('{0}', temp);
+          href = href.replace('{0}', temp);
+        } else {
+          // Controls for multiple slides in view
+          temp = temp.substr(0, lastIndex);
+          text = text.replace('{1}', last).replace('{0}', temp);
+          href = href.replace('{1}', last).replace('{0}', temp);
+        }
+
+        href = href.toLowerCase().replace(/[\s,--]+/g, '-');
+        htmlContent += "<a href=\"".concat(href, "\" class=\"control-button hyperlink hide-focus\"").concat(isDisabled, "><span class=\"audible\">").concat(text, "</span></a>");
+      }
+
+      html += "".concat(htmlContent, "</div>"); // Previous/Next buttons
+
+      this.isBulletsNav = this.element.width() > numOfButtons * 29;
+      var previousButton = $('.btn-previous', this.element);
+      var nextButton = $('.btn-next', this.element);
+
+      if (!this.isBulletsNav) {
+        if (!previousButton.length) {
+          html += '' + "<button class=\"btn-previous\" type=\"button\">\n            ".concat($.createIcon('left-arrow'), "\n            <span class=\"audible\"> ").concat(Locale.translate('Previous'), "</span>\n          </button>");
+        }
+
+        if (!nextButton.length) {
+          html += '' + "<button class=\"btn-next\" type=\"button\">\n            ".concat($.createIcon('right-arrow'), "\n            <span class=\"audible\">").concat(Locale.translate('Next'), "</span>\n          </button>");
+        }
+      } else {
+        previousButton.add(nextButton).remove();
+      }
+
+      if (this.activeIndex > 0 && this.activeIndex > numOfButtons - 1) {
+        this.activeIndex = numOfButtons - 1;
+      }
+
+      if (numOfButtons > 1) {
+        this.element.append(html);
+      }
+    },
+
+    /**
+     * Check if given element is visible in container
+     * @private
+     * @param {object} element to check.
+     * @returns {boolean} -1 if not in container
+     */
+    isVisibleInContainer: function isVisibleInContainer(element) {
+      if (element && element[0]) {
+        var eRect = element[0].getBoundingClientRect();
+        var cRect = this.element[0].getBoundingClientRect();
+        return eRect.left > cRect.left && eRect.left < cRect.left + cRect.width && eRect.top > cRect.top && eRect.top < cRect.top + cRect.height;
+      }
+
+      return -1;
+    },
+
+    /**
+     * Update number of slides to show in view
+     * @private
+     * @param {object} numOfSlides to show.
+     * @returns {object} this api
+     */
+    updateSlidesToShow: function updateSlidesToShow(numOfSlides) {
+      if (!this.isActive) {
+        return;
+      }
+
+      this.settings.slidesToShow = numOfSlides || 1;
+      this.updated();
+      return this; // eslint-disable-line
+    },
+
+    /**
+     * Make sure max number of slides to show in view
+     * @private
+     * @param {object} numOfSlides to show.
+     * @returns {void}
+     */
+    responsiveSlidesToShow: function responsiveSlidesToShow(numOfSlides) {
+      var _this = this;
+
+      if (!this.isActive) {
+        return;
+      }
+
+      this.slidesToShow = numOfSlides || this.settings.slidesToShow;
+      this.unbind().slidesJQ.css('width', '');
+
+      if (this.slides.length) {
+        setTimeout(function () {
+          _this.createControls();
+
+          _this.handleEvents();
+
+          _this.initActiveSlide();
+
+          _this.showCollapsedView();
+        }, 0);
+      }
+    },
+
+    /**
+     * Show a slide to First Slide
+     * @private
+     * @param {string} index  The index of the slide to show (0 based)
+     * @returns {void}
+     */
+    show: function show(index) {
+      if (!this.isActive) {
+        return;
+      }
+
+      index = typeof index !== 'undefined' ? index : this.activeIndex;
+      this.activeIndex = index;
+      var left = index > 0 ? "".concat((Locale.isRTL() ? '' : '-') + index * 100, "%") : 0;
+      this.controlButtons.removeClass('is-active').eq(index).addClass('is-active');
+      this.container[0].style.left = left; // Make sure bullets navigation do not overflow
+
+      if (!this.isBulletsNav) {
+        this.element.addClass('is-bullets-nav-hidden');
+        this.controlButtons.find('span').addClass('audible').end().eq(index).find('span').removeClass('audible');
+      } else {
+        this.element.removeClass('is-bullets-nav-hidden');
+        this.controlButtons.find('span').addClass('audible');
+      } // Set focus
+
+
+      if (this.isFocus && this.isBulletsNav) {
+        this.isFocus = false;
+        this.controlButtons.eq(index).focus();
+      }
+    },
+
+    /**
+     * Move to First Slide
+     * @private
+     * @returns {void}
+     */
+    first: function first() {
+      this.show(0);
+    },
+
+    /**
+     * Move to Last Slide
+     * @private
+     * @returns {void}
+     */
+    last: function last() {
+      this.show(Math.round(this.slides.length / this.slidesToShow) - 1);
+    },
+
+    /**
+     * Move to Previous Slide
+     * @private
+     * @returns {void}
+     */
+    prev: function prev() {
+      var _this2 = this;
+
+      // eslint-disable-line
+      var prev;
+
+      if (this.activeIndex > 0) {
+        prev = this.activeIndex - 1;
+      } else {
+        prev = this.settings.loop ? Math.round(this.slides.length / this.slidesToShow) - 1 : 0;
+      }
+
+      if (this.slides[prev].isDisabled) {
+        setTimeout(function () {
+          _this2.prev();
+        }, 0);
+        this.activeIndex = prev;
+        return false;
+      }
+
+      this.show(prev);
+    },
+
+    /**
+    * Move to Next Slide
+    * @private
+    * @returns {void}
+    */
+    next: function next() {
+      var _this3 = this;
+
+      // eslint-disable-line
+      var next;
+
+      if (this.activeIndex >= Math.round(this.slides.length / this.slidesToShow) - 1) {
+        next = this.settings.loop ? 0 : this.activeIndex;
+      } else {
+        next = this.activeIndex + 1;
+      }
+
+      if (this.slides[next].isDisabled) {
+        setTimeout(function () {
+          _this3.next();
+        }, 0);
+        this.activeIndex = next;
+        return false;
+      }
+
+      this.show(next);
+    },
+
+    /**
+    * Make active
+    * @private
+    * @returns {void}
+    */
+    showCollapsedView: function showCollapsedView() {
+      this.isActive = true;
+      this.element.addClass('is-active');
+      this.container[0].style.width = "".concat(100 * this.slides.length, "%");
+
+      if (this.settings.slidesToShow > 1 && this.slidesJQ.eq(0).width() * this.slidesToShow > this.element.width()) {
+        this.responsiveSlidesToShow(this.slidesToShow - 1);
+        return;
+      }
+
+      for (var i = 0, l = this.slidesJQ.length; i < l; i++) {
+        this.slidesJQ[i].style.width = "".concat(100 / this.slidesToShow / this.slides.length, "%");
+      }
+
+      this.show();
+    },
+
+    /**
+    * Make un-active
+    * @private
+    * @returns {void}
+    */
+    showExpandedView: function showExpandedView() {
+      this.isActive = false;
+      this.element.removeClass('is-active');
+
+      if (this.element && this.element[0]) {
+        this.element[0].style.width = '';
+      }
+
+      if (this.container && this.container[0]) {
+        this.container[0].style.width = '';
+        this.container[0].style.left = '';
+      }
+    },
+
+    /**
+    * Initialize active slide
+    * @private
+    * @returns {void}
+    */
+    initActiveSlide: function initActiveSlide() {
+      // eslint-disable-line
+      if (this.slides[this.activeIndex].isDisabled) {
+        this.next();
+        return false;
+      }
+
+      this.show();
+      this.slidesJQ.addClass('is-visible');
+    },
+
+    /**
+     * Removes event bindings from the instance.
+     * @private
+     * @returns {object} The api
+     */
+    unbind: function unbind() {
+      $('body').off('resize.circlepager');
+      this.element.off('focus.circlepager keydown.circlepager', '*');
+
+      if (this.controlButtons) {
+        this.controlButtons.off('click.circlepager keydown.circlepager');
+      }
+
+      $('.btn-previous, .btn-next', this.element).off('click.circlepager');
+      $('.controls', this.element).remove();
+      this.showExpandedView();
+      var possibleTab = this.element.closest('.tab-panel-container').prev('.tab-container');
+      possibleTab.off('activated.circlepager');
+      return this;
+    },
+
+    /**
+     * Resync the UI and Settings.
+     * @param {object} settings The settings to apply.
+     * @returns {object} The api
+     */
+    updated: function updated(settings) {
+      if (typeof settings !== 'undefined') {
+        this.settings = utils.mergeSettings(this.element, settings, CIRCLEPAGER_DEFAULTS);
+      }
+
+      return this.unbind().init();
+    },
+
+    /**
+     * Destroy this component instance and remove the link from its base element.
+     * @returns {void}
+     */
+    destroy: function destroy() {
+      this.unbind();
+      $.removeData(this.element[0], COMPONENT_NAME$C);
+    },
+
+    /**
+     * Attach Events used by the Control
+     * @private
+     * @returns {void}
+     */
+    handleEvents: function handleEvents() {
+      var _this4 = this;
+
+      var self = this; // Previous button
+
+      $('.btn-previous', this.element).on('click.circlepager', function (e) {
+        _this4.prev();
+
+        e.stopImmediatePropagation();
+      }); // Next button
+
+      $('.btn-next', this.element).on('click.circlepager', function (e) {
+        _this4.next();
+
+        e.stopImmediatePropagation();
+      });
+      this.controlButtons = $('.control-button', this.element);
+
+      var _loop = function _loop(i, l) {
+        var btn = $(_this4.controlButtons[i]);
+        btn.hideFocus(); // Handle clicks for bottom bullet links
+
+        btn.on('click.circlepager', function (e) {
+          e.preventDefault();
+
+          if (_this4.slides[i].isDisabled) {
+            return;
+          }
+
+          _this4.show(i);
+        });
+      };
+
+      for (var i = 0, l = this.controlButtons.length; i < l; i++) {
+        _loop(i);
+      } // Handle keyboard events
+      // Prevent hidden slide's content to be get focused
+      // on focusable elements in slides content
+
+
+      this.element.on('focus.circlepager', '*', function (e) {
+        // eslint-disable-line
+        var handled = false;
+
+        if (!self.isVisibleInContainer($(this))) {
+          var canfocus = self.element.find(':focusable');
+
+          for (var _i = 0, _l = canfocus.length; _i < _l; _i++) {
+            if (self.isVisibleInContainer(canfocus.eq(_i))) {
+              canfocus.eq(_i).focus();
+              handled = true;
+              break;
+            }
+          }
+        }
+
+        e.stopPropagation();
+
+        if (handled) {
+          return false;
+        }
+      }); // Keydown on focusable elements in slides content to
+      // prevent hidden slide's content to be get focused
+
+      this.element.on('keydown.circlepager', '*', function (e) {
+        // eslint-disable-line
+        var handled = false;
+        var key = e.which || e.keyCode || e.charCode || 0;
+        var canfocus = $(':focusable');
+        var index = canfocus.index(this);
+
+        if (key === 9) {
+          // tab
+          // Using shift key with tab (going backwards)
+          if (e.shiftKey) {
+            for (var _i2 = index - 1; _i2 >= 0; _i2--) {
+              if (self.element.has(canfocus.eq(_i2)).length < 1 || self.isVisibleInContainer(canfocus.eq(_i2))) {
+                canfocus.eq(_i2).focus();
+                handled = true;
+                break;
+              }
+            }
+          } else if (!self.isVisibleInContainer(canfocus.eq(index + 1))) {
+            // Using only tab key (going forward)
+            self.controlButtons.first().focus();
+            handled = true;
+          }
+        }
+
+        e.stopPropagation();
+
+        if (handled) {
+          return false;
+        }
+      }); // Control buttons
+
+      this.controlButtons.on('keydown.circlepager', function (e) {
+        // eslint-disable-line
+        var handled = false;
+        var key = e.which || e.keyCode || e.charCode || 0;
+        var isRTL = Locale.isRTL(); // Left and Right arrow keys
+
+        if ([37, 39].indexOf(key) !== -1) {
+          self.isFocus = true; // Move focus
+
+          if (e.altKey) {
+            // [Alt + Left/Right arrow] to move to the first or last
+            if (key === 37 && !isRTL || key === 39 && isRTL) {
+              self.first();
+            } else {
+              self.last();
+            }
+          } else {
+            // Left and Right arrow keys to navigate
+            if (!isRTL && key === 37 || isRTL && key === 39) {
+              self.prev();
+            } else {
+              self.next();
+            }
+
+            handled = true;
+          }
+        }
+
+        if (handled) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+        }
+      }); // Set max number of slides can view on resize
+
+      $('body').on('resize.circlepager', function () {
+        self.responsiveSlidesToShow();
+      });
+      var possibleTab = self.element.closest('.tab-panel-container').prev('.tab-container');
+      possibleTab.off('activated.circlepager').on('activated.circlepager', function () {
+        self.responsiveSlidesToShow();
+      });
+    }
+  };
+
+  /**
+   * jQuery Component Wrapper for CirclePager
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+
+  $.fn.circlepager = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$C);
+
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$C, new CirclePager(this, settings));
+      }
+    });
+  };
+
+  /**
+   * jQuery Component Wrapper for CalendarToolbar
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+
+  $.fn.calendartoolbar = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$y);
+
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$y, new CalendarToolbar(this, settings));
+      }
+    });
+  };
+
+  var COMPONENT_NAME$D = 'compositeform';
+  /**
+  * CompositeForm is a specialized responsive form component.
+  * @class CompositeForm
+  * @deprecated as of v4.20.0. This component is no longer supported by the IDS team.
+  * @constructor
+  * @param {jQuery[]|HTMLElement} element The component element.
+  * @param {object} [settings] The component settings.
+  * @param {string} [settings.breakpoint = 'phone-to-tablet'] Defines the breakpoint at which the composite form will change into its responsive mode
+  * @param {string} [settings.trigger = null] Expandable area trigger selector. Passed to expandable area.
+  * @param {string} [settings.expandedText = Locale.translate('ShowLess')] Text to use for the expand button (Default localized)
+  * @param {string} [settings.collapsedText = Locale.translate('ShowMore')] Text to use for the collapse button (Default localized)
+  */
+
+  var COMPOSITEFORM_DEFAULTS = {
+    breakpoint: 'phone-to-tablet',
+    trigger: null,
+    expandedText: Locale.translate('ShowLess'),
+    collapsedText: Locale.translate('ShowMore')
+  };
+
+  function CompositeForm(element, settings) {
+    this.settings = utils.mergeSettings(element, settings, COMPOSITEFORM_DEFAULTS);
+    this.element = $(element);
+    this.init();
+    warnAboutRemoval('CompositeForm');
+  } // Component API
+
+
+  CompositeForm.prototype = {
+    /**
+    * Initialize the component
+    * @private
+    * @returns {object} The component api for chaining.
+    */
+    init: function init() {
+      return this.build().handleEvents();
+    },
+
+    /**
+    * Adds markup to the control and stores references to some sub-elements
+    * @private
+    * @returns {object} The component api for chaining.
+    */
+    build: function build() {
+      var componentClassList = this.element[0].classList;
+
+      if (!componentClassList.contains('composite-form')) {
+        componentClassList.add('composite-form');
+      } // Get expandable area reference, if applicable
+
+
+      var expandableArea = this.element.find('.expandable-area');
+
+      if (expandableArea.length) {
+        this.hasSummary = true;
+        this.expandableArea = expandableArea;
+        this.expandableAreaAPI = this.expandableArea.data('expandablearea');
+
+        if (!this.expandableAreaAPI) {
+          this.expandableArea.expandablearea({
+            trigger: this.settings.trigger
+          });
+          this.expandableAreaAPI = this.expandableArea.data('expandablearea');
+        } // Get expandable trigger
+
+
+        this.expander = this.expandableAreaAPI.expander;
+        this.setExpanderText(this.settings.expandedText);
+      } else {
+        this.hasSummary = false;
+      } // Check size and append class, if necessary
+
+
+      this.checkResponsive();
+      return this;
+    },
+
+    /**
+     * Sets up event handlers for this control and its sub-elements
+     * @param {string} expanderText - the text content
+     * @returns {undefined}
+     */
+    handleEvents: function handleEvents() {
+      var self = this;
+      $('body').off("resize.".concat(COMPONENT_NAME$D)).on("resize.".concat(COMPONENT_NAME$D), function (e) {
+        self.checkResponsive(e);
+      });
+      this.element.on("updated.".concat(COMPONENT_NAME$D), function () {
+        self.updated();
+      });
+
+      function changeExpanderText() {
+        var isExpanded = self.expandableAreaAPI.isExpanded();
+        self.setExpanderText(self.settings[isExpanded ? 'expandedText' : 'collapsedText']);
+      }
+
+      if (this.hasSummary) {
+        this.expandableArea.on("expand.".concat(COMPONENT_NAME$D), changeExpanderText).on("collapse.".concat(COMPONENT_NAME$D), changeExpanderText);
+      }
+
+      return this;
+    },
+
+    /**
+     * Checks if we've passed the breakpoint for switching into Responsive mode.
+     * @returns {undefined}
+     */
+    checkResponsive: function checkResponsive() {
+      var cl = this.element[0].classList;
+
+      if (breakpoints.isBelow(this.settings.breakpoint)) {
+        cl.add('is-in-responsive-mode');
+      } else {
+        cl.remove('is-in-responsive-mode');
+
+        if (this.isSideOriented() && !this.expandableAreaAPI.isExpanded()) {
+          this.expandableAreaAPI.open();
+        }
+      }
+    },
+
+    /**
+     * Sets the text content of the Composite Form's Expandable Area Expander.
+     * @param {string} expanderText - the text content
+     * @returns {undefined}
+     */
+    setExpanderText: function setExpanderText(expanderText) {
+      if (!this.hasSummary) {
+        return;
+      }
+
+      if (!(expanderText instanceof String) || !expanderText.length) {
+        return;
+      }
+
+      var textSpan = this.expander.find('span');
+
+      if (!textSpan) {
+        textSpan = this.expander;
+      }
+
+      textSpan.text(expanderText);
+    },
+
+    /**
+     * Determines if this component is configured for "on-side" orientation of the Summary area.
+     * @returns {boolean} If the component is currently side oriented.
+     */
+    isSideOriented: function isSideOriented() {
+      return this.element[0].classList.contains('on-side');
+    },
+
+    /**
+     * Re-invokes the Composite Form
+     * @returns {object} The component API for chaining.
+     */
+    updated: function updated() {
+      return this.teardown().init();
+    },
+
+    /**
+     * Simple Teardown - remove events & rebuildable markup.
+     * @private
+     * @returns {object} The component API for chaining.
+     */
+    teardown: function teardown() {
+      $('body').off("resize.".concat(COMPONENT_NAME$D));
+      this.element.off("updated.".concat(COMPONENT_NAME$D));
+
+      if (this.hasSummary) {
+        this.expandableArea.off("expand.".concat(COMPONENT_NAME$D, " collapse.").concat(COMPONENT_NAME$D));
+      }
+
+      return this;
+    },
+
+    /**
+     * Destroys the component instance by removing it from its associated element.
+     * @returns {void}
+     */
+    destroy: function destroy() {
+      this.teardown();
+      $.removeData(this.element[0], COMPONENT_NAME$D);
+    }
+  };
+
+  /**
+   * jQuery Component Wrapper for Composite Form
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+
+  $.fn.compositeform = function (settings) {
+    return this.each(function () {
+      var instance = $.data(this, COMPONENT_NAME$D);
+
+      if (instance) {
+        instance.updated(settings);
+      } else {
+        instance = $.data(this, COMPONENT_NAME$D, new CompositeForm(this, settings));
+      }
+    });
+  };
+
+  var COMPONENT_NAME$E = 'contextualactionpanel';
+  /**
+  * A more complex modal for complex in page interactions.
+  * @class ContextualActionPanel
+  * @param {string} element The component element.
+  * @param {string} settings The component settings.
+  * @param {jQuery|string} [settings.content = null] Pass content through to CAP.
+  * @param {boolean} [settings.initializeContent = true] Initialize content before opening with defaults.
+  * @param {string} [settings.title = 'Contextual Action Panel'] String that sits in the toolbar's title field.
+  * @param {object} [settings.modalSettings = {}] an object containing settings for the internal Modal component.
+  * @param {array} [settings.modalSettings.buttons = null] A list of buttons that will sit in the toolbar's Buttonset area.
+  * @param {boolean} [settings.modalSettings.centerTitle = false] If true the title will be centered.
+  * @param {string} [settings.modalSettings.id = `contextual-action-modal-[number]`] The id to use for the CAP, or defaults to generated.
+  * @param {boolean} [settings.modalSettings.showCloseBtn = false] if true, displays a "close (X)" button in the button row that cancels the CAP's Modal action.
+  * @param {string} [settings.modalSettings.trigger = 'click'] Can be 'click' or 'immediate'.
+  * @param {boolean} [settings.modalSettings.useFlexToolbar = false] If true the new flex toolbar will be used (For CAP)
+  */
+
+  var CONTEXTUALACTIONPANEL_DEFAULTS = {
+    content: null,
+    initializeContent: true,
+    // initialize content before opening
+    title: 'Contextual Action Panel',
+    modalSettings: {
+      buttons: null,
+      centerTitle: false,
+      id: null,
+      showCloseBtn: false,
+      trigger: 'click',
+      useFlexToolbar: false
+    }
+  }; // List of settings that used to reside directly underneath the `defaults`, but have
+  // been re-located to `settings.modalSettings` as of v4.22.x.
+  // See `infor-design/enterprise#2433` for more information.
+  // TODO: find a way to normalize CAP's `content` setting with Modal's.  For some reason,
+  // they are different and have been that way for some time.
+
+  var CONTEXTUAL_MODAL_SETTINGS = ['buttons', 'centerTitle', 'id', 'showCloseButton', 'trigger', 'useFlexToolbar']; // Handles the conversion of legacy CAP settings to `modalSettings` setting.
+
+  function handleLegacyCAPSettings(settings) {
+    // Some settings are renamed to match their Modal counterparts
+    var conversionMap = {
+      showCloseButton: 'showCloseBtn'
+    };
+    CONTEXTUAL_MODAL_SETTINGS.forEach(function (setting) {
+      if ([null, undefined].indexOf(settings[setting]) === -1) {
+        var targetSettingName = setting;
+
+        if (!settings.modalSettings) {
+          settings.modalSettings = {};
+        }
+
+        if (conversionMap[setting]) {
+          // Convert a differently-named setting to the correct name
+          targetSettingName = conversionMap[setting];
+          settings.modalSettings[targetSettingName] = settings[setting];
+        } else {
+          // Simply append the actual setting
+          settings.modalSettings[setting] = settings[setting];
+        }
+
+        delete settings[setting];
+        warnAboutDeprecation("settings.modalSettings.".concat(targetSettingName), "settings.".concat(setting));
+      }
+    });
+    return settings;
+  }
+
+  function ContextualActionPanel(element, settings) {
+    this.settings = utils.mergeSettings(element, settings, CONTEXTUALACTIONPANEL_DEFAULTS);
+    this.settings = handleLegacyCAPSettings(this.settings);
+    this.element = $(element);
+    this.init();
+  } // Plugin Methods
+
+
+  ContextualActionPanel.prototype = {
+    /**
+     * @returns {Modal|undefined} instance of an IDS modal, or undefined if one doesn't exist
+     */
+    get modalAPI() {
+      var api;
+
+      if (this.panel && this.panel.length) {
+        api = this.panel.data('modal');
+      }
+
+      return api;
+    },
+
+    /**
+    * Initialize the CAP.
+    * @private
+    */
+    init: function init() {
+      this.setup().build().handleEvents();
+    },
+
+    /**
+    * Setup internal variables.
+    * NOTE: Does not do any building.
+    * @private
+    * @returns {object} The Api for chaining.
+    */
+    setup: function setup() {
+      var existingPanel = this.element.next('.contextual-action-panel');
+      var modalId = this.id;
+
+      var setPanel = function setPanel(id) {
+        var panelFromID = $("#".concat(id));
+
+        if (panelFromID.length) {
+          existingPanel = panelFromID;
+        }
+      };
+
+      if (typeof dataModal === 'string') {
+        setPanel(modalId);
+      } // Handle case with popup triggered from a menu
+
+
+      if (this.element.closest('.popupmenu').length === 1) {
+        existingPanel = this.element.closest('.popupmenu').next('.contextual-action-panel');
+      }
+
+      if (existingPanel[0]) {
+        existingPanel[0].style.display = 'none';
+        existingPanel.addClass('is-animating');
+        this.panel = existingPanel;
+      }
+
+      return this;
+    },
+
+    /**
+    * Add markup to build up the component.
+    * @private
+    * @returns {object} The Api for chaining.
+    */
+    build: function build() {
+      var _this$settings, _this$settings$modalS, _this$settings2, _this$settings2$modal;
+
+      var self = this;
+      var modalContent = this.settings.content;
+      this.id = ((_this$settings = this.settings) === null || _this$settings === void 0 ? void 0 : (_this$settings$modalS = _this$settings == null ? void 0 : _this$settings.modalSettings) === null || _this$settings$modalS === void 0 ? void 0 : _this$settings$modalS == null ? void 0 : _this$settings$modalS.id) || (modalContent === null || modalContent === void 0 ? void 0 : modalContent == null ? void 0 : modalContent.attr('id')) || utils.uniqueId(this.element, 'contextual-action-modal');
+
+      if (!((_this$settings2 = this.settings) === null || _this$settings2 === void 0 ? void 0 : (_this$settings2$modal = _this$settings2 == null ? void 0 : _this$settings2.modalSettings) === null || _this$settings2$modal === void 0 ? void 0 : _this$settings2$modal == null ? void 0 : _this$settings2$modal.id)) {
+        this.settings.modalSettings.id = this.id;
+      } // Build the Content if it's not present
+
+
+      if (!this.panel || !this.panel.length) {
+        if (modalContent instanceof jQuery) {
+          if (modalContent.is('.contextual-action-panel')) {
+            this.panel = modalContent;
+          } else {
+            modalContent.wrap('<div class="contextual-action-panel"></div>');
+            this.panel = modalContent.parent();
+          }
+
+          this.panel.addClass('modal').appendTo('body');
+
+          if (modalContent.is('iframe')) {
+            modalContent.ready(function () {
+              self.completeBuild();
+              modalContent.show();
+            });
+            return self;
+          }
+
+          modalContent.show();
+        } else {
+          this.panel = $("<div class=\"contextual-action-panel\">".concat(modalContent, "</div>")).appendTo('body');
+          this.panel.addClass('modal').attr('id', this.settings.modalSettings.id);
+        }
+      }
+
+      this.completeBuild();
+      return this;
+    },
+
+    /**
+    * Finalize build up/
+    * @private
+    * @returns {object} The Api for chaining.
+    */
+    completeBuild: function completeBuild() {
+      var children;
+      var isIframe = false;
+      var contents;
+      var hasSearchfield = false;
+      var predefined = true; // Invoke Icons
+
+      this.panel.find('svg').icon(); // Get a reference to `.modal-content`
+
+      var modalContent = this.panel.find('.modal-content');
+
+      if (modalContent.length === 0) {
+        children = this.panel.children();
+
+        if (children.is('iframe')) {
+          contents = children.contents();
+          this.toolbar = contents.find('.toolbar, .flex-toolbar');
+          isIframe = true;
+        }
+
+        if (!isIframe) {
+          children.wrapAll('<div class="modal-content"></div>').wrapAll('<div class="modal-body"></div>');
+          this.panel.addClass('modal');
+        }
+      } // Build/reference the header
+
+
+      var modalHeader = this.panel.find('.modal-header');
+
+      if (modalHeader.length === 0) {
+        modalHeader = $('<div class="modal-header"></div>');
+        modalHeader.insertBefore(this.panel.find('.modal-body'));
+      }
+
+      this.header = modalHeader; // Detect existence of buttonset for later
+
+      var buttonset = this.panel.find('.toolbar .buttonset, .flex-toolbar .buttonset'); // Build/reference the CAP header toolbar
+
+      if (!this.toolbar) {
+        this.toolbar = this.panel.find('.toolbar, .flex-toolbar');
+      }
+
+      if (!this.toolbar.length) {
+        predefined = false;
+
+        if (this.settings.modalSettings.buttons) {
+          this.settings.modalSettings.buttons.forEach(function (button) {
+            if (button.type === 'input') {
+              hasSearchfield = true;
+            }
+          });
+        }
+
+        if (this.settings.title && this.settings.modalSettings.centerTitle) {
+          var toolbarSearchfieldSection = hasSearchfield ? '<div class="toolbar-section search"></div>' : '';
+          var toolbarHTML = "<div class=\"flex-toolbar\">\n          <div class=\"toolbar-section static\"></div>\n          <div class=\"toolbar-section title center-text\">\n            <h2>".concat(this.settings.title, "</h2>\n          </div>\n          ").concat(toolbarSearchfieldSection, "\n          <div class=\"toolbar-section buttonset static\"></div>\n        </div>");
+          this.toolbar = $(toolbarHTML);
+        } else if (!buttonset.length) {
+          var toolbarCSSClass = this.settings.modalSettings.useFlexToolbar ? 'flex-toolbar' : 'toolbar';
+          var toolbarTitleSection = this.settings.modalSettings.useFlexToolbar ? "<div class=\"toolbar-section title\"><h2>".concat(this.settings.title, "</h2></div>") : '';
+          var toolbarButtonsetCSSClass = this.settings.modalSettings.useFlexToolbar ? 'toolbar-section buttonset' : 'buttonset';
+          var toolbarButtonsetSection = "<div class=\"".concat(toolbarButtonsetCSSClass, "\"></div>");
+
+          var _toolbarSearchfieldSection = this.settings.modalSettings.useFlexToolbar && hasSearchfield ? '<div class="toolbar-section search"></div>' : '';
+
+          var _toolbarHTML = "<div class=\"".concat(toolbarCSSClass, "\">\n          ").concat(toolbarTitleSection, "\n          ").concat(_toolbarSearchfieldSection, "\n          ").concat(toolbarButtonsetSection, "\n        </div>");
+
+          var toolbar = $(_toolbarHTML);
+          toolbar.appendTo(this.panel.find('.modal-header'));
+          this.toolbar = toolbar;
+          buttonset = toolbar.children('.buttonset');
+        }
+      }
+
+      this.toolbar.appendTo(this.header); // Only add certain elements if a Toolbar was generated with JS-options
+      // and not by HTML markup.
+
+      if (!predefined) {
+        if (!buttonset || !buttonset.length && !this.settings.modalSettings.centerTitle) {
+          buttonset = $('<div class="toolbar-section buttonset"></div>');
+          buttonset.appendTo(this.toolbar);
+        }
+
+        var toolbarTitle = this.toolbar.find('.title');
+
+        if (!toolbarTitle.length) {
+          var centerTextCSS = this.settings.modalSettings.centerTitle ? ' center-text' : '';
+          toolbarTitle = $("\n          <div class=\"toolbar-section title".concat(centerTextCSS, "\">\n            <h2>").concat(this.settings.title, "</h2>\n          </div>\n        "));
+
+          if (buttonset) {
+            toolbarTitle.insertBefore(buttonset);
+          } else {
+            this.toolbar.prepend(toolbarTitle);
+          }
+        }
+
+        if (!toolbarTitle.length) {
+          toolbarTitle = $("\n          <div class=\"title\">\n            ".concat(this.settings.title, "\n          </div>\n        "));
+          this.toolbar.prepend(toolbarTitle);
+        }
+      } // Move to the body element to break stacking context issues.
+
+
+      if (!isIframe) {
+        this.panel.detach().appendTo('body');
+      }
+
+      this.element.attr('data-modal', this.settings.modalSettings.id);
+
+      if (!this.panel.attr('id')) {
+        this.panel.attr('id', this.settings.modalSettings.id);
+      } // Invoke the underlying Modal API
+
+
+      this.panel.modal(this.settings.modalSettings);
+      this.buttons = this.panel.find('.buttonset').children('button');
+      this.closeButton = this.panel.find('.modal-header').find('.btn-close, [name="close"], button.close-button');
+
+      if (this.settings.modalSettings.showCloseBtn && !this.closeButton.length) {
+        var closeText = Locale.translate('Close');
+        this.closeButton = $("\n        <button class=\"btn-close\" type=\"button\" title=\"".concat(closeText, "\">\n          ").concat($.createIcon('close'), "\n          <span class=\"audible\">").concat(closeText, "</span>\n        </button>\n      "));
+
+        if (!this.settings.modalSettings.useFlexToolbar) {
+          buttonset.append(this.closeButton);
+        } else {
+          var standaloneSection = $('<div class="toolbar-section static"></div>').append(this.closeButton);
+          var more = this.toolbar.find('.toolbar-section.more');
+          standaloneSection.insertAfter(more.length ? more : buttonset);
+        }
+      }
+
+      if (this.closeButton.length) {
+        this.toolbar.addClass('has-close-button');
+      }
+
+      if (this.toolbar.is('.toolbar')) {
+        this.toolbar.toolbar();
+      }
+
+      if (this.toolbar.is('.flex-toolbar')) {
+        this.toolbar.toolbarflex();
+      }
+
+      utils.fixSVGIcons(this.element);
+      return this;
+    },
+
+    /**
+    * Attach event handlers.
+    * @private
+    * @returns {object} The Api for chaining.
+    */
+    handleEvents: function handleEvents() {
+      var self = this; // Convenience method that takes an event from the Modal control's panel element,
+      // and triggers any listeners that may be looking at the Contextual Action Panel's
+      // trigger instead.
+
+      function passEvent(e) {
+        self.element.triggerHandler(e.type);
+      }
+
+      this.panel.addClass('is-animating').off('open.contextualactionpanel').on('open.contextualactionpanel', function (e) {
+        passEvent(e);
+        self.panel.removeClass('is-animating');
+      }).off('close.contextualactionpanel').on('close.contextualactionpanel', function (e) {
+        passEvent(e);
+      }).off('beforeopen.contextualactionpanel').on('beforeopen.contextualactionpanel', function (e) {
+        if (self.settings.initializeContent) {
+          $(this).initialize();
+        }
+
+        passEvent(e);
+      }).off('afteropen.contextualactionpanel').on('afteropen.contextualactionpanel', function () {
+        if (self.toolbar) {
+          self.toolbar.trigger('recalculate-buttons');
+        } // Select the proper element on the toolbar
+
+
+        if (self.toolbar.length) {
+          var selected = self.toolbar.find('.buttonset > .is-selected');
+
+          if (!selected.length) {
+            selected = self.toolbar.find('.buttonset > *:first-child');
+
+            if (selected.is('.searchfield-wrapper')) {
+              selected = selected.children('.searchfield');
+            }
+          }
+
+          if (!selected.length && self.toolbar.is('.flex-toolbar')) {
+            selected = self.toolbar.find('button').first();
+            selected.focus();
+            return;
+          }
+
+          var toolbarData = self.toolbar.data('toolbar');
+
+          if (toolbarData) {
+            toolbarData.setActiveButton(selected, true);
+          }
+        } // Focus the first focusable element inside the Contextual Panel's Body
+
+
+        self.panel.find('.modal-body-wrapper').find(':focusable').first().focus();
+        utils.fixSVGIcons(self.panel);
+      });
+
+      if (self.closeButton && self.closeButton.length) {
+        self.closeButton.on('click.contextualactionpanel', function () {
+          self.handleToolbarSelected();
+        });
+      }
+
+      return this;
+    },
+
+    /**
+    * Toolbar select event handler.
+    * @private
+    * @returns {void}
+    */
+    handleToolbarSelected: function handleToolbarSelected() {
+      this.close();
+    },
+
+    /**
+    * Detach events and restore markup.
+    * @private
+    * @returns {void}
+    */
+    teardown: function teardown() {
+      var self = this;
+      var buttonset = self.toolbar.children('.buttonset');
+      this.panel.off('open.contextualactionpanel close.contextualactionpanel ' + 'beforeopen.contextualactionpanel afterclose.contextualactionpanel');
+      buttonset.children('*:not(.searchfield)').off('click.contextualactionpanel');
+      var menuButtons = buttonset.children('.btn-menu');
+      menuButtons.each(function () {
+        var popup = $(this).data('popupmenu');
+
+        if (popup) {
+          popup.destroy();
+        }
+      });
+
+      if (self.header) {
+        self.header.remove();
+      }
+
+      var children = self.panel.find('.modal-body').children();
+      children.first().unwrap().unwrap();
+      self.element.removeAttr('data-modal');
+
+      if (self.closeButton && self.closeButton.length) {
+        self.closeButton.off('click.contextualactionpanel');
+        delete self.closeButton;
+      } // Trigger an afterclose event on the Contextual Action Panel's trigger element
+      // (different from the panel, which is already removed).
+
+
+      self.element.trigger('afterteardown');
+    },
+
+    /**
+    * Close the Contextual Action Panel if open and call destroy.
+    * @returns {void}
+    */
+    close: function close() {
+      var destroy;
+
+      if (this.settings.modalSettings.trigger === 'immediate') {
+        destroy = true;
+      }
+
+      if (this.modalAPI) {
+        this.modalAPI.close(destroy);
+      }
+    },
+
+    /**
+    * Add a disabled attribute to the main component element.
+    * @returns {void}
+    */
+    disable: function disable() {
+      this.element.prop('disabled', true);
+
+      if (this.panel.hasClass('is-visible')) {
+        this.close();
+      }
+    },
+
+    /**
+    * Remove disabled attribute from the main component element.
+    * @returns {void}
+    */
+    enable: function enable() {
+      this.element.prop('disabled', false);
+    },
+
+    /**
+     * Update the component and optionally apply new settings.
+     *
+     * @param  {object} settings the settings to update to.
+     * @returns {object} The plugin api for chaining.
+     */
+    updated: function updated(settings) {
+      this.settings = utils.mergeSettings(this.element, settings, this.settings);
+      this.settings = handleLegacyCAPSettings(this.settings);
+      this.setup();
+
+      if (this.modalAPI) {
+        this.modalAPI.updated(this.settings.modalSettings);
+      }
+
+      return this;
+    },
+
+    /**
+    * Destroy and remove added markup and events
+    * @returns {void}
+    */
+    destroy: function destroy() {
+      // ModalAPI calls `capAPI.teardown()` at the correct timing
+      if (this.modalAPI && this.modalAPI.isOpen) {
+        this.modalAPI.close(true);
+      }
+
+      $.removeData(this.element[0], COMPONENT_NAME$E);
+
+      if (this.toolbar && this.toolbar.data('toolbar')) {
+        this.toolbar.data('toolbar').destroy();
+      }
+
+      if (this.toolbar && this.toolbar.data('toolbarFlex')) {
+        this.toolbar.data('toolbarFlex').destroy();
+      }
+    },
+
+    /**
+    * Destroy an and all active cap instances
+    * @returns {void}
+    */
+    destroyAll: function destroyAll() {
+      modalManager.destroyAll(true);
+    }
+  };
+
+  /**
+   * jQuery Component Wrapper for Contextual Action Panel
+   * @param {object} [settings] incoming settings
+   * @returns {jQuery[]} elements being acted on
+   */
+
+  $.fn.contextualactionpanel = function (settings) {
+    return this.each(function () {
+      var _settings$modalSettin;
+
+      var id = settings === null || settings === void 0 ? void 0 : (_settings$modalSettin = settings == null ? void 0 : settings.modalSettings) === null || _settings$modalSettin === void 0 ? void 0 : _settings$modalSettin == null ? void 0 : _settings$modalSettin.id;
+
+      if (!id && (settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.content) && (settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.content) instanceof jQuery) {
+        var _settings$content;
+
+        id = settings === null || settings === void 0 ? void 0 : (_settings$content = settings == null ? void 0 : settings.content) === null || _settings$content === void 0 ? void 0 : _settings$content == null ? void 0 : _settings$content.attr('id');
+      }
+
+      var instance = modalManager.findById(id);
+
+      if (instance) {
+        instance.updated(settings);
+        return;
+      }
+
+      $.data(this, COMPONENT_NAME$E, new ContextualActionPanel(this, settings));
+    });
+  };
+
+  // Simply setup the Popover to be the same thing as the Tooltip.
+
+  $.fn.popover = $.fn.tooltip;
+
+  var COMPONENT_NAME$F = 'timepicker'; // Timepicker Modes
 
   var TIMEPICKER_MODES = ['standard', 'range']; // Timepicker defaults
 
@@ -39932,7 +49473,7 @@ var Soho = (function (exports) {
      */
     destroy: function destroy() {
       this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$v);
+      $.removeData(this.element[0], COMPONENT_NAME$F);
     },
 
     /**
@@ -39964,12 +49505,12 @@ var Soho = (function (exports) {
 
   $.fn.timepicker = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$v);
+      var instance = $.data(this, COMPONENT_NAME$F);
 
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$v, new TimePicker(this, settings));
+        instance = $.data(this, COMPONENT_NAME$F, new TimePicker(this, settings));
       }
     });
   };
@@ -40445,7 +49986,7 @@ var Soho = (function (exports) {
 
   var Validation = new ValidationRules();
 
-  var COMPONENT_NAME$w = 'toast'; // Default Component Settings
+  var COMPONENT_NAME$G = 'toast'; // Default Component Settings
 
   var TOAST_DEFAULTS = {
     title: '(Title)',
@@ -40522,13 +50063,21 @@ var Soho = (function (exports) {
 
       if (s.progressBar) {
         toast.append(progress);
-      } // Build the RenderLoop integration
+      }
 
+      container.append(toast);
+      toast.addClass(s.audibleOnly ? 'audible' : 'effect-scale');
+      toast.append(closeBtn); // Add draggable
+
+      self.createDraggable(toast, container); // Get the number of toasts
+
+      var toastsIndex = container.children().length;
+      this.toastsIndex = toastsIndex; // Build the RenderLoop integration
 
       var timer = new RenderLoopItem({
         duration: math.convertDelayToFPS(s.timeout),
         timeoutCallback: function timeoutCallback() {
-          self.remove(toast);
+          self.remove(toast, toastsIndex);
         },
         updateCallback: function updateCallback(data) {
           percentage = (data.duration - data.elapsedTime) / maxHideTime * 100;
@@ -40542,19 +50091,28 @@ var Soho = (function (exports) {
           }
         }
       });
-      renderLoop.register(timer);
-      container.append(toast);
-      toast.addClass(s.audibleOnly ? 'audible' : 'effect-scale');
-      toast.append(closeBtn); // Add draggable
+      renderLoop.register(timer); // Clears the toast from the container, removing it from renderLoop and tearing down events
 
-      self.createDraggable(toast, container);
-      $(document).on('keydown.toast keyup.toast', function (e) {
+      function clearToast(targetToast) {
+        timer.destroy(true);
+        self.remove(targetToast, toastsIndex);
+      }
+
+      $(document).on("keydown.toast-".concat(toastsIndex, " keyup.toast-").concat(toastsIndex), function (e) {
         e = e || window.event;
+        var key = e.which || e.keyCode;
 
-        if (e.ctrlKey && e.altKey && e.keyCode === 80) {
+        if (e.ctrlKey && key === 80) {
           // [Control + Alt + P] - Pause/Play toggle
           isPausePlay = e.type === 'keydown';
           timer[isPausePlay ? 'pause' : 'resume']();
+        }
+
+        if (e.type === 'keydown' && key === 27) {
+          // Escape
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          clearToast(toast);
         }
       });
       toast.on('mousedown.toast touchstart.toast mouseup.toast touchend.toast', function (e) {
@@ -40562,8 +50120,7 @@ var Soho = (function (exports) {
         timer[isPausePlay ? 'pause' : 'resume']();
       });
       closeBtn.on('click.toast', function () {
-        timer.destroy();
-        self.remove(toast);
+        clearToast(toast);
       });
     },
 
@@ -40813,13 +50370,19 @@ var Soho = (function (exports) {
      * Removes event bindings from the instance.
      * @private
      * @param {jQuery[]|HTMLElement} toast the toast message to be removed bindings
+     * @param {number} [id=undefined] a unique number associated with the toast being removed
      * @returns {this} component instance
      */
-    unbind: function unbind(toast) {
+    unbind: function unbind(toast, id) {
       var container = toast.closest('.toast-container');
       container.off('dragstart.toast dragend.toast');
       toast.off('mousedown.toast mouseup.toast touchstart.toast touchend.toast');
       toast.find('.btn-close').off('click.toast');
+
+      if (id !== undefined) {
+        $(document).off(["keydown.toast-".concat(id), "keyup.toast-".concat(id)].join(' '));
+      }
+
       return this;
     },
 
@@ -40827,9 +50390,10 @@ var Soho = (function (exports) {
      * Remove the Message and Animate
      * @private
      * @param {jQuery[]|HTMLElement} toast the toast message to be removed
+     * @param {number} [id=undefined] a unique number associated with the toast being removed
      * @returns {void}
      */
-    remove: function remove(toast) {
+    remove: function remove(toast, id) {
       var _this2 = this;
 
       var removeCallback = function removeCallback() {
@@ -40841,7 +50405,7 @@ var Soho = (function (exports) {
         }
       };
 
-      this.unbind(toast);
+      this.unbind(toast, id);
 
       if (this.settings.audibleOnly) {
         removeCallback();
@@ -40890,10 +50454,11 @@ var Soho = (function (exports) {
         });
       }
 
-      $(document).off('keydown.toast keyup.toast mouseup.toast touchend.toast');
+      $(document).off(['mouseup.toast', 'touchend.toast'].join(' '));
       container.remove();
+      delete this.toastsIndex;
       delete this.uniqueId;
-      $.removeData(this.element[0], COMPONENT_NAME$w);
+      $.removeData(this.element[0], COMPONENT_NAME$G);
     }
   };
 
@@ -40905,17 +50470,17 @@ var Soho = (function (exports) {
 
   $.fn.toast = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$w);
+      var instance = $.data(this, COMPONENT_NAME$G);
 
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$w, new Toast(this, settings));
+        instance = $.data(this, COMPONENT_NAME$G, new Toast(this, settings));
       }
     });
   };
 
-  var COMPONENT_NAME$x = 'Validator';
+  var COMPONENT_NAME$H = 'Validator';
   /**
    * Validation Message Defaults
    * @namespace
@@ -41098,7 +50663,7 @@ var Soho = (function (exports) {
           var thisField = $(this);
           var handleEventData = thisField.data("handleEvent".concat([e.type || '']));
 
-          if (thisField.is('[readonly]') && !thisField.parent().is('.field-fileupload')) {
+          if (thisField.is('[readonly]') && !thisField.parent().is('.field-fileupload') && !thisField.is('.lookup.is-not-editable')) {
             return;
           }
 
@@ -41402,6 +50967,12 @@ var Soho = (function (exports) {
 
         if (!$(".icon-".concat(type), iconContainer).length) {
           iconContainer.addClass("is-".concat(type)).append(errorIcon);
+        }
+
+        var tabsAPI = parentContainer.data('tabs');
+
+        if (tabsAPI) {
+          tabsAPI.sizeBar();
         }
       } else {
         // Remove icon
@@ -41828,7 +51399,13 @@ var Soho = (function (exports) {
       var validationType = Validation.ValidationTypes[rule.type] || Validation.ValidationTypes.error;
       rule.icon = rule.icon || validationType.icon;
       var markup;
-      var icon = theme.currentTheme.id && theme.currentTheme.id.indexOf('uplift') > -1 ? "".concat(validationType.type, "-alert") : "".concat(validationType.type);
+      var icon;
+
+      if (rule.type === 'error') {
+        icon = "".concat(validationType.type, "-alert");
+      } else {
+        icon = theme.currentTheme.id && theme.currentTheme.id.indexOf('uplift') > -1 ? "".concat(validationType.type, "-alert") : "".concat(validationType.type);
+      }
 
       if (rule.type === 'icon') {
         markup = '' + "<div class=\"custom-icon-message\" data-rule-id=\"".concat(rule.id || rule.message, "\">\n          ").concat($.createIcon({
@@ -42209,10 +51786,10 @@ var Soho = (function (exports) {
 
   $.fn.addMessage = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$x);
+      var instance = $.data(this, COMPONENT_NAME$H);
 
       if (!instance) {
-        instance = $.data(this, COMPONENT_NAME$x, new Validator(this, settings));
+        instance = $.data(this, COMPONENT_NAME$H, new Validator(this, settings));
       }
 
       var rule = {
@@ -42265,10 +51842,10 @@ var Soho = (function (exports) {
     }
 
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$x);
+      var instance = $.data(this, COMPONENT_NAME$H);
 
       if (!instance) {
-        instance = $.data(this, COMPONENT_NAME$x, new Validator(this, settings));
+        instance = $.data(this, COMPONENT_NAME$H, new Validator(this, settings));
       }
 
       var field = $(this);
@@ -42288,7 +51865,7 @@ var Soho = (function (exports) {
       }
 
       instance.setIconOnParent(field, settings.type);
-      $.removeData(this, COMPONENT_NAME$x);
+      $.removeData(this, COMPONENT_NAME$H);
     });
   };
   /**
@@ -42377,7 +51954,7 @@ var Soho = (function (exports) {
     api.resetForm(this);
   };
 
-  var COMPONENT_NAME$y = 'datepicker';
+  var COMPONENT_NAME$I = 'datepicker';
   /**
    * A component to support date entry.
    * @class DatePicker
@@ -42648,7 +52225,6 @@ var Soho = (function (exports) {
       this.currentCalendar = Locale.calendar(this.settings.locale || this.locale.name, this.settings.language, this.settings.calendarName);
       this.isIslamic = this.currentCalendar.name === 'islamic-umalqura';
       this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
-      this.conversions = this.currentCalendar.conversions;
       this.isFullMonth = this.settings.dateFormat.indexOf('MMMM') > -1;
       this.setFormat();
       this.mask();
@@ -43057,15 +52633,18 @@ var Soho = (function (exports) {
       if (this.settings.onOpenCalendar) {
         // In some cases, month picker wants to set a specifc time.
         this.settings.activeDate = this.settings.onOpenCalendar();
-        this.settings.month = this.settings.activeDate.getMonth();
-        this.settings.year = this.settings.activeDate.getFullYear();
 
         if (this.isIslamic) {
           this.settings.activeDateIslamic = Locale.gregorianToUmalqura(this.settings.activeDate);
+          this.settings.year = this.settings.activeDateIslamic[0];
+          this.settings.month = this.settings.activeDateIslamic[1];
+        } else {
+          this.settings.year = this.settings.activeDate.getFullYear();
+          this.settings.month = this.settings.activeDate.getMonth();
         }
       } else {
         this.settings.activeDate = this.currentDate || this.todayDate;
-        this.settings.activeDateIslamic = this.currentIslamicDate || this.todayDateIslamic;
+        this.settings.activeDateIslamic = this.currentDateIslamic || this.todayDateIslamic;
       }
 
       this.settings.isPopup = true;
@@ -43227,7 +52806,7 @@ var Soho = (function (exports) {
       this.popup.attr('role', 'dialog');
       this.originalDate = this.element.val();
       this.calendarAPI.currentDate = this.currentDate;
-      this.calendarAPI.currentIslamicDate = this.currentIslamicDate;
+      this.calendarAPI.currentDateIslamic = this.currentDateIslamic;
       this.calendarAPI.validatePrevNext(); // Calendar Day Events
 
       this.calendarAPI.days.off('click.datepicker').on('click.datepicker', 'td', function () {
@@ -43648,7 +53227,7 @@ var Soho = (function (exports) {
       this.currentDate = date;
 
       if (date instanceof Array) {
-        this.currentIslamicDate = date;
+        this.currentDateIslamic = date;
         this.currentDate = Locale.umalquraToGregorian(date[0], date[1], date[2], date[3], date[4], date[5]);
       }
 
@@ -44069,7 +53648,6 @@ var Soho = (function (exports) {
         this.currentYear = this.currentDateIslamic[0];
         this.currentMonth = this.currentDateIslamic[1];
         this.currentDay = this.currentDateIslamic[2];
-        this.currentIslamicDate = this.currentDateIslamic;
       } else {
         this.currentDate = this.currentDate || new Date();
         this.currentMonth = this.currentDate.getMonth();
@@ -44096,12 +53674,20 @@ var Soho = (function (exports) {
           hours = parsedDate === null || parsedDate === void 0 ? void 0 : parsedDate == null ? void 0 : parsedDate.getHours();
         }
 
-        if (parsedDate && hours < 12 && self.element.val().trim().indexOf(this.currentCalendar.dayPeriods[1]) > -1) {
+        if (!this.isIslamic && parsedDate && hours < 12 && self.element.val().trim().indexOf(this.currentCalendar.dayPeriods[1]) > -1) {
           parsedDate.setHours(hours + 12);
         }
 
-        if (self.pattern && self.pattern.indexOf('d') === -1) {
+        if (this.isIslamic && parsedDate && hours < 12 && self.element.val().trim().indexOf(this.currentCalendar.dayPeriods[1]) > -1) {
+          hours += 12;
+        }
+
+        if (!this.isIslamic && self.pattern && self.pattern.indexOf('d') === -1) {
           parsedDate.setDate(selectedDay);
+        }
+
+        if (this.isIslamic && self.pattern && self.pattern.indexOf('d') === -1) {
+          parsedDate[2] = selectedDay;
         }
 
         if (parsedDate !== undefined && self.element.val().trim() !== '' && !s.range.useRange) {
@@ -44306,7 +53892,9 @@ var Soho = (function (exports) {
 
       if (s.range.useRange && s.range.first && s.range.first.date && s.range.second && s.range.second.date) {
         return "".concat(formatDate(s.range.first.date) + s.range.separator + formatDate(s.range.second.date));
-      } else if (s.range.useRange && s.range.first && s.range.first.date) {
+      }
+
+      if (s.range.useRange && s.range.first && s.range.first.date) {
         return s.placeholder ? "".concat(formatDate(s.range.first.date) + s.range.separator + this.pattern) : formatDate(s.range.first.date);
       }
 
@@ -44366,7 +53954,7 @@ var Soho = (function (exports) {
       this.teardown();
 
       if (this.element[0]) {
-        $.removeData(this.element[0], COMPONENT_NAME$y);
+        $.removeData(this.element[0], COMPONENT_NAME$I);
       }
     },
 
@@ -44424,8808 +54012,13 @@ var Soho = (function (exports) {
 
   $.fn.datepicker = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$y);
+      var instance = $.data(this, COMPONENT_NAME$I);
 
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$y, new DatePicker(this, settings));
+        instance = $.data(this, COMPONENT_NAME$I, new DatePicker(this, settings));
       }
-    });
-  };
-
-  var COMPONENT_NAME$z = 'colorpicker';
-  /**
-   * The ColorPicker Component is a trigger field with a listing colors that can be selected.
-   * @class ColorPicker
-   * @param {jQuery[]|HTMLElement} element The plugin element for the constuctor
-   * @param {object} [settings] The settings element.
-   * @param {object} [settings.themes={}] Themes available for ColorPicker
-   * @param {array} [settings.colors=[]] An array of objects of the form. {label: 'Azure', number: '01', value: 'CBEBF4'}
-   * that can be used to populate the color grid.
-   * @param {boolean} [settings.showLabel=false]  Show the label if true vs the hex value if false.
-   * @param {boolean} [settings.editable=true]  If false, the field is readonly and transparent. I.E. The value
-   * cannot be typed only editable by selecting.
-   * @param {boolean} [settings.uppercase=true] If false, lower case hex is allowed. If true upper case hex is allowed.
-   * If showLabel is true this setting is ignored.
-   * @param {boolean} [settings.colorOnly=false] If true the field will be shrunk to only show the color portion.
-   * @param {boolean} [settings.clearable=true] If true will add clearable option.
-   * @param {string} [settings.clearableText] The text to show in tooltip.
-   * @param {object} [settings.popupmenuSettings] optional Popupmenu settings that will supersede the defaults.
-   */
-
-  var COLORPICKER_DEFAULTS = {
-    // Theme key: MUST match with theme file name (ie: [filename: 'light-theme.css' -> 'light-theme'])
-    // BORDERS
-    // Use (,) commas to separate themes or single entry for border as:
-    // colors[{label: 'Slate', number: '01', value: 'F0F0F0',
-    // border: 'light-theme, contrast-theme'}]
-    // and assign which swatch theborder should apply ['all' or 'matched-only']
-    // themes: { 'contrast-theme': {'border': 'all'} }
-    // CHECKMARKS
-    // checkmark: {'one': [1, 2], 'two': [3, 10]}
-    // will add class as "checkmark-{key}", where current colors number is in range
-    // [{value[0]} to {value[1]}]
-    // will add class "checkmark-one", where current colors number is in range [1 to 3]
-    // and will add class "checkmark-two", where current colors number is in range [3 to 10]
-    themes: {
-      light: {
-        border: 'matched-only',
-        checkmark: {
-          one: [1, 2],
-          two: [3, 10]
-        }
-      },
-      dark: {
-        border: 'matched-only',
-        checkmark: {
-          one: [1, 2],
-          two: [3, 10]
-        }
-      },
-      contrast: {
-        border: 'all',
-        checkmark: {
-          one: [1, 3],
-          two: [4, 10]
-        }
-      }
-    },
-    customColors: false,
-    colors: [{
-      label: 'Slate',
-      number: '10',
-      value: '1a1a1a'
-    }, {
-      label: 'Slate',
-      number: '09',
-      value: '292929'
-    }, {
-      label: 'Slate',
-      number: '08',
-      value: '383838',
-      border: 'dark'
-    }, {
-      label: 'Slate',
-      number: '07',
-      value: '454545',
-      border: 'dark'
-    }, {
-      label: 'Slate',
-      number: '06',
-      value: '5C5C5C'
-    }, {
-      label: 'Slate',
-      number: '05',
-      value: '737373'
-    }, {
-      label: 'Slate',
-      number: '04',
-      value: '999999'
-    }, {
-      label: 'Slate',
-      number: '03',
-      value: 'BDBDBD'
-    }, {
-      label: 'Slate',
-      number: '02',
-      value: 'D8D8D8'
-    }, {
-      label: 'Slate',
-      number: '01',
-      value: 'F0F0F0',
-      border: 'light, contrast'
-    }, {
-      label: 'Amber',
-      number: '10',
-      value: 'D66221'
-    }, {
-      label: 'Amber',
-      number: '09',
-      value: 'DE7223'
-    }, {
-      label: 'Amber',
-      number: '08',
-      value: 'E68425'
-    }, {
-      label: 'Amber',
-      number: '07',
-      value: 'EB9728'
-    }, {
-      label: 'Amber',
-      number: '06',
-      value: 'EFAA30'
-    }, {
-      label: 'Amber',
-      number: '05',
-      value: 'F2BC41'
-    }, {
-      label: 'Amber',
-      number: '04',
-      value: 'F4C951'
-    }, {
-      label: 'Amber',
-      number: '03',
-      value: 'F7D475'
-    }, {
-      label: 'Amber',
-      number: '02',
-      value: 'F8E09C'
-    }, {
-      label: 'Amber',
-      number: '01',
-      value: 'FBE9BF'
-    }, {
-      label: 'Ruby',
-      number: '10',
-      value: '880E0E'
-    }, {
-      label: 'Ruby',
-      number: '09',
-      value: '941E1E'
-    }, {
-      label: 'Ruby',
-      number: '08',
-      value: 'A13030'
-    }, {
-      label: 'Ruby',
-      number: '07',
-      value: 'AD4242'
-    }, {
-      label: 'Ruby',
-      number: '06',
-      value: 'B94E4E'
-    }, {
-      label: 'Ruby',
-      number: '05',
-      value: 'C65F5F'
-    }, {
-      label: 'Ruby',
-      number: '04',
-      value: 'D26D6D'
-    }, {
-      label: 'Ruby',
-      number: '03',
-      value: 'DE8181'
-    }, {
-      label: 'Ruby',
-      number: '02',
-      value: 'EB9D9D'
-    }, {
-      label: 'Ruby',
-      number: '01',
-      value: 'F4BCBC'
-    }, {
-      label: 'Turquoise',
-      number: '10',
-      value: '0E5B52'
-    }, {
-      label: 'Turquoise',
-      number: '09',
-      value: '206B62'
-    }, {
-      label: 'Turquoise',
-      number: '08',
-      value: '317C73'
-    }, {
-      label: 'Turquoise',
-      number: '07',
-      value: '448D83'
-    }, {
-      label: 'Turquoise',
-      number: '06',
-      value: '579E95'
-    }, {
-      label: 'Turquoise',
-      number: '05',
-      value: '69ADA3'
-    }, {
-      label: 'Turquoise',
-      number: '04',
-      value: '7BBFB5'
-    }, {
-      label: 'Turquoise',
-      number: '03',
-      value: '8ED1C6'
-    }, {
-      label: 'Turquoise',
-      number: '02',
-      value: 'A9E1D6'
-    }, {
-      label: 'Turquoise',
-      number: '01',
-      value: 'C0EDE3'
-    }, {
-      label: 'Emerald',
-      number: '10',
-      value: '397514'
-    }, {
-      label: 'Emerald',
-      number: '09',
-      value: '44831F'
-    }, {
-      label: 'Emerald',
-      number: '08',
-      value: '56932E'
-    }, {
-      label: 'Emerald',
-      number: '07',
-      value: '66A140'
-    }, {
-      label: 'Emerald',
-      number: '06',
-      value: '76B051'
-    }, {
-      label: 'Emerald',
-      number: '05',
-      value: '89BF65'
-    }, {
-      label: 'Emerald',
-      number: '04',
-      value: '9CCE7C'
-    }, {
-      label: 'Emerald',
-      number: '03',
-      value: 'AFDC91'
-    }, {
-      label: 'Emerald',
-      number: '02',
-      value: 'C3E8AC'
-    }, {
-      label: 'Emerald',
-      number: '01',
-      value: 'D5F6C0'
-    }, {
-      label: 'Amethyst',
-      number: '10',
-      value: '4B2A5E'
-    }, {
-      label: 'Amethyst',
-      number: '09',
-      value: '5A3A6F'
-    }, {
-      label: 'Amethyst',
-      number: '08',
-      value: '6C4B81'
-    }, {
-      label: 'Amethyst',
-      number: '07',
-      value: '7D5F92'
-    }, {
-      label: 'Amethyst',
-      number: '06',
-      value: '8E72A4'
-    }, {
-      label: 'Amethyst',
-      number: '05',
-      value: 'A189B8'
-    }, {
-      label: 'Amethyst',
-      number: '04',
-      value: 'B59ECA'
-    }, {
-      label: 'Amethyst',
-      number: '03',
-      value: 'C7B4DB'
-    }, {
-      label: 'Amethyst',
-      number: '02',
-      value: 'DACCEC'
-    }, {
-      label: 'Amethyst',
-      number: '01',
-      value: 'EDE3FC'
-    }, {
-      label: 'Azure',
-      number: '10',
-      value: '133C59'
-    }, {
-      label: 'Azure',
-      number: '09',
-      value: '134D71'
-    }, {
-      label: 'Azure',
-      number: '08',
-      value: '1D5F8A'
-    }, {
-      label: 'Azure',
-      number: '07',
-      value: '2876A8'
-    }, {
-      label: 'Azure',
-      number: '06',
-      value: '2578A9'
-    }, {
-      label: 'Azure',
-      number: '05',
-      value: '4EA0D1'
-    }, {
-      label: 'Azure',
-      number: '04',
-      value: '69B5DD'
-    }, {
-      label: 'Azure',
-      number: '03',
-      value: '8DC9E6'
-    }, {
-      label: 'Azure',
-      number: '02',
-      value: 'ADD8EB'
-    }, {
-      label: 'Azure',
-      number: '01',
-      value: 'C8E9F4'
-    }],
-    placeIn: null,
-    // null|'editor'
-    showLabel: false,
-    editable: true,
-    disabled: false,
-    uppercase: true,
-    colorOnly: false,
-    clearable: true,
-    clearableText: null,
-    popupmenuSettings: {}
-  };
-
-  function ColorPicker(element, settings) {
-    this.settings = utils.mergeSettings(element, settings, COLORPICKER_DEFAULTS); // Merge Settings does deep copy we want to replace here
-
-    if (settings && settings.colors) {
-      this.settings.colors = settings.colors;
-    }
-
-    this.element = $(element);
-    this.init();
-  } // Plugin Methods
-
-
-  ColorPicker.prototype = {
-    init: function init() {
-      this.isIe = Environment.browser.name === 'ie';
-      this.isIeEdge = Environment.browser.name === 'edge';
-      this.isIe11 = this.isIe && Environment.browser.version === '11';
-      this.inlineLabel = this.element.closest('label');
-      this.inlineLabelText = this.inlineLabel.find('.label-text');
-      this.isInlineLabel = this.element.parent().is('.inline'); // Set default clearable text
-
-      if (!this.settings.clearableText) {
-        this.settings.clearableText = Locale ? Locale.translate('None') : 'None';
-      }
-
-      this.build();
-      this.handleEvents();
-      this.setCustomWidth();
-    },
-    // Add the extra markup
-    build: function build() {
-      this.isEditor = this.settings.placeIn === 'editor';
-      var colorpicker = this.element;
-      var initialValue = this.isEditor ? this.element.attr('data-value') : this.element.val();
-      var classList = "swatch".concat(!initialValue || $.trim(initialValue) === '' ? ' is-empty' : '');
-
-      if (!this.isEditor) {
-        // Add Button
-        if (this.isInlineLabel) {
-          this.inlineLabel.addClass('colorpicker-container');
-        } else {
-          this.container = $('<span class="colorpicker-container"></span>');
-          colorpicker.wrap(this.container);
-        }
-
-        this.container = colorpicker.parent();
-        this.swatch = $("<span class=\"".concat(classList, "\"></span>")).prependTo(this.container); // Add Masking to show the #.
-        // Remove the mask if using the "showLabel" setting
-
-        if (!this.settings.showLabel) {
-          var pattern = ['#', /[0-9a-fA-F]/, /[0-9a-fA-F]/, /[0-9a-fA-F]/, /[0-9a-fA-F]/, /[0-9a-fA-F]/, /[0-9a-fA-F]/];
-          colorpicker.mask({
-            pattern: pattern
-          });
-        } else {
-          var maskAPI = colorpicker.data('mask');
-
-          if (maskAPI && typeof maskAPI.destroy === 'function') {
-            maskAPI.destroy();
-          }
-        }
-      }
-
-      var trigger = this.element.children('.trigger');
-
-      if (this.container && this.container.length) {
-        trigger = this.container.children('.trigger');
-      }
-
-      if (!trigger || !trigger.length || !trigger.children('.icon').length) {
-        this.icon = $.createIconElement('dropdown').appendTo(this.isEditor ? this.element : this.container);
-        this.icon.wrap('<span class="trigger"></span>');
-      } // Handle initial values
-
-
-      if (initialValue) {
-        this.setColor(initialValue);
-      }
-
-      if (this.element.is(':disabled') || this.settings.disabled) {
-        this.disable();
-      }
-
-      if (this.element.prop('readonly')) {
-        this.readonly();
-      }
-
-      if (!this.settings.editable && !this.settings.disabled) {
-        this.readonly();
-      }
-
-      if (this.settings.colorOnly) {
-        this.element.parent().addClass('color-only');
-      }
-
-      this.element.attr('autocomplete', 'off');
-      this.addAria();
-    },
-
-    /**
-    * Get the hex value based on a label. Does not handle duplicates.
-    * @param {string} label  The label to search for in the color labels.
-    * @returns {void}
-    */
-    getHexFromLabel: function getHexFromLabel(label) {
-      for (var i = 0; i < this.settings.colors.length; i++) {
-        var data = this.settings.colors[i];
-        var translated = Locale.translate(data.label, true);
-
-        if (label === data.label + data.number || label === translated + data.number) {
-          var hex = data.value;
-
-          if (hex.substr(0, 1) !== '#') {
-            hex = "#".concat(hex);
-          }
-
-          return hex;
-        }
-      }
-
-      return '';
-    },
-
-    /**
-    * Get the label value based on a hex. Does not handle duplicates.
-    * Can pass with or without the #
-    *
-    * @param {string} hex The hex to search for in the color set.
-    * @returns {void}
-    */
-    getLabelFromHex: function getLabelFromHex(hex) {
-      if (!hex) {
-        return '';
-      }
-
-      for (var i = 0; i < this.settings.colors.length; i++) {
-        var data = this.settings.colors[i];
-
-        if (hex.replace('#', '') === data.value.replace('#', '')) {
-          return this.translateColorLabel(data.label) + data.number;
-        }
-      }
-
-      return '';
-    },
-
-    /**
-    * Set custom width.
-    * @private
-    * @returns {void}
-    */
-    setCustomWidth: function setCustomWidth() {
-      if (this.element[0].style && this.element[0].style.width) {
-        var w = parseInt(this.element[0].style.width, 10);
-        this.container.css({
-          width: w
-        });
-        this.element.css({
-          width: w - 4 - this.swatch.width()
-        });
-      }
-    },
-
-    /**
-    * Get the currently set hex value.
-    * @returns {string} A string containing the hex
-    */
-    getHexValue: function getHexValue() {
-      return this.element.attr('value');
-    },
-
-    /**
-    * Get the currently set label value.
-    * @returns {string} A string containing the hex
-    */
-    getLabelValue: function getLabelValue() {
-      return this.settings.showLabel ? this.element.val() : this.getLabelFromHex(this.element.val());
-    },
-
-    /**
-    * Add the necessary aria for accessibility.
-    * @private
-    * @returns {void}
-    */
-    addAria: function addAria() {
-      this.element.attr({
-        role: 'combobox',
-        'aria-autocomplete': 'list'
-      });
-      $("label[for=\"".concat(this.element.attr('id'), "\"]")).append("<span class=\"audible\">".concat(Locale.translate('UseArrow'), "</span>"));
-    },
-
-    /**
-    * Toggle / Open the List of Colors
-    * @returns {void}
-    */
-    toggleList: function toggleList() {
-      var _this = this;
-
-      var menu = $('#colorpicker-menu');
-
-      if (this.element.is(':disabled') || this.element.prop('readonly') && this.settings.editable) {
-        return;
-      }
-
-      if (menu.length && this.isPickerOpen) {
-        return;
-      } // Append Color Menu
-
-
-      menu = this.updateColorMenu();
-      var popupmenuOpts = utils.extend({}, {
-        ariaListbox: true,
-        menuId: 'colorpicker-menu',
-        trigger: 'immediate',
-        attachToBody: true,
-        placementOpts: {
-          containerOffsetX: 10,
-          containerOffsetY: 10,
-          parentXAlignment: Locale.isRTL() ? 'right' : 'left',
-          strategies: ['flip', 'nudge', 'shrink']
-        },
-        offset: {
-          x: 0,
-          y: 10
-        }
-      }, this.settings.popupmenuSettings); // Show Menu
-
-      this.element.popupmenu(popupmenuOpts).on('open.colorpicker', function () {
-        _this.element.parent().addClass('is-open');
-
-        _this.isPickerOpen = true;
-      }).on('close.colorpicker', function () {
-        var links = [].slice.call(_this.menu[0].querySelectorAll('a'));
-        links.forEach(function (link) {
-          var tooltipApi = $(link).data('tooltip');
-
-          if (tooltipApi) {
-            tooltipApi.hide();
-          }
-        });
-        menu.on('destroy.colorpicker', function () {
-          _this.element.off('open.colorpicker selected.colorpicker close.colorpicker');
-
-          _this.menu.off('destroy.colorpicker').remove();
-        });
-
-        _this.element.parent().removeClass('is-open');
-
-        _this.isPickerOpen = false;
-
-        _this.element.trigger('listclosed', 'select');
-      }).on('selected.colorpicker', function (e, item) {
-        if (!_this.isEditor) {
-          _this.setColor(item.data('value'), item.data('label'));
-        }
-
-        _this.element.focus();
-
-        _this.element.trigger('change');
-      }); // Append Buttons
-
-      this.menu = $('#colorpicker-menu');
-      setTimeout(function () {
-        _this.menu.find('.is-selected').focus();
-      }, 1);
-    },
-
-    /**
-    * Set the visible color in the field
-    * @param {string} hex The hex value to use (can have the # or not).
-    * @param {string} label The text to display
-    * @returns {void}
-    */
-    setColor: function setColor(hex, label) {
-      hex = hex || '';
-      var s = this.settings;
-      var colorHex = hex;
-      var colorLabel = label; // Make sure there is always a hash
-
-      if (hex.substr(0, 1) !== '#' && hex !== '') {
-        colorHex = "#".concat(colorHex);
-      }
-
-      var isValidHex = /(^#[0-9a-fA-F]{6}$)|(^#[0-9a-fA-F]{3}$)/i.test(colorHex); // Simply return out if hex isn't valid
-
-      if (s.showLabel && label === s.clearableText) {
-        this.setValueOnField({
-          hex: colorHex,
-          label: s.clearableText,
-          isEmpty: true
-        });
-        return;
-      } else if (!isValidHex) {
-        if (!s.showLabel) {
-          colorHex = colorHex !== '#' ? colorHex : '';
-          this.setValueOnField({
-            hex: colorHex,
-            invalid: true
-          });
-          return;
-        }
-
-        colorLabel = hex.replace('#', '');
-        colorHex = this.getHexFromLabel(colorLabel);
-      }
-
-      if (!colorLabel) {
-        colorLabel = this.getLabelFromHex(colorHex);
-      }
-
-      this.setValueOnField({
-        hex: colorHex,
-        label: colorLabel
-      });
-    },
-
-    /**
-     * Set the value on the field
-     * @private
-     * @param {object} [o] Options
-     * @param {string} [o.hex] The hex value to use
-     * @param {string} [o.label] The text to display
-     * @param {boolean} [o.isEmpty] if true will set empty value for all
-     * @param {boolean} [o.invalid] if true will set empty value for swatch only
-     * @returns {void}
-     */
-    setValueOnField: function setValueOnField(o) {
-      var s = this.settings;
-      var targetAttr = this.isEditor ? 'data-value' : 'value';
-      var hex = '';
-
-      if (!o.isEmpty && typeof o.hex === 'string') {
-        hex = s.uppercase ? o.hex.toUpperCase() : o.hex.toLowerCase();
-      }
-
-      if (this.swatch) {
-        if (o.isEmpty || o.invalid) {
-          this.swatch.addClass(o.isEmpty ? 'is-empty' : 'is-invalid');
-          this.swatch[0].style.backgroundColor = '';
-        } else {
-          this.swatch.removeClass('is-empty is-invalid');
-          this.swatch[0].style.backgroundColor = hex;
-        }
-      }
-
-      this.element[0].value = s.showLabel ? o.label : hex;
-      this.element[0].setAttribute(targetAttr, hex);
-      this.element[0].setAttribute('aria-describedby', o.label || '');
-    },
-
-    /**
-     * @private
-     * @param {string} colorText the original text color
-     * @returns {string} the translated text color
-     */
-    translateColorLabel: function translateColorLabel(colorText) {
-      if (!colorText) {
-        return '';
-      }
-
-      var translatedText = Locale.translate(colorText, true);
-      return typeof translatedText === 'string' ? Locale.translate(colorText, true) : colorText;
-    },
-
-    /**
-     * Make basic theme variants backwards/forwards compatible
-     * @param {string} activeTheme The active theme to get the variant for
-     * @returns {string} The theme variants's border property value
-     * @example (i.e. match "theme-uplift-light" with "light" and return "themes.light.border")
-     */
-    getThemeVariant: function getThemeVariant(activeTheme) {
-      var legacyThemes = Object.keys(COLORPICKER_DEFAULTS.themes);
-      var res = legacyThemes.filter(function (legacyTheme) {
-        return activeTheme.indexOf(legacyTheme) > -1;
-      });
-      var variant = 'light';
-
-      if (res.length > 0) {
-        variant = res[0];
-      }
-
-      return variant;
-    },
-
-    /**
-     * Refresh and Append the Color Menu
-     * @private
-     * @returns {jQuery} the menu to be appended
-     */
-    updateColorMenu: function updateColorMenu() {
-      var _this2 = this;
-
-      var s = this.settings;
-      var isMenu = !!$('#colorpicker-menu').length;
-      var menu = $('<ul id="colorpicker-menu" class="popupmenu colorpicker"></ul>');
-      var activeTheme = personalization.currentTheme;
-      var themeVariant = this.getThemeVariant(activeTheme);
-      var isBorderAll = s.themes[themeVariant].border === 'all';
-      var checkThemes = s.themes[themeVariant].checkmark;
-      var checkmarkClass = '';
-
-      var _loop = function _loop(i, l) {
-        var li = $('<li></li>');
-        var a = $('<a href="#"><span class="swatch"></span></a>').appendTo(li);
-        var colorText = (_this2.translateColorLabel(s.colors[i].label) || s.colors[i].label) + (s.colors[i].number || '');
-        var colorNum = parseInt(s.colors[i].number, 10);
-        var regexp = new RegExp("\\b".concat(activeTheme, "\\b"));
-        var colorValue = s.colors[i].value;
-        var isBorder = false;
-        var elemValue = _this2.isEditor ? _this2.element.attr('data-value') : _this2.element.val();
-
-        if (s.showLabel && !_this2.isEditor) {
-          elemValue = _this2.getHexFromLabel(elemValue);
-        } // Set border to this swatch
-
-
-        if (isBorderAll || regexp.test(s.colors[i].border)) {
-          isBorder = true;
-        }
-
-        if (elemValue && "".concat(elemValue).toLowerCase().replace('#', '') === "".concat(colorValue).toLowerCase()) {
-          // Set checkmark color class
-          if (checkThemes) {
-            /* eslint-disable no-loop-func */
-            $.each(checkThemes, function (k, v) {
-              // checkmark: {'one': [1, 2], 'two': [3, 10]}
-              // will add class "checkmark-one", where current colors number is in range [1 to 3]
-              // and will add class "checkmark-two", where current colors number is in range [3 to 10]
-              if (colorNum >= v[0] && colorNum <= v[1]) {
-                checkmarkClass = " checkmark-".concat(k);
-              }
-            });
-            /* eslint-disable no-loop-func */
-          }
-
-          a.addClass("is-selected".concat(checkmarkClass));
-        }
-
-        colorValue = s.uppercase ? colorValue.toUpperCase() : colorValue.toLowerCase();
-        var swatch = a.find('.swatch');
-
-        if (swatch[0]) {
-          swatch[0].style.backgroundColor = "#".concat(colorValue);
-        }
-
-        swatch.addClass(isBorder ? 'is-border' : '');
-        a.data('label', colorText).data('value', colorValue).attr('title', "".concat(colorText, " #").concat(colorValue)).tooltip();
-
-        if (!isMenu) {
-          menu.append(li);
-        }
-      };
-
-      for (var i = 0, l = s.colors.length; i < l; i++) {
-        _loop(i);
-      }
-
-      if (!isMenu) {
-        // Add clearable swatch to popupmenu
-        if (s.clearable) {
-          var li = $('<li></li>');
-          var resetColorValue = this.element.attr('data-action') === 'foreColor' ? '000000' : '';
-          var a = $("<a href=\"#\" title=\"".concat(s.clearableText, "\"><span class=\"swatch is-empty").concat(isBorderAll ? ' is-border' : '', "\"></span></a>")).appendTo(li);
-          a.data('label', s.clearableText).data('value', resetColorValue).tooltip();
-          menu.append(li);
-        }
-
-        $('body').append(menu);
-      }
-
-      return menu;
-    },
-
-    /**
-    * Change the color picker from enabled to disabled.
-    * @returns {void}
-    */
-    enable: function enable() {
-      this.element.prop('disabled', false);
-      this.element.prop('readonly', false);
-      this.element.parent().removeClass('is-disabled is-readonly');
-    },
-
-    /**
-    * Make the color picker disabled
-    * @returns {void}
-    */
-    disable: function disable() {
-      this.element.prop('disabled', true);
-
-      if (!this.settings.placeIn) {
-        this.element.parent().addClass('is-disabled');
-      }
-    },
-
-    /**
-    * Make the color picker readonly
-    * @returns {void}
-    */
-    readonly: function readonly() {
-      this.enable();
-      this.element.prop('readonly', true);
-      this.element.parent().addClass('is-readonly');
-
-      if (!this.settings.editable) {
-        this.element.parent().addClass('is-not-editable');
-      }
-    },
-
-    /**
-    * Returns true if the color picker is disabled.
-    * @returns {void}
-    */
-    isDisabled: function isDisabled() {
-      return this.element.prop('disabled');
-    },
-
-    /**
-    * Gets the decimal as a rgb value so it can be shown in the editor
-    * @private
-    * @param {string} n Decimal value to convert to rgb.
-    * @returns {void}
-    */
-    decimal2rgb: function decimal2rgb(n) {
-      if (typeof n !== 'number') {
-        return n;
-      }
-      /* eslint-disable no-bitwise */
-
-
-      return "rgb(".concat(n & 0xFF, ", ").concat((n & 0xFF00) >> 8, ", ").concat((n & 0xFF0000) >> 16, ")");
-    },
-    rgb2hex: function rgb2hex(rgb) {
-      if (!rgb || rgb.search('rgb') === -1) {
-        return rgb;
-      } else if (rgb === 'rgba(0, 0, 0, 0)') {
-        return 'transparent';
-      }
-
-      var hex = function hex(x) {
-        return "0".concat(parseInt(x, 10).toString(16)).slice(-2);
-      };
-
-      var newRgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
-      return "#".concat(hex(newRgb[1])).concat(hex(newRgb[2])).concat(hex(newRgb[3]));
-    },
-
-    /**
-    * Update the component and optionally apply new settings.
-    *
-    * @param  {object} settings the settings to update to.
-    * @returns {object} The plugin api for chaining.
-    */
-    updated: function updated(settings) {
-      if (settings) {
-        this.settings = utils.mergeSettings(this.element, settings, this.settings);
-      }
-
-      this.teardown();
-      return this.init();
-    },
-    teardown: function teardown() {
-      this.element.off(["keypress.".concat(COMPONENT_NAME$z), "keyup.".concat(COMPONENT_NAME$z), "blur.".concat(COMPONENT_NAME$z), "openlist.".concat(COMPONENT_NAME$z), "change.".concat(COMPONENT_NAME$z), "paste.".concat(COMPONENT_NAME$z)].join(' '));
-
-      if (this.swatch && this.swatch.length) {
-        this.swatch.off("click.".concat(COMPONENT_NAME$z));
-        this.swatch.remove();
-        delete this.swatch;
-      }
-
-      var maskAPI = this.element.data('mask');
-
-      if (maskAPI) {
-        maskAPI.destroy();
-      }
-
-      if (this.icon && this.icon.length) {
-        var trigger = this.icon.parent('.trigger');
-        this.icon.off().remove();
-        trigger.off().remove();
-        delete this.icon;
-      }
-
-      if (this.container && this.container.length) {
-        this.container.find('.trigger').remove();
-        this.element.unwrap();
-        delete this.container;
-      }
-    },
-
-    /**
-    * Detach events and restore DOM to default.
-    * @returns {object} The plugin api (this).
-    */
-    destroy: function destroy() {
-      this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$z);
-      return this;
-    },
-
-    /**
-    * Detach events and restore DOM to default.
-    * @private
-    * @returns {void}
-    */
-    handleEvents: function handleEvents() {
-      var _this3 = this;
-
-      var elem = this.element;
-      var elemParent = elem.parent();
-      var originalVal;
-      this.icon.parent().on('click.colorpicker', function () {
-        _this3.toggleList();
-      });
-      elem.on('focus.colorpicker', function () {
-        originalVal = elem.val();
-        elemParent.addClass('is-focused');
-      }).on('blur.colorpicker', function () {
-        elemParent.removeClass('is-focused'); // Fix: Force to change event
-        // IE-Edge not firing `change event` after updated input-s values
-
-        if (_this3.isIeEdge && !elem.is('.is-open') && originalVal !== elem.val()) {
-          elem.triggerHandler('change');
-        }
-      }).on('openlist.colorpicker', function () {
-        _this3.toggleList();
-      });
-      var eventStr = 'blur.colorpicker paste.colorpicker change.colorpicker';
-      eventStr += this.isIe11 ? 'keypress.colorpicker' : 'keyup.colorpicker';
-      elem.on(eventStr, function () {
-        var val = _this3.isEditor ? elem.attr('data-value') : elem.val();
-
-        if (_this3.settings.showLabel) {
-          _this3.setColor(elem.attr('value'), val);
-
-          return;
-        }
-
-        _this3.setColor(val);
-      }); // Handle Key Down to open
-
-      elem.on('keydown.colorpicker', function (e) {
-        if (e.keyCode === 38 || e.keyCode === 40) {
-          _this3.toggleList();
-        }
-
-        if (e.keyCode === 13) {
-          _this3.setColor(elem.val());
-        }
-      });
-    }
-  };
-
-  /**
-   * jQuery Component Wrapper for Colorpicker
-   * @param {object} [settings] incoming settings
-   * @returns {jQuery[]} elements being acted on
-   */
-
-  $.fn.colorpicker = function (settings) {
-    return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$z);
-
-      if (instance) {
-        instance.updated(settings);
-      } else {
-        instance = $.data(this, COMPONENT_NAME$z, new ColorPicker(this, settings));
-      }
-    });
-  };
-
-  var COMPONENT_NAME$A = 'toolbarflexitem'; // Filters out buttons located inside of Searchfield wrappers.
-  // Only `input` elements should be picked up by the item detector.
-
-  function buttonFilter(elem) {
-    var searchfieldWrapper = $(elem).parents('.searchfield-wrapper, .toolbar-searchfield-wrapper');
-    return !searchfieldWrapper.length;
-  } // Filters out hyperlinks that are part of menu/action button components
-
-
-  function hyperlinkFilter(elem) {
-    if (elem.nodeName !== 'A') {
-      throw new Error('Unspecified error occured');
-    }
-
-    var wrapped = $(elem);
-    return wrapped.parents('.popupmenu').length < 1;
-  } // Toolbar Focusable Element Selectors.
-  // Any of these element/class types are valid toolbar items.
-  // TODO: Designate between "button" and "menu button"
-
-
-  var TOOLBAR_ELEMENTS = [{
-    type: 'button',
-    selector: 'button:not(.btn-menu):not(.btn-actions):not(.colorpicker-editor-button), input[type="button"]:not(.btn-menu):not(.btn-actions):not(.colorpicker-editor-button)',
-    filter: buttonFilter
-  }, {
-    type: 'menubutton',
-    selector: '.btn-menu'
-  }, {
-    type: 'actionbutton',
-    selector: '.btn-actions'
-  }, {
-    type: 'colorpicker',
-    selector: '.colorpicker-editor-button'
-  }, {
-    type: 'hyperlink',
-    selector: 'a[href]',
-    filter: hyperlinkFilter
-  }, {
-    type: 'checkbox',
-    selector: 'input[type="checkbox"]'
-  }, {
-    type: 'radio',
-    selector: 'input[type="radio"]'
-  }, {
-    type: 'searchfield',
-    selector: '.searchfield'
-  }, {
-    type: 'toolbarsearchfield',
-    selector: '.toolbarsearchfield'
-  } // temporary
-  ]; // Mappings from toolbar item type to component API
-
-  var TOOLBAR_COMPONENT_APIS = {
-    actionbutton: 'popupmenu',
-    colorpicker: 'colorpicker',
-    menubutton: 'popupmenu',
-    hyperlink: 'hyperlink',
-    searchfield: 'searchfield',
-    toolbarsearchfield: 'searchfield'
-  };
-  /**
-   * Default Settings
-   * @namespace
-   */
-
-  var TOOLBAR_FLEX_ITEM_DEFAULTS = {
-    disabled: false,
-    readOnly: false,
-    hidden: false,
-    componentSettings: undefined,
-    allowTabs: false
-  };
-  /**
-   * Gets the type of Toolbar Item that an element represents.
-   * @param {HTMLElement} element being checked for a toolbar item.
-   * @returns {string} representing the type
-   */
-
-  function getToolbarItemType(element) {
-    var type = false;
-    TOOLBAR_ELEMENTS.forEach(function (elemObj) {
-      if (!$(element).is(elemObj.selector)) {
-        return;
-      }
-
-      if (typeof elemObj.filter === 'function' && !elemObj.filter(element)) {
-        return;
-      }
-
-      type = elemObj.type;
-    });
-
-    if (!type) {
-      throw new Error("Element ".concat(element, " is not a valid Toolbar Item Type."));
-    }
-
-    return type;
-  }
-  /**
-   * Toolbar Item Wrapper Component
-   * @constructor
-   * @param {HTMLElement} element the base element
-   * @param {object} [settings] incoming settings
-   */
-
-
-  function ToolbarFlexItem(element, settings) {
-    this.element = element;
-    this.settings = utils.mergeSettings(this.element, settings, TOOLBAR_FLEX_ITEM_DEFAULTS);
-    this.init();
-  }
-
-  ToolbarFlexItem.prototype = {
-    /**
-     * @property {string} type used to determine the type of toolbar item.  Certain toolbar item types
-     *  have certain special properties.
-     * @property {HTMLElement} section the parent toolbar section that this item is housed in.
-     * @property {HTMLElement} toolbar the parent toolbar's base element.
-     */
-    type: undefined,
-
-    /**
-     * @property {boolean} a different type to check if the object is a ToolbarFlexItem.
-     */
-    isToolbarFlexItem: true,
-
-    /**
-     * @private
-     * @returns {void}
-     */
-    init: function init() {
-      // internal flags
-      this.type = getToolbarItemType(this.element);
-      this.section = this.element.parentElement;
-      this.toolbar = this.section.parentElement;
-      this.trueSelected = false;
-    },
-
-    /**
-     * @returns {boolean} whether or not the toolbar item is currently able to be focused, based
-     *  on its `disabled`, `overflowed`, and `visible` properties.
-     */
-    get focusable() {
-      if (this.disabled === true) {
-        return false;
-      }
-
-      if (this.type === 'searchfield') {
-        return true;
-      }
-
-      if (this.type === 'actionbutton' && this.hasNoOverflowedItems === true) {
-        return false;
-      }
-
-      if (this.overflowed === true) {
-        return false;
-      }
-
-      return this.visible;
-    },
-
-    /**
-     * @returns {boolean} whether or not the toolbar item is the one that will currently be focused
-     */
-    get focused() {
-      return this.element.tabIndex === 0;
-    },
-
-    /**
-     * @param {boolean} boolean, if provided, sets a focused state on the toolbar item.
-     * @returns {void}
-     */
-    set focused(boolean) {
-      if (boolean) {
-        this.element.tabIndex = 0;
-        return;
-      }
-
-      this.element.tabIndex = -1;
-    },
-
-    /**
-     * @returns {boolean} whether or not the Toolbar item is selected.
-     */
-    get selected() {
-      return this.trueSelected;
-    },
-
-    /**
-     * @param {boolean} boolean, if provided, sets a selected state on the toolbar item.
-     * @returns {void}
-     */
-    set selected(boolean) {
-      if (boolean) {
-        this.trueSelected = true;
-        this.element.classList.add('is-selected');
-        this.triggerSelectedEvent();
-
-        if (this.selectedAnchor) {
-          delete this.selectedAnchor;
-        }
-
-        return;
-      }
-
-      this.trueSelected = false;
-      this.element.classList.remove('is-selected');
-    },
-
-    /**
-     * Retrieves an item's main Soho Component instance.
-     * @returns {object} Soho Component instance, if applicable
-     */
-    get componentAPI() {
-      var $element = $(this.element);
-      var componentType = TOOLBAR_COMPONENT_APIS[this.type];
-
-      if (!componentType) {
-        return undefined;
-      }
-
-      return $element.data(componentType);
-    },
-
-    /**
-     * @returns {ToolbarFlex} the parent toolbar API
-     */
-    get toolbarAPI() {
-      if (this.settings.toolbarAPI) {
-        return this.settings.toolbarAPI;
-      }
-
-      return $(this.toolbar).data('toolbar-flex');
-    },
-
-    /**
-     * @fires selected
-     * @returns {void}
-     */
-    triggerSelectedEvent: function triggerSelectedEvent() {
-      // Searchfields and Colorpickers aren't "selectable" in the same way actionable
-      // items are, so they shouldn't fire the "selected" event.
-      var disallowedTypes = ['colorpicker', 'searchfield', 'toolbarsearchfield'];
-
-      if (disallowedTypes.indexOf(this.type) > -1) {
-        return;
-      }
-
-      var eventArgs = [this]; // MenuButton types pass the currently-selected anchor
-
-      var selectedAnchorTypes = ['menubutton', 'actionbutton'];
-
-      if (selectedAnchorTypes.indexOf(this.type) > -1 && this.selectedAnchor) {
-        eventArgs.push(this.selectedAnchor);
-      }
-
-      $(this.element).trigger('selected', eventArgs);
-    },
-
-    /**
-     * Causes the toolbar item to become visible.
-     * @returns {void}
-     */
-    show: function show() {
-      this.visible = true;
-    },
-
-    /**
-     * Causes the toolbar item to become hidden.
-     * @returns {void}
-     */
-    hide: function hide() {
-      this.visible = false;
-    },
-
-    /**
-     * Toggles the Toolbar item's visiblity.
-     * @param {boolean} boolean whether or not the `hidden` class should be set.
-     */
-    set visible(boolean) {
-      // NOTE: Temporary until Searchfield handles this better internally.
-      var isSearchfield = this.type === 'searchfield' || this.type === 'toolbarsearchfield';
-
-      if (boolean) {
-        if (isSearchfield) {
-          this.element.parentNode.classList.remove('hidden');
-        }
-
-        this.element.classList.remove('hidden');
-        return;
-      }
-
-      if (isSearchfield) {
-        this.element.parentNode.classList.add('hidden');
-      }
-
-      this.element.classList.add('hidden');
-    },
-
-    /**
-     * @returns {boolean} whether or not the Toolbar Item is visible.
-     */
-    get visible() {
-      return this.element.className.indexOf('hidden') === -1;
-    },
-
-    /**
-     * @returns {void}
-     */
-    enable: function enable() {
-      this.disabled = false;
-
-      if (this.hasReadOnly) {
-        this.readOnly = false;
-      }
-    },
-
-    /**
-     * @returns {boolean} whether or not the element is disabled
-     */
-    get disabled() {
-      return this.element.disabled;
-    },
-
-    /**
-     * @param {boolean} boolean, if provided, sets a disabled state on the toolbar item.
-     * @returns {void}
-     */
-    set disabled(boolean) {
-      if (boolean) {
-        this.element.disabled = true;
-        this.element.setAttribute('aria-disabled', true);
-        this.element.readOnly = false;
-        return;
-      }
-
-      this.element.disabled = false;
-      this.element.removeAttribute('aria-disabled');
-    },
-
-    /**
-     * @returns {boolean} whether or not `readOnly` as a property exists on this HTMLElement type.
-     */
-    get hasReadOnly() {
-      return 'readOnly' in this.element;
-    },
-
-    /**
-     * @returns {boolean} element's readOnly prop
-     */
-    get readOnly() {
-      if (!this.hasReadOnly) {
-        return false;
-      }
-
-      return this.element.readOnly;
-    },
-
-    /**
-     * @param {boolean} boolean, if provided, sets a readOnly state on the toolbar item, if possible.
-     * @returns {void}
-     */
-    set readOnly(boolean) {
-      if (!this.hasReadOnly) {
-        return;
-      }
-
-      if (boolean) {
-        this.disabled = false;
-        this.element.disabled = false;
-        this.element.readOnly = true;
-        return;
-      }
-
-      this.element.readOnly = false;
-    },
-
-    /**
-     * @returns {boolean} whether or not the item is pushed into overflow by the boundaries
-     *  of its container element.
-     */
-    get overflowed() {
-      var isRTL = Environment.rtl;
-      var elemRect = this.element.getBoundingClientRect();
-      var sectionRect = this.section.getBoundingClientRect();
-
-      if (isRTL) {
-        return elemRect.left < sectionRect.left;
-      }
-
-      return elemRect.right > sectionRect.right;
-    },
-
-    /**
-     * @param {boolean} isTrue whether or not the more actions menu has overflowed items, causing it to become displayed
-     * @returns {void}
-     */
-    set hasNoOverflowedItems(isTrue) {
-      if (this.type !== 'actionbutton' || !this.componentAPI) {
-        return;
-      }
-
-      var popupmenuLength = this.componentAPI.toData({
-        noMenuWrap: true
-      }).length;
-      var menuIsEmpty = popupmenuLength - this.predefinedItems.length < 1;
-
-      if (isTrue && menuIsEmpty) {
-        this.element.classList.add('no-overflowed-items');
-        this.trueHasNoOverflowedItems = true;
-
-        if (this.focused) {
-          this.toolbarAPI.focusedItem = this;
-          this.toolbarAPI.navigate(-1, undefined);
-        }
-
-        return;
-      }
-
-      this.trueHasNoOverflowedItems = false;
-      this.element.classList.remove('no-overflowed-items');
-    },
-
-    /**
-     *
-     */
-    get hasNoOverflowedItems() {
-      if (!this.componentAPI) {
-        return true;
-      }
-
-      return this.trueHasNoOverflowedItems;
-    },
-
-    /**
-     * Sets up all event listeners for this element.
-     * @returns {void}
-     */
-    handleEvents: function handleEvents() {
-      var _this = this;
-
-      var self = this;
-      var $element = $(this.element);
-      var popupmenuConsumers = ['menubutton', 'actionbutton', 'colorpicker'];
-
-      if (popupmenuConsumers.indexOf(this.type) > -1) {
-        // Listen to the Popupmenu's selected event
-        $element.on("selected.".concat(COMPONENT_NAME$A), function (e, anchor) {
-          if (_this.selectedAnchor) {
-            return;
-          }
-
-          e.stopPropagation();
-
-          if (_this.type === 'actionbutton') {
-            var li = $(anchor).parent();
-            var itemLink = li.data('originalButton');
-            var itemLinkAPI = $(itemLink).data('toolbarflexitem');
-            var elementLink;
-
-            if (li.parents('ul').length > 1) {
-              elementLink = li.data('original-menu-element');
-              itemLink = li.parents('li').last().data('originalButton');
-              itemLinkAPI = $(itemLink).data('toolbarflexitem');
-            } // If this item is linked to another toolbar item, trigger its `selected` event instead
-            // of the one on the item in this menu.
-
-
-            if (itemLinkAPI) {
-              if (elementLink) {
-                e.preventDefault();
-                itemLinkAPI.selectedAnchor = $(elementLink).children('a');
-              } else {
-                // case of a menu button overflowed into more actions
-                itemLinkAPI.selectedAnchor = anchor;
-              }
-
-              itemLinkAPI.selected = true;
-              return;
-            }
-          }
-
-          self.selectedAnchor = anchor;
-          self.selected = true;
-        });
-      }
-
-      if (this.type === 'actionbutton') {
-        $element.on("beforeopen.".concat(COMPONENT_NAME$A), this.handleActionButtonBeforeOpen.bind(this));
-        $('body').off("resize.".concat(COMPONENT_NAME$A)).on("resize.".concat(COMPONENT_NAME$A), this.handleActionButtonResize.bind(this));
-      }
-
-      if (!this.settings.allowTabs) {
-        $element.on("focus.".concat(COMPONENT_NAME$A), this.handleFocus.bind(this));
-      }
-    },
-
-    /**
-     * If this element is an Action Button, this listener runs before its popupmenu is opened
-     * To determine which elements need to be shown/hidden.
-     * @private
-     * @returns {void}
-     */
-    handleActionButtonBeforeOpen: function handleActionButtonBeforeOpen() {
-      this.refreshMoreActionsMenu();
-    },
-
-    /**
-     * If this element is an Action Button, this listener runs whenever Soho's custom resize event
-     * on the `<body>` tag fires, to determine which elements need to be shown/hidden.
-     * @private
-     * @returns {void}
-     */
-    handleActionButtonResize: function handleActionButtonResize() {
-      this.refreshMoreActionsMenu();
-    },
-
-    /**
-     * @private
-     * @param {FocusEvent} e `focus`
-     * @returns {void}
-     */
-    handleFocus: function handleFocus(e) {
-      if (e.target && e.target === this.element) {
-        this.toolbarAPI.focusedItem = this;
-      }
-    },
-
-    /**
-     * Renders extra markup or anything else needed on the toolbar item
-     * @returns {void}
-     */
-    render: function render() {
-      // eslint-disable-next-line
-      this.disabled = this.disabled;
-
-      if (this.hasReadOnly) {
-        // eslint-disable-next-line
-        this.readonly = this.readonly;
-      } // Setup component APIs, if applicable.
-      // NOTE: Soho Initializer doesn't invoke these automatically, by nature of the
-      // base elements existing inside the Flex Toolbar.
-
-
-      var $element = $(this.element);
-      var componentType = TOOLBAR_COMPONENT_APIS[this.type];
-
-      if (componentType) {
-        var api = $element.data(componentType);
-
-        if (!api) {
-          $element[componentType](this.settings.componentSettings);
-        } else {
-          api.updated(this.settings.componentSettings);
-        }
-      } // Action Buttons need more stuff
-
-
-      if (this.type === 'actionbutton') {
-        this.renderMoreActionsMenu();
-        this.refreshMoreActionsMenu();
-      }
-
-      this.handleEvents();
-    },
-
-    /**
-     * Uses data from Toolbar Items to build Toolbar-linked, pre-defined items for the More Actions menu.
-     * NOTE: This method only runs when this toolbar item is a "More Actions" button
-     * @private
-     * @returns {void}
-     */
-    renderMoreActionsMenu: function renderMoreActionsMenu() {
-      var menuAPI = this.componentAPI;
-
-      if (!menuAPI || !this.toolbarAPI) {
-        return;
-      } // If the menu doesn't already exist, pre-define it.
-
-
-      var $menu = menuAPI.menu;
-
-      if (!$menu || !$menu.length) {
-        $menu = $('<ul class="popupmenu"></ul>').insertAfter(this.element);
-      }
-
-      this.teardownPredefinedItems(); // Get Popupmenu data equivalent of the current set of Toolbar items.
-      // Menu item data is scrubbed for IDs that would otherwise be duplicated
-
-      function removeMenuIds(item, isSubmenu) {
-        if (item.menuId) {
-          delete item.menuId;
-        }
-
-        var menuTarget = isSubmenu ? 'submenu' : 'menu';
-
-        if (Array.isArray(item[menuTarget])) {
-          item[menuTarget].forEach(function (subitem) {
-            removeMenuIds(subitem, true);
-          });
-        }
-      }
-
-      var data = this.toolbarAPI.toPopupmenuData();
-      removeMenuIds(data); // Add Toolbar Items as predefined items to the Popupmenu.
-
-      var menuItems = $(menuAPI.renderItem(data));
-      this.predefinedItems = menuItems;
-      this.linkToolbarItems(data); // Notify the Popupmenu of predefined items
-
-      $menu.prepend(this.predefinedItems);
-      menuAPI.updated({
-        menu: $menu,
-        predefined: menuItems
-      });
-      this.menuRendered = true;
-    },
-
-    /**
-     * Refreshes the state of menu items in a "More Actions" menu that were constructed by the Flex Toolbar.
-     * @private
-     * @returns {void}
-     */
-    refreshMoreActionsMenu: function refreshMoreActionsMenu() {
-      if (this.type !== 'actionbutton') {
-        return;
-      }
-
-      var menuAPI = this.componentAPI;
-
-      if (!menuAPI || !this.toolbarAPI || menuAPI.isOpen) {
-        return;
-      }
-
-      this.hasNoOverflowedItems = true; // If there are toolbar items, but no predefined items, render the more-actions menu
-
-      if (!menuAPI.settings.beforeOpen && (!this.predefinedItems || !this.predefinedItems.length) && this.toolbarAPI.items.length) {
-        this.renderMoreActionsMenu();
-      }
-
-      var hasNoOverflowedItems = true; // Called at the end of the item refresh.
-      // Uses the Popupmenu's API to add overflow information.
-
-      function itemRefreshCallback(menuItem, data) {
-        if (data.isSubmenuItem) {
-          return;
-        }
-
-        if (data.overflowed === true) {
-          menuItem.classList.add('is-overflowed');
-
-          if (data.visible) {
-            menuItem.classList.remove('hidden');
-          }
-
-          hasNoOverflowedItems = false;
-          return;
-        }
-
-        menuItem.classList.remove('is-overflowed');
-        menuItem.classList.add('hidden');
-      } // Each Linked Toolbar Item will be refreshed by the Popupmenu API
-
-
-      this.toolbarAPI.items.forEach(function (item) {
-        if (!item.actionButtonLink) {
-          return;
-        }
-
-        var itemData = item.toPopupmenuData();
-        itemData.overflowed = item.overflowed;
-
-        if (itemData.id) {
-          delete itemData.id;
-        }
-
-        menuAPI.refreshMenuItem(item.actionButtonLink, itemData, itemRefreshCallback);
-      }); // Set a record for display
-
-      this.hasNoOverflowedItems = hasNoOverflowedItems;
-    },
-
-    /**
-     * Removes links between the current set of Toolbar Items to `More Actions` menu items.
-     * @private
-     * @returns {void}
-     */
-    unlinkToolbarItems: function unlinkToolbarItems() {
-      if (this.type !== 'actionbutton' || !this.menuRendered || !this.predefinedItems || !this.predefinedItems.length) {
-        return;
-      }
-
-      function doUnlinkSubmenuItem(actionMenuElement) {
-        var $originalMenuElement = $($(actionMenuElement).data('original-menu-element'));
-        $originalMenuElement.removeData('action-button-link');
-        $(actionMenuElement).removeData('original-menu-element');
-
-        if ($originalMenuElement.hasClass('submenu')) {
-          var submenuItems = actionMenuElement.querySelector('.popupmenu').children;
-
-          for (var j = 0; j < submenuItems.length; j++) {
-            doUnlinkSubmenuItem(submenuItems[j]);
-          }
-        }
-      }
-
-      function doUnlinkToolbarItems(i, itemElement) {
-        var originalButton = $(itemElement).data('originalButton');
-        var originalButtonAPI = $(originalButton).data('toolbarflexitem');
-        originalButtonAPI.actionButtonLink = null;
-        $(itemElement).removeData('original-button');
-
-        if (originalButtonAPI.type === 'menubutton') {
-          var submenuItems = itemElement.querySelector('.popupmenu').children;
-
-          for (var j = 0; j < submenuItems.length; j++) {
-            doUnlinkSubmenuItem(submenuItems[j]);
-          }
-        }
-      }
-
-      this.predefinedItems.each(doUnlinkToolbarItems);
-    },
-
-    /**
-     * Links the current set of Toolbar Items to the `More Actions` menu items.
-     * @private
-     * @param {object} popupmenuData incoming popupmenu data
-     * @returns {void}
-     */
-    linkToolbarItems: function linkToolbarItems(popupmenuData) {
-      if (this.type !== 'actionbutton' || !popupmenuData) {
-        return;
-      }
-
-      if (!Array.isArray(popupmenuData)) {
-        popupmenuData = popupmenuData.menu;
-      }
-
-      function doLinkSubmenuItem(menuItemData, actionMenuElement) {
-        var originalMenuElement = menuItemData.elementLink;
-        $(originalMenuElement).data('action-button-link', actionMenuElement);
-        $(actionMenuElement).data('original-menu-element', originalMenuElement);
-        var submenu = menuItemData.submenu;
-
-        if (submenu && submenu.length) {
-          var submenuItems = actionMenuElement.querySelector('.popupmenu').children;
-
-          for (var j = 0; j < submenuItems.length; j++) {
-            doLinkSubmenuItem(submenu[j], submenuItems[j]);
-          }
-        }
-      }
-
-      function doLinkToolbarItems(i, itemElement) {
-        var originalButtonAPI = popupmenuData[i].itemLink;
-        originalButtonAPI.actionButtonLink = itemElement;
-        $(itemElement).data('original-button', originalButtonAPI.element);
-        var submenu = popupmenuData[i].submenu;
-
-        if (submenu && submenu.length) {
-          var submenuItems = itemElement.querySelector('.popupmenu').children;
-
-          for (var j = 0; j < submenuItems.length; j++) {
-            doLinkSubmenuItem(submenu[j], submenuItems[j]);
-          }
-        }
-      }
-
-      this.predefinedItems.each(doLinkToolbarItems);
-    },
-
-    /**
-     * Converts the contents of the Toolbar Item to a data structure that's compatible with a Popupmenu component.
-     * This data structure can be used to populate the contents of a "More Actions" menu.
-     * @returns {object} an object representation of the Toolbar Item as a Popupmenu Item.
-     */
-    toPopupmenuData: function toPopupmenuData() {
-      if (this.type === 'searchfield' || this.type === 'toolbarsearchfield' || this.type === 'actionbutton') {
-        return undefined;
-      }
-
-      var itemData = {
-        itemLink: this,
-        disabled: this.disabled,
-        visible: this.visible
-      };
-      var icon = this.element.querySelector('.icon:not(.close):not(.icon-dropdown) > use');
-
-      if (icon && icon.getAttribute('href')) {
-        itemData.icon = icon.getAttribute('href').replace('#icon-', '');
-      }
-
-      if (icon && icon.getAttribute('xlink:href')) {
-        itemData.icon = icon.getAttribute('xlink:href').replace('#icon-', '');
-      }
-
-      if (this.type === 'button' || this.type === 'menubutton') {
-        itemData.text = this.element.textContent.trim();
-      }
-
-      function addMenuElementLinks(menu, data) {
-        var elems = menu.querySelectorAll('li:not(.heading)');
-        data.forEach(function (item, i) {
-          item.elementLink = elems[i];
-
-          if (item.submenu) {
-            var submenu = elems[i].querySelector('.popupmenu');
-            item.submenu = addMenuElementLinks(submenu, item.submenu);
-          }
-        });
-        return data;
-      } // Add links to the menubutton's menu item elements to the Popupmenu data
-
-
-      if (this.type === 'menubutton') {
-        var menuElem = this.componentAPI.menu;
-
-        if (!menuElem.length) {
-          // Act as if this menubutton is simply empty.
-          itemData.submenu = [];
-        } else {
-          // Get a data representation of the existing menu content
-          var originalSubmenuData = this.componentAPI.toData({
-            noMenuWrap: true
-          });
-          var targetId = this.componentAPI.element[0].id;
-
-          if (targetId) {
-            // NOTE: don't pass the same ID here, which would cause duplicates
-            itemData.id = "".concat(this.toolbarAPI.uniqueId, "-").concat(targetId);
-          }
-
-          itemData.submenu = addMenuElementLinks(menuElem[0], originalSubmenuData);
-        }
-      }
-
-      return itemData;
-    },
-
-    /**
-     * Converts the current state of the toolbar item to an object structure that can be
-     * easily passed back/forth and tested.
-     * @returns {object} containing the current Toolbar Item state.
-     */
-    toData: function toData() {
-      var itemData = {
-        type: this.type,
-        disabled: this.disabled,
-        focused: this.focused,
-        selected: this.selected,
-        overflowed: this.overflowed,
-        visible: this.visible
-      };
-
-      if (this.hasReadOnly) {
-        itemData.readOnly = this.readOnly;
-      }
-
-      if (this.actionButtonLink) {
-        itemData.actionButtonLink = this.actionButtonLink;
-      }
-
-      if (this.componentAPI) {
-        itemData.componentAPI = this.componentAPI;
-      }
-
-      var icon = this.element.querySelector('.icon:not(.close):not(.icon-dropdown) > use');
-
-      if (icon && icon.getAttribute('href')) {
-        itemData.icon = icon.getAttribute('href').replace('#icon-', '');
-      }
-
-      if (icon && icon.getAttribute('xlink:href')) {
-        itemData.icon = icon.getAttribute('xlink:href').replace('#icon-', '');
-      }
-
-      if (this.type === 'button' || this.type === 'menubutton') {
-        itemData.text = this.element.textContent.trim();
-      }
-
-      if (this.type === 'actionbutton') {
-        itemData.predefinedItems = this.predefinedItems;
-      }
-
-      if (this.type === 'menubutton' || this.type === 'actionbutton') {
-        // TODO: Need to convert a Popupmenu's contents to the object format with this method
-        itemData.submenu = this.componentAPI.toData({
-          noMenuWrap: true
-        });
-      }
-
-      return itemData;
-    },
-
-    /**
-     * Completely updates this component with (optional) new settings.
-     * @param {object} [settings] incoming settings
-     */
-    updated: function updated(settings) {
-      if (settings) {
-        this.settings = utils.mergeSettings(this.element, settings, this.settings);
-      }
-
-      this.teardown();
-      this.init();
-    },
-
-    /**
-     * @private
-     * @returns {void}
-     */
-    teardownPredefinedItems: function teardownPredefinedItems() {
-      if (this.type !== 'actionbutton') {
-        return;
-      }
-
-      this.unlinkToolbarItems();
-
-      if (this.predefinedItems && this.predefinedItems.length) {
-        this.predefinedItems.remove();
-      }
-    },
-
-    /**
-     * Unbinds events and removes preset internal flags for this component.
-     * @returns {void}
-     */
-    teardown: function teardown() {
-      $(this.element).off("selected.".concat(COMPONENT_NAME$A)).off("beforeopen.".concat(COMPONENT_NAME$A)).off("focus.".concat(COMPONENT_NAME$A));
-      $('body').off("resize.".concat(COMPONENT_NAME$A));
-      this.teardownPredefinedItems();
-      delete this.type;
-      delete this.selected;
-      delete this.focusable;
-      delete this.visible;
-      delete this.disabled;
-      delete this.readOnly;
-      delete this.section;
-      delete this.toolbar;
-      delete this.trueSelected;
-      delete this.menuRendered;
-    }
-  };
-
-  /**
-   * jQuery component wrapper for Toolbar Flex Item Component
-   * @param {object} [settings] incoming settings
-   * @returns {jQuery[]} elements being acted on
-   */
-
-  $.fn.toolbarflexitem = function (settings) {
-    return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$A);
-
-      if (instance) {
-        instance.updated(settings);
-      } else {
-        instance = $.data(this, COMPONENT_NAME$A, new ToolbarFlexItem(this, settings)); // Remove the jQuery Component reference from $.data
-
-        var oldDestroy = instance.destroy;
-
-        instance.destroy = function () {
-          if (typeof oldDestroy === 'function') {
-            oldDestroy.call(this);
-          }
-
-          $.removeData(this, COMPONENT_NAME$A);
-        };
-      }
-    });
-  };
-
-  var COMPONENT_NAME$B = 'toolbar-flex';
-  /**
-   * Component Default Settings
-   * @namespace
-   */
-
-  var TOOLBAR_FLEX_DEFAULTS = {
-    allowTabs: false,
-    beforeMoreMenuOpen: null,
-    moreMenuSettings: {}
-  };
-  /**
-   * @constructor
-   * @param {HTMLElement} element the base element
-   * @param {object} [settings] incoming settings
-   * @param {function} [settings.beforeMoreMenuOpen=null] Ajax function to be called before the more menu is opened
-   * @param {boolean} [settings.allowTabs] Allows tab to navigate the toolbar
-   * @param {object} [settings.moreMenuSettings] if defined on a toolbar containing a More Actions menu, this will pass settings into this toolbar's More Actions menu
-   */
-
-  function ToolbarFlex(element, settings) {
-    this.element = element;
-    this.settings = utils.mergeSettings(this.element, settings, TOOLBAR_FLEX_DEFAULTS);
-    this.init();
-  }
-
-  ToolbarFlex.prototype = {
-    /**
-     * @private
-     */
-    trueFocusedItem: undefined,
-    sections: [],
-    items: [],
-
-    /**
-     * @private
-     * @returns {void}
-     */
-    init: function init() {
-      var _this = this;
-
-      this.uniqueId = utils.uniqueId(this.element);
-      this.sections = utils.getArrayFromList(this.element.querySelectorAll('.toolbar-section'));
-      this.items = this.getElements().map(function (item) {
-        var itemComponentSettings = {};
-        var isActionButton = $(item).hasClass('btn-actions');
-
-        if (isActionButton) {
-          itemComponentSettings = _this.settings.moreMenuSettings || itemComponentSettings;
-
-          if (_this.settings.beforeMoreMenuOpen) {
-            warnAboutDeprecation('settings.moreMenuSettings.beforeOpen', 'settings.beforeMoreMenuOpen', 'Flex Toolbar');
-            itemComponentSettings.beforeOpen = _this.settings.beforeMoreMenuOpen;
-          }
-        }
-
-        $(item).toolbarflexitem({
-          toolbarAPI: _this,
-          componentSettings: itemComponentSettings,
-          allowTabs: _this.settings.allowTabs
-        });
-        return $(item).data('toolbarflexitem');
-      });
-
-      if (!this.items) {
-        return;
-      } // Check for a focused item
-
-
-      if (!this.settings.allowTabs) {
-        this.items.forEach(function (item) {
-          if (item.focused) {
-            if (_this.focusedItem === undefined) {
-              _this.focusedItem = item;
-            } else {
-              item.focused = false;
-            }
-          }
-        });
-
-        if (!this.focusedItem) {
-          this.focusedItem = this.items[0];
-        }
-      }
-
-      this.render();
-      this.handleEvents();
-    },
-
-    /**
-     * @returns {void}
-     */
-    render: function render() {
-      this.element.setAttribute('role', 'toolbar');
-      this.items.forEach(function (item) {
-        item.render();
-      });
-    },
-
-    /**
-     * @private
-     * @returns {void}
-     */
-    handleEvents: function handleEvents() {
-      var _this2 = this;
-
-      if (!this.settings.allowTabs) {
-        this.keydownListener = this.handleKeydown.bind(this);
-        this.element.addEventListener('keydown', this.keydownListener);
-        this.keyupListener = this.handleKeyup.bind(this);
-        this.element.addEventListener('keyup', this.keyupListener);
-        this.clickListener = this.handleClick.bind(this);
-        this.element.addEventListener('click', this.clickListener);
-      }
-
-      $(this.element).on("selected.".concat(COMPONENT_NAME$B), function (e) {
-        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-          args[_key - 1] = arguments[_key];
-        }
-      }); // Inlined Searchfields can cause navigation requiring a focus change to occur on collapse.
-
-      $(this.element).on("collapsed-responsive.".concat(COMPONENT_NAME$B), function (e, direction) {
-        e.stopPropagation();
-
-        _this2.navigate(direction, null, true);
-      });
-    },
-
-    /**
-     * Event Handler for internal `keydown` events.
-     * @private
-     * @param {KeyboardEvent} e `keydown`
-     * @returns {void}
-     */
-    handleKeydown: function handleKeydown(e) {
-      var target = e.target; // Toolbar Items get handled separately.
-
-      if ($(target).data('toolbarflexitem')) {
-        this.handleItemKeydown(e);
-      }
-    },
-
-    /**
-     * Event Handler for internal `keydown` events, specifically on Toolbar Items.
-     * @private
-     * @param {KeyboardEvent} e `keydown`
-     * @returns {void}
-     */
-    handleItemKeydown: function handleItemKeydown(e) {
-      var isRTL = Locale.isRTL();
-      var key = e.key;
-      var item = this.getItemFromElement(e.target);
-
-      function preventScrolling() {
-        e.preventDefault();
-      } // NOTE: 'Enter' and 'SpaceBar' are purposely not handled on keydown, since
-      // a `click` event will be fired on Toolbar items while pressing either of these keys.
-
-
-      if (key === 'Enter') {
-        this.clickByEnterKey = true;
-        return;
-      }
-
-      if (key === ' ') {
-        // SpaceBar
-        if (item.type === 'hyperlink') {
-          this.select(e.target);
-        }
-
-        return;
-      } // Left Navigation
-
-
-      var leftNavKeys = ['ArrowLeft', 'Left', 'ArrowUp', 'Up'];
-
-      if (leftNavKeys.indexOf(key) > -1) {
-        if (item.type === 'searchfield' && (key === 'ArrowLeft' || key === 'Left')) {
-          return;
-        }
-
-        this.navigate(isRTL ? 1 : -1, undefined, true);
-        preventScrolling();
-        return;
-      } // Right Navigation
-
-
-      var rightNavKeys = ['ArrowRight', 'Right', 'ArrowDown', 'Down'];
-
-      if (rightNavKeys.indexOf(key) > -1) {
-        if (item.type === 'searchfield' && (key === 'ArrowRight' || key === 'Right')) {
-          return;
-        }
-
-        this.navigate(isRTL ? -1 : 1, undefined, true);
-        preventScrolling();
-      }
-    },
-
-    /**
-     * Event Handler for internal `keyup` events
-     * @private
-     * @param {KeyboardEvent} e `keyup`
-     * @returns {void}
-     */
-    handleKeyup: function handleKeyup(e) {
-      this.clearClickByEnter(e);
-    },
-
-    /**
-     * Event Handler for internal `click` events
-     * @private
-     * @param {MouseEvent} e `click`
-     * @returns {void}
-     */
-    handleClick: function handleClick(e) {
-      var target = e.target; // Toolbar Items get handled separately.
-
-      if ($(target).data('toolbarflexitem')) {
-        this.handleItemClick(e);
-      }
-
-      this.clearClickByEnter();
-    },
-
-    /**
-     * Event Handler for internal `click` events, specifically on Toolbar Items.
-     * @private
-     * @param {MouseEvent} e `click`
-     * @returns {void}
-     */
-    handleItemClick: function handleItemClick(e) {
-      var item = this.getItemFromElement(e.target);
-      this.select(item);
-      this.focusedItem = item;
-    },
-
-    /**
-     * @private
-     * @param {Event} e incoming event of multiple types
-     * @returns {void}
-     */
-    clearClickByEnter: function clearClickByEnter(e) {
-      // Gets set in `this.handleItemKeydown` by pressing 'Enter'.
-      if (this.clickByEnterKey) {
-        // Prevents the enter key from triggering a `selected` event on the menu button.
-        if (this.type === 'menubutton' || this.type === 'actionbutton') {
-          e.preventDefault();
-        }
-
-        delete this.clickByEnterKey;
-      }
-    },
-
-    /**
-     * Gets all the elements currently inside the Toolbar Markup.
-     * The array of items produced is ordered by Toolbar Section.
-     * @returns {array} of Toolbar Items
-     */
-    getElements: function getElements() {
-      var items = [];
-      var allSelectors = []; // Build a really big selector containing all possible matches
-
-      TOOLBAR_ELEMENTS.forEach(function (elemObj) {
-        allSelectors.push(elemObj.selector);
-      });
-      allSelectors = allSelectors.join(', '); // Get all possible Toolbar Element matches
-      // NOTE: Important that the toolbar items are picked up by the querySelector
-      // in their actual, physical DOM order.
-
-      var thisElems = utils.getArrayFromList(this.element.querySelectorAll(allSelectors)); // Check each element for each type of toolbar item.
-      // If there's a match, push to the item array.
-
-      thisElems.forEach(function (elem) {
-        var defined = false;
-        TOOLBAR_ELEMENTS.forEach(function (elemObj) {
-          if (defined || !$(elem).is(elemObj.selector)) {
-            return;
-          }
-
-          if (typeof elemObj.filter === 'function') {
-            if (!elemObj.filter(elem)) {
-              return;
-            }
-          }
-
-          defined = true;
-          items.push(elem);
-        });
-      });
-      return items;
-    },
-
-    /**
-     * @param {HTMLElement|ToolbarFlexItem} element the element to be checked
-     * @returns {ToolbarFlexItem} an instance of a Toolbar item
-     */
-    getItemFromElement: function getItemFromElement(element) {
-      if (element instanceof ToolbarFlexItem || element.isToolbarFlexItem) {
-        return element;
-      }
-
-      var item;
-
-      for (var i = 0; i < this.items.length; i++) {
-        // Simple comparison of innerHTML to figure out if the elements match up
-        if (this.items[i].element.innerHTML === element.innerHTML) {
-          item = this.items[i];
-        }
-      }
-
-      if (!item) {
-        throw new Error("No Toolbar Item instance available for element ".concat(element, "."));
-      }
-
-      return item;
-    },
-
-    /**
-     * If this toolbar contains a searchfield, this alias returns a reference to its ComponentAPI property.
-     * If no searchfield exists, it returns `undefined`
-     * @returns {Searchfield|undefined} a reference to the componentAPI of the searchfield item.
-     */
-    get searchfieldAPI() {
-      for (var i = 0; i < this.items.length; i++) {
-        if (this.items[i].type === 'searchfield') {
-          return this.items[i].componentAPI;
-        }
-      }
-
-      return undefined;
-    },
-
-    /**
-     * @returns {ToolbarFlexItem|undefined} either a toolbar item, or undefined if one
-     *  wasn't previously focused.
-     */
-    get focusedItem() {
-      if (this.trueFocusedItem) {
-        return this.trueFocusedItem;
-      }
-
-      for (var i = 0; i < this.items.length; i++) {
-        if (this.items[i].focused === true) {
-          return this.items[i];
-        }
-      }
-
-      return undefined;
-    },
-
-    /**
-     * Sets the currently focused item
-     * @param {ToolbarFlexItem} item the item to be focused
-     */
-    set focusedItem(item) {
-      if (this.items.length === 0) {
-        return;
-      }
-
-      for (var i = 0; i < this.items.length; i++) {
-        this.items[i].focused = false;
-      }
-
-      item.focused = true;
-      this.trueFocusedItem = item;
-    },
-
-    // Flag for figuring out if a Toolbar's items are all completely unavailable for keyboard focus.
-    get hasFocusableItems() {
-      for (var i = 0; i < this.items.length; i++) {
-        if (this.items[i].focusable === true) {
-          return true;
-        }
-      }
-
-      return false;
-    },
-
-    /**
-     * @returns {boolean} determining whether or not the Flex Toolbar has the authority to currently control focus
-     */
-    get canManageFocus() {
-      var activeElement = document.activeElement;
-
-      if (this.element.contains(activeElement)) {
-        return true;
-      } // If the searchfield currently has focus, return true
-
-
-      for (var i = 0; i < this.items.length; i++) {
-        if (this.items[i].type === 'searchfield' && this.items[i].componentAPI.isFocused) {
-          return true;
-        }
-      }
-
-      if (activeElement.tagName === 'BODY') {
-        return true;
-      }
-
-      return false;
-    },
-
-    /**
-     * @returns {ToolbarFlexItem[]} all overflowed items in the toolbar
-     */
-    get overflowedItems() {
-      var overflowed = [];
-
-      for (var i = 0; i < this.items.length; i++) {
-        if (this.items[i].overflowed === true) {
-          overflowed.push(this.items[i]);
-        }
-      }
-
-      return overflowed;
-    },
-
-    /**
-     * Navigates among toolbar items and gets a reference to a potential target for focus.
-     * @param {number} direction positive/negative value representing how many spaces to move
-     * @param {number} [currentIndex] the index to start checking from
-     *  the current focus either right/left respectively.
-     * @param {boolean} [doSetFocus=false] if set to true, will cause navigation to also set focus.
-     */
-    navigate: function navigate(direction, currentIndex, doSetFocus) {
-      if (this.hasFocusableItems === false) {
-        return;
-      } // reference the original direction for later, if placement fails.
-
-
-      var originalDirection = 0 + direction;
-
-      if (currentIndex === undefined || currentIndex === null) {
-        currentIndex = this.items.indexOf(this.focusedItem);
-      }
-
-      while (direction !== 0) {
-        if (direction > 0) {
-          if (currentIndex === this.items.length - 1) {
-            currentIndex = 0;
-          } else {
-            currentIndex++;
-          }
-
-          --direction;
-        }
-
-        if (direction < 0) {
-          if (currentIndex === 0) {
-            currentIndex = this.items.length - 1;
-          } else {
-            --currentIndex;
-          }
-
-          direction++;
-        }
-      }
-
-      var targetItem = this.items[currentIndex];
-
-      if (targetItem.focusable === false) {
-        this.navigate(originalDirection > 0 ? 1 : -1, currentIndex, doSetFocus);
-        return;
-      } // Retain a reference to the focused item and set focus, if applicable.
-
-
-      this.focusedItem = targetItem;
-
-      if (doSetFocus && this.canManageFocus) {
-        this.focusedItem.element.focus();
-      }
-    },
-
-    /**
-     * @param {HTMLElement|ToolbarFlexItem} element an HTMLElement representing a
-     *  Toolbar Item, or an actual ToolbarFlexItem API to use.
-     * @returns {void}
-     */
-    select: function select(element) {
-      var item = this.getItemFromElement(element);
-
-      switch (item.type) {
-        case 'searchfield':
-        case 'actionbutton':
-        case 'menubutton':
-          {
-            if (this.clickByEnterKey) {
-              return;
-            }
-
-            item.selected = true;
-            break;
-          }
-
-        default:
-          item.selected = true;
-          break;
-      }
-    },
-
-    /**
-     * Exports everything in the current `items` array as Popupmenu-friendly data to be
-     * converted to menu items.
-     * NOTE: Searchfields and other Action Buttons are ignored
-     * @returns {object} containing JSON-friendly Popupmenu data
-     */
-    toPopupmenuData: function toPopupmenuData() {
-      var data = {
-        noMenuWrap: true
-      };
-
-      function getItemData(item) {
-        var itemData = item.toPopupmenuData();
-
-        if (itemData) {
-          // Pass along some properties to the top level data object
-          if (itemData.icon) {
-            data.hasIcons = true;
-          }
-
-          if (itemData.selectable) {
-            data.selectable = itemData.selectable;
-          }
-        }
-
-        return itemData;
-      }
-
-      data.menu = this.items.filter(function (item) {
-        if (item.type === 'actionbutton' || item.type === 'searchfield') {
-          return false;
-        }
-
-        return true;
-      }).map(function (item) {
-        return getItemData(item);
-      });
-      return data;
-    },
-
-    /**
-     * Exports everything in the current `items` array as a Flex Toolbar object structure
-     * @returns {object} containing JSON-friendly Flex Toolbar data
-     */
-    toData: function toData() {
-      var data = {};
-      data.items = this.items.map(function (item) {
-        return item.toData();
-      });
-      return data;
-    },
-
-    get disabled() {
-      return this.trueDisabled;
-    },
-
-    set disabled(bool) {
-      this.trueDisabled = bool;
-
-      if (bool === true) {
-        this.element.classList.add('is-disabled');
-        return;
-      }
-
-      this.element.classList.remove('is-disabled');
-    },
-
-    /**
-     * Detects whether or not a toolbar item is currently overflowed.
-     * @param {ToolbarFlexItem|jQuery[]|HTMLElement} item the Toolbar Item or Element to check for overlflow.
-     * @returns {boolean} whether or not the item is overflowed.
-     */
-    isItemOverflowed: function isItemOverflowed(item) {
-      if (!item) {
-        return false;
-      } // If we get an HTMLElement or jQuery object, rzesolve the ToolbarFlex Item
-      // from either of those, if applicable. Otherwise, it's not overflowed.
-
-
-      var targetItem;
-
-      if (item instanceof HTMLElement || item instanceof $) {
-        targetItem = $(item).data('toolbarflexitem');
-
-        if (!targetItem) {
-          return false;
-        }
-
-        item = targetItem;
-      } // If this item isn't inside this toolbar, it's definitely not overflowed.
-
-
-      if (this.items.indexOf(item) < 0) {
-        return false;
-      }
-
-      return item.overflowed;
-    },
-
-    /**
-     * @param {object} [settings] incoming settings
-     * @returns {void}
-     */
-    updated: function updated(settings) {
-      if (_typeof(settings) === 'object') {
-        this.settings = utils.mergeSettings(this.element, settings, this.settings);
-      }
-
-      this.teardown();
-      this.init();
-    },
-
-    /**
-     * @returns {void}
-     */
-    teardown: function teardown() {
-      if (!this.settings.allowTabs) {
-        this.element.removeEventListener('keydown', this.keydownListener);
-        this.element.removeEventListener('keyup', this.keyupListener);
-        this.element.removeEventListener('click', this.clickListener);
-      }
-
-      $(this.element).off("selected.".concat(COMPONENT_NAME$B));
-      $(this.element).off("collapsed-responsive.".concat(COMPONENT_NAME$B));
-      this.items.forEach(function (item) {
-        item.teardown();
-      });
-      delete this.items;
-      delete this.sections;
-    },
-
-    /**
-     * @returns {void}
-     */
-    destroy: function destroy() {
-      this.teardown();
-    }
-  };
-
-  /**
-   * jQuery component wrapper for Toolbar Flex Component
-   * @param {object} [settings] incoming settings
-   * @returns {jQuery[]} elements being acted on
-   */
-
-  $.fn.toolbarflex = function (settings) {
-    return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$B);
-
-      if (instance) {
-        instance.updated(settings);
-      } else {
-        instance = $.data(this, COMPONENT_NAME$B, new ToolbarFlex(this, settings)); // Remove the jQuery Component reference from $.data
-
-        var oldDestroy = instance.destroy;
-
-        instance.destroy = function () {
-          if (typeof oldDestroy === 'function') {
-            oldDestroy.call(this);
-          }
-
-          $.removeData(this, COMPONENT_NAME$B);
-        };
-      }
-    });
-  };
-
-  var COMPONENT_NAME$C = 'calendartoolbar';
-  /**
-   * The Calendar Toolbar Displays a toolbar above calendars and week views.
-   * @class CalendarToolbar
-   * @constructor
-   *
-   * @param {jQuery[]|HTMLElement} element The component element.
-   * @param {object} [settings] The component settings.
-   * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
-   * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale's language will be used.
-   * @param {number} [settings.month] The month to show.
-   * @param {number} [settings.year] The year to show.
-   * @param {boolean} [settings.showToday=true] If true the today button is shown on the header.
-   * @param {function} [settings.onOpenCalendar] Call back for when the calendar is open on the toolbar datepicker, allows you to set the date.
-   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
-   * @param {boolean} [settings.isAlternate] Alternate style for the datepicker popup.
-   * @param {boolean} [settings.isMenuButton] Show the month/year as a menu button object, works if isAlternate is true.
-   * @param {boolean} [settings.isMonthPicker] Indicates this is a month picker on the month and week view. Has some slight different behavior.
-   * @param {boolean} [settings.showViewChanger=false] If false the dropdown to change views will not be shown.
-   * @param {string} [settings.viewChangerValue='month'] The value to show selected in the view changer. Can be month, week, day or schedule.
-  */
-
-  var COMPONENT_DEFAULTS = {
-    month: new Date().getMonth(),
-    year: new Date().getFullYear(),
-    locale: null,
-    showToday: true,
-    onOpenCalendar: null,
-    onChangeView: null,
-    isAlternate: false,
-    isMenuButton: true,
-    showViewChanger: false,
-    viewChangerValue: 'month',
-    isMonthPicker: false
-  };
-
-  function CalendarToolbar(element, settings) {
-    this.element = $(element);
-    this.settings = utils.mergeSettings(this.element[0], settings, COMPONENT_DEFAULTS);
-    this.init();
-  } // CalendarToolbar Methods
-
-
-  CalendarToolbar.prototype = {
-    init: function init() {
-      this.setLocale().build().handleEvents();
-    },
-
-    /**
-     * Set up the toolbar to the settings.
-     * @private
-     * @returns {void}
-     */
-    build: function build() {
-      this.element[0].classList.add('flex-toolbar');
-      this.element[0].setAttribute('data-init', 'false');
-
-      if (this.settings.isAlternate) {
-        this.element[0].classList.add('is-alternate');
-        var monthYearPaneButton = "<button type=\"button\" class=\"btn btn-monthyear-pane expandable-area-trigger\" id=\"btn-monthyear-pane\">\n        <span class=\"month\">november</span>\n        <span class=\"year\">2019</span>\n        <svg class=\"icon icon-closed\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\">\n          <use href=\"#icon-dropdown\"></use>\n        </svg>\n        <svg class=\"icon icon-opened\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\">\n          <use href=\"#icon-dropdown\"></use>\n        </svg>\n      </button>";
-        this.element[0].innerHTML = "\n        <div class=\"toolbar-section\">\n          ".concat(this.settings.isMenuButton ? monthYearPaneButton : '<span class="month">november</span><span class="year">2015</span>', "\n        </div>\n        <div class=\"toolbar-section buttonset l-align-").concat(this.isRTL ? 'left' : 'right', "\">\n          ").concat(this.settings.showToday ? "<a class=\"hyperlink today\" href=\"#\">".concat(Locale.translate('Today', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</a>") : '', "\n          <button type=\"button\" class=\"btn-icon prev\">\n            <svg class=\"icon\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\"><use href=\"#icon-caret-left\"></use></svg>\n            <span>").concat(Locale.translate('PreviousMonth', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</span>\n            </button>\n          <button type=\"button\" class=\"btn-icon next\">\n              <svg class=\"icon\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\"><use href=\"#icon-caret-right\"></use></svg>\n              <span>").concat(Locale.translate('NextMonth', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</span>\n          </button>\n        </div>\n      ");
-      } else {
-        this.element[0].innerHTML = "\n        <div class=\"toolbar-section\">\n          <button type=\"button\" class=\"btn-icon prev\">\n            <svg class=\"icon\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\"><use href=\"#icon-caret-left\"></use></svg>\n            <span>".concat(Locale.translate('PreviousMonth', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</span>\n            </button>\n          <button type=\"button\" class=\"btn-icon next\">\n              <svg class=\"icon\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\"><use href=\"#icon-caret-right\"></use></svg>\n              <span>").concat(Locale.translate('NextMonth', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</span>\n          </button>\n          <span class=\"monthview-datepicker\">\n            <span class=\"hidden month\" data-month=\"9\">9</span>\n            <span class=\"hidden year\">2019</span>\n            <span class=\"audible\">").concat(Locale.translate('SelectDay'), "</span>\n            <span tabindex=\"0\" aria-label=\"").concat(Locale.translate('Today', {
-          locale: this.locale.name,
-          language: this.language
-        }), "\" id=\"monthview-datepicker-field\" class=\"datepicker input-auto\" data-validation=\"\">October 2019</span>\n          </span>\n          ").concat(this.settings.showToday ? "<a class=\"hyperlink today\" href=\"#\">".concat(Locale.translate('Today', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</a>") : '', "\n        </div>\n        <div class=\"toolbar-section buttonset l-align-right\">\n          ").concat(!this.settings.showViewChanger ? '' : "<label for=\"calendar-view-changer\" class=\"label audible\">".concat(Locale.translate('ChangeView', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</label>\n            <select id=\"calendar-view-changer\" name=\"calendar-view-changer\" class=\"dropdown\">\n              <option value=\"month\"").concat(this.settings.viewChangerValue === 'month' ? ' selected' : '', ">").concat(Locale.translate('Month', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</option>\n              <option value=\"week\"").concat(this.settings.viewChangerValue === 'week' ? ' selected' : '', ">").concat(Locale.translate('Week', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</option>\n              <option value=\"day\" ").concat(this.settings.viewChangerValue === 'day' ? ' selected' : '', ">").concat(Locale.translate('Day', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</option>\n            </select>\n          </div>"), "\n        </div>\n      ");
-      } // Invoke the toolbar
-
-
-      this.element.toolbarflex({
-        allowTabs: true
-      }); // Setup the datepicker
-
-      this.monthPicker = this.element.find('#monthview-datepicker-field').datepicker({
-        dateFormat: Locale.calendar(this.locale.name, this.settings.language, this.settings.calendarName).dateFormat.year,
-        locale: this.settings.locale,
-        language: this.settings.language,
-        onOpenCalendar: this.settings.onOpenCalendar,
-        isMonthPicker: this.settings.isMonthPicker,
-        showToday: this.settings.showToday
-      });
-
-      if (this.settings.showViewChanger) {
-        this.viewChanger = this.element.find('#calendar-view-changer').dropdown();
-      }
-
-      this.todayLink = this.element.find('.hyperlink.today');
-      this.monthPickerApi = this.monthPicker.data('datepicker'); // Hide focus on buttons
-
-      this.element.find('button, a').hideFocus();
-      this.setInternalDate(new Date(this.settings.year, this.settings.month, 1));
-      return this;
-    },
-
-    /**
-     * Set the internal date state.
-     * @private
-     * @param {date} date The date to set.
-     * @returns {void}
-     */
-    setInternalDate: function setInternalDate(date) {
-      this.currentYear = date.getFullYear();
-      this.currentMonth = date.getMonth();
-      this.currentDay = date.getDate();
-      this.currentDate = date;
-      this.monthPicker.text(Locale.formatDate(new Date(this.currentYear, this.currentMonth, this.currentDay), {
-        date: 'year',
-        locale: this.locale.name,
-        language: this.settings.language
-      }));
-
-      if (!this.currentCalendar || !this.currentCalendar.months) {
-        this.currentCalendar = Locale.calendar(this.locale.name, this.settings.language, this.settings.calendarName);
-      }
-
-      var monthName = this.currentCalendar.months ? this.currentCalendar.months.wide[this.currentMonth] : '';
-      this.element.find('span.month').attr('data-month', this.currentMonth).text(monthName);
-      this.element.find('span.year').text(" ".concat(this.currentYear)); // Some locales set the year first
-
-      var yearFirst = this.currentCalendar.dateFormat.year && this.currentCalendar.dateFormat.year.substr(1, 1) === 'y';
-
-      if (yearFirst) {
-        var translation = Locale.formatDate(this.currentDate, {
-          date: 'year',
-          locale: this.locale.name
-        });
-        var justYear = translation.split(' ')[0];
-        this.element.find('span.year').text("".concat(justYear, " "));
-        this.element.find('span.year').insertBefore(this.element.find('span.month'));
-      }
-
-      return this;
-    },
-
-    /**
-     * Set current calendar
-     * @private
-     * @returns {this} Rhe object for chaining
-     */
-    setCurrentCalendar: function setCurrentCalendar() {
-      this.currentCalendar = Locale.calendar(this.locale.name, this.settings.language, this.settings.calendarName);
-      this.isIslamic = this.currentCalendar.name === 'islamic-umalqura';
-      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
-      return this;
-    },
-
-    /**
-     * Set current locale to be used if different than the set locale.
-     * @private
-     * @returns {void}
-     */
-    setLocale: function setLocale() {
-      var _this = this;
-
-      if (this.settings.language) {
-        Locale.getLocale(this.settings.language);
-        this.language = this.settings.language;
-      } else {
-        this.language = Locale.currentLanguage.name;
-      }
-
-      if (this.settings.locale && (!this.locale || this.locale.name !== this.settings.locale)) {
-        Locale.getLocale(this.settings.locale).done(function (locale) {
-          _this.locale = Locale.cultures[locale];
-          _this.language = _this.settings.language || _this.locale.language;
-
-          _this.setCurrentCalendar();
-        });
-      } else if (!this.settings.locale) {
-        this.locale = Locale.currentLocale;
-        this.setCurrentCalendar();
-      }
-
-      return this;
-    },
-
-    /**
-     * Set the view changer dropdown value
-     * @private
-     * @param {string} viewChangerValue The view changer value to use (month, day or week)
-     * @returns {void}
-     */
-    setViewChangerValue: function setViewChangerValue(viewChangerValue) {
-      this.settings.viewChangerValue = viewChangerValue;
-      this.viewChanger.val(viewChangerValue).trigger('updated');
-    },
-
-    /**
-     * Attach Events used by the Component.
-     * @private
-     * @returns {void}
-     */
-    handleEvents: function handleEvents() {
-      var _this2 = this;
-
-      var self = this;
-      this.monthPicker.off('change.calendar-toolbar-p').on('change.calendar-toolbar-p', function () {
-        var picker = $(this).data('datepicker');
-        self.setInternalDate(picker.currentDate);
-        self.element.trigger('change-date', {
-          selectedDate: picker.currentDate,
-          isToday: false
-        });
-      });
-      this.todayLink.off('click.calendar-toolbar-t').on('click.calendar-toolbar-t', function (e) {
-        _this2.element.trigger('change-date', {
-          selectedDate: _this2.currentDate,
-          isToday: true
-        });
-
-        e.preventDefault();
-      });
-      this.element.find('.prev').off('click.calendar-toolbar-b').on('click.calendar-toolbar-b', function () {
-        _this2.element.trigger('change-prev', {
-          selectedDate: _this2.currentDate,
-          isToday: false
-        });
-      });
-      this.element.find('.next').off('click.calendar-toolbar-b').on('click.calendar-toolbar-b', function () {
-        _this2.element.trigger('change-next', {
-          selectedDate: _this2.currentDate,
-          isToday: false
-        });
-      });
-
-      if (this.settings.onChangeView) {
-        this.element.find('#calendar-view-changer').off('change.calendar-toolbar-v').on('change.calendar-toolbar-v', function (e) {
-          _this2.settings.onChangeView({
-            viewName: e.currentTarget.value,
-            elem: e.currentTarget,
-            api: _this2
-          });
-        });
-      }
-
-      return this;
-    },
-
-    /**
-     * Resync the UI and Settings.
-     * @param {object} settings The settings to apply.
-     * @returns {object} The api
-     */
-    updated: function updated(settings) {
-      if (typeof settings !== 'undefined') {
-        this.settings = utils.mergeSettings(this.element, settings, COMPONENT_DEFAULTS);
-      }
-
-      return this.teardown().init();
-    },
-
-    /**
-     * Teardown all event handles.
-     * @returns {void}
-     */
-    teardown: function teardown() {
-      this.element.off();
-      this.monthPicker.off();
-      this.todayLink.off();
-      this.element.find('.prev .next').off();
-      return this;
-    },
-
-    /**
-     * Destroy this component instance and remove the link from its base element.
-     * @returns {void}
-     */
-    destroy: function destroy() {
-      this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$C);
-    }
-  };
-
-  var COMPONENT_NAME$D = 'monthview';
-  var COMPONENT_NAME_DEFAULTS = {
-    locale: null,
-    language: null,
-    month: new Date().getMonth(),
-    year: new Date().getFullYear(),
-    day: new Date().getDate(),
-    activeDate: null,
-    activeDateIslamic: null,
-    isPopup: false,
-    headerStyle: 'full',
-    firstDayOfWeek: null,
-    disable: {
-      callback: null,
-      dates: [],
-      years: [],
-      minDate: '',
-      maxDate: '',
-      dayOfWeek: [],
-      isEnable: false,
-      restrictMonths: false
-    },
-    legend: [{
-      name: 'Public Holiday',
-      color: 'azure06',
-      dates: []
-    }, {
-      name: 'Weekends',
-      color: 'turquoise06',
-      dayOfWeek: []
-    }],
-    hideDays: false,
-    // TODO
-    showMonthYearPicker: true,
-    yearsAhead: 5,
-    yearsBack: 4,
-    range: {
-      useRange: false,
-      // true - if datepicker using range dates
-      start: '',
-      // Start date '03/05/2018'
-      end: '',
-      // End date '03/21/2018'
-      separator: ' - ',
-      // separator string between two dates
-      minDays: 0,
-      // Minimum days
-      maxDays: 0,
-      // Maximum days
-      selectForward: false,
-      // Only in forward direction
-      selectBackward: false,
-      // Only in backward direction
-      includeDisabled: false // if true range will include disable dates in it
-
-    },
-    selectable: true,
-    onSelected: null,
-    onKeyDown: null,
-    showToday: true,
-    onChangeView: null,
-    isMonthPicker: false
-  };
-  /**
-   * MonthView - Renders a Month calendar
-   * @class MonthView
-   * @param {string} element The plugin element for the constuctor
-   * @param {object} [settings] The settings element.
-   * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
-   * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale will be used or the passed locale will be used.
-   * @param {number} [settings.month] The month to show.
-   * @param {number} [settings.year] The year to show.
-   * @param {number} [settings.day] The initial selected day to show.
-   * @param {number} [settings.activeDate] The date to highlight as selected/today.
-   * @param {number} [settings.activeDateIslamic] The date to highlight as selected/today (as an array for islamic)
-   * @param {number} [settings.isPopup] Is it in a popup (datepicker using it)
-   * @param {number} [settings.headerStyle] Configure the header, this can be 'simple' or 'full'. Full adds a picker and today link.
-   * @param {boolean} [settings.isMonthPicker] Indicates this is a month picker on the month and week view. Has some slight different behavior.
-   * @param {number} [settings.firstDayOfWeek=null] Set first day of the week. '1' would be Monday.
-   * @param {object} [settings.disable] Disable dates in various ways.
-   * For example `{minDate: 'M/d/yyyy', maxDate: 'M/d/yyyy'}`. Dates should be in format M/d/yyyy
-   * or be a Date() object or string that can be converted to a date with new Date().
-   * @param {function} [settings.disable.callback] return true to disable passed dates.
-   * @param {array} [settings.disable.dates] Disable specific dates.
-   * Example `{dates: ['12/31/2018', '01/01/2019']}`.
-   * @param {array} [settings.disable.years] Disable specific years.
-   * Example `{years: [2018, 2019]}`.
-   * @param {string|date} [settings.disable.minDate] Disable up to a minimum date.
-   * Example `{minDate: '12/31/2016'}`.
-   * @param {string|date} [settings.disable.maxDate] Disable up to a maximum date.
-   * Example `{minDate: '12/31/2019'}`.
-   * @param {array} [settings.disable.dayOfWeek] Disable a specific of days of the week 0-6.
-   * Example `{dayOfWeek: [0,6]}`.
-   * @param {boolean} [settings.disable.isEnable=false] Inverse the disable settings.
-   * If true all the disable settings will be enabled and the rest will be disabled.
-   * So you can inverse the settings.
-   * @param {boolean} [settings.disable.retrictMonths=false] Restrict month selections on datepicker.
-   * It requires minDate and maxDate for the feature to activate.
-   * For example if you have more non specific dates to disable then enable ect.
-   * @param {object} [settings.range] Range between two dates with various options.
-   * @param {boolean} [settings.range.useRange=false] Use range of two dates options.
-   * @param {string|date} [settings.range.start] Start date in range.
-   * @param {string|date} [settings.range.end] End date in range.
-   * @param {string} [settings.range.separator=' - '] Visual separator between two dates.
-   * @param {number} [settings.range.minDays=0] Minimum days to be in range.
-   * @param {number} [settings.range.maxDays=0] Maximum days to be in range.
-   * @param {boolean} [settings.range.selectForward=false] Range only in forward direction.
-   * @param {boolean} [settings.range.selectBackward=false] Range only in backward direction.
-   * @param {boolean} [settings.range.includeDisabled=false] Include disable dates in range of dates.
-   * @param {boolean} [settings.hideDays=false] If true the days portion of the calendar will be hidden. Usefull for Month/Year only formats.
-   * @param {boolean} [settings.showMonthYearPicker=true] If false the year and month switcher will be disabled.
-   * @param {number} [settings.yearsAhead=5] The number of years ahead to show in the month/year picker should total 9 with yearsBack.
-   * @param {number} [settings.yearsBack=4] The number of years back to show in the month/year picker should total 9 with yearsAhead.
-   * @param {array} [settings.legend]  Legend Build up
-   * for example `[{name: 'Public Holiday', color: '#76B051', dates: []},
-   * {name: 'Weekends', color: '#EFA836', dayOfWeek: []}]`
-   * @param {boolean} [settings.selectable=false] If true the month days can be clicked to select
-   * @param {boolean} [settings.onSelected=false] Callback that fires when a month day is clicked.
-   * @param {boolean} [settings.onKeyDown=false] Callback that fires when a key is pressed down.
-   * @param {boolean} [settings.showToday=true] If true the today button is shown on the header.
-   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
-   */
-
-  function MonthView(element, settings) {
-    this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS);
-    this.element = $(element);
-    this.init();
-  } // Plugin Methods
-
-
-  MonthView.prototype = {
-    /**
-     * Do initialization, build up and / or add events ect.
-     * @private
-     * @returns {object} The Component prototype, useful for chaining.
-     */
-    init: function init() {
-      return this.setLocaleThenBuild();
-    },
-
-    /**
-     * Set current locale to be used
-     * @private
-     * @returns {void}
-     */
-    setLocaleThenBuild: function setLocaleThenBuild() {
-      var _this = this;
-
-      var languageDf = Locale.getLocale(this.settings.language);
-      var localeDf = Locale.getLocale(this.settings.locale);
-      $.when(localeDf, languageDf).done(function (locale, lang) {
-        _this.locale = Locale.cultures[locale] || Locale.currentLocale;
-        _this.language = lang || _this.settings.language || _this.locale.language;
-        _this.settings.language = _this.language;
-
-        _this.setCurrentCalendar();
-
-        _this.build().handleEvents();
-      });
-    },
-
-    /**
-     * Add any needed markup to the component.
-     * @private
-     * @returns {object} The Calendar prototype, useful for chaining.
-     */
-    build: function build() {
-      var _this2 = this;
-
-      if (this.settings.showMonthYearPicker === 'false') {
-        this.settings.showMonthYearPicker = false;
-      }
-
-      this.setCurrentCalendar(); // Calendar Html in Popups
-
-      this.prevButton = '' + "<button type=\"button\" class=\"btn-icon prev\">\n        ".concat($.createIcon('caret-left'), "\n        <span>").concat(Locale.translate('PreviousMonth', {
-        locale: this.locale.name,
-        language: this.language
-      }), "</span>\n      </button>");
-      this.nextButton = '' + "<button type=\"button\" class=\"btn-icon next\">\n        ".concat($.createIcon('caret-right'), "\n        <span>").concat(Locale.translate('NextMonth', {
-        locale: this.locale.name,
-        language: this.language
-      }), "</span>\n      </button>");
-      this.table = $("<table class=\"monthview-table\" aria-label=\"".concat(Locale.translate('Calendar', {
-        locale: this.locale.name
-      }), "\" role=\"application\"></table>"));
-      this.dayNames = $('' + "<thead>\n        <tr>\n          <th>SU</th>\n          <th>MO</th>\n          <th>TU</th>\n          <th>WE</th>\n          <th>TH</th>\n          <th>FR</th>\n          <th>SA</th>\n        </tr>\n      </thead>").appendTo(this.table);
-      this.days = $('' + "<tbody>\n        <tr>\n          <td class=\"alternate\">26</td>\n          <td class=\"alternate\">27</td>\n          <td class=\"alternate\">28</td>\n          <td class=\"alternate\">29</td>\n          <td class=\"alternate\" >30</td>\n          <td class=\"alternate\">31</td>\n          <td>1</td>\n        </tr><tr>\n          <td>2</td>\n          <td>3</td>\n          <td>4</td>\n          <td>5</td>\n          <td>6</td>\n          <td>7</td>\n          <td>8</td>\n        </tr><tr>\n          <td>9</td>\n          <td>10</td>\n          <td>11</td>\n          <td>12</td>\n          <td>13</td>\n          <td>14</td>\n          <td>15</td>\n        </tr><tr>\n          <td>16</td>\n          <td>17</td>\n          <td>18</td>\n          <td>19</td>\n          <td class=\"is-today\">20</td>\n          <td>21</td>\n          <td>22</td>\n        </tr><tr>\n          <td>23</td>\n          <td>24</td>\n          <td>25</td>\n          <td>26</td>\n          <td>27</td>\n          <td>28</td>\n          <td class=\"alternate\">1</td>\n        </tr><tr>\n          <td class=\"alternate\">2</td>\n          <td class=\"alternate\">3</td>\n          <td class=\"alternate\">4</td>\n          <td class=\"alternate\">5</td>\n          <td class=\"alternate\">6</td>\n          <td class=\"alternate\">7</td>\n          <td class=\"alternate\">8</td>\n        </tr>\n      </tbody>").appendTo(this.table);
-      this.monthYearPane = $(!this.settings.showMonthYearPicker ? '' : "<div class=\"monthview-monthyear-pane expandable-area ".concat(this.settings.hideDays ? ' is-expanded' : '', "\">\n      <div class=\"expandable-pane\">\n        <div class=\"content\"><div class=\"picklist-section is-month\"></div><div class=\"picklist-section is-year\"></div></div>\n      </div>\n    </div>"));
-
-      if (this.settings.hideDays) {
-        this.table = '';
-      } // Reconfigure the header
-
-
-      this.header = $('<div class="monthview-header"><div class="calendar-toolbar"></div></div>');
-
-      if (this.settings.headerStyle === 'full') {
-        this.monthPicker = this.header.find('#monthview-datepicker-field');
-      } else if (this.settings.showToday) {
-        this.header.find('.btn-icon.prev').before("<a class=\"hyperlink today\" href=\"#\">".concat(Locale.translate('Today', {
-          locale: this.locale.name,
-          language: this.language
-        }), "</a>"));
-      }
-
-      this.showMonth(this.settings.month, this.settings.year);
-      this.calendar = this.element.addClass('monthview').append(this.header, this.monthYearPane, this.table);
-
-      if (!this.settings.isPopup) {
-        this.element.addClass('is-fullsize');
-      } // Add Legend
-
-
-      this.addLegend(); // Invoke the toolbar
-
-      this.calendarToolbarEl = this.header.find('.calendar-toolbar');
-      this.calendarToolbarAPI = new CalendarToolbar(this.calendarToolbarEl[0], {
-        onOpenCalendar: function onOpenCalendar() {
-          return _this2.currentDate;
-        },
-        locale: this.settings.locale,
-        language: this.settings.language,
-        year: this.currentYear,
-        month: this.currentMonth,
-        showToday: this.settings.showToday,
-        isMonthPicker: this.settings.headerStyle === 'full',
-        isAlternate: this.settings.headerStyle !== 'full',
-        isMenuButton: this.settings.headerStyle !== 'full' ? this.settings.showMonthYearPicker : false,
-        showViewChanger: this.settings.showViewChanger,
-        onChangeView: this.settings.onChangeView
-      });
-      this.handleEvents();
-      return this;
-    },
-
-    /**
-     * Set current calendar
-     * @private
-     * @returns {void}
-     */
-    setCurrentCalendar: function setCurrentCalendar() {
-      this.currentCalendar = Locale.calendar(this.locale.name, this.language, this.settings.calendarName);
-      this.isIslamic = this.currentCalendar.name === 'islamic-umalqura';
-      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
-      this.conversions = this.currentCalendar.conversions;
-    },
-
-    /**
-     * Update the calendar to show the given month and year
-     * @param {number} month The zero based month to display
-     * @param {number} year The year to display
-     * @returns {void}
-     */
-    showMonth: function showMonth(month, year) {
-      var _this3 = this;
-
-      var self = this;
-      var s = this.settings;
-      var now = new Date();
-      now.setHours(0);
-      now.setMinutes(0);
-      now.setSeconds(0);
-      var elementDate = s.activeDate && s.activeDate.getDate() ? s.activeDate : now;
-      this.setCurrentCalendar();
-
-      if (this.isIslamic) {
-        if (!s.activeDateIslamic) {
-          var gregorianDate = new Date();
-          this.todayDateIslamic = Locale.gregorianToUmalqura(gregorianDate);
-          s.activeDateIslamic = [];
-          s.activeDateIslamic[0] = this.todayDateIslamic[0];
-          s.activeDateIslamic[1] = this.todayDateIslamic[1];
-          s.activeDateIslamic[2] = this.todayDateIslamic[2];
-          year = s.activeDateIslamic[0];
-          month = s.activeDateIslamic[1];
-          elementDate = Locale.gregorianToUmalqura(now);
-        } else {
-          elementDate = s.activeDateIslamic;
-        }
-      }
-
-      if (year.toString().length < 4) {
-        year = new Date().getFullYear();
-      }
-
-      if (month === 12) {
-        year++;
-        month = 0;
-        this.currentMonth = month;
-        this.currentYear = year;
-        this.currentDate.setFullYear(year);
-        this.currentDate.setMonth(month);
-      }
-
-      if (month < 0) {
-        year--;
-        month = 11;
-        this.currentMonth = month;
-        this.currentYear = year;
-        this.currentDate.setFullYear(year);
-        this.currentDate.setMonth(month);
-      }
-
-      this.currentDay = this.currentDay || this.settings.day;
-
-      if (!this.currentCalendar || !this.currentCalendar.days) {
-        this.currentCalendar = Locale.calendar(this.locale.name, this.language, this.settings.calendarName);
-      }
-
-      var days = this.currentCalendar.days.narrow;
-      days = days || this.currentCalendar.days.abbreviated;
-
-      if (!s.isPopup) {
-        days = this.currentCalendar.days.abbreviated;
-      }
-
-      var monthName = this.currentCalendar.months.wide[month];
-      this.currentMonth = month;
-      this.currentYear = year; // Set the Days of the week
-
-      var firstDayofWeek = this.currentCalendar.firstDayofWeek || 0;
-
-      if (s.firstDayOfWeek) {
-        firstDayofWeek = s.firstDayOfWeek;
-      }
-
-      this.dayNames.find('th').each(function (i) {
-        $(this).text(days[(i + firstDayofWeek) % 7]);
-      }); // Localize Month Name
-
-      this.yearFirst = this.currentCalendar.dateFormat.year && this.currentCalendar.dateFormat.year.substr(1, 1) === 'y';
-      this.header.find('.month').attr('data-month', month).text("".concat(xssUtils.stripTags(monthName), " "));
-      this.header.find('.year').text(" ".concat(year));
-
-      if (this.yearFirst && !this.isIslamic && !this.isRTL) {
-        elementDate.setFullYear(year);
-        var translation = Locale.formatDate(elementDate, {
-          date: 'year',
-          locale: this.locale.name
-        });
-        var justYear = translation.split(' ')[0];
-        this.header.find('.year').text("".concat(justYear, " "));
-        this.header.find('.year').insertBefore(this.header.find('.month'));
-      }
-
-      if (s.headerStyle === 'full' && this.calendarToolbarAPI) {
-        this.calendarToolbarAPI.setInternalDate(new Date(year, month, 1));
-      }
-
-      this.appendMonthYearPicker(month, year); // Adjust days of the week
-      // lead days
-
-      var firstDayOfMonth = this.firstDayOfMonth(year, month);
-      var leadDays = (firstDayOfMonth - firstDayofWeek + 7) % 7;
-      var lastMonthDays = this.daysInMonth(year, month + (this.isIslamic ? 1 : 0));
-      var thisMonthDays = this.daysInMonth(year, month + (this.isIslamic ? 0 : 1));
-      var nextMonthDayCnt = 1;
-      var dayCnt = 1;
-      var exYear;
-      var exMonth;
-      var exDay;
-      var foundSelected = false; // Set selected state
-
-      var setSelected = function setSelected(el, isFound) {
-        foundSelected = isFound;
-        el.addClass("is-selected".concat(s.range.useRange ? ' range' : '')).attr('aria-selected', 'true').attr('tabindex', '0');
-      };
-
-      this.dayMap = [];
-      this.days.find('td').each(function (i) {
-        var th = $(this).removeClass('alternate prev-month next-month is-selected range is-today');
-        th.removeAttr('aria-selected');
-        th.removeAttr('tabindex');
-
-        if (i < leadDays) {
-          exDay = lastMonthDays - leadDays + 1 + i;
-          exMonth = month === 0 ? 11 : month - 1;
-          exYear = month === 0 ? year - 1 : year;
-          self.setDisabled(th, exYear, exMonth, exDay);
-          self.setLegendColor(th, exYear, exMonth, exDay);
-          self.dayMap.push({
-            key: stringUtils.padDate(exYear, exMonth, exDay),
-            elem: th
-          });
-          th.addClass('alternate prev-month').html("<span class=\"day-container\"><span aria-hidden=\"true\" class=\"day-text\">".concat(xssUtils.stripTags(exDay), "</span></span>"));
-          th.attr('data-key', stringUtils.padDate(exYear, exMonth, exDay));
-        }
-
-        if (i >= leadDays && dayCnt <= thisMonthDays) {
-          self.dayMap.push({
-            key: stringUtils.padDate(year, month, dayCnt),
-            elem: th
-          });
-          th.html("<span class=\"day-container\"><span aria-hidden=\"true\" class=\"day-text\">".concat(xssUtils.stripTags(dayCnt), "</span></span>"));
-          th.attr('data-key', stringUtils.padDate(year, month, dayCnt)); // Add Selected Class to Selected Date
-
-          if (self.isIslamic) {
-            if (year === elementDate[0] && month === elementDate[1] && dayCnt === elementDate[2]) {
-              setSelected(th, true);
-            }
-          } else {
-            var tHours = elementDate.getHours();
-            var tMinutes = elementDate.getMinutes();
-            var tSeconds = self.isSeconds ? elementDate.getSeconds() : 0;
-
-            var setHours = function setHours(el) {
-              return el ? el.setHours(tHours, tMinutes, tSeconds, 0) : 0;
-            };
-
-            var newDate = setHours(new Date(year, month, dayCnt));
-
-            if (newDate === setHours(elementDate) || newDate === setHours(self.currentDate)) {
-              setSelected(th, true);
-            }
-          }
-
-          if (dayCnt === self.todayDay && self.currentMonth === self.todayMonth && self.currentYear === self.todayYear) {
-            th.addClass('is-today');
-          }
-
-          th.attr('aria-label', Locale.formatDate(new Date(self.currentYear, self.currentMonth, dayCnt), {
-            date: 'full',
-            locale: self.locale.name
-          }));
-          var startKey = stringUtils.padDate(self.currentYear, self.currentMonth, dayCnt);
-          th.attr('data-key', startKey);
-          self.setDisabled(th, year, month, dayCnt);
-          self.setLegendColor(th, year, month, dayCnt);
-          th.attr('role', 'link');
-          dayCnt++;
-          return;
-        }
-
-        if (dayCnt >= thisMonthDays + 1) {
-          exDay = nextMonthDayCnt;
-          exMonth = month === 11 ? 0 : month + 1;
-          exYear = month === 11 ? year + 1 : year;
-          self.dayMap.push({
-            key: stringUtils.padDate(exYear, exMonth, exDay),
-            elem: th
-          });
-          self.setDisabled(th, exYear, exMonth, exDay);
-          self.setLegendColor(th, exYear, exMonth, exDay);
-          th.addClass('alternate next-month').html("<span class=\"day-container\"><span aria-hidden=\"true\" class=\"day-text\">".concat(nextMonthDayCnt, "</span></span>"));
-          th.attr('data-key', stringUtils.padDate(exYear, exMonth, exDay));
-          nextMonthDayCnt++;
-        }
-      });
-
-      if (!foundSelected && !s.range.useRange) {
-        var firstDay = self.dayMap.filter(function (d) {
-          return d.key === stringUtils.padDate(year, month, _this3.settings.day);
-        });
-
-        if (firstDay.length) {
-          setSelected(firstDay[0].elem, false);
-        }
-      } // Hide 6th Row if all disabled
-
-
-      var row = this.days.find('tr').eq(5);
-
-      if (row.find('td.alternate').length === 7) {
-        row.hide();
-      } else {
-        row.show();
-      }
-
-      if (!this.currentDate) {
-        if (this.isIslamic) {
-          this.currentIslamicDate = [this.currentYear, this.currentMonth, this.currentDay];
-          this.currentDate = Locale.umalquraToGregorian(this.currentYear, this.currentMonth, this.currentDay);
-        } else {
-          this.currentDate = new Date(this.currentYear, this.currentMonth, this.currentDay);
-        }
-      }
-
-      this.setRangeSelection();
-      this.validatePrevNext(); // Allow focus on the same day as last month
-
-      if (!s.range.useRange && this.element.find('td.is-selected').length === 0) {
-        this.element.find('td[tabindex]').removeAttr('tabindex');
-        this.element.find('td:not(.alternate) .day-text').first().closest('td').attr('tabindex', '0');
-      }
-      /**
-      * Fires as the calendar popup is opened.
-      * @event monthrendered
-      * @memberof MonthView
-      * @property {object} event - The jquery event object
-      * @property {object} args - The event arguments
-      * @property {number} args.year - The rendered year
-      * @property {object} args.elem - The DOM object
-      * @property {object} args.api - The MonthView api
-      */
-
-
-      this.element.trigger('monthrendered', {
-        year: year,
-        month: month,
-        elem: this.element,
-        api: this
-      });
-    },
-
-    /**
-     * Set range selection
-     * @private
-     * @returns {void}
-     */
-    setRangeSelection: function setRangeSelection() {
-      if (this.settings.range.useRange) {
-        var range = {};
-        range.date = new Date(this.currentYear, this.currentMonth, 1);
-        range.date.setDate(range.date.getDate() - (this.days.find('.prev-month:visible').length + 1));
-        range.formatedDate = Locale.formatDate(range.date, {
-          date: 'full',
-          locale: this.locale.name
-        });
-        range.cell = this.days.find("[aria-label=\"".concat(range.formatedDate, "\"]"));
-        this.setRangeOnCell(this.settings.range.second ? false : range.cell);
-      }
-    },
-
-    /**
-     * Append month year picker
-     * @private
-     * @param {number} month The month to show in the picker
-     * @param {number} year The year to show in the picker
-     * @returns {void}
-     */
-    appendMonthYearPicker: function appendMonthYearPicker(month, year) {
-      if (!this.settings.showMonthYearPicker) {
-        return;
-      }
-
-      var monthList = '<ul class="picklist is-month">';
-      var wideMonths = this.currentCalendar.months.wide;
-      wideMonths.map(function (monthMap, i) {
-        // eslint-disable-line
-        monthList += "<li class=\"picklist-item".concat(i === month ? ' is-selected ' : '', "\"><a href=\"#\" ").concat(i === month ? 'tabindex="0" ' : 'tabindex="-1" ', "data-month=\"").concat(i, "\">").concat(monthMap, "</a></li>");
-      });
-      monthList += '</ul>';
-      this.monthYearPane.find('.picklist-section.is-month').empty().append(monthList);
-      var years = [];
-      var yearList = '<ul class="picklist is-year">';
-      yearList += '<li class="picklist-item up"><a href="#" tabindex="0"><svg class="icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-caret-up"></use></svg></a></li>';
-
-      for (var i = this.settings.yearsBack; i >= 1; i--) {
-        years.push(parseInt(year, 10) - i);
-      }
-
-      years.push(year);
-
-      for (var j = 1; j <= this.settings.yearsAhead; j++) {
-        years.push(parseInt(year, 10) + j);
-      } // eslint-disable-next-line
-
-
-      years.map(function (yearMap) {
-        yearList += "<li class=\"picklist-item".concat(year === yearMap ? ' is-selected ' : '', "\"><a href=\"#\" ").concat(year === yearMap ? 'tabindex="0" ' : 'tabindex="-1" ', "data-year=\"").concat(yearMap, "\">").concat(yearMap, "</a></li>");
-      });
-      yearList += '<li class="picklist-item down"><a tabindex="0"><svg class="icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-caret-down"></use></svg></a></li>';
-      yearList += '</ul>';
-      this.monthYearPane.find('.picklist-section.is-year').empty().append(yearList);
-
-      if (this.yearFirst) {
-        this.monthYearPane.addClass('is-yearfirst');
-      }
-    },
-
-    /**
-     * Find first day of the week for a given month
-     * @private
-     * @param {number} year The year to use with the month
-     * @param {number} month The month to find the first day for
-     * @returns {number} day
-     */
-    firstDayOfMonth: function firstDayOfMonth(year, month) {
-      if (this.isIslamic) {
-        var firstDay = Locale.umalquraToGregorian(year, month, 1);
-        return firstDay === null ? 1 : firstDay.getDay();
-      }
-
-      return new Date(year, month, 1).getDay();
-    },
-
-    /**
-     * Find the date of the Month (29, 30, 31 ect)
-     * @private
-     * @param {number} year The year to use with the month
-     * @param {number} month The month to find the days in month for
-     * @returns {number} date
-     */
-    daysInMonth: function daysInMonth(year, month) {
-      if (this.isIslamic) {
-        var monthLengthBitmap = this.conversions.yearInfo[this.islamicYearIndex(year)][0];
-        var monthDayCount = 0;
-
-        for (var M = 0; M <= month; M++) {
-          // eslint-disable-next-line
-          monthDayCount = 29 + (monthLengthBitmap & 1);
-
-          if (M === month) {
-            return monthDayCount;
-          } // eslint-disable-next-line
-
-
-          monthLengthBitmap = monthLengthBitmap >> 1;
-        }
-
-        return 0;
-      }
-
-      return new Date(year, month, 0).getDate();
-    },
-
-    /**
-     * Get the islamic year index
-     * @private
-     * @param {number} islamicYear Year to test.
-     * @returns {number} index
-     */
-    islamicYearIndex: function islamicYearIndex(islamicYear) {
-      var yearIdx = islamicYear - 1318;
-
-      if (yearIdx < 0 || yearIdx >= this.conversions.yearInfo.length) {
-        return 0; // for an out-of-range year, simply returns 0
-      }
-
-      return yearIdx;
-    },
-
-    /**
-     * Set disable Date
-     * @private
-     * @param {object} elem Node element to set.
-     * @param {string} year to check.
-     * @param {string} month to check.
-     * @param {string} date to check.
-     * @returns {void}
-     */
-    setDisabled: function setDisabled(elem, year, month, date) {
-      var s = this.settings;
-
-      function makeDisable() {
-        elem.addClass('is-disabled').attr('aria-disabled', 'true').removeClass('is-selected range').removeAttr('aria-selected');
-      } // Reset
-
-
-      elem.removeClass('is-disabled').removeAttr('aria-disabled');
-
-      if (typeof s.disable.callback === 'function') {
-        $.when(this.isDateDisabled(year, month, date)).then(function (dateIsDisabled) {
-          if (dateIsDisabled) {
-            makeDisable();
-          }
-        });
-      } else {
-        var dateIsDisabled = this.isDateDisabled(year, month, date);
-
-        if (dateIsDisabled && !s.disable.isEnable || !dateIsDisabled && s.disable.isEnable) {
-          makeDisable();
-        }
-      }
-    },
-
-    /**
-     * Check through the options to see if the date is disabled
-     * @private
-     * @param {string} year to check.
-     * @param {string} month to check.
-     * @param {string} date to check.
-     * @returns {boolean} true if the date is disabled
-     */
-    isDateDisabled: function isDateDisabled(year, month, date) {
-      var s = this.settings;
-
-      if (typeof s.disable.callback === 'function') {
-        var deferred = $.Deferred();
-        $.when(s.disable.callback(year, month, date)).then(function (results) {
-          deferred.resolve(results);
-        });
-        return deferred.promise();
-      }
-
-      var min = new Date(s.disable.minDate).setHours(0, 0, 0, 0);
-      var max = new Date(s.disable.maxDate).setHours(0, 0, 0, 0);
-      var d2 = this.isIslamic ? Locale.umalquraToGregorian(year, month, date) : new Date(year, month, date);
-
-      if (!d2) {
-        return false;
-      } // dayOfWeek
-
-
-      if (s.disable.dayOfWeek.indexOf(d2.getDay()) !== -1) {
-        return true;
-      }
-
-      var thisYear = d2.getFullYear();
-      d2 = d2.setHours(0, 0, 0, 0); // min and max
-
-      if (d2 <= min || d2 >= max) {
-        return true;
-      } // years
-
-
-      if (/string|number/.test(_typeof(s.disable.years))) {
-        s.disable.years = [s.disable.years];
-      }
-
-      for (var i = 0, l = s.disable.years.length; i < l; i++) {
-        if (thisYear === Number(s.disable.years[i])) {
-          return true;
-        }
-      } // dates
-
-
-      if (s.disable.dates.length && typeof s.disable.dates === 'string') {
-        s.disable.dates = [s.disable.dates];
-      }
-
-      for (var _i = 0, _l = s.disable.dates.length; _i < _l; _i++) {
-        var d = new Date(s.disable.dates[_i]);
-
-        if (d2 === d.setHours(0, 0, 0, 0)) {
-          return true;
-        }
-      }
-
-      return false;
-    },
-
-    /**
-     * Get array of dates between two dates
-     * @private
-     * @param {object} startDate .
-     * @param {object} endDate .
-     * @param {boolean} includeDisabled .
-     * @returns {array} dates between two dates
-     */
-    getDateRange: function getDateRange(startDate, endDate, includeDisabled) {
-      var dates = [];
-      var current = new Date(startDate);
-      includeDisabled = typeof includeDisabled !== 'undefined' ? includeDisabled : this.settings.range.includeDisabled;
-
-      while (endDate.getTime() >= current.getTime()) {
-        if (includeDisabled || !includeDisabled && !this.isDateDisabled(current.getFullYear(), current.getMonth(), current.getDate())) {
-          dates.push(new Date(current));
-        }
-
-        current.setDate(current.getDate() + 1);
-      }
-
-      return dates;
-    },
-
-    /**
-     * Set Color for the Legend settings
-     * @private
-     * @param {object} elem to set.
-     * @param {string} year to check.
-     * @param {string} month to check.
-     * @param {string} date to check.
-     * @returns {void}
-     */
-    setLegendColor: function setLegendColor(elem, year, month, date) {
-      if (!this.settings.showLegend || !elem[0]) {
-        return;
-      }
-
-      var hex = this.getLegendColor(year, month, date);
-      elem[0].style.backgroundColor = '';
-      elem.off('mouseenter.legend mouseleave.legend');
-
-      if (hex) {
-        if (hex.indexOf('#') === -1) {
-          var name = hex.replace(/[0-9]/g, '');
-          var number = hex.substr(hex.length - 2, 2) * 10;
-          hex = theme.themeColors().palette[name][number].value;
-        } // set color on elem at .3 of provided color as per design
-
-
-        elem.addClass('is-colored');
-        elem[0].style.backgroundColor = colorUtils.hexToRgba(hex, 0.3);
-        var normalColor = colorUtils.hexToRgba(hex, 0.3);
-        var hoverColor = colorUtils.hexToRgba(hex, 0.7); // handle hover states
-
-        elem.on('mouseenter.legend', function () {
-          var thisElem = $(this);
-          thisElem[0].style.backgroundColor = hoverColor;
-          thisElem.find('span')[0].style.backgroundColor = 'transparent';
-          thisElem.find('.day-text')[0].style.backgroundColor = 'transparent';
-        }).on('mouseleave.legend', function () {
-          var thisElem = $(this);
-          thisElem[0].style.backgroundColor = normalColor;
-          thisElem.find('span')[0].style.backgroundColor = '';
-          thisElem.find('.day-text')[0].style.backgroundColor = '';
-        });
-      }
-    },
-
-    /**
-     * Process Color Options to get the date color
-     * @private
-     * @param {string} year .
-     * @param {string} month .
-     * @param {string} date .
-     * @returns {string} date color
-     */
-
-    /* eslint-disable consistent-return */
-    getLegendColor: function getLegendColor(year, month, date) {
-      var s = this.settings;
-
-      if (!s.showLegend) {
-        return;
-      }
-
-      var checkDate = new Date(year, month, date);
-      var checkHours = checkDate.setHours(0, 0, 0, 0);
-
-      for (var i = 0; i < s.legend.length; i++) {
-        var series = s.legend[i]; // Check Day of week
-
-        if (series.dayOfWeek && series.dayOfWeek.indexOf(checkDate.getDay()) !== -1) {
-          return series.color;
-        } // Check for dates that match
-
-
-        if (series.dates) {
-          for (var j = 0; j < series.dates.length; j++) {
-            var d = new Date(series.dates[j]);
-
-            if (checkHours === d.setHours(0, 0, 0, 0)) {
-              return series.color;
-            }
-          }
-        }
-      }
-
-      return '';
-    },
-
-    /* eslint-enable consistent-return */
-
-    /**
-     * Sets up event handlers for this component and its sub-elements.
-     * @returns {object} The Calendar prototype, useful for chaining.
-     * @private
-     */
-    handleEvents: function handleEvents() {
-      var _this4 = this;
-
-      var self = this;
-      var s = this.settings;
-      this.element.off("updated.".concat(COMPONENT_NAME$D)).on("updated.".concat(COMPONENT_NAME$D), function () {
-        _this4.updated();
-      }); // Change Month Events
-
-      this.header.off('click.monthview').on('click.monthview', '.btn-icon', function () {
-        var isNext = $(this).is('.next');
-        var range = {};
-        var d = {
-          month: self.currentMonth,
-          year: self.currentYear
-        };
-
-        if (s.range.useRange) {
-          if (isNext) {
-            range.date = new Date(d.year, d.month + 1, self.element.find('.next-month:visible').length + 1);
-          } else {
-            range.date = new Date(d.year, d.month, 1);
-            range.date.setDate(range.date.getDate() - (self.days.find('.prev-month:visible').length + 1));
-          }
-
-          d.month += isNext ? 1 : -1;
-        } else {
-          self.currentMonth += isNext ? 1 : -1;
-          self.currentDate.setMonth(self.currentMonth);
-          self.currentYear = parseInt(self.element[0].querySelector('span.year').innerText, 10);
-          self.currentDate.setFullYear(self.currentYear);
-          d.month = self.currentMonth;
-          d.year = self.currentYear;
-        }
-
-        self.showMonth(d.month, d.year);
-
-        if (s.range.useRange) {
-          range.formatedDate = Locale.formatDate(range.date, {
-            date: 'full',
-            locale: self.locale.name
-          });
-          range.cell = self.days.find("[aria-label=\"".concat(range.formatedDate, "\"]"));
-          self.setRangeOnCell(s.range.second ? false : range.cell);
-        }
-      });
-
-      if (s.range.useRange) {
-        this.header.off('mouseover.datepicker').on('mouseover.datepicker', 'button', function () {
-          if (s.range.extra) {
-            self.setRangeOnCell($(this).is('.next') ? s.range.extra.maxCell : s.range.extra.minCell);
-          }
-        }).off('focus.datepicker').on('focus.datepicker', 'button:not(.hide-focus)', function () {
-          if (s.range.extra) {
-            self.setRangeOnCell($(this).is('.next') ? s.range.extra.maxCell : s.range.extra.minCell);
-          }
-        });
-        this.days.off('mouseover.datepicker').on('mouseover.datepicker', 'td', function () {
-          self.setRangeOnCell(this);
-        });
-      }
-
-      if (this.calendarToolbarEl) {
-        this.calendarToolbarEl.off('change-date.monthview').on('change-date.monthview', function (e, args) {
-          if (args.isToday && _this4.settings.isPopup) {
-            return;
-          }
-
-          if (args.isToday) {
-            _this4.setToday();
-
-            return;
-          }
-
-          _this4.selectDay(args.selectedDate, false, true);
-        });
-      } // Allow dates to be selected
-
-
-      if (s.selectable) {
-        this.element.addClass('is-selectable').off('click.monthview-day').on('click.monthview-day', 'td', function (e) {
-          var key = e.currentTarget.getAttribute('data-key');
-          _this4.lastClickedKey = key;
-
-          if (e.currentTarget.classList.contains('is-disabled')) {
-            return;
-          }
-
-          _this4.selectDay(key, false, true);
-        });
-      }
-
-      this.handleMonthYearPane().handleKeys();
-      return this;
-    },
-
-    /**
-     * Handle events and keys on the month year pane
-     * @private
-     * @returns {object} The component for chaining.
-     */
-    handleMonthYearPane: function handleMonthYearPane() {
-      var _this5 = this;
-
-      var s = this.settings;
-
-      var appendYear = function appendYear(upDown) {
-        var yearContainer = _this5.monthYearPane[0].querySelector('.picklist.is-year');
-
-        var yearList = yearContainer.children;
-        var year = yearList[upDown === 'up' ? 1 : yearList.length - 2].querySelector('a').getAttribute('data-year');
-        var nextYear = parseInt(year, 10) + (upDown === 'up' ? -1 : 1);
-        DOM.remove(yearList[upDown === 'up' ? yearList.length - 2 : 1]);
-        var a = document.createElement('a');
-        a.setAttribute('href', '#');
-        a.setAttribute('tabindex', '-1');
-        a.setAttribute('data-year', nextYear);
-        a.innerHTML = nextYear;
-        var li = document.createElement('li');
-        DOM.addClass(li, 'picklist-item');
-        li.appendChild(a);
-        yearContainer.insertBefore(li, yearList[upDown === 'up' ? 1 : yearList.length - 1]); // Set selected
-
-        if (!_this5.monthYearPane[0].querySelector('.picklist.is-year li.is-selected')) {
-          DOM.addClass(li, 'is-selected');
-          a.setAttribute('tabindex', '0');
-        }
-      }; // Handle Long Press
-
-
-      var intervalId = null;
-      this.monthYearPane.off('touchstart.monthviewpane mousedown.monthviewpane').on('touchstart.monthviewpane mousedown.monthviewpane', '.picklist.is-year li', function (e) {
-        intervalId = setInterval(function () {
-          if (e.currentTarget.classList.contains('up')) {
-            appendYear('up');
-          }
-
-          if (e.currentTarget.classList.contains('down')) {
-            appendYear('down');
-          }
-
-          e.stopImmediatePropagation();
-          e.stopPropagation();
-          return false;
-        }, 200);
-        return true;
-      }).off('touchend.monthviewpane touchcancel.monthviewpane mouseup.monthviewpane mouseout.monthviewpane').on('touchend.monthviewpane touchcancel.monthviewpane mouseup.monthviewpane mouseout.monthviewpane', '.picklist.is-year li', function () {
-        clearInterval(intervalId);
-        return true;
-      });
-
-      var selectPicklistItem = function selectPicklistItem(target, cssClass) {
-        var selectedElem = _this5.monthYearPane[0].querySelector(".picklist.".concat(cssClass, " .is-selected"));
-
-        DOM.removeClass(selectedElem, 'is-selected');
-        selectedElem.querySelector('a').setAttribute('tabindex', '-1');
-        DOM.addClass(target.parentNode, 'is-selected');
-        target.setAttribute('tabindex', '0');
-      }; // Set selecting the month or year
-      // by click, keyboard from `monthYearPane`
-      // target: clicked or keyed element
-      // cssClass: target option `is-month` or `is-year`
-
-
-      var setMonthYearPane = function setMonthYearPane(target, cssClass) {
-        var elem = function elem(sel) {
-          return _this5.monthYearPane[0].querySelector(".is-".concat(sel, " .is-selected a"));
-        };
-
-        var d = cssClass === 'is-month' ? {
-          month: parseInt(target.getAttribute('data-month'), 10),
-          year: parseInt(elem('year').getAttribute('data-year'), 10)
-        } : {
-          month: parseInt(elem('month').getAttribute('data-month'), 10),
-          year: parseInt(target.getAttribute('data-year'), 10)
-        };
-
-        if (!s.range.useRange) {
-          _this5.currentMonth = d.month;
-
-          _this5.currentDate.setMonth(_this5.currentMonth);
-
-          _this5.currentYear = d.year;
-
-          _this5.currentDate.setFullYear(_this5.currentYear);
-
-          d.month = _this5.currentMonth;
-          d.year = _this5.currentYear;
-        }
-
-        selectPicklistItem(target, cssClass);
-
-        if (_this5.element.hasClass("".concat(cssClass, "only"))) {
-          _this5.monthYearPane.parent().find('button.is-select-month').click();
-        }
-      }; // Handle selecting a year, or month
-
-
-      this.monthYearPane.off('click.picklist-month').on('click.picklist-month', '.picklist.is-month li', function (e) {
-        setMonthYearPane(e.target, 'is-month');
-        e.preventDefault();
-      });
-      this.monthYearPane.off('click.picklist-month-a').on('click.picklist-month-a', '.picklist.is-month li a', function (e) {
-        e.preventDefault();
-      });
-      this.monthYearPane.off('click.picklist-year').on('click.picklist-year', '.picklist.is-year li', function (e) {
-        if (e.currentTarget.classList.contains('up')) {
-          appendYear('up');
-          return;
-        }
-
-        if (e.currentTarget.classList.contains('down')) {
-          appendYear('down');
-          return;
-        }
-
-        setMonthYearPane(e.target, 'is-year');
-        e.preventDefault();
-      });
-      this.monthYearPane.off('click.picklist-year-a').on('click.picklist-year-a', '.picklist.is-year li a', function (e) {
-        e.preventDefault();
-      }); // Handle behaviors when expanding and collapsing like disabling buttons and setting height
-
-      this.monthYearPane.on('expand.monthviewpane', function () {
-        // Disable the main page buttons for tabbing
-        if (!s.hideDays) {
-          _this5.element.find('.btn-icon, td.is-selected').attr('disabled', 'true');
-
-          _this5.element.find('td.is-selected').removeAttr('tabindex'); // Set the height
-
-
-          _this5.monthYearPane.find('.content').css('height', _this5.header.parent().height() - _this5.header.height() - 55); // 45 is the footer height
-          // Rename some buttons
-
-
-          _this5.element.find('.hyperlink.today').hide();
-
-          _this5.element.find('.is-select').removeClass('is-select').addClass('is-select-month-pane');
-
-          _this5.element.find('.is-cancel').removeClass('is-cancel').addClass('is-cancel-month-pane').text(Locale.translate('Cancel', {
-            locale: _this5.locale.name,
-            language: _this5.language
-          }));
-        } // Focus the month
-
-
-        setTimeout(function () {
-          var selectedMonth = _this5.monthYearPane.find('.is-month .is-selected a');
-
-          selectedMonth.focus();
-
-          if (_this5.monthYearPane.parent().hasClass('is-yearonly')) {
-            _this5.monthYearPane.find('.is-year .is-selected a').focus();
-          }
-        });
-      }).on('collapse.monthviewpane', function () {
-        // Enable it all again
-        if (!s.hideDays) {
-          _this5.element.find('.btn-icon').removeAttr('disabled');
-
-          _this5.element.find('td.is-selected').attr('tabindex', '0');
-
-          _this5.element.find('.hyperlink.today').show();
-
-          _this5.element.find('.is-select-month-pane').addClass('is-select').removeClass('is-select-month-pane');
-
-          _this5.element.find('.is-cancel-month-pane').addClass('is-cancel').removeClass('is-cancel-month-pane').text(Locale.translate('Clear', {
-            locale: _this5.locale.name,
-            language: _this5.language
-          }));
-        }
-      }); // Handle keyboard on the month year pane
-
-      var moveToItem = function moveToItem(e, nextPrev) {
-        var a = e.currentTarget;
-        var li = e.currentTarget.parentNode;
-        var adjacentLi = nextPrev === 'prev' ? li.previousSibling : li.nextSibling;
-
-        if (!adjacentLi) {
-          adjacentLi = li.parentNode.children[nextPrev === 'prev' ? li.parentNode.children.length - 1 : 0];
-        }
-
-        var adjacentA = adjacentLi.querySelector('a');
-        a.setAttribute('tabindex', '-1');
-        li.parentNode.querySelector('.is-selected').classList.remove('is-selected');
-        DOM.addClass(adjacentLi, 'is-selected');
-        adjacentA.setAttribute('tabindex', '0');
-        adjacentA.focus();
-      };
-
-      this.monthYearPane.off('keydown.monthviewpane').on('keydown.monthviewpane', '.picklist-item a', function (e) {
-        var isUp = e.currentTarget.parentNode.classList.contains('up');
-        var isDown = e.currentTarget.parentNode.classList.contains('down');
-        var isYear = e.currentTarget.parentNode.parentNode.classList.contains('is-year');
-        var isMonth = e.currentTarget.parentNode.parentNode.classList.contains('is-month');
-        var handle = false;
-
-        if (e.key === 'ArrowUp' && (isYear || isMonth)) {
-          moveToItem(e, 'prev');
-          handle = true;
-        } else if (e.key === 'ArrowDown' && (isYear || isMonth)) {
-          moveToItem(e, 'next');
-          handle = true;
-        } else if (e.key === 'Enter') {
-          if (isUp || isDown) {
-            appendYear(isUp ? 'up' : 'down');
-            handle = true;
-          } else if (isYear || isMonth) {
-            setMonthYearPane(e.target, isYear ? 'is-year' : 'is-month');
-            handle = true;
-          }
-        }
-
-        if (handle) {
-          e.preventDefault();
-        }
-      });
-      return this;
-    },
-
-    /**
-     * Select a specific date visually.
-     * @private
-     * @param {date | string} date specific date or a date key (hash string of the date)
-     * @param {boolean} closePopup Send a flag to close the popup
-     * @param {boolean} insertDate Send a flag to insert the date in the field
-    */
-    selectDay: function selectDay(date, closePopup, insertDate) {
-      if (this.isIslamic && typeof date !== 'string') {
-        this.currentIslamicDate = Locale.gregorianToUmalqura(date);
-        date = stringUtils.padDate(this.currentIslamicDate[0], this.currentIslamicDate[1], this.currentIslamicDate[2]);
-      }
-
-      if (!this.isIslamic && typeof date !== 'string') {
-        date = stringUtils.padDate(date.getFullYear(), date.getMonth(), date.getDate());
-      }
-
-      var dayObj = this.dayMap.filter(function (dayFilter) {
-        return dayFilter.key === date;
-      });
-      var year = parseInt(date.substr(0, 4), 10);
-      var month = parseInt(date.substr(4, 2), 10) - 1;
-      var day = parseInt(date.substr(6, 2), 10);
-
-      if (this.isIslamic) {
-        this.currentIslamicDate = date;
-        this.currentDate = Locale.umalquraToGregorian(year, month, day);
-      } else {
-        this.currentDate = new Date(year, month, day);
-      }
-
-      this.currentYear = year;
-      this.currentMonth = month;
-      this.currentDay = day;
-
-      if (dayObj.length === 0 || dayObj[0].elem.hasClass('alternate')) {
-        // Show month
-        this.showMonth(month, year);
-        dayObj = this.dayMap.filter(function (dayFilter) {
-          return dayFilter.key === date;
-        });
-      } // Error - date not found
-
-
-      if (!dayObj.length === 0) {
-        return;
-      }
-
-      var node = dayObj[0].elem[0];
-      var args = {
-        node: node,
-        key: date,
-        day: day,
-        month: month,
-        year: year,
-        close: closePopup
-      };
-      delete this.isKeyClick;
-      this.element.find('td.is-selected').removeClass('is-selected').removeAttr('tabindex');
-      $(node).addClass('is-selected').attr('tabindex', '0').focus();
-      insertDate = this.settings.headerStyle === 'full' ? true : insertDate;
-
-      if (insertDate && this.settings.onSelected) {
-        this.settings.onSelected(node, args);
-      }
-
-      if (insertDate) {
-        this.element.trigger('selected', args);
-      }
-    },
-
-    /**
-     * Select todays date visually.
-     */
-    setToday: function setToday() {
-      this.selectDay(new Date(), false, true);
-    },
-
-    /**
-     * Attach keyboard events for the calendar.
-     * @private
-     */
-    handleKeys: function handleKeys() {
-      var _this6 = this;
-
-      var s = this.settings;
-      this.element.off('keydown.monthview').on('keydown.monthview', '.monthview-table', function (e) {
-        var key = e.keyCode || e.charCode || 0;
-        var cell = $(e.target);
-
-        var allCell = _this6.days.find('td:visible');
-
-        var allCellLength = allCell.length;
-        var idx = null;
-        var selector = null;
-        var handled = false;
-        var minDate = new Date(s.disable.minDate);
-        var maxDate = new Date(s.disable.maxDate);
-
-        var resetRange = function resetRange() {
-          if (_this6.datepickerApi && s.range.useRange && s.range.first && s.range.first.date && s.range.second && s.range.second.date) {
-            _this6.datepickerApi.resetRange({
-              isData: true
-            });
-          }
-        };
-
-        if (_this6.settings.onKeyDown) {
-          var callbackResult = _this6.settings.onKeyDown({
-            e: e,
-            key: key,
-            cell: cell,
-            node: _this6.element
-          });
-
-          if (callbackResult === false) {
-            e.stopPropagation();
-            e.preventDefault();
-            return false;
-          }
-        } // Arrow Down: select same day of the week in the next week
-
-
-        if (key === 40) {
-          handled = true;
-
-          if (s.range.useRange) {
-            idx = allCell.index(e.target) + 7;
-            selector = allCell.eq(idx);
-
-            if (idx < allCellLength) {
-              resetRange();
-
-              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
-
-              _this6.setRangeSelBeforeFirstSel(selector);
-
-              _this6.activeTabindex(selector, true);
-            }
-          } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this6.currentDate.getMonth() < maxDate.getMonth()) {
-              _this6.currentDate.setDate(_this6.currentDate.getDate() + 7);
-            } else if (maxDate.getDate() - 1 >= _this6.currentDate.getDate() + 7) {
-              _this6.currentDate.setDate(_this6.currentDate.getDate() + 7);
-            }
-
-            _this6.selectDay(_this6.currentDate, false, false);
-          } else {
-            _this6.currentDate.setDate(_this6.currentDate.getDate() + 7);
-
-            _this6.selectDay(_this6.currentDate, false, false);
-          }
-        } // Arrow Up: select same day of the week in the previous week
-
-
-        if (key === 38) {
-          handled = true;
-
-          if (s.range.useRange) {
-            idx = allCell.index(e.target) - 7;
-            selector = allCell.eq(idx);
-
-            if (idx > -1) {
-              resetRange();
-
-              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
-
-              _this6.setRangeSelBeforeFirstSel(selector);
-
-              _this6.activeTabindex(selector, true);
-            }
-          } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this6.currentDate.getMonth() > minDate.getMonth()) {
-              _this6.currentDate.setDate(_this6.currentDate.getDate() - 7);
-            } else if (minDate.getDate() + 1 <= _this6.currentDate.getDate() - 7) {
-              _this6.currentDate.setDate(_this6.currentDate.getDate() - 7);
-            }
-
-            _this6.selectDay(_this6.currentDate, false, false);
-          } else {
-            _this6.currentDate.setDate(_this6.currentDate.getDate() - 7);
-
-            _this6.selectDay(_this6.currentDate, false, false);
-          }
-        } // Arrow Left
-
-
-        if (key === 37) {
-          handled = true;
-
-          if (s.range.useRange) {
-            idx = allCell.index(e.target) - 1;
-            selector = allCell.eq(idx);
-
-            if (idx > -1) {
-              resetRange();
-
-              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
-
-              _this6.setRangeSelBeforeFirstSel(selector);
-
-              _this6.activeTabindex(selector, true);
-            }
-          } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this6.currentDate.getMonth() > minDate.getMonth()) {
-              _this6.currentDate.setDate(_this6.currentDate.getDate() - 1);
-            } else if (minDate.getDate() + 1 !== _this6.currentDate.getDate()) {
-              _this6.currentDate.setDate(_this6.currentDate.getDate() - 1);
-            }
-
-            _this6.selectDay(_this6.currentDate, false, false);
-          } else {
-            _this6.currentDate.setDate(_this6.currentDate.getDate() - 1);
-
-            _this6.selectDay(_this6.currentDate, false, false);
-          }
-        } // Arrow Right
-
-
-        if (key === 39) {
-          handled = true;
-
-          if (s.range.useRange) {
-            idx = allCell.index(e.target) + 1;
-            selector = allCell.eq(idx);
-
-            if (idx < allCellLength) {
-              resetRange();
-
-              _this6.setRangeOnCell(selector.is('.is-selected') ? null : selector);
-
-              _this6.setRangeSelBeforeFirstSel(selector);
-
-              _this6.activeTabindex(selector, true);
-            }
-          } else if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this6.currentDate.getMonth() < maxDate.getMonth()) {
-              _this6.currentDate.setDate(_this6.currentDate.getDate() + 1);
-            } else if (maxDate.getDate() - 1 !== _this6.currentDate.getDate()) {
-              _this6.currentDate.setDate(_this6.currentDate.getDate() + 1);
-            }
-
-            _this6.selectDay(_this6.currentDate, false, false);
-          } else {
-            _this6.currentDate.setDate(_this6.currentDate.getDate() + 1);
-
-            _this6.selectDay(_this6.currentDate, false, false);
-          }
-        } // Page Up Selects Same Day Prev Month
-
-
-        if (key === 33 && !e.altKey) {
-          handled = true;
-          resetRange();
-
-          if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (minDate.getMonth() !== _this6.currentDate.getMonth()) {
-              _this6.currentDate.setMonth(_this6.currentDate.getMonth() - 1);
-
-              _this6.selectDay(_this6.currentDate, false, false);
-            }
-          } else {
-            _this6.currentDate.setMonth(_this6.currentDate.getMonth() - 1);
-
-            _this6.selectDay(_this6.currentDate, false, false);
-          }
-        } // Page Down Selects Same Day Next Month
-
-
-        if (key === 34 && !e.altKey) {
-          handled = true;
-          resetRange();
-
-          if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this6.currentDate.getMonth() !== maxDate.getMonth()) {
-              _this6.currentDate.setMonth(_this6.currentDate.getMonth() + 1);
-
-              _this6.selectDay(_this6.currentDate, false, false);
-            }
-          } else {
-            _this6.currentDate.setMonth(_this6.currentDate.getMonth() + 1);
-
-            _this6.selectDay(_this6.currentDate, false, false);
-          }
-        } // ctrl + Page Up Selects Same Day previous Year
-
-
-        if (key === 33 && e.ctrlKey) {
-          handled = true;
-          resetRange();
-
-          _this6.currentDate.setFullYear(_this6.currentDate.getFullYear() - 1);
-
-          _this6.selectDay(_this6.currentDate, false, false);
-        } // ctrl + Page Down Selects Same Day next Year
-
-
-        if (key === 34 && e.ctrlKey) {
-          handled = true;
-          resetRange();
-
-          _this6.currentDate.setFullYear(_this6.currentDate.getFullYear() + 1);
-
-          _this6.selectDay(_this6.currentDate, false, false);
-        } // Home Moves to Start of the month
-
-
-        if (key === 36) {
-          handled = true;
-          var d = _this6.currentDate;
-          var firstDay;
-          resetRange();
-
-          if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (minDate.getMonth() !== _this6.currentDate.getMonth()) {
-              firstDay = new Date(d.getFullYear(), d.getMonth(), 1);
-            } else {
-              firstDay = new Date(minDate.getFullYear(), minDate.getMonth(), minDate.getDate());
-              firstDay.setDate(firstDay.getDate() + 1);
-            }
-          } else {
-            firstDay = new Date(d.getFullYear(), d.getMonth(), 1);
-          }
-
-          _this6.currentDate = firstDay;
-
-          if (_this6.isIslamic) {
-            _this6.currentIslamicDate = Locale.gregorianToUmalqura(_this6.currentDate);
-          }
-
-          _this6.selectDay(_this6.currentDate, false, false);
-        } // End Moves to End of the month
-
-
-        if (key === 35) {
-          handled = true;
-          var _d = _this6.currentDate;
-          var lastDay;
-          resetRange();
-
-          if (s.disable.restrictMonths && s.disable.minDate && s.disable.maxDate) {
-            if (_this6.currentDate.getMonth() !== maxDate.getMonth()) {
-              lastDay = new Date(_d.getFullYear(), _d.getMonth() + 1, 0);
-            } else {
-              lastDay = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
-              lastDay.setDate(lastDay.getDate() - 1);
-            }
-          } else {
-            lastDay = new Date(_d.getFullYear(), _d.getMonth() + 1, 0);
-          }
-
-          _this6.currentDate = lastDay;
-
-          if (_this6.isIslamic) {
-            _this6.currentIslamicDate = Locale.gregorianToUmalqura(_this6.currentDate);
-          }
-
-          _this6.selectDay(_this6.currentDate, false, false);
-        } // 't' selects today
-
-
-        if (key === 84) {
-          if (s.range.useRange && _this6.datepickerApi) {
-            resetRange();
-            var keepFocus = !(s.range.first && s.range.first.date && (!s.range.second || s.range.second && !s.range.second.date));
-
-            _this6.datepickerApi.setToday(keepFocus);
-
-            if (!keepFocus && _this6.datepickerApi && typeof _this6.datepickerApi.closeCalendar === 'function') {
-              _this6.datepickerApi.closeCalendar();
-            }
-          } else {
-            _this6.setToday();
-          }
-
-          handled = true;
-        } // Space or Enter closes Date Picker, selecting the Date
-
-
-        if (key === 32 || key === 13) {
-          handled = true;
-
-          if (s.range.useRange) {
-            if (!s.range.first || s.range.first && !s.range.first.date) {
-              allCell.removeClass('is-selected');
-            }
-
-            cell.focus().trigger('click');
-            return false;
-          }
-
-          var _d2 = _this6.getCellDate(cell);
-
-          if (_this6.isIslamic) {
-            _this6.currentIslamicDate = [_d2.year, _d2.month, _d2.day];
-            _this6.currentDate = Locale.umalquraToGregorian(_this6.currentIslamicDate[0], _this6.currentIslamicDate[1], _this6.currentIslamicDate[2]);
-          } else {
-            _this6.currentDate = new Date(_d2.year, _d2.month, _d2.day);
-          }
-
-          _this6.selectDay(_this6.currentDate, true, true);
-        }
-
-        if (handled) {
-          e.stopPropagation();
-          e.preventDefault();
-          return false;
-        }
-
-        return true;
-      });
-    },
-
-    /**
-     * Validate the Previous and Next Button availability.
-     * @private
-     */
-    validatePrevNext: function validatePrevNext() {
-      if (!this.settings.disable.restrictMonths || !this.settings.disable.minDate || !this.settings.disable.maxDate) {
-        return;
-      }
-
-      var minDate = new Date(this.settings.disable.minDate);
-      var maxDate = new Date(this.settings.disable.maxDate);
-      this.element.find('.prev').prop('disabled', false);
-      this.element.find('.next').prop('disabled', false); // Wierd edge case, the user probably should use validation.
-
-      if (minDate.getFullYear() > this.currentYear || this.currentYear > maxDate.getFullYear()) {
-        this.element.find('.prev').prop('disabled', true);
-        this.element.find('.next').prop('disabled', true);
-        return;
-      }
-
-      if (this.currentMonth - 1 < minDate.getMonth()) {
-        this.element.find('.prev').prop('disabled', true);
-      }
-
-      if (this.currentMonth + 1 > maxDate.getMonth()) {
-        this.element.find('.next').prop('disabled', true);
-      }
-    },
-
-    /**
-     * Add a Legend below the table
-     * @private
-     * @returns {void}
-     */
-    addLegend: function addLegend() {
-      var s = this.settings;
-
-      if (!s.showLegend) {
-        return;
-      } // Remove Legend
-
-
-      if (this.legend && this.legend.length) {
-        this.legend.remove();
-      }
-
-      this.legend = $('<div class="monthview-legend"></div>');
-
-      for (var i = 0; i < s.legend.length; i++) {
-        var series = s.legend[i];
-        var hex = series.color;
-
-        if (hex.indexOf('#') === -1) {
-          var name = hex.replace(/[0-9]/g, '');
-          var number = hex.substr(hex.length - 2, 2) * 10;
-          hex = theme.themeColors().palette[name][number].value;
-        }
-
-        var item = '' + "<div class=\"monthview-legend-item\">\n          <span class=\"monthview-legend-swatch\" style=\"background-color: ".concat(colorUtils.hexToRgba(hex, 0.3), "\"></span>\n          <span class=\"monthview-legend-text\">").concat(series.name, "</span>\n        </div>");
-        this.legend.append(item);
-      }
-
-      this.table.after(this.legend);
-    },
-
-    /**
-     * Set range on given cell -or- current month/year.
-     * @private
-     * @param {object} cell to set range.
-     * @returns {void}
-     */
-    setRangeOnCell: function setRangeOnCell(cell) {
-      var self = this;
-      var s = this.settings;
-
-      if (s.range.useRange && s.range.first && !s.range.second) {
-        var first = s.range.first;
-        var extra = s.range.extra;
-        var len = extra.cellLength - 1;
-        var firstCell = first.rowIdx + first.cellIdx + len * first.rowIdx;
-        cell = $(cell); // First date selected cell element
-
-        if (cell.length && !cell.is('.is-disabled, .is-selected')) {
-          var row = cell.closest('tr');
-          var cellIdx = cell.index();
-          var rowIdx = row.index();
-          var thisCell = rowIdx + cellIdx + len * rowIdx;
-          var d = self.getCellDate(cell);
-          var cellDate = new Date(d.year, d.month, d.day);
-          var max = this.getDifferenceToDate(s.range.first.date, s.range.maxDays);
-          self.days.find('td:visible').each(function (i) {
-            var thisTd = $(this);
-
-            if (cellDate > s.range.first.date && !s.range.selectBackward && (!s.range.maxDays || s.range.maxDays > 0 && cellDate.getTime() <= max.aftertime) && (i > firstCell && i <= thisCell || cellDate > extra.max && i <= thisCell)) {
-              thisTd.addClass('range-next');
-            } else if (cellDate < s.range.first.date && !s.range.selectForward && (!s.range.maxDays || s.range.maxDays > 0 && cellDate.getTime() >= max.beforetime) && (i < firstCell && i >= thisCell || cellDate < extra.min && i >= thisCell)) {
-              thisTd.addClass('range-prev');
-            } else {
-              thisTd.removeClass('range-next range-prev');
-            }
-          });
-        } else if (!cell.length) {
-          self.days.find('td').removeClass('range-next range-prev');
-        }
-      }
-
-      if (!cell && s.range.second) {
-        self.setRangeSelected();
-      }
-    },
-
-    /**
-     * Get difference to given date
-     * @private
-     * @param {object} date .
-     * @param {number} days .
-     * @param {boolean} includeDisabled .
-     * @returns {object} before/after difference to given date
-     */
-    getDifferenceToDate: function getDifferenceToDate(date, days, includeDisabled) {
-      var _this7 = this;
-
-      var difference = {};
-
-      var move = function move(d, daystomove, isNext) {
-        d = new Date(d);
-
-        while (daystomove > 0) {
-          d.setDate(d.getDate() + (isNext ? 1 : -1));
-
-          if (includeDisabled || !includeDisabled && !_this7.isDateDisabled(d.getFullYear(), d.getMonth(), d.getDate())) {
-            daystomove--;
-            difference[isNext ? 'after' : 'before'] = new Date(d);
-          }
-        }
-
-        if (isNext && difference.after) {
-          difference.aftertime = difference.after.getTime();
-        } else if (difference.before) {
-          difference.beforetime = difference.before.getTime();
-        }
-      };
-
-      includeDisabled = typeof includeDisabled !== 'undefined' ? includeDisabled : this.settings.range.includeDisabled;
-      move(date, days); // previous
-
-      move(date, days, true); // next
-
-      return difference;
-    },
-
-    /**
-     * Set range selected value
-     * @private
-     * @returns {void}
-     */
-    setRangeSelected: function setRangeSelected() {
-      var self = this;
-      var s = this.settings;
-
-      var dateObj = function dateObj(d) {
-        return new Date(d.year, d.month, d.day);
-      };
-
-      if (s.range.useRange && s.range.second && s.range.second.date && this.days && this.days.length) {
-        this.days.find('td').removeClass('range range-next range-prev range-selection end-date is-selected');
-        this.days.find('td:visible').each(function () {
-          var cell = $(this);
-          var isDisabled = cell.is('.is-disabled') && !s.range.includeDisabled;
-          var includeDisabled = cell.is('.is-disabled') && s.range.includeDisabled;
-          var includeDisableClass = includeDisabled ? ' include-disabled' : '';
-
-          var getTime = function getTime(d) {
-            d = new Date(d);
-            d.setHours(0, 0, 0);
-            return d.getTime();
-          };
-
-          var date = getTime(dateObj(self.getCellDate(cell)));
-          var d1 = getTime(s.range.first.date);
-          var d2 = getTime(s.range.second.date);
-
-          if ((date === d1 || date === d2) && !isDisabled) {
-            cell.addClass("is-selected".concat(includeDisableClass).concat(d1 !== d2 ? " range-selection".concat(date === d2 ? ' end-date' : '') : ''));
-          } else if (date > d1 && date < d2 && !isDisabled) {
-            cell.addClass("range-selection".concat(includeDisableClass));
-          }
-        });
-      }
-    },
-
-    /**
-     * Set range selection to active cell with click.
-     * @private
-     * @returns {number} status
-     */
-    setRangeSelByClick: function setRangeSelByClick() {
-      // 0: cell did not found
-      // 1: cell found but not changed and not clicked
-      // 2: cell found and changed but not clicked
-      // 3: cell found and clicked
-      var status = 0;
-      var s = this.settings;
-
-      if (s.range.useRange) {
-        if (s.range.first && s.range.first.date && s.range.second && s.range.second.date) {
-          if (s.showTime && this.datepickerApi) {
-            var getTime = function getTime(d) {
-              return new Date(d).getTime();
-            };
-
-            var d = {
-              time1: getTime(s.range.first.date),
-              time2: getTime(s.range.second.date),
-              first: this.datepickerApi.setTime(s.range.first.date),
-              second: this.datepickerApi.setTime(s.range.second.date)
-            };
-
-            if (d.time1 !== getTime(d.first)) {
-              this.datepickerApi.setRangeToElem(d.first, true);
-              this.datepickerApi.setRangeToElem(d.second, false);
-              status = 2; // 2: cell found and changed but not clicked
-            }
-          } // 1: cell found but not changed and not clicked
-
-
-          status = status === 0 ? 1 : status;
-        } else {
-          var cell;
-
-          if (!s.range.first || s.range.first && !s.range.first.date) {
-            cell = this.dayMap.filter(function (d) {
-              return d.elem.is('.is-selected');
-            });
-
-            if (cell && cell.length) {
-              this.days.find('td:visible').removeClass('is-selected').removeAttr('aria-selected');
-              cell[0].elem.focus().trigger('click');
-              status = 3; // 3: cell found and clicked
-            }
-          } else if (!s.range.second || s.range.second && !s.range.second.date) {
-            cell = this.days.find('td.range-prev:visible').first();
-
-            if (!cell.length) {
-              cell = this.days.find('td.range-next:visible').last();
-            }
-
-            if (!cell.length) {
-              cell = this.dayMap.filter(function (d) {
-                return d.elem.is('.is-selected');
-              });
-            }
-
-            if (cell && cell.length) {
-              var elem = cell[0].elem || cell;
-              elem.focus().trigger('click');
-              status = 3; // 3: cell found and clicked
-            }
-          }
-        }
-      }
-
-      return status;
-    },
-
-    /**
-     * Get date from given cell.
-     * @private
-     * @param {object} cell to get date.
-     * @returns {object} as: year, month, day
-     */
-    getCellDate: function getCellDate(cell) {
-      var day = parseInt(cell.text(), 10);
-      var month = parseInt(this.header.find('.month').attr('data-month'), 10);
-      var year = parseInt(this.header.find('.year').text(), 10);
-
-      if (cell.hasClass('prev-month')) {
-        if (month === 0) {
-          month = 11;
-          year--;
-        } else {
-          month--;
-        }
-      } else if (cell.hasClass('next-month')) {
-        if (month === 11) {
-          month = 0;
-          year++;
-        } else {
-          month++;
-        }
-      }
-
-      return {
-        year: year,
-        month: month,
-        day: day
-      };
-    },
-
-    /**
-     * Set range selection before first date selected
-     * @private
-     * @param {object} elem to set selection
-     * @returns {void}
-     */
-    setRangeSelBeforeFirstSel: function setRangeSelBeforeFirstSel(elem) {
-      var s = this.settings;
-
-      if (s.range.useRange && $('#monthview-popup:visible')) {
-        if (!s.range.first) {
-          $('td', this.element).removeClass('is-selected');
-          elem.addClass('is-selected');
-        }
-      }
-    },
-
-    /**
-     * Check if file type allowed
-     * @private
-     * @param {object} elem to set fouus
-     * @param {boolean} isFocus true if need to set foucs
-     * @returns {object} element passed in
-     */
-    activeTabindex: function activeTabindex(elem, isFocus) {
-      $('td', this.element).removeAttr('tabindex');
-      elem.attr('tabindex', 0);
-
-      if (isFocus) {
-        elem.focus();
-      }
-
-      return elem;
-    },
-
-    /**
-     * Handle updated settings and values.
-     * @returns {object} [description]
-     */
-    updated: function updated() {
-      return this.teardown().init();
-    },
-
-    /**
-     * Simple Teardown - remove events & rebuildable markup.
-     * @returns {object} The Component prototype, useful for chaining.
-     * @private
-     */
-    teardown: function teardown() {
-      this.header.off();
-      this.days.off();
-      this.element.off();
-
-      if (this.monthYearPane) {
-        this.monthYearPane.off();
-        this.monthYearPane = null;
-      }
-
-      return this;
-    },
-
-    /**
-     * Teardown - Remove added markup and events.
-     * @private
-     * @returns {object} The prototype.
-     */
-    destroy: function destroy() {
-      this.teardown();
-
-      if (this.element) {
-        this.element.empty();
-        $.removeData(this.element[0], COMPONENT_NAME$D);
-      }
-
-      return this;
-    }
-  };
-
-  var COMPONENT_NAME$E = 'weekview';
-  var COMPONENT_NAME_DEFAULTS$1 = {
-    eventTypes: [{
-      id: 'example',
-      label: 'Example',
-      color: 'emerald07',
-      checked: true,
-      click: function click() {}
-    }],
-    filteredTypes: [],
-    events: [],
-    locale: null,
-    language: null,
-    firstDayOfWeek: 0,
-    startDate: null,
-    endDate: null,
-    showAllDay: true,
-    showTimeLine: true,
-    startHour: 7,
-    endHour: 19,
-    showToday: true,
-    showViewChanger: true,
-    onChangeView: null,
-    onChangeWeek: null,
-    onRenderWeek: null,
-    eventTooltip: 'overflow',
-    iconTooltip: 'overflow'
-  };
-  /**
-   * WeekView - Renders a Week View Calendar
-   * @class WeekView
-   * @param {string} element The plugin element for the constuctor
-   * @param {object} [settings] The settings element.
-   * @param {array} [settings.eventTypes] An array of objects with data for the event types.
-   * @param {array} [settings.events] An array of objects with data for the events.
-   * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
-   * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale will be used or the passed locale will be used.
-   * @param {date} [settings.startDate] Start of the week to show.
-   * @param {date} [settings.endDate] End of the week to show.
-   * @param {boolean} [settings.firstDayOfWeek=0] Set first day of the week. '1' would be Monday.
-   * @param {boolean} [settings.showAllDay=true] Detemines if the all day events row should be shown.
-   * @param {boolean} [settings.showTimeLine=true] Shows a bar across the current time.
-   * @param {number} [settings.startHour=7] The hour (0-24) to end on each day.
-   * @param {number} [settings.endHour=19] The hour (0-24) to end on each day.
-   * @param {boolean} [settings.showToday=true] Deterimines if the today button should be shown.
-   * @param {boolean} [settings.showViewChanger] If false the dropdown to change views will not be shown.
-   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
-   * @param {function} [settings.onChangeWeek] Call back for when the week is changed.
-   * @param {function} [settings.onRenderMonth] Fires when a week is rendered, allowing you to pass back events or event types to show.
-  * @param {string | function} [settings.eventTooltip] The content of event tooltip. Default value is 'overflow'
-   * @param {string | function} [settings.iconTooltip] The content of event icon tooltip. Default value is 'overflow'
-   */
-
-  function WeekView(element, settings) {
-    this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS$1);
-    this.element = $(element);
-    this.init();
-  } // Plugin Methods
-
-
-  WeekView.prototype = {
-    /**
-     * Do initialization, build up and / or add events ect.
-     * @private
-     * @returns {object} The Component prototype, useful for chaining.
-     */
-    init: function init() {
-      // Do initialization. Build or Events ect
-      if (!this.settings.startDate) {
-        this.settings.startDate = dateUtils.firstDayOfWeek(new Date(), this.settings.firstDayOfWeek);
-      }
-
-      if (!this.settings.endDate) {
-        this.settings.endDate = dateUtils.lastDayOfWeek(new Date(), this.settings.firstDayOfWeek);
-      }
-
-      return this.setLocaleThenBuild();
-    },
-
-    /**
-     * Set current locale to be used
-     * @private
-     * @returns {void}
-     */
-    setLocaleThenBuild: function setLocaleThenBuild() {
-      var _this = this;
-
-      var languageDf = Locale.getLocale(this.settings.language);
-      var localeDf = Locale.getLocale(this.settings.locale);
-      $.when(localeDf, languageDf).done(function (locale, lang) {
-        _this.locale = Locale.cultures[locale] || Locale.currentLocale;
-        _this.language = lang || _this.settings.language || _this.locale.language;
-        _this.settings.language = _this.language;
-
-        _this.setCurrentCalendar();
-
-        _this.build();
-      });
-      return this;
-    },
-
-    /**
-     * Set current calendar
-     * @private
-     * @returns {void}
-     */
-    setCurrentCalendar: function setCurrentCalendar() {
-      this.currentCalendar = Locale.calendar(this.locale.name, this.settings.language, this.settings.calendarName);
-      this.isIslamic = this.currentCalendar.name === 'islamic-umalqura';
-      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
-      this.conversions = this.currentCalendar.conversions;
-      return this;
-    },
-
-    /**
-     * Add any needed markup to the component.
-     * @private
-     * @returns {object} The WeekView prototype, useful for chaining.
-     */
-    build: function build() {
-      this.addToolbar();
-      this.showWeek(this.settings.startDate, this.settings.endDate);
-      this.handleEvents();
-      return this;
-    },
-
-    /**
-     * Render all the events in the current view.
-     * @param {boolean} isCallback Will be set to true when a callback occurs
-     * @private
-     */
-    renderAllEvents: function renderAllEvents(isCallback) {
-      if (this.settings.onRenderWeek && !isCallback) {
-        this.callOnRenderWeek();
-        return;
-      } // Clone and sort the array
-
-
-      var eventsSorted = this.settings.events.slice(0);
-      eventsSorted.sort(function (a, b) {
-        return a.starts < b.starts ? -1 : a.starts > b.starts ? 1 : 0;
-      }); // eslint-disable-line
-
-      this.removeAllEvents();
-
-      for (var i = 0; i < eventsSorted.length; i++) {
-        var event = eventsSorted[i];
-
-        if (this.settings.filteredTypes.indexOf(event.type) > -1) {
-          continue;
-        }
-
-        this.renderEvent(event);
-      }
-    },
-
-    /**
-     * Execute onRenderWeek and handle the call back.
-     * @private
-     */
-    callOnRenderWeek: function callOnRenderWeek() {
-      var self = this;
-
-      function response(events, eventTypes) {
-        if (eventTypes && eventTypes.length > 0) {
-          self.settings.eventTypes = eventTypes;
-        }
-
-        if (events && events.length > 0) {
-          self.settings.events = events;
-          self.renderAllEvents(true);
-        }
-      }
-
-      this.settings.onRenderWeek(this.element, response, {
-        api: self,
-        settings: this.settings
-      });
-    },
-
-    /**
-     * Remove all events from the month.
-     * @private
-     */
-    removeAllEvents: function removeAllEvents() {
-      var events = this.element[0].querySelectorAll('.calendar-event');
-
-      for (var i = 0; i < events.length; i++) {
-        events[i].parentNode.removeChild(events[i]);
-      }
-
-      for (var _i = 0; _i < this.dayMap.length; _i++) {
-        this.dayMap[_i].events = [];
-      }
-    },
-
-    /**
-     * Render a single event on the ui, use in the loop and other functions.
-     * @private
-     * @param  {object} event The event object.
-     */
-    renderEvent: function renderEvent(event) {
-      var startDate = new Date(event.starts);
-      var startKey = stringUtils.padDate(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
-      var endDate = new Date(event.ends);
-      var endKey = stringUtils.padDate(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-      var days = this.dayMap.filter(function (day) {
-        return day.key >= startKey && day.key <= endKey;
-      });
-      event.endKey = endKey;
-      event.startKey = startKey;
-      event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes); // Event is only on this day
-
-      if (days.length === 1 && !event.isAllDay) {
-        this.appendEventToHours(days[0].elem, event);
-      }
-
-      if (days.length === 1 && event.isAllDay) {
-        this.appendEventToAllDay(days[0].elem, event);
-      } // Event extends multiple days or is all day
-
-
-      if (days.length > 1) {
-        // TODO
-        for (var i = 0; i < days.length; i++) {
-          var cssClass = i === 0 ? 'calendar-event-start' : 'calendar-event-continue';
-
-          if (i === days.length - 1) {
-            cssClass = 'calendar-event-ends';
-          }
-
-          this.appendEventToAllDay(days[i].elem, event, cssClass);
-        }
-      }
-    },
-
-    /*
-     * Add the ui event to the container event day
-     * @private
-     * @param {object} container The container to append to
-     * @param {object} event The event data object.
-     * @param {string} cssClass An extra css class
-     */
-    appendEventToAllDay: function appendEventToAllDay(container, event, cssClass) {
-      var allDayContainer = container.querySelector('.week-view-all-day-wrapper');
-
-      if (!allDayContainer) {
-        return;
-      }
-
-      var node = document.createElement('a');
-      DOM.addClass(node, 'calendar-event', event.color, cssClass);
-      node.setAttribute('data-id', event.id);
-      node.setAttribute('data-key', event.startKey);
-      node.setAttribute('href', '#');
-
-      if (cssClass === 'calendar-event-continue' || cssClass === 'calendar-event-ends') {
-        node.setAttribute('tabindex', '-1');
-      }
-
-      node.innerHTML = "<div class=\"calendar-event-content\">\n      ".concat(event.icon ? "<span class=\"calendar-event-icon\"><svg class=\"icon ".concat(event.icon, "\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\" data-status=\"").concat(event.status, "\"><use href=\"#").concat(event.icon, "\"></use></svg></span>") : '', "\n      <span class=\"calendar-event-title\">").concat(event.shortSubject || event.subject, "</span>\n    </div>");
-      var containerEvents = allDayContainer.querySelectorAll('.calendar-event');
-      var eventCount = containerEvents.length;
-
-      if (eventCount >= 1) {
-        node.style.top = "".concat(22 * eventCount, "px");
-      }
-
-      if (eventCount > 2) {
-        var nodes = this.element[0].querySelectorAll('.week-view-all-day-wrapper');
-
-        for (var i = 0; i < nodes.length; i++) {
-          nodes[i].style.height = "".concat(44 + (eventCount - 1) * 23, "px");
-        }
-      }
-
-      allDayContainer.appendChild(node);
-      this.attachTooltip(node, event);
-    },
-
-    /**
-     * Add the ui event to the container spanning hours
-     * @private
-     * @param {object} container The container to append to
-     * @param {object} event The event data object.
-     */
-    appendEventToHours: function appendEventToHours(container, event) {
-      var dayHourContainers = this.element[0].querySelectorAll("td:nth-child(".concat(container.cellIndex + 1, ")"));
-
-      for (var i = 0; i < dayHourContainers.length; i++) {
-        var tdEl = dayHourContainers[i];
-        var hour = parseFloat(tdEl.parentNode.getAttribute('data-hour'), 10);
-        var rStartsHour = Math.round(event.startsHour);
-        var isUp = rStartsHour > event.startsHour;
-        var startsHere = isUp ? hour === rStartsHour - 0.5 : hour === rStartsHour;
-
-        if (startsHere) {
-          var duration = event.endsHour - event.startsHour;
-          var displayedTime = '';
-          var node = document.createElement('a');
-          DOM.addClass(node, 'calendar-event', event.color);
-          node.setAttribute('data-id', event.id);
-          node.setAttribute('data-key', event.startKey);
-          node.setAttribute('href', '#');
-
-          if (duration < 0.5) {
-            DOM.addClass(node, 'reduced-padding', event.color);
-          }
-
-          if (duration < 1.5) {
-            DOM.addClass(node, 'is-ellipsis');
-          }
-
-          if (duration > 2) {
-            displayedTime = " ".concat(Locale.formatHourRange(event.startsHour, event.endsHour, {
-              locale: this.locale
-            }));
-          } // Max out at the bottom and show the time
-
-
-          if (event.startsHour + duration > this.settings.endHour) {
-            DOM.addClass(node, 'is-cutoff', event.color);
-            duration = this.settings.endHour + 1 - event.startsHour;
-          }
-
-          if (duration < 0.25) {
-            duration = 0.25;
-          } // Set css top property if there extra starting time
-
-
-          if (event.startsHour > hour) {
-            var unit = 0.016666666666666784; // unit for one minute
-
-            var extra = event.startsHour - hour; // extract extra minutes
-
-            var height = tdEl.parentNode.offsetHeight; // container height
-            // calculate top value
-
-            node.style.top = "".concat(extra / unit * (height / 30), "px"); // 30-minutes each row
-          } // Add one per half hour + 1 px for each border crossed
-
-
-          node.style.height = "".concat(25 * (duration * 2) + 1.5 * duration, "px");
-          node.innerHTML = "<div class=\"calendar-event-content\">\n          ".concat(event.icon ? "<span class=\"calendar-event-icon\"><svg class=\"icon ".concat(event.icon, "\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\" data-status=\"").concat(event.status, "\"><use href=\"#").concat(event.icon, "\"></use></svg></span>") : '', "\n          <span class=\"calendar-event-title\">").concat(event.shortSubject || event.subject).concat(displayedTime, "</span>\n        </div>");
-          var containerWrapper = tdEl.querySelector('.week-view-cell-wrapper');
-          var containerEvents = tdEl.querySelectorAll('.calendar-event');
-          var eventCount = containerEvents.length;
-
-          if (eventCount > 0) {
-            var width = 100 / (eventCount + 1);
-            var j = 0;
-
-            for (j = 0; j < eventCount; j++) {
-              containerEvents[j].style.width = "".concat(width, "%");
-
-              if (j > 0 && this.isRTL) {
-                containerEvents[j].style.right = "".concat(width * j, "%");
-              }
-
-              if (j > 0 && !this.isRTL) {
-                containerEvents[j].style.left = "".concat(width * j, "%");
-              }
-            }
-
-            node.style.width = "".concat(width, "%");
-
-            if (this.isRTL) {
-              node.style.right = "".concat(width * j, "%");
-            } else {
-              node.style.left = "".concat(width * j, "%");
-            }
-          }
-
-          containerWrapper.appendChild(node);
-          this.attachTooltip(node, event);
-        }
-      }
-    },
-
-    /**
-     * Add the tooltip functionality.
-     * @private
-     * @param {object} node The dom element.
-     * @param {object} event The event data object.
-     */
-    attachTooltip: function attachTooltip(node, event) {
-      var _this2 = this;
-
-      if (this.settings.iconTooltip !== 'overflow') {
-        var icon = node.querySelector('.calendar-event-icon');
-
-        if (icon) {
-          if (typeof this.settings.iconTooltip === 'function') {
-            this.settings.iconTooltip({
-              settings: this.settings,
-              event: event
-            });
-          } else if (event[this.settings.iconTooltip]) {
-            icon.setAttribute('title', event[this.settings.iconTooltip]);
-            $(icon).tooltip({
-              content: icon.innerText
-            });
-          }
-        }
-      }
-
-      if (this.settings.eventTooltip !== 'overflow') {
-        if (typeof this.settings.eventTooltip === 'function') {
-          this.settings.eventTooltip({
-            settings: this.settings,
-            event: event
-          });
-        } else if (event[this.settings.eventTooltip]) {
-          node.setAttribute('title', event[this.settings.eventTooltip]);
-          $(node).tooltip({
-            content: node.innerText
-          });
-        }
-      }
-
-      if (!event.shortSubject && (this.settings.eventTooltip === 'overflow' || this.settings.iconToolTip === 'overflow')) {
-        // Show the full text if cut off
-        node.setAttribute('title', event.subject);
-        $(node).tooltip({
-          beforeShow: function beforeShow(response, ui) {
-            var title = ui[0].querySelector('.calendar-event-title');
-            var icon = ui[0].querySelector('.calendar-event-icon');
-            var iconStatus = icon ? icon.querySelector('.icon').getAttribute('data-status') : '';
-
-            if (title.offsetWidth > ui[0].scrollWidth - (icon ? icon.offsetWidth : 0)) {
-              response("".concat(title.innerText).concat(iconStatus ? " (".concat(Locale.translate(iconStatus, {
-                locale: _this2.locale.name
-              }, false), ")") : ''));
-              return;
-            }
-
-            response(false);
-          }
-        });
-      }
-    },
-
-    /**
-     * Update the weekview to show the given range of days.
-     * @param {date} startDate The start of the week or range.
-     * @param {date} endDate The end of the week or range.
-     * @returns {void}
-     */
-    showWeek: function showWeek(startDate, endDate) {
-      var _this3 = this;
-
-      this.numberOfDays = Math.round((endDate - startDate) / (1000 * 60 * 60 * 24));
-      this.dayMap = [];
-      this.isDayView = false;
-      this.element.removeClass('is-day-view');
-
-      if (this.numberOfDays === 0 || this.numberOfDays === 1) {
-        this.element.addClass('is-day-view');
-        this.isDayView = true;
-        this.element.find('#calendar-view-changer').val('day').trigger('updated');
-      }
-
-      this.hasIrregularDays = this.numberOfDays !== 7; // Create the header consisting of days in the range
-
-      this.weekHeader = "<thead class=\"week-view-table-header\"><tr><th><div class=\"week-view-header-wrapper\"><span class=\"audible\">".concat(Locale.translate('Hour'), "</span></div>");
-
-      if (this.settings.showAllDay) {
-        this.weekHeader += "<div class=\"week-view-all-day-wrapper\">".concat(Locale.translate('AllDay', this.locale.name), "</div>");
-      }
-
-      this.weekHeader += '</th>';
-
-      for (var day = new Date(startDate.getTime()); day <= endDate; day.setDate(day.getDate() + 1)) {
-        // TODO if this is 'dd EEEE' has wierd overflow
-        var dayValue = Locale.formatDate(day, {
-          pattern: 'd',
-          locale: this.locale.name
-        });
-        var dayNameValue = Locale.formatDate(day, {
-          pattern: 'EEE',
-          locale: this.locale.name
-        });
-        var dayOfWeekSetting = this.currentCalendar.dateFormat.dayOfWeek;
-        var emphasis = dayOfWeekSetting ? dayOfWeekSetting.split(' ')[0] === 'EEE' : 'd EEE';
-        this.weekHeader += "<th data-key=\"".concat(stringUtils.padDate(day.getFullYear(), day.getMonth(), day.getDate()), "\"><div class=\"week-view-header-wrapper").concat(dateUtils.isToday(day) ? ' is-today' : '', "\"><span class=\"week-view-header-day-of-week").concat(emphasis ? '' : ' is-emphasis', "\">").concat(emphasis ? dayNameValue : dayValue, "</span><span class=\"week-view-header-day-of-week").concat(emphasis ? ' is-emphasis' : '', "\">").concat(emphasis ? dayValue : dayNameValue, "</span></div>");
-
-        if (this.settings.showAllDay) {
-          this.weekHeader += '<div class="week-view-all-day-wrapper"></div>';
-        }
-
-        this.weekHeader += '</th>';
-      }
-
-      this.weekHeader += '</tr></thead>'; // Show the hours in the days
-
-      this.weekBody = '<tbody>';
-
-      for (var hour = this.settings.startHour; hour <= this.settings.endHour; hour++) {
-        var weekRow = "<tr class=\"week-view-hour-row\" data-hour=\"".concat(hour, "\"><td><div class=\"week-view-cell-wrapper\">").concat(Locale.formatHour(hour, {
-          locale: this.locale
-        }), "</div></td>");
-        var halfHourRow = "<tr class=\"week-view-half-hour-row\" data-hour=\"".concat(hour, ".5\"><td><div class=\"week-view-cell-wrapper\"></div></td>");
-
-        for (var _day = new Date(startDate.getTime()); _day <= endDate; _day.setDate(_day.getDate() + 1)) {
-          //eslint-disable-line
-          weekRow += '<td><div class="week-view-cell-wrapper"></div></td>';
-          halfHourRow += '<td><div class="week-view-cell-wrapper"></div></td>';
-        }
-
-        weekRow += '</tr>';
-        halfHourRow += '</tr>';
-        this.weekBody += weekRow + halfHourRow;
-      }
-
-      this.weekBody += '</tbody>'; // Render the table and show the event
-
-      this.weekContainer = "<div class=\"week-view-container\"><table class=\"week-view-table\">".concat(this.weekHeader).concat(this.weekBody, "</table></div>");
-      this.element.find('.week-view-container').remove();
-      var args = {
-        isDayView: this.isDayView,
-        startDate: startDate,
-        endDate: endDate,
-        elem: this.element,
-        api: this
-      };
-      /**
-      * Fires as the calendar popup is opened.
-      * @event weekrendered
-      * @memberof WeekView
-      * @property {object} event - The jquery event object
-      * @property {object} args - The event arguments
-      * @property {boolean} args.isDayView - True if one day is showing.
-      * @property {object} args.startDate - The start date of the event
-      * @property {object} args.endDate - The start date of the event
-      * @property {object} args.elem - The current element.
-      * @property {object} args.api - The WeekView api
-      */
-
-      this.element.append(this.weekContainer).trigger('weekrendered', args);
-
-      if (this.settings.onChangeWeek) {
-        this.settings.onChangeWeek(args);
-      }
-
-      this.element.find('th').each(function (i, elem) {
-        var key = elem.getAttribute('data-key');
-
-        if (key) {
-          _this3.dayMap.push({
-            key: key,
-            elem: elem
-          });
-        }
-      }); // Add the time line and update the text on the month
-
-      this.addTimeLine();
-      this.showToolbarMonth(startDate, endDate);
-      this.renderAllEvents(); // Update currently set start and end date
-
-      this.settings.startDate = startDate;
-      this.settings.endDate = endDate;
-    },
-
-    /**
-     * Update the weekview toolbar to show month(s) being show.
-     * @private
-     * @param {date} startDate The start of the week or range.
-     * @param {date} endDate The end of the week or range.
-     * @returns {void}
-     */
-    showToolbarMonth: function showToolbarMonth(startDate, endDate) {
-      var startMonth = Locale.formatDate(startDate, {
-        pattern: 'MMMM',
-        locale: this.locale.name
-      });
-      var endMonth = Locale.formatDate(endDate, {
-        pattern: 'MMMM',
-        locale: this.locale.name
-      });
-      var startYear = Locale.formatDate(startDate, {
-        pattern: 'yyyy',
-        locale: this.locale.name
-      });
-      var endYear = Locale.formatDate(endDate, {
-        pattern: 'yyyy',
-        locale: this.locale.name
-      });
-      var monthStr = Locale.formatDate(endDate, {
-        date: 'year',
-        locale: this.locale.name
-      });
-
-      if (endMonth !== startMonth) {
-        monthStr = "".concat(Locale.formatDate(startDate, {
-          pattern: 'MMM',
-          locale: this.locale.name
-        }), " - ").concat(Locale.formatDate(endDate, {
-          pattern: 'MMMM yyyy',
-          locale: this.locale.name
-        }));
-      }
-
-      if (endYear !== startYear) {
-        monthStr = "".concat(Locale.formatDate(startDate, {
-          pattern: 'MMM yyyy',
-          locale: this.locale.name
-        }), " - ").concat(Locale.formatDate(endDate, {
-          pattern: 'MMM yyyy',
-          locale: this.locale.name
-        }));
-      }
-
-      this.monthField.text(monthStr);
-    },
-
-    /**
-     * Add a time line on the weekview which moves.
-     * @private
-     */
-    addTimeLine: function addTimeLine() {
-      var _this4 = this;
-
-      if (!this.settings.showTimeLine) {
-        return;
-      }
-
-      var setTime = function setTime() {
-        var now = new Date();
-        var hours = now.getHours();
-        var mins = now.getMinutes();
-        var diff = hours - _this4.settings.startHour + mins / 60; // 53 is the size of one whole hour (25 + two borders)
-
-        _this4.markers.css('top', diff * 52);
-      };
-
-      if (!this.timeMarker) {
-        this.element.find('.week-view-hour-row:nth-child(1) td').prepend('<div class="week-view-time-marker"></div>');
-        this.markers = $('.week-view-time-marker');
-        setTime();
-        this.timer = setInterval(function () {
-          setTime();
-        }, 30 * 1000);
-      }
-    },
-
-    /**
-     * Add and invoke the toolbar
-     * @private
-     */
-    addToolbar: function addToolbar() {
-      var _this5 = this;
-
-      // Invoke the toolbar
-      this.header = $('<div class="week-view-header"><div class="calendar-toolbar"></div></div>').appendTo(this.element);
-      this.calendarToolbarEl = this.header.find('.calendar-toolbar');
-      this.calendarToolbarAPI = new CalendarToolbar(this.calendarToolbarEl[0], {
-        onOpenCalendar: function onOpenCalendar() {
-          return _this5.settings.startDate;
-        },
-        locale: this.settings.locale,
-        language: this.settings.language,
-        year: this.currentYear,
-        month: this.currentMonth,
-        showToday: this.settings.showToday,
-        isAlternate: false,
-        isMenuButton: true,
-        showViewChanger: this.settings.showViewChanger,
-        onChangeView: this.settings.onChangeView,
-        viewChangerValue: !this.isDayView ? 'week' : 'day'
-      });
-      this.monthField = this.header.find('#monthview-datepicker-field');
-    },
-
-    /**
-     * Sets up event handlers for this component and its sub-elements.
-     * @returns {object} The Calendar prototype, useful for chaining.
-     * @private
-     */
-    handleEvents: function handleEvents() {
-      var _this6 = this;
-
-      this.element.off("updated.".concat(COMPONENT_NAME$E)).on("updated.".concat(COMPONENT_NAME$E), function () {
-        _this6.updated();
-      });
-      this.element.off("change-date.".concat(COMPONENT_NAME$E)).on("change-date.".concat(COMPONENT_NAME$E), function (e, args) {
-        var startDate = args.isToday ? new Date() : args.selectedDate;
-
-        if (_this6.isDayView) {
-          _this6.settings.startDate = startDate;
-          _this6.settings.endDate = startDate;
-        } else {
-          _this6.settings.startDate = _this6.hasIrregularDays ? startDate : dateUtils.firstDayOfWeek(startDate, _this6.settings.firstDayOfWeek);
-
-          _this6.settings.startDate.setHours(0, 0, 0, 0);
-
-          _this6.settings.endDate = new Date(_this6.settings.startDate);
-
-          _this6.settings.endDate.setDate(_this6.settings.endDate.getDate() + _this6.numberOfDays - 1);
-
-          _this6.settings.endDate.setHours(23, 59, 59, 59);
-        }
-
-        _this6.showWeek(_this6.settings.startDate, _this6.settings.endDate);
-      });
-      this.element.off("change-next.".concat(COMPONENT_NAME$E)).on("change-next.".concat(COMPONENT_NAME$E), function () {
-        _this6.advanceDays(true);
-      });
-      this.element.off("change-prev.".concat(COMPONENT_NAME$E)).on("change-prev.".concat(COMPONENT_NAME$E), function () {
-        _this6.advanceDays(false);
-      });
-
-      var fireEvent = function fireEvent(target, eventName) {
-        var eventId = target.getAttribute('data-id');
-
-        var eventData = _this6.settings.events.filter(function (event) {
-          return event.id === eventId;
-        });
-
-        if (!eventData || eventData.length === 0) {
-          return;
-        }
-        /**
-        * Fires as the calendar popup is opened.
-        * @event eventclick
-        * @memberof WeekView
-        * @property {object} event - The jquery event object
-        * @property {object} args - The event arguments
-        * @property {object} args.settings - The current settings including start and end date.
-        * @property {object} args.event - The event data.
-        */
-
-        /**
-        * Fires as the calendar popup is opened.
-        * @event eventdblclick
-        * @memberof WeekView
-        * @property {object} event - The jquery event object
-        * @property {object} args - The event arguments
-        * @property {object} args.settings - The current settings including start and end date.
-        * @property {object} args.event - The event data.
-        */
-
-
-        _this6.element.trigger(eventName, {
-          settings: _this6.settings,
-          event: eventData[0]
-        });
-      };
-
-      this.element.off("click.".concat(COMPONENT_NAME$E)).on("click.".concat(COMPONENT_NAME$E), '.calendar-event', function (e) {
-        fireEvent(e.currentTarget, 'eventclick');
-        e.preventDefault();
-      });
-      this.element.off("dblclick.".concat(COMPONENT_NAME$E)).on("dblclick.".concat(COMPONENT_NAME$E), '.calendar-event', function (e) {
-        fireEvent(e.currentTarget, 'eventdblclick');
-      });
-      return this;
-    },
-
-    /**
-     * Handle updated settings and values.
-     * @param {boolean} advance Whether to go up or down in days.
-     */
-    advanceDays: function advanceDays(advance) {
-      var diff = this.isDayView ? 1 : this.numberOfDays;
-
-      if (!advance) {
-        diff = -diff;
-      }
-
-      this.settings.startDate.setDate(this.settings.startDate.getDate() + diff);
-
-      if (this.isDayView) {
-        this.settings.endDate = new Date(this.settings.startDate);
-        this.settings.startDate.setHours(0, 0, 0, 0);
-        this.settings.endDate.setHours(23, 59, 59, 999);
-      } else {
-        this.settings.endDate.setDate(this.settings.endDate.getDate() + diff);
-      }
-
-      this.showWeek(this.settings.startDate, this.settings.endDate);
-    },
-
-    /**
-     * Add a new event via the event object and show it if it should be visible in the calendar.
-     * @param {object} event The event object with common event properties.
-     */
-    addEvent: function addEvent(event) {
-      if (!event.startsLocale) {
-        event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes);
-      }
-
-      calendarShared.cleanEventData(event, true, this.settings.startDate, this.locale, this.language, this.settings.events, this.settings.eventTypes);
-      this.settings.events.push(event);
-      this.renderEvent(event);
-    },
-
-    /**
-     * Select header for given date
-     * @private
-     * @param {object|string} d The date or key use for attribute in header `data-kay`.
-     * @returns {void}
-     */
-    selectHeader: function selectHeader(d) {
-      var key = d instanceof Date ? stringUtils.padDate(d.getFullYear(), d.getMonth(), d.getDate()) : d;
-      var selector = {
-        all: '.week-view-table-header th'
-      };
-      selector.current = "".concat(selector.all, "[data-key=\"").concat(key, "\"]");
-      var headers = [].slice.call(this.element[0].querySelectorAll(selector.all));
-      headers.forEach(function (header) {
-        header.classList.remove('is-selected');
-      });
-      var thisHeader = this.element[0].querySelector(selector.current);
-
-      if (thisHeader) {
-        thisHeader.classList.add('is-selected');
-      }
-    },
-
-    /**
-     * Remove all events from the calendar
-     */
-    clearEvents: function clearEvents() {
-      this.settings.events = [];
-      this.renderAllEvents();
-    },
-
-    /**
-     * Update an event via the event object and show it if it should be visible in the calendar.
-     * It uses the event id to do this.
-     * @param {object} event The event object with common event properties.
-     */
-    updateEvent: function updateEvent(event) {
-      var eventId = event.id;
-
-      for (var i = this.settings.events.length - 1; i >= 0; i--) {
-        if (this.settings.events[i].id === eventId) {
-          this.settings.events[i] = utils.extend(true, this.settings.events[i], event);
-          calendarShared.cleanEventData(this.settings.events[i], true, this.settings.startDate, this.locale, this.language, this.settings.events, this.settings.eventTypes);
-        }
-      }
-
-      this.renderAllEvents();
-    },
-
-    /**
-     * Remove an event from the dataset and page. It uses the id property.
-     * @param {object} event The event object with common event properties.
-     */
-    deleteEvent: function deleteEvent(event) {
-      var eventId = event.id;
-
-      for (var i = this.settings.events.length - 1; i >= 0; i--) {
-        if (this.settings.events[i].id === eventId) {
-          this.settings.events.splice(i, 1);
-        }
-      }
-
-      this.renderAllEvents();
-    },
-
-    /**
-     * Handle updated settings and values.
-     * @param {object} settings The new settings object to use.
-     * @returns {object} [description]
-     */
-    updated: function updated(settings) {
-      if (!settings) {
-        settings = {};
-      }
-
-      if (settings) {
-        this.settings = utils.mergeSettings(this.element[0], settings, this.settings);
-      }
-
-      if (settings.locale) {
-        this.destroy().init();
-        return this;
-      }
-
-      this.renderAllEvents();
-      return this;
-    },
-
-    /**
-     * Simple Teardown - remove events & rebuildable markup.
-     * @returns {object} The Component prototype, useful for chaining.
-     * @private
-     */
-    teardown: function teardown() {
-      this.element.off();
-      clearInterval(this.timer);
-      this.timer = null;
-      return this;
-    },
-
-    /**
-     * Destroy - Remove added markup and events.
-     * @returns {object} The prototype.
-     */
-    destroy: function destroy() {
-      this.teardown();
-      this.element.empty();
-      $.removeData(this.element[0], COMPONENT_NAME$E);
-      return this;
-    }
-  };
-
-  var COMPONENT_NAME$F = 'calendar';
-  var COMPONENT_NAME_DEFAULTS$2 = {
-    eventTypes: [{
-      id: 'example',
-      label: 'Example',
-      color: 'emerald07',
-      checked: true,
-      click: function click() {}
-    }],
-    events: [],
-    locale: null,
-    language: null,
-    month: new Date().getMonth(),
-    year: new Date().getFullYear(),
-    day: new Date().getDate(),
-    showViewChanger: true,
-    onRenderMonth: null,
-    template: null,
-    mobileTemplate: null,
-    upcomingEventDays: 14,
-    modalTemplate: null,
-    menuId: null,
-    menuSelected: null,
-    eventTooltip: 'overflow',
-    iconTooltip: 'overflow',
-    newEventDefaults: {
-      title: 'NewEvent',
-      subject: '',
-      isAllDay: true,
-      comments: ''
-    },
-    onChangeView: null,
-    showToday: true,
-    weekViewSettings: {
-      firstDayOfWeek: 0,
-      startHour: 7,
-      endHour: 19,
-      showAllDay: true,
-      showTimeLine: true
-    }
-  };
-  /**
-   * Calendar - Full eventing calendar.
-   * @class Calendar
-   * @param {string} element The plugin element for the constuctor
-   * @param {string} [settings] The settings element.
-   * @param {array} [settings.eventTypes] An array of objects with data for the event types.
-   * @param {array} [settings.events] An array of objects with data for the events.
-   * @param {string} [settings.locale] The name of the locale to use for this instance. If not set the current locale will be used.
-   * @param {string} [settings.language] The name of the language to use for this instance. If not set the current locale will be used or the passed locale will be used.
-   * @param {array} [settings.year] Initial year to show.
-   * @param {array} [settings.month] Initial month to show.
-   * @param {number} [settings.day] The initial selected day to show.
-   * @param {array} [settings.upcomingEventDays=14] How many days in advance should we show in the upcoming events pane.
-   * @param {boolean} [settings.showViewChanger] If false the dropdown to change views will not be shown.
-   * @param {function} [settings.onRenderMonth] Fires when a month is rendered, allowing you to pass back events or event types to show.
-   * @param {function} [settings.onSelected] Fires when a month day is clicked. Allowing you to do something.
-   * @param {function} [settings.onChangeView] Call back for when the view changer is changed.
-   * @param {string} [settings.template] The ID of the template used for the events.
-   * @param {string} [settings.mobileTemplate] The ID of the template on mobile responsive used for the events.
-   * @param {string} [settings.modalTemplate] The ID of the template used for the modal dialog on events.
-   * @param {string} [settings.menuId=null] ID of the menu to use for an event right click context menu
-   * @param {string} [settings.menuSelected=null] Callback for the  right click context menu
-   * @param {string} [settings.newEventDefaults] Initial event properties for the new events dialog.
-   * @param {string | function} [settings.eventTooltip] The content of event tooltip. Default value is 'overflow'
-   * @param {string | function} [settings.iconTooltip] The content of event icon tooltip. Default value is 'overflow'
-   * @param {boolean} [settings.showToday=true] Deterimines if the today button should be shown.
-   * @param {object} [settings.weekViewSettings = {}] an object containing settings for the internal weekview component.
-   * @param {boolean} [settings.weekViewSettings.firstDayOfWeek=0] Set first day of the week. '1' would be Monday.
-   * @param {number} [settings.weekViewSettings.startHour=7] The hour (0-24) to end on each day.
-   * @param {number} [settings.weekViewSettings.endHour=19] The hour (0-24) to end on each day.
-   * @param {boolean} [settings.weekViewSettings.showAllDay=true] Detemines if the all day events row should be shown.
-   * @param {boolean} [settings.weekViewSettings.showTimeLine=true] Shows a bar across the current time.
-   */
-
-  function Calendar(element, settings) {
-    this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS$2);
-    this.element = $(element);
-    this.init();
-  } // Plugin Methods
-
-
-  Calendar.prototype = {
-    /**
-     * Do initialization, build up and / or add events ect.
-     * @returns {object} The Component prototype, useful for chaining.
-     */
-    init: function init() {
-      return this.setLocaleThenBuild();
-    },
-
-    /**
-     * Add any needed markup to the component.
-     * @returns {object} The Calendar prototype, useful for chaining.
-     * @private
-     */
-    build: function build() {
-      this.setCurrentCalendar().renderEventTypes().renderMonthView().renderWeekView().handleEvents().addEventLegend();
-      return this;
-    },
-
-    /**
-     * Set current locale to be used.
-     * @private
-     * @returns {void}
-     */
-    setLocaleThenBuild: function setLocaleThenBuild() {
-      var _this = this;
-
-      var languageDf = Locale.getLocale(this.settings.language);
-      var localeDf = Locale.getLocale(this.settings.locale);
-      $.when(localeDf, languageDf).done(function (locale, lang) {
-        _this.locale = Locale.cultures[locale] || Locale.currentLocale;
-        _this.language = lang || _this.settings.language || _this.locale.language;
-        _this.settings.language = _this.language;
-
-        _this.setCurrentCalendar();
-
-        _this.build().handleEvents();
-      });
-      return this;
-    },
-
-    /**
-     * Set current calendar data to to be used.
-     * @private
-     * @returns {void}
-     */
-    setCurrentCalendar: function setCurrentCalendar() {
-      this.isRTL = (this.locale.direction || this.locale.data.direction) === 'right-to-left';
-      return this;
-    },
-
-    /**
-     * Display event legends below the calendar table on mobile view.
-     * @private
-     * @returns {void}
-     */
-    addEventLegend: function addEventLegend() {
-      var s = this.settings;
-      this.eventLegend = $('<div class="calendar-event-legend"></div>');
-      this.monthviewTable = $('.monthview-table');
-
-      for (var i = 0; i < s.eventTypes.length; i++) {
-        var event = s.eventTypes[i];
-        var color = event.color;
-        var legend = '' + "<div class=\"calendar-event-legend-item\">\n          <span class=\"calendar-event-legend-swatch ".concat(color, "\"></span>\n          <span class=\"calendar-event-legend-text\">").concat(event.label, "</span>\n        </div>");
-        this.eventLegend.append(legend);
-      }
-
-      this.monthviewTable.after(this.eventLegend);
-    },
-
-    /**
-     * Render the eventType Section
-     * @returns {object} The Calendar prototype, useful for chaining.
-     * @private
-     */
-    renderEventTypes: function renderEventTypes() {
-      this.eventTypeContainer = document.querySelector('.calendar-event-types');
-
-      if (!this.eventTypeContainer) {
-        return this;
-      }
-
-      var eventTypeMarkup = '';
-
-      for (var i = 0; i < this.settings.eventTypes.length; i++) {
-        var eventType = this.settings.eventTypes[i];
-        eventTypeMarkup += "<input type=\"checkbox\" class=\"checkbox ".concat(eventType.color, "07\" name=\"").concat(eventType.id, "\" id=\"").concat(eventType.id, "\" ").concat(eventType.checked ? 'checked="true"' : '', " ").concat(eventType.disabled ? 'disabled="true"' : '', " />\n        <label for=\"").concat(eventType.id, "\" class=\"checkbox-label\">").concat(eventType.translationKey ? Locale.translate(eventType.translationKey, {
-          locale: this.locale.name,
-          language: this.language
-        }) : eventType.label, "</label><br/>");
-      }
-
-      this.eventTypeContainer.innerHTML = eventTypeMarkup;
-      return this;
-    },
-
-    /**
-     * Render the monthview calendar
-     * @returns {object} The Calendar prototype, useful for chaining.
-     * @private
-     */
-    renderMonthView: function renderMonthView() {
-      var _this2 = this;
-
-      this.monthViewContainer = document.querySelector('.calendar .calendar-monthview'); // Handle changing view
-
-      this.activeView = 'month';
-
-      this.onChangeToMonth = function (args) {
-        if (_this2.settings.onChangeView) {
-          _this2.settings.onChangeView(args);
-
-          return;
-        }
-
-        _this2.changeView(args.viewName);
-      };
-
-      this.monthView = new MonthView(this.monthViewContainer, {
-        onRenderMonth: this.settings.onRenderMonth,
-        onSelected: this.settings.onSelected,
-        selectable: true,
-        locale: this.settings.locale,
-        language: this.settings.language,
-        month: this.settings.month,
-        year: this.settings.year,
-        day: this.settings.day,
-        eventTooltip: this.eventTooltip,
-        iconTooltip: this.iconTooltip,
-        showToday: this.settings.showToday,
-        showViewChanger: this.settings.showViewChanger,
-        onChangeView: this.onChangeToMonth
-      });
-      this.monthViewHeader = document.querySelector('.calendar .monthview-header');
-      this.renderAllEvents();
-      return this;
-    },
-
-    /**
-     * Render the weekview calendar
-     * @returns {object} The Calendar prototype, useful for chaining.
-     * @private
-     */
-    renderWeekView: function renderWeekView() {
-      var _this3 = this;
-
-      this.weekViewContainer = document.querySelector('.calendar .calendar-weekview');
-
-      if (!this.weekViewContainer) {
-        return this;
-      } // Handle changing view
-
-
-      this.weekViewContainer.classList.add('week-view');
-      this.weekViewContainer.classList.add('hidden');
-
-      this.onChangeToWeekDay = function (args) {
-        if (_this3.settings.onChangeView) {
-          _this3.settings.onChangeView(args);
-
-          return;
-        }
-
-        _this3.changeView(args.viewName);
-      };
-
-      var startDate = dateUtils.firstDayOfWeek(new Date(this.currentDate()), this.settings.weekViewSettings.firstDayOfWeek);
-      var endDate = dateUtils.lastDayOfWeek(new Date(this.currentDate()), this.settings.weekViewSettings.firstDayOfWeek);
-      startDate.setHours(0, 0, 0, 0);
-      endDate.setHours(23, 59, 59, 999);
-      this.weekView = new WeekView(this.weekViewContainer, {
-        locale: this.settings.locale,
-        language: this.settings.language,
-        startDate: startDate,
-        endDate: endDate,
-        eventTypes: this.settings.eventTypes,
-        events: this.settings.events,
-        firstDayOfWeek: this.settings.weekViewSettings.firstDayOfWeek,
-        showAllDay: this.settings.weekViewSettings.showAllDay,
-        showTimeLine: this.settings.weekViewSettings.showTimeLine,
-        startHour: this.settings.weekViewSettings.startHour,
-        endHour: this.settings.weekViewSettings.endHour,
-        showToday: this.settings.showToday,
-        showViewChanger: this.settings.showViewChanger,
-        onChangeView: this.onChangeToWeekDay,
-        eventTooltip: this.settings.eventTooltip,
-        iconTooltip: this.settings.iconTooltip
-      });
-      this.weekViewHeader = document.querySelector('.calendar .calendar-weekview .monthview-header');
-      this.weekView.settings.filteredTypes = this.filterEventTypes();
-
-      this.weekView.settings.onChangeWeek = function (args) {
-        _this3.monthView.selectDay(args.startDate, false, true);
-      };
-
-      this.weekView.renderAllEvents();
-      return this;
-    },
-
-    /**
-     * Set the current view (day, week or month)
-     * @param {string} viewName to set selection
-     * @returns {void}
-     */
-    changeView: function changeView(viewName) {
-      if (viewName === this.activeView || !this.weekViewContainer) {
-        return;
-      }
-
-      var currentDate = this.currentDate();
-      var startDate = new Date(currentDate);
-      var endDate = new Date(currentDate);
-      startDate.setHours(0, 0, 0, 0);
-      endDate.setHours(23, 59, 59, 999);
-
-      switch (viewName) {
-        case 'day':
-          this.monthViewContainer.classList.add('hidden');
-          this.weekViewContainer.classList.remove('hidden');
-          this.activeView = 'day';
-          this.weekView.settings.filteredTypes = this.filterEventTypes();
-          this.weekView.showWeek(startDate, endDate);
-          this.clearEventDetails();
-          this.weekView.calendarToolbarAPI.setViewChangerValue(this.activeView);
-          break;
-
-        case 'week':
-          this.monthViewContainer.classList.add('hidden');
-          this.weekViewContainer.classList.remove('hidden');
-          this.activeView = 'week';
-          startDate = dateUtils.firstDayOfWeek(startDate, this.settings.firstDayOfWeek);
-          endDate = dateUtils.lastDayOfWeek(startDate, this.settings.firstDayOfWeek);
-          this.weekView.settings.filteredTypes = this.filterEventTypes();
-          this.weekView.showWeek(startDate, endDate);
-          this.weekView.calendarToolbarAPI.setViewChangerValue(this.activeView);
-          this.clearEventDetails();
-          this.monthView.selectDay(currentDate, false, true);
-          this.weekView.selectHeader(currentDate);
-          break;
-
-        case 'month':
-          this.monthViewContainer.classList.remove('hidden');
-          this.weekViewContainer.classList.add('hidden');
-          this.activeView = 'month';
-          this.monthView.showMonth(this.settings.month, this.settings.year);
-          this.monthView.calendarToolbarAPI.setViewChangerValue(this.activeView);
-          this.monthView.selectDay(currentDate, false, true);
-          break;
-      }
-    },
-
-    /**
-     * Render the upcoming events view
-     * @param {object} event The Calendar event to show.
-     * @private
-     */
-    appendUpcomingEvent: function appendUpcomingEvent(event) {
-      this.upcomingEventsContainer = document.querySelector('.calendar-upcoming-events');
-
-      if (!this.upcomingEventsContainer || event.daysUntil > 0) {
-        return;
-      }
-
-      var daysUntil = Math.abs(event.daysUntil);
-
-      if (daysUntil < 0 || daysUntil > this.settings.upcomingEventDays) {
-        return;
-      }
-
-      var upcomingEvent = document.createElement('a');
-      upcomingEvent.setAttribute('href', '#');
-      upcomingEvent.setAttribute('data-key', event.startKey);
-      DOM.addClass(upcomingEvent, 'calendar-upcoming-event');
-      var upcomingEventsMarkup = '';
-      var startDay = Locale.formatDate(event.starts, {
-        pattern: 'd',
-        locale: this.locale.name
-      });
-      var endDay = Locale.formatDate(event.ends, {
-        pattern: 'd',
-        locale: this.locale.name
-      });
-      var dateRange = "".concat(Locale.formatDate(event.starts, {
-        pattern: 'MMMM',
-        locale: this.locale.name
-      }), " ").concat(startDay === endDay ? startDay : "".concat(startDay, "-").concat(endDay), ", ").concat(Locale.formatDate(event.starts, {
-        pattern: 'yyyy',
-        locale: this.locale.name
-      }));
-
-      if (parseInt(endDay, 10) < parseInt(startDay, 10)) {
-        var nextMonth = new Date(event.starts);
-        nextMonth.setDate(1);
-        nextMonth.setMonth(nextMonth.getMonth() + 1);
-        var endYear = nextMonth.getFullYear();
-        dateRange = "".concat(Locale.formatDate(event.starts, {
-          pattern: 'MMMM',
-          locale: this.locale.name
-        }), " ").concat(startDay, " - ").concat(Locale.formatDate(nextMonth, {
-          pattern: 'MMMM',
-          locale: this.locale.name
-        }), " ").concat(endDay, ", ").concat(endYear);
-      }
-
-      upcomingEventsMarkup += "\n      <span class=\"calendar-upcoming-date\">".concat(dateRange, "</span>\n      <span class=\"calendar-upcoming-event-color ").concat(event.color || '', "\">").concat(event.color || '', "</span>\n      <span class=\"calendar-upcoming-description\">").concat(event.subject || '', "</span>\n      <span class=\"calendar-upcoming-status-text\">").concat(event.status || '', "</span>\n      <span class=\"calendar-upcoming-duration\">").concat(event.isDays ? event.duration : event.durationHours, " ").concat(event.durationUnits || '', "</span>");
-      upcomingEvent.innerHTML = upcomingEventsMarkup;
-      this.upcomingEventsContainer.appendChild(upcomingEvent);
-    },
-
-    /**
-     * Render or re-render the events details section, using on the readonly or default eventTemplate
-     * @param {string} eventId The event id
-     * @param {number} count The event count
-     * @private
-     */
-    renderEventDetails: function renderEventDetails(eventId, count) {
-      if (!this.settings.events || this.activeView !== 'month') {
-        return;
-      } // Find the event data
-
-
-      var eventData = this.settings.events.filter(function (event) {
-        return event.id === eventId;
-      });
-
-      if (!eventData || eventData.length === 0) {
-        return;
-      }
-
-      this.eventDetailsContainer = document.querySelector('.calendar-event-details');
-
-      if (!this.eventDetailsContainer) {
-        return;
-      }
-
-      var thisEvent = $.extend(true, {}, eventData[0]);
-
-      if (thisEvent.durationHours && !thisEvent.isDays) {
-        calendarShared.formateTimeString(thisEvent, this.locale, this.language);
-      }
-
-      this.renderTmpl(thisEvent, this.settings.template, this.eventDetailsContainer, count > 1);
-      this.eventDetailsMobileContainer = document.querySelector('.calendar-event-details-mobile.listview');
-
-      if (this.eventDetailsMobileContainer) {
-        this.renderTmpl(thisEvent, this.settings.mobileTemplate, this.eventDetailsMobileContainer, count > 1);
-      }
-
-      var api = $(this.eventDetailsContainer).data('accordion');
-
-      if (api) {
-        api.destroy();
-      }
-
-      $('.calendar .list-detail').css('display', 'block');
-      $(this.eventDetailsContainer).accordion();
-
-      if (this.eventDetailsMobileContainer) {
-        $(this.eventDetailsMobileContainer).addClass('listview').listview({
-          selectable: false,
-          hoverable: false
-        });
-      }
-
-      if (DOM.hasClass(this.eventDetailsContainer, 'has-only-one')) {
-        $(this.eventDetailsContainer).find('.accordion-header, .accordion-header a').off('click');
-      }
-    },
-
-    /**
-     * Render each of the events for the currently selected node
-     * @private
-     */
-    renderSelectedEventDetails: function renderSelectedEventDetails() {
-      var dayObj = this.getDayEvents();
-      this.clearEventDetails();
-
-      if (!dayObj.events || dayObj.events.length === 0) {
-        return;
-      }
-
-      for (var i = 0; i < dayObj.events.length; i++) {
-        this.renderEventDetails(dayObj.events[i].id, dayObj.events.length);
-      }
-    },
-
-    /**
-     * If a upcomming day is clicked render that day/year.
-     * @private
-     * @param {string} key The date as an index key.
-     */
-    renderDay: function renderDay(key) {
-      this.monthView.selectDay(key);
-      var startDate = new Date(this.currentDate());
-      var endDate = new Date(this.currentDate());
-      startDate.setHours(0, 0, 0, 0);
-      endDate.setHours(23, 59, 59, 999);
-
-      if (this.activeView === 'day') {
-        this.weekView.showWeek(startDate, endDate);
-      }
-
-      if (this.activeView === 'week') {
-        startDate = dateUtils.firstDayOfWeek(startDate, this.settings.firstDayOfWeek);
-        endDate = dateUtils.lastDayOfWeek(startDate, this.settings.firstDayOfWeek);
-        this.weekView.showWeek(startDate, endDate);
-      }
-    },
-
-    /**
-     * Clear all contents from the event details area.
-     * @private
-     */
-    clearEventDetails: function clearEventDetails() {
-      this.eventDetailsContainer = document.querySelector('.calendar-event-details');
-      this.eventDetailsMobileContainer = document.querySelector('.calendar-event-details-mobile.listview');
-
-      if (this.eventDetailsContainer) {
-        this.eventDetailsContainer.innerHTML = '';
-      }
-
-      if (this.eventDetailsMobileContainer) {
-        this.eventDetailsMobileContainer.innerHTML = '';
-      }
-    },
-
-    /**
-     * Clear all contents from the upcoming events area.
-     * @private
-     */
-    clearUpcomingEvents: function clearUpcomingEvents() {
-      if (this.upcomingEventsContainer) {
-        this.upcomingEventsContainer.innerHTML = '';
-      }
-    },
-
-    /**
-     * Get the currently unchecked filter types
-     * @returns {array} The active types.
-     * @private
-     */
-    filterEventTypes: function filterEventTypes() {
-      var types = [];
-
-      if (!this.eventTypeContainer) {
-        return types;
-      }
-
-      var checkboxes = this.eventTypeContainer.querySelectorAll('.checkbox');
-
-      for (var i = 0; i < checkboxes.length; i++) {
-        var input = checkboxes[i];
-
-        if (!input.checked) {
-          types.push(input.getAttribute('id'));
-        }
-      }
-
-      return types;
-    },
-
-    /**
-     * Render/ReRender the events attached to the settings.
-     * @private
-     * @param {boolean} isCallback Will be set to true when a callback occurs
-     * @returns {object} The Calendar prototype, useful for chaining.
-     */
-    renderAllEvents: function renderAllEvents(isCallback) {
-      if (this.settings.onRenderMonth && !isCallback) {
-        this.callOnRenderMonth();
-        return this;
-      }
-
-      var self = this;
-      var filters = this.filterEventTypes(); // Cleanup from previous renders
-
-      this.removeAllEvents();
-      this.clearUpcomingEvents();
-      this.clearEventDetails(); // Clone and sort the array.
-
-      var eventsSorted = this.settings.events.slice(0);
-      eventsSorted.sort(function (a, b) {
-        return a.starts < b.starts ? -1 : a.starts > b.starts ? 1 : 0;
-      });
-
-      for (var i = 0; i < eventsSorted.length; i++) {
-        var event = eventsSorted[i];
-
-        if (filters.indexOf(event.type) > -1) {
-          continue;
-        }
-
-        self.renderEvent(event);
-      }
-
-      this.renderSelectedEventDetails();
-
-      if (this.weekView) {
-        this.weekView.settings.filteredTypes = filters;
-        this.weekView.renderAllEvents();
-      }
-
-      return this;
-    },
-
-    /**
-     * Render a single event on the ui, use in the loop and other functions.
-     * @param  {object} event The event object.
-     */
-    renderEvent: function renderEvent(event) {
-      var self = this; // Check for events starting on this day , or only on this day.
-
-      var startDate = Locale.newDateObj(event.starts);
-      var startKey = stringUtils.padDate(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()); // Check for events extending onto this day
-
-      var endDate = Locale.newDateObj(event.ends);
-      var endKey = stringUtils.padDate(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
-      var days = self.monthView.dayMap.filter(function (day) {
-        return day.key >= startKey && day.key <= endKey;
-      });
-      event.endKey = endKey;
-      event.startKey = startKey;
-      event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes);
-      var idx = -1;
-
-      for (var i = 0; i < self.monthView.dayMap.length; ++i) {
-        if (self.monthView.dayMap[i].key >= startKey && self.monthView.dayMap[i].key <= endKey) {
-          idx = i;
-          break;
-        }
-      } // Event is only on this day
-
-
-      if (days.length === 1) {
-        self.appendEvent(days[0].elem[0], event, 'event-day-start-end', idx);
-      } // Event extends multiple days
-
-
-      if (days.length > 1) {
-        for (var l = 0; l < days.length; l++) {
-          var cssClass = l === 0 ? 'event-day-start' : 'event-day-span';
-
-          if (days.length - 1 === l) {
-            cssClass = 'event-day-end';
-          }
-
-          self.appendEvent(days[l].elem[0], event, cssClass, idx + l);
-        }
-      } // Event extends multiple days
-
-
-      this.appendUpcomingEvent(event, days, idx);
-    },
-
-    /**
-     * Remove all events from the month.
-     */
-    removeAllEvents: function removeAllEvents() {
-      var moreEvents = this.monthViewContainer.querySelectorAll('.calendar-event-more');
-
-      for (var i = 0; i < moreEvents.length; i++) {
-        moreEvents[i].parentNode.removeChild(moreEvents[i]);
-      }
-
-      var calendarEvents = this.monthViewContainer.querySelectorAll('.calendar-event');
-
-      for (var _i = 0; _i < calendarEvents.length; _i++) {
-        calendarEvents[_i].parentNode.removeChild(calendarEvents[_i]);
-      }
-
-      for (var _i2 = 0; _i2 < this.monthView.dayMap.length; _i2++) {
-        this.monthView.dayMap[_i2].events = [];
-      }
-    },
-
-    /**
-     * Add the ui event to the container.
-     * @private
-     * @param {object} container The container to append to
-     * @param {object} event The event data object.
-     * @param {string} type Type of event, can be event-day-start, event-day-start-end, event-day-span, event-day-end
-     * @param {number} idx The dayMap index
-     * @returns {object} The Calendar prototype, useful for chaining.
-     */
-    appendEvent: function appendEvent(container, event, type, idx) {
-      var _this4 = this;
-
-      var node;
-      var eventCnt = container.querySelectorAll('.calendar-event').length;
-
-      if (idx > -1) {
-        if (!this.monthView.dayMap[idx].events) {
-          this.monthView.dayMap[idx].events = [];
-        }
-
-        this.monthView.dayMap[idx].events.push(event);
-      }
-
-      if (eventCnt >= 2) {
-        var moreSpan = container.querySelector('.calendar-event-more');
-
-        var setMoreSpan = function setMoreSpan(elem, count) {
-          elem.setAttribute('data-count', count); // Wrap text in extra span here, so link should not expand more than text, because `more span` is styled as block level element
-
-          elem.innerHTML = "<span>+ ".concat(count, " ").concat(Locale.translate('More', {
-            locale: _this4.locale.name,
-            language: _this4.language
-          }).replace('...', ''), "</span>");
-        };
-
-        if (!moreSpan) {
-          node = document.createElement('span');
-          DOM.addClass(node, 'calendar-event-more');
-          setMoreSpan(node, 1);
-          container.querySelector('.day-container').appendChild(node); // Switch to day view on click
-
-          $(container).off("click.".concat(COMPONENT_NAME$F)).on("click.".concat(COMPONENT_NAME$F), '.calendar-event-more span', function () {
-            var thisDate = _this4.monthView.dayMap[idx].key;
-
-            _this4.monthView.selectDay(thisDate, false, true);
-
-            _this4.changeView('day');
-          });
-        } else {
-          setMoreSpan(moreSpan, parseInt(moreSpan.getAttribute('data-count'), 10) + 1);
-        }
-
-        return this;
-      }
-
-      node = document.createElement('a');
-      DOM.addClass(node, 'calendar-event', event.color, type);
-      node.setAttribute('data-id', event.id);
-      node.setAttribute('data-key', event.startKey);
-      node.innerHTML = "<div class=\"calendar-event-content\">\n      ".concat(event.icon ? "<span class=\"calendar-event-icon\"><svg class=\"icon ".concat(event.icon, "\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\" data-status=\"").concat(event.status, "\"><use href=\"#").concat(event.icon, "\"></use></svg></span>") : '', "\n      <span class=\"calendar-event-title\">").concat(event.shortSubject || event.subject, "</span>\n    </div>");
-      container.querySelector('.day-container').appendChild(node);
-
-      if (this.settings.iconTooltip !== 'overflow') {
-        var icon = node.querySelector('.calendar-event-icon');
-
-        if (icon) {
-          if (typeof this.settings.iconTooltip === 'function') {
-            this.settings.iconTooltip({
-              month: this.settings.month,
-              year: this.settings.year,
-              event: event
-            });
-          } else if (event[this.settings.iconTooltip]) {
-            icon.setAttribute('title', event[this.settings.iconTooltip]);
-            $(icon).tooltip({
-              content: icon.innerText
-            });
-          }
-        }
-      }
-
-      if (this.settings.eventTooltip !== 'overflow') {
-        if (typeof this.settings.eventTooltip === 'function') {
-          this.settings.eventTooltip({
-            month: this.settings.month,
-            year: this.settings.year,
-            event: event
-          });
-        } else if (event[this.settings.eventTooltip]) {
-          node.setAttribute('title', event[this.settings.eventTooltip]);
-          $(node).tooltip({
-            content: node.innerText
-          });
-        }
-      }
-
-      if (!event.shortSubject && (this.settings.eventTooltip === 'overflow' || this.settings.iconToolTip === 'overflow')) {
-        // Show the full text if cut off
-        node.setAttribute('title', event.subject);
-        $(node).tooltip({
-          beforeShow: function beforeShow(response, ui) {
-            var title = ui[0].querySelector('.calendar-event-title');
-            var icon = ui[0].querySelector('.calendar-event-icon');
-            var iconStatus = icon ? icon.querySelector('.icon').getAttribute('data-status') : '';
-
-            if (title.offsetWidth > ui[0].scrollWidth - (icon ? icon.offsetWidth : 0)) {
-              response("".concat(title.innerText).concat(iconStatus ? " (".concat(Locale.translate(iconStatus, {
-                locale: _this4.locale.name,
-                language: _this4.language
-              }, false), ")") : ''));
-              return;
-            }
-
-            response(false);
-          }
-        });
-      }
-
-      return this;
-    },
-
-    /**
-     * Find the matching type and get the color.
-     * @param {object} id The eventType id to find.
-     * @param {object} event The event data object.
-     * @returns {object} The Calendar prototype, useful for chaining.
-     */
-    getEventTypeLabel: function getEventTypeLabel(id) {
-      var type = '';
-
-      if (!id) {
-        return type;
-      }
-
-      var eventInfo = this.settings.eventTypes.filter(function (eventType) {
-        return eventType.id === id;
-      });
-
-      if (eventInfo.length === 1) {
-        type = eventInfo[0].label;
-      }
-
-      return type;
-    },
-
-    /**
-     * Sets up event handlers for this component and its sub-elements.
-     * @returns {object} The Calendar prototype, useful for chaining.
-     * @private
-     */
-    handleEvents: function handleEvents() {
-      var _this5 = this;
-
-      var self = this;
-      this.element.off("updated.".concat(COMPONENT_NAME$F)).on("updated.".concat(COMPONENT_NAME$F), function () {
-        _this5.updated();
-      });
-      this.isSwitchingMonth = false;
-      this.element.off("monthrendered.".concat(COMPONENT_NAME$F)).on("monthrendered.".concat(COMPONENT_NAME$F), function (e, args) {
-        _this5.isSwitchingMonth = true;
-
-        if (_this5.modalVisible()) {
-          _this5.removeModal();
-        }
-
-        _this5.settings.year = args.year;
-        _this5.settings.month = args.month;
-
-        _this5.renderAllEvents();
-
-        setTimeout(function () {
-          _this5.isSwitchingMonth = false;
-        }, 500);
-      });
-      this.element.off("change.".concat(COMPONENT_NAME$F)).on("change.".concat(COMPONENT_NAME$F), '.checkbox', function () {
-        _this5.renderAllEvents(true);
-      });
-      $(this.monthViewContainer).off("selected.".concat(COMPONENT_NAME$F)).on("selected.".concat(COMPONENT_NAME$F), function () {
-        _this5.renderSelectedEventDetails();
-      });
-      this.element.off("click.".concat(COMPONENT_NAME$F, "-upcoming")).on("click.".concat(COMPONENT_NAME$F, "-upcoming"), '.calendar-upcoming-event', function (e) {
-        var key = e.currentTarget.getAttribute('data-key');
-
-        _this5.renderDay(key);
-      });
-      this.element.off("contextmenu.".concat(COMPONENT_NAME$F)).on("contextmenu.".concat(COMPONENT_NAME$F), '.calendar-event', function (e) {
-        e.stopPropagation();
-
-        var hasMenu = function hasMenu() {
-          return self.settings.menuId && $("#".concat(self.settings.menuId)).length > 0;
-        };
-
-        var eventId = e.currentTarget.getAttribute('data-id');
-
-        var eventData = _this5.settings.events.filter(function (event) {
-          return event.id === eventId;
-        });
-
-        _this5.element.triggerHandler('contextmenu', {
-          originalEvent: e,
-          month: _this5.settings.month,
-          year: _this5.settings.year,
-          event: eventData[0]
-        });
-
-        if (!utils.isSubscribedTo(self.element[0], e, 'contextmenu', 'calendar') && !hasMenu()) {
-          return true;
-        }
-
-        e.preventDefault();
-        self.closePrevPopupmenu();
-
-        if (!hasMenu()) {
-          return true;
-        }
-
-        var event = $(e.currentTarget);
-        event.popupmenu({
-          attachToBody: true,
-          menuId: _this5.settings.menuId,
-          eventObj: e,
-          trigger: 'immediate',
-          offset: {
-            y: 5
-          }
-        });
-        event.off('selected.calendar').on('selected.calendar', function (evt, elem) {
-          // const eventId = this.getAttribute('data-id');
-          if (self.settings.menuSelected) {
-            self.settings.menuSelected(evt, elem, eventId);
-          }
-
-          if (elem.attr('data-action') === 'delete-event') {
-            self.deleteEvent({
-              id: eventId
-            });
-          }
-
-          if (elem.attr('data-action') === 'show-event') {
-            var key = this.getAttribute('data-key');
-            self.monthView.selectDay(key);
-          }
-        });
-        return false;
-      });
-      var timer = 0;
-      var delay = 100;
-      var prevent = false;
-      this.element.off("click.".concat(COMPONENT_NAME$F, "-event")).on("click.".concat(COMPONENT_NAME$F, "-event"), '.calendar-event', function (e) {
-        timer = setTimeout(function () {
-          if (!prevent) {
-            var eventId = e.currentTarget.getAttribute('data-id');
-
-            var eventData = _this5.settings.events.filter(function (event) {
-              return event.id === eventId;
-            });
-
-            if (!eventData || eventData.length === 0) {
-              return;
-            }
-
-            var target = $(e.currentTarget);
-            var eventTarget = target.find('.calendar-event-title');
-
-            if (e.currentTarget.classList.contains('event-day-span') || e.currentTarget.classList.contains('event-day-end')) {
-              eventTarget = self.element.find(".event-day-start[data-id=\"".concat(target.attr('data-id'), "\"] .calendar-event-title"));
-            }
-
-            _this5.showModalWithCallback(eventData[0], false, eventTarget);
-            /**
-             * Fires when an event in the calendar is clicked.
-             * @event eventclick
-             * @memberof Calendar
-             * @property {number} args.month - The zero based month number.
-             * @property {number} args.year - The year currently rendered in the calendar.
-             * @property {object} args.event - The data for the event.
-             */
-
-
-            _this5.element.triggerHandler('eventclick', {
-              month: _this5.settings.month,
-              year: _this5.settings.year,
-              event: eventData[0]
-            });
-          }
-
-          prevent = false;
-        }, delay);
-      });
-      this.element.off("dblclick.".concat(COMPONENT_NAME$F, "-event")).on("dblclick.".concat(COMPONENT_NAME$F, "-event"), '.calendar-event', function (e) {
-        clearTimeout(timer);
-        prevent = true;
-        var eventId = e.currentTarget.getAttribute('data-id');
-
-        var eventData = _this5.settings.events.filter(function (event) {
-          return event.id === eventId;
-        });
-
-        if (!eventData || eventData.length === 0) {
-          return;
-        }
-        /**
-         * Fires when an event in the calendar is double clicked.
-         * @event eventdblclick
-         * @memberof Calendar
-         * @property {number} args.month - The zero based month number.
-         * @property {number} args.year - The year currently rendered in the calendar.
-         * @property {object} args.event - The data for the event.
-         */
-
-
-        _this5.element.trigger('eventdblclick', {
-          month: _this5.settings.month,
-          year: _this5.settings.year,
-          event: eventData[0]
-        });
-      });
-      this.element.off("dblclick.".concat(COMPONENT_NAME$F)).on("dblclick.".concat(COMPONENT_NAME$F), 'td', function (e) {
-        var key = e.currentTarget.getAttribute('data-key');
-
-        if (!key || _this5.isSwitchingMonth) {
-          return;
-        }
-
-        var day = new Date(key.substr(0, 4), key.substr(4, 2) - 1, key.substr(6, 2));
-        var eventData = utils.extend({}, _this5.settings.newEventDefaults);
-        eventData.startKey = key;
-        eventData.endKey = key;
-        eventData.starts = day;
-        eventData.ends = day;
-        e.stopPropagation();
-        calendarShared.cleanEventData(eventData, false, _this5.currentDate(), _this5.locale, _this5.language, _this5.settings.events, _this5.settings.eventTypes);
-
-        _this5.showModalWithCallback(eventData, true);
-        /**
-         * Fires when the calendar day is double clicked.
-         * @event dblclick
-         * @memberof Calendar
-         * @param {object} eventData - Information about the calendar date double clicked.
-         * @param {object} api - Access to the Calendar API
-         */
-
-
-        _this5.element.triggerHandler('dblclick', {
-          eventData: eventData,
-          api: _this5
-        });
-      }); // Set up mobile list view events
-
-      this.element.find('.listview').off("click.".concat(COMPONENT_NAME$F, "-mobile")).on("click.".concat(COMPONENT_NAME$F, "-mobile"), function (e) {
-        var target = $(e.target).closest('li');
-        var mobileEventId = target.attr('data-id');
-
-        var mobileEventData = _this5.settings.events.filter(function (event) {
-          return event.id === mobileEventId;
-        });
-
-        if (!mobileEventData || mobileEventData.length === 0) {
-          return;
-        }
-
-        _this5.showModalWithCallback(mobileEventData[0], false, target);
-
-        _this5.element.triggerHandler('eventclick', {
-          month: _this5.settings.month,
-          year: _this5.settings.year,
-          event: mobileEventData[0]
-        });
-      });
-      return this;
-    },
-
-    /**
-     * Close any previous opened popupmenus.
-     * @private
-     * @returns {void}
-     */
-    closePrevPopupmenu: function closePrevPopupmenu() {
-      var nodes = [].slice.call(this.element[0].querySelectorAll('.is-open:not(.popupmenu)'));
-      nodes.forEach(function (node) {
-        var elem = $(node);
-
-        if (elem.data('popupmenu')) {
-          elem.trigger('close');
-        }
-      });
-    },
-
-    /**
-     * Execute onRenderMonth and handle the call back.
-     * @private
-     */
-    callOnRenderMonth: function callOnRenderMonth() {
-      var self = this;
-
-      function response(events, eventTypes) {
-        if (eventTypes && eventTypes.length > 0) {
-          self.settings.eventTypes = eventTypes;
-
-          if (self.weekView) {
-            self.weekView.settings.eventTypes = eventTypes;
-          }
-
-          self.renderEventTypes();
-        }
-
-        if (events && events.length > 0) {
-          self.settings.events = events;
-          self.renderAllEvents(true);
-
-          if (self.weekView) {
-            self.weekView.settings.events = events;
-            self.weekView.renderAllEvents(true);
-          }
-        }
-      }
-
-      this.settings.onRenderMonth(this.element, response, {
-        api: self,
-        month: this.settings.month,
-        year: this.settings.year
-      });
-    },
-
-    /**
-     * Get the current selected date on the calendar.
-     * @returns {date} the currently selected date on the control.
-     */
-    currentDate: function currentDate() {
-      var ret = this.isIslamic ? this.monthView.currentIslamicDate : this.monthView.currentDate;
-
-      if (!Locale.isValidDate(ret)) {
-        return new Date();
-      }
-
-      return ret;
-    },
-
-    /**
-     * Get the events and date for the currently selected calendar day.
-     * @param {date} date The date to find the events for.
-     * @returns {object} dayEvents An object with all the events and the event date.
-     */
-    getDayEvents: function getDayEvents(date) {
-      if (!date) {
-        date = this.currentDate();
-      }
-
-      if (typeof date !== 'string' && !this.isRTL) {
-        date = stringUtils.padDate(date.getFullYear(), date.getMonth(), date.getDate());
-      }
-
-      if (this.isRTL) {
-        date = stringUtils.padDate(date[0], date[1], date[2]);
-      }
-
-      var dayObj = this.monthView.dayMap.filter(function (dayFilter) {
-        return dayFilter.key === date;
-      });
-
-      if (this.activeView !== 'month') {
-        dayObj = this.weekView.dayMap.filter(function (dayFilter) {
-          return dayFilter.key === date;
-        });
-      }
-
-      var dayEvents = {
-        date: this.monthView.currentDate,
-        events: []
-      };
-
-      if (dayObj.length === 0) {
-        return [];
-      }
-
-      dayEvents.events = dayObj[0].events;
-      dayEvents.elem = dayObj[0].elem;
-      return dayEvents;
-    },
-
-    /**
-     * Render the template into the container.
-     * @param {object} event The event object with common event properties.
-     * @param {object} template The template id.
-     * @param {object} container The container to put it in.
-     * @param {boolean} append If true we append the template into the container.
-    */
-    renderTmpl: function renderTmpl(event, template, container, append) {
-      if (_typeof(Tmpl) !== 'object' || !template) {
-        return;
-      } // create a copy of the template
-
-
-      if (template instanceof $) {
-        template = "".concat(template.html());
-      } else if (typeof template === 'string') {
-        // If a string doesn't contain HTML elments,
-        // assume it's an element ID string and attempt to select with jQuery
-        if (!stringUtils.containsHTML(template)) {
-          template = $("#".concat(template)).html();
-        }
-      }
-
-      event.color = calendarShared.getEventTypeColor(event.type, this.settings.eventTypes);
-      event.startsLong = Locale.formatDate(event.starts, {
-        date: 'long',
-        locale: this.locale.name
-      });
-      event.endsLong = Locale.formatDate(event.ends, {
-        date: 'long',
-        locale: this.locale.name
-      });
-      event.startsHoursLong = "".concat(Locale.formatDate(event.starts, {
-        date: 'long',
-        locale: this.locale.name
-      }), " ").concat(Locale.formatDate(event.starts, {
-        date: 'hour',
-        locale: this.locale.name
-      }));
-      event.endsHoursLong = "".concat(Locale.formatDate(event.ends, {
-        date: 'long',
-        locale: this.locale.name
-      }), " ").concat(Locale.formatDate(event.ends, {
-        date: 'hour',
-        locale: this.locale.name
-      }));
-      event.typeLabel = this.getEventTypeLabel(event.type);
-      var renderedTmpl = Tmpl.compile(template, {
-        event: event
-      });
-      container.classList.remove('has-only-one');
-
-      if (append) {
-        DOM.append(container, renderedTmpl, '*');
-        return;
-      }
-
-      container.innerHTML = renderedTmpl;
-      container.classList.add('has-only-one');
-    },
-
-    /**
-     * Add a new event via the event object and show it if it should be visible in the calendar.
-     * @param {object} event The event object with common event properties.
-     */
-    addEvent: function addEvent(event) {
-      calendarShared.cleanEventData(event, true, this.currentDate(), this.locale, this.language, this.settings.events, this.settings.eventTypes);
-      this.settings.events.push(event);
-      this.renderEvent(event);
-      this.renderSelectedEventDetails();
-
-      if (this.weekView) {
-        this.weekView.addEvent(event);
-      }
-    },
-
-    /**
-     * Update an event via the event object and show it if it should be visible in the calendar.
-     * It uses the event id to do this.
-     * @param {object} event The event object with common event properties.
-     */
-    updateEvent: function updateEvent(event) {
-      var eventId = event.id;
-
-      for (var i = this.settings.events.length - 1; i >= 0; i--) {
-        if (this.settings.events[i].id === eventId) {
-          this.settings.events[i] = utils.extend(true, this.settings.events[i], event);
-          calendarShared.cleanEventData(this.settings.events[i], true, this.currentDate(), this.locale, this.language, this.settings.events, this.settings.eventTypes);
-        }
-      }
-
-      this.renderAllEvents();
-
-      if (this.weekView) {
-        this.weekView.updateEvent(event);
-      }
-    },
-
-    /**
-     * Remove an event from the dataset and page. It uses the id property.
-     * @param {object} event The event object with common event properties.
-     */
-    deleteEvent: function deleteEvent(event) {
-      var eventId = event.id;
-
-      for (var i = this.settings.events.length - 1; i >= 0; i--) {
-        if (this.settings.events[i].id === eventId) {
-          this.settings.events.splice(i, 1);
-        }
-      }
-
-      this.renderAllEvents();
-
-      if (this.weekView) {
-        this.weekView.deleteEvent(event);
-      }
-    },
-
-    /**
-     * Remove all events from the calendar
-     */
-    clearEvents: function clearEvents() {
-      this.settings.events = [];
-      this.renderAllEvents();
-
-      if (this.weekView) {
-        this.weekView.clearEvents();
-      }
-    },
-
-    /**
-     * Show a modal used to add/edit events. This uses the modalTemplate setting for the modal contents.
-     * @param {object} event The event object with common event properties for defaulting fields in the template.
-     * @param {function} done The callback for when the modal closes.
-     * @param {object} eventTarget The target element for the popup.
-     */
-    showEventModal: function showEventModal(event, done, eventTarget) {
-      var _this6 = this;
-
-      if (!this.settings.modalTemplate) {
-        return;
-      }
-
-      if (this.modalVisible()) {
-        this.removeModal();
-      }
-
-      this.modalContents = document.createElement('div');
-      DOM.addClass(this.modalContents, 'calendar-event-modal', 'hidden');
-      document.getElementsByTagName('body')[0].appendChild(this.modalContents);
-      event = calendarShared.addCalculatedFields(event, this.locale, this.language, this.settings.eventTypes);
-      this.renderTmpl(event || {}, this.settings.modalTemplate, this.modalContents);
-      var dayObj = this.getDayEvents();
-      var isCancel = true;
-      dayObj.elem = $(dayObj.elem);
-      var placementArgs = dayObj.elem.index() === 6 ? this.isRTL ? 'right' : 'left' : this.isRTL ? 'left' : 'right';
-
-      if (!eventTarget && this.activeView === 'day') {
-        eventTarget = $('.week-view-header-wrapper');
-        placementArgs = this.isRTL ? 'left' : 'right';
-      }
-
-      if (!eventTarget) {
-        eventTarget = dayObj.elem;
-      }
-
-      var modalOptions = this.settings.modalOptions || {
-        content: $(this.modalContents),
-        closebutton: true,
-        popover: true,
-        placementOpts: {
-          parent: eventTarget,
-          strategies: ['flip', 'nudge', 'shrink-y'],
-          parentXAlignment: 'center',
-          parentYAlignment: 'center',
-          placement: placementArgs
-        },
-        title: event.title || event.subject,
-        trigger: 'immediate',
-        keepOpen: true,
-        extraClass: 'calendar-popup calendar-popup-mobile',
-        tooltipElement: '#calendar-popup',
-        headerClass: event.color,
-        initializeContent: false
-      };
-      eventTarget.off('hide.calendar').on('hide.calendar', function () {
-        if (isCancel) {
-          _this6.removeModal();
-
-          return;
-        }
-
-        done(_this6.modalContents, event);
-
-        _this6.element.trigger('hidemodal', {
-          elem: _this6.modalContents,
-          event: event
-        });
-
-        _this6.removeModal();
-
-        isCancel = true;
-      }).popover(modalOptions).off('show.calendar').on('show.calendar', function (evt, elem) {
-        _this6.element.trigger('showmodal', {
-          elem: _this6.modalContents,
-          event: event
-        }); // Wire the click on isAllDay to disable spinbox.
-
-
-        elem.find('#isAllDay').off().on('click.calendar', function (e) {
-          var isDisabled = $(e.currentTarget).prop('checked');
-
-          if (isDisabled) {
-            elem.find('#durationHours').prop('disabled', true);
-            elem.find('#endsHourLocale').prop('disabled', true);
-            elem.find('#startsHourLocale').prop('disabled', true);
-          } else {
-            elem.find('#durationHours').prop('disabled', false);
-            elem.find('#endsHourLocale').prop('disabled', false);
-            elem.find('#startsHourLocale').prop('disabled', false);
-          }
-        }); // Wire the correct type selector
-
-        elem.find('#type').val(event.type).dropdown(); // Wire the correct comments
-
-        elem.find('#comments').val(event.comments);
-        elem.find('#subject').focus(); // Wire the buttons
-
-        elem.find('button').on('click', function (e) {
-          var popupApi = eventTarget.data('tooltip');
-          var action = e.currentTarget.getAttribute('data-action');
-          isCancel = action !== 'submit';
-
-          if (popupApi) {
-            popupApi.hide(true);
-          }
-        }); // Init the contents
-
-        elem.find('.datepicker').datepicker({
-          locale: _this6.settings.locale,
-          language: _this6.settings.language
-        });
-        elem.find('.timepicker').timepicker({
-          locale: _this6.settings.locale,
-          language: _this6.settings.language
-        });
-        elem.find('[data-translate="text"]').each(function (i, item) {
-          var obj = $(item);
-          obj.text(Locale.translate(obj.attr('data-translate-key') || obj.text(), {
-            showAsUndefined: false,
-            showBrackets: false,
-            language: _this6.settings.language,
-            locale: _this6.settings.locale
-          }));
-        });
-      });
-      $('#calendar-popup').one('tooltipafterplace.calendar', function (e, args) {
-        var arrow = args.element.find('.arrow');
-        var topValue = parseInt(arrow.css('margin-top'), 10);
-
-        if (dayObj.elem.parent().index() >= 3) {
-          var offsetTop = parseInt(args.element.offset().top, 10);
-          var diff = offsetTop + args.element.height();
-          var height = $('html').height() + 10;
-
-          if (diff > height) {
-            var adjustment = offsetTop - (diff - height) - 25;
-            args.element.css('top', "".concat(adjustment, "px"));
-            arrow.css('margin-top', "".concat(topValue + (offsetTop - adjustment) - 18, "px"));
-          }
-        } else if (args.element.height() > 580) {
-          arrow.css('margin-top', "".concat(topValue - 18, "px"));
-        }
-      });
-      this.activeElem = eventTarget;
-    },
-
-    /**
-     * Show the event modal and run a callback.
-     * @private
-     * @param {object} eventData Data from the event object
-     * @param {boolean} isAdd Open the modal in readnly mode vs edit mode
-     * @param {object} eventTarget The element to point the dialog at
-     * @returns {void}
-     */
-    showModalWithCallback: function showModalWithCallback(eventData, isAdd, eventTarget) {
-      var _this7 = this;
-
-      this.showEventModal(eventData, function (elem, event) {
-        // Collect the data and popuplate the event object
-        var inputs = elem.querySelectorAll('input, textarea, select');
-
-        for (var i = 0; i < inputs.length; i++) {
-          event[inputs[i].id] = inputs[i].getAttribute('type') === 'checkbox' ? inputs[i].checked : inputs[i].value;
-        }
-
-        if (isAdd) {
-          _this7.addEvent(event);
-        } else {
-          _this7.updateEvent(event);
-        }
-      }, eventTarget);
-    },
-
-    /**
-     * Used to check if a Modal is currently visible.
-     * @returns {boolean} whether or not the Modal is currently being displayed
-     */
-    modalVisible: function modalVisible() {
-      return document.querySelector('.calendar-event-modal') !== null;
-    },
-
-    /**
-     * Remove and destroy the modal.
-     * @private
-     */
-    removeModal: function removeModal() {
-      this.modalContents = null;
-
-      if (this.activeElem) {
-        this.activeElem.off();
-
-        if (this.activeElem.data('tooltip')) {
-          this.activeElem.data('tooltip').destroy();
-        }
-      }
-
-      DOM.remove(document.getElementById('calendar-popup'));
-      DOM.remove(document.querySelector('.calendar-event-modal'));
-      $('#timepicker-popup').hide();
-    },
-
-    /**
-     * Handle updated settings and values.
-     * @param {object} settings The new settings object to use.
-     * @returns {object} [description]
-     */
-    updated: function updated() {
-      var settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      if (!settings) {
-        settings = {};
-      }
-
-      if (settings) {
-        this.settings = utils.mergeSettings(this.element[0], settings, this.settings);
-      }
-
-      if (settings.locale || settings.template || settings.upcomingEventDays || settings.mobileTemplate) {
-        this.destroy().init();
-        return this;
-      } // Update weekview mapped settings.
-
-
-      if (this.weekView && settings.events) {
-        this.weekView.settings.events = settings.events;
-      }
-
-      if (this.weekView && settings.eventTypes) {
-        this.weekView.settings.events = settings.events;
-      }
-
-      if (this.weekView && settings.weekViewSettings) {
-        this.weekView.settings = utils.mergeSettings(this.element[0], settings.weekViewSettings, this.weekViews.settings);
-      }
-
-      this.monthView.showMonth(this.settings.month, this.settings.year);
-      this.renderAllEvents();
-
-      if (this.weekView && settings.weekViewSettings) {
-        this.weekView.renderAllEvents();
-      }
-
-      return this;
-    },
-
-    /**
-     * Simple Teardown - remove events & rebuildable markup.
-     * @private
-     * @returns {object} The Component prototype, useful for chaining.
-     */
-    teardown: function teardown() {
-      this.element.off();
-      $(this.monthViewContainer).off();
-
-      if (this.monthView) {
-        this.monthView.destroy();
-      }
-
-      if (this.weekView) {
-        this.weekView.destroy();
-      }
-
-      return this;
-    },
-
-    /**
-     * Teardown - Remove added markup and events.
-     * @private
-     * @returns {object} The Component prototype, useful for chaining.
-     */
-    destroy: function destroy() {
-      if (this.eventTypeContainer) {
-        this.eventTypeContainer.innerHTML = '';
-      }
-
-      if (this.monthViewContainer) {
-        this.monthViewContainer.innerHTML = '';
-      }
-
-      if (this.upcomingEventsContainer) {
-        this.upcomingEventsContainer.innerHTML = '';
-      }
-
-      if (this.eventDetailsContainer) {
-        this.eventDetailsContainer.innerHTML = '';
-      }
-
-      if (this.eventDetailsMobileContainer) {
-        this.eventDetailsMobileContainer.innerHTML = '';
-      }
-
-      this.removeModal();
-      this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$F);
-      return this;
-    }
-  };
-
-  /**
-   * jQuery Component Wrapper for Calendar
-   * @param {object} [settings] incoming settings
-   * @returns {jQuery[]} elements being acted on
-   */
-
-  $.fn.calendar = function (settings) {
-    return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$F);
-
-      if (instance) {
-        instance.updated(settings);
-      } else {
-        instance = $.data(this, COMPONENT_NAME$F, new Calendar(this, settings));
-      }
-    });
-  };
-
-  var COMPONENT_NAME$G = 'circlepager';
-  /**
-   * The Circle Pager Displays content in a sliding carousel and has paging buttons.
-   * @class CirclePager
-   * @constructor
-   *
-   * @param {jQuery[]|HTMLElement} element The component element.
-   * @param {object} [settings] The component settings.
-   * @param {Integer} [settings.slidesToShow=1] The number of slides to show in one view / pane
-   * @param {Integer} [settings.startingSlide] First showing slide/group, an 0-based integer
-   * @param {boolean} [settings.loop=false] Setting loop: true will loop back after next/previous reached to end
-   */
-
-  var CIRCLEPAGER_DEFAULTS = {
-    slidesToShow: 1,
-    startingSlide: null,
-    loop: false
-  };
-
-  function CirclePager(element, settings) {
-    this.element = $(element);
-    this.settings = utils.mergeSettings(this.element[0], settings, CIRCLEPAGER_DEFAULTS);
-    this.init();
-  } // CirclePager Methods
-
-
-  CirclePager.prototype = {
-    init: function init() {
-      this.setElements();
-
-      if (this.slides.length) {
-        this.createControls();
-        this.handleEvents();
-        this.initActiveSlide();
-        this.showCollapsedView();
-      }
-    },
-
-    /**
-     * Set elements
-     * @private
-     * @returns {void}
-     */
-    setElements: function setElements() {
-      var s = this.settings;
-      this.container = $('.slides', this.element);
-      this.slidesJQ = $('.slide', this.element);
-      this.slidesToShow = s.slidesToShow;
-      this.slides = [];
-      this.isVisible = true;
-
-      for (var i = 0, l = this.slidesJQ.length; i < l; i++) {
-        this.slides.push({
-          node: $(this.slidesJQ[i])
-        });
-      }
-
-      this.activeIndex = s.startingSlide !== null && s.startingSlide > -1 && s.startingSlide < this.slides.length ? s.startingSlide : 0;
-    },
-
-    /**
-     * Create controls
-     * @private
-     * @returns {void}
-     */
-    createControls: function createControls() {
-      var len = this.slides.length;
-      var html = '<div class="controls">';
-      var htmlContent = '';
-      var numOfButtons = 0;
-      var slide;
-      var temp;
-      var href;
-      var text;
-      var buttonText;
-      var last;
-      var lastIndex;
-      var isSingle;
-      var isDisabled;
-
-      for (var i = 0, l = len; i < l; i += this.slidesToShow) {
-        temp = '';
-        numOfButtons++;
-        isSingle = this.slidesToShow === 1 || len - i === 1;
-        text = Locale.translate(isSingle ? 'SlideOf' : 'SlidesOf'); // Keep href in english language only
-
-        href = isSingle ? '#slide {0} of {1}' : '#slides {0} and {1} of {2}'; // Collect as much bullets need to present
-
-        for (var g = 0; g < this.slidesToShow && i + g < len; g++) {
-          temp += "".concat(i + g + 1, ", ");
-        }
-
-        text = text.replace(isSingle ? '{1}' : '{2}', len);
-        href = href.replace(isSingle ? '{1}' : '{2}', len);
-        temp = temp.slice(0, -2);
-        lastIndex = temp.lastIndexOf(',');
-        last = temp.substr(lastIndex + 2); // Controls for single slide in view
-
-        if (isSingle) {
-          isDisabled = '';
-          slide = this.slides[i].node; // Set disabled
-
-          if (slide.is('.is-disabled, [disabled]') && !slide.is('[disabled="false"]')) {
-            isDisabled = ' disabled tabindex="-1"';
-            this.slides[i].isDisabled = true;
-          } // Set default starting slide
-
-
-          if (slide.is('.active') && this.settings.startingSlide === null && isDisabled === '') {
-            this.activeIndex = i;
-          } // Use custom text if supplied
-
-
-          buttonText = slide.attr('data-button-text');
-          text = buttonText && buttonText.length ? buttonText : text.replace('{0}', temp);
-          href = href.replace('{0}', temp);
-        } else {
-          // Controls for multiple slides in view
-          temp = temp.substr(0, lastIndex);
-          text = text.replace('{1}', last).replace('{0}', temp);
-          href = href.replace('{1}', last).replace('{0}', temp);
-        }
-
-        href = href.toLowerCase().replace(/[\s,--]+/g, '-');
-        htmlContent += "<a href=\"".concat(href, "\" class=\"control-button hyperlink hide-focus\"").concat(isDisabled, "><span class=\"audible\">").concat(text, "</span></a>");
-      }
-
-      html += "".concat(htmlContent, "</div>"); // Previous/Next buttons
-
-      this.isBulletsNav = this.element.width() > numOfButtons * 29;
-      var previousButton = $('.btn-previous', this.element);
-      var nextButton = $('.btn-next', this.element);
-
-      if (!this.isBulletsNav) {
-        if (!previousButton.length) {
-          html += '' + "<button class=\"btn-previous\" type=\"button\">\n            ".concat($.createIcon('left-arrow'), "\n            <span class=\"audible\"> ").concat(Locale.translate('Previous'), "</span>\n          </button>");
-        }
-
-        if (!nextButton.length) {
-          html += '' + "<button class=\"btn-next\" type=\"button\">\n            ".concat($.createIcon('right-arrow'), "\n            <span class=\"audible\">").concat(Locale.translate('Next'), "</span>\n          </button>");
-        }
-      } else {
-        previousButton.add(nextButton).remove();
-      }
-
-      if (this.activeIndex > 0 && this.activeIndex > numOfButtons - 1) {
-        this.activeIndex = numOfButtons - 1;
-      }
-
-      if (numOfButtons > 1) {
-        this.element.append(html);
-      }
-    },
-
-    /**
-     * Check if given element is visible in container
-     * @private
-     * @param {object} element to check.
-     * @returns {boolean} -1 if not in container
-     */
-    isVisibleInContainer: function isVisibleInContainer(element) {
-      if (element && element[0]) {
-        var eRect = element[0].getBoundingClientRect();
-        var cRect = this.element[0].getBoundingClientRect();
-        return eRect.left > cRect.left && eRect.left < cRect.left + cRect.width && eRect.top > cRect.top && eRect.top < cRect.top + cRect.height;
-      }
-
-      return -1;
-    },
-
-    /**
-     * Update number of slides to show in view
-     * @private
-     * @param {object} numOfSlides to show.
-     * @returns {object} this api
-     */
-    updateSlidesToShow: function updateSlidesToShow(numOfSlides) {
-      if (!this.isActive) {
-        return;
-      }
-
-      this.settings.slidesToShow = numOfSlides || 1;
-      this.updated();
-      return this; // eslint-disable-line
-    },
-
-    /**
-     * Make sure max number of slides to show in view
-     * @private
-     * @param {object} numOfSlides to show.
-     * @returns {void}
-     */
-    responsiveSlidesToShow: function responsiveSlidesToShow(numOfSlides) {
-      var _this = this;
-
-      if (!this.isActive) {
-        return;
-      }
-
-      this.slidesToShow = numOfSlides || this.settings.slidesToShow;
-      this.unbind().slidesJQ.css('width', '');
-
-      if (this.slides.length) {
-        setTimeout(function () {
-          _this.createControls();
-
-          _this.handleEvents();
-
-          _this.initActiveSlide();
-
-          _this.showCollapsedView();
-        }, 0);
-      }
-    },
-
-    /**
-     * Show a slide to First Slide
-     * @private
-     * @param {string} index  The index of the slide to show (0 based)
-     * @returns {void}
-     */
-    show: function show(index) {
-      if (!this.isActive) {
-        return;
-      }
-
-      index = typeof index !== 'undefined' ? index : this.activeIndex;
-      this.activeIndex = index;
-      var left = index > 0 ? "".concat((Locale.isRTL() ? '' : '-') + index * 100, "%") : 0;
-      this.controlButtons.removeClass('is-active').eq(index).addClass('is-active');
-      this.container[0].style.left = left; // Make sure bullets navigation do not overflow
-
-      if (!this.isBulletsNav) {
-        this.element.addClass('is-bullets-nav-hidden');
-        this.controlButtons.find('span').addClass('audible').end().eq(index).find('span').removeClass('audible');
-      } else {
-        this.element.removeClass('is-bullets-nav-hidden');
-        this.controlButtons.find('span').addClass('audible');
-      } // Set focus
-
-
-      if (this.isFocus && this.isBulletsNav) {
-        this.isFocus = false;
-        this.controlButtons.eq(index).focus();
-      }
-    },
-
-    /**
-     * Move to First Slide
-     * @private
-     * @returns {void}
-     */
-    first: function first() {
-      this.show(0);
-    },
-
-    /**
-     * Move to Last Slide
-     * @private
-     * @returns {void}
-     */
-    last: function last() {
-      this.show(Math.round(this.slides.length / this.slidesToShow) - 1);
-    },
-
-    /**
-     * Move to Previous Slide
-     * @private
-     * @returns {void}
-     */
-    prev: function prev() {
-      var _this2 = this;
-
-      // eslint-disable-line
-      var prev;
-
-      if (this.activeIndex > 0) {
-        prev = this.activeIndex - 1;
-      } else {
-        prev = this.settings.loop ? Math.round(this.slides.length / this.slidesToShow) - 1 : 0;
-      }
-
-      if (this.slides[prev].isDisabled) {
-        setTimeout(function () {
-          _this2.prev();
-        }, 0);
-        this.activeIndex = prev;
-        return false;
-      }
-
-      this.show(prev);
-    },
-
-    /**
-    * Move to Next Slide
-    * @private
-    * @returns {void}
-    */
-    next: function next() {
-      var _this3 = this;
-
-      // eslint-disable-line
-      var next;
-
-      if (this.activeIndex >= Math.round(this.slides.length / this.slidesToShow) - 1) {
-        next = this.settings.loop ? 0 : this.activeIndex;
-      } else {
-        next = this.activeIndex + 1;
-      }
-
-      if (this.slides[next].isDisabled) {
-        setTimeout(function () {
-          _this3.next();
-        }, 0);
-        this.activeIndex = next;
-        return false;
-      }
-
-      this.show(next);
-    },
-
-    /**
-    * Make active
-    * @private
-    * @returns {void}
-    */
-    showCollapsedView: function showCollapsedView() {
-      this.isActive = true;
-      this.element.addClass('is-active');
-      this.container[0].style.width = "".concat(100 * this.slides.length, "%");
-
-      if (this.settings.slidesToShow > 1 && this.slidesJQ.eq(0).width() * this.slidesToShow > this.element.width()) {
-        this.responsiveSlidesToShow(this.slidesToShow - 1);
-        return;
-      }
-
-      for (var i = 0, l = this.slidesJQ.length; i < l; i++) {
-        this.slidesJQ[i].style.width = "".concat(100 / this.slidesToShow / this.slides.length, "%");
-      }
-
-      this.show();
-    },
-
-    /**
-    * Make un-active
-    * @private
-    * @returns {void}
-    */
-    showExpandedView: function showExpandedView() {
-      this.isActive = false;
-      this.element.removeClass('is-active');
-
-      if (this.element && this.element[0]) {
-        this.element[0].style.width = '';
-      }
-
-      if (this.container && this.container[0]) {
-        this.container[0].style.width = '';
-        this.container[0].style.left = '';
-      }
-    },
-
-    /**
-    * Initialize active slide
-    * @private
-    * @returns {void}
-    */
-    initActiveSlide: function initActiveSlide() {
-      // eslint-disable-line
-      if (this.slides[this.activeIndex].isDisabled) {
-        this.next();
-        return false;
-      }
-
-      this.show();
-      this.slidesJQ.addClass('is-visible');
-    },
-
-    /**
-     * Removes event bindings from the instance.
-     * @private
-     * @returns {object} The api
-     */
-    unbind: function unbind() {
-      $('body').off('resize.circlepager');
-      this.element.off('focus.circlepager keydown.circlepager', '*');
-
-      if (this.controlButtons) {
-        this.controlButtons.off('click.circlepager keydown.circlepager');
-      }
-
-      $('.btn-previous, .btn-next', this.element).off('click.circlepager');
-      $('.controls', this.element).remove();
-      this.showExpandedView();
-      var possibleTab = this.element.closest('.tab-panel-container').prev('.tab-container');
-      possibleTab.off('activated.circlepager');
-      return this;
-    },
-
-    /**
-     * Resync the UI and Settings.
-     * @param {object} settings The settings to apply.
-     * @returns {object} The api
-     */
-    updated: function updated(settings) {
-      if (typeof settings !== 'undefined') {
-        this.settings = utils.mergeSettings(this.element, settings, CIRCLEPAGER_DEFAULTS);
-      }
-
-      return this.unbind().init();
-    },
-
-    /**
-     * Destroy this component instance and remove the link from its base element.
-     * @returns {void}
-     */
-    destroy: function destroy() {
-      this.unbind();
-      $.removeData(this.element[0], COMPONENT_NAME$G);
-    },
-
-    /**
-     * Attach Events used by the Control
-     * @private
-     * @returns {void}
-     */
-    handleEvents: function handleEvents() {
-      var _this4 = this;
-
-      var self = this; // Previous button
-
-      $('.btn-previous', this.element).on('click.circlepager', function (e) {
-        _this4.prev();
-
-        e.stopImmediatePropagation();
-      }); // Next button
-
-      $('.btn-next', this.element).on('click.circlepager', function (e) {
-        _this4.next();
-
-        e.stopImmediatePropagation();
-      });
-      this.controlButtons = $('.control-button', this.element);
-
-      var _loop = function _loop(i, l) {
-        var btn = $(_this4.controlButtons[i]);
-        btn.hideFocus(); // Handle clicks for bottom bullet links
-
-        btn.on('click.circlepager', function (e) {
-          e.preventDefault();
-
-          if (_this4.slides[i].isDisabled) {
-            return;
-          }
-
-          _this4.show(i);
-        });
-      };
-
-      for (var i = 0, l = this.controlButtons.length; i < l; i++) {
-        _loop(i);
-      } // Handle keyboard events
-      // Prevent hidden slide's content to be get focused
-      // on focusable elements in slides content
-
-
-      this.element.on('focus.circlepager', '*', function (e) {
-        // eslint-disable-line
-        var handled = false;
-
-        if (!self.isVisibleInContainer($(this))) {
-          var canfocus = self.element.find(':focusable');
-
-          for (var _i = 0, _l = canfocus.length; _i < _l; _i++) {
-            if (self.isVisibleInContainer(canfocus.eq(_i))) {
-              canfocus.eq(_i).focus();
-              handled = true;
-              break;
-            }
-          }
-        }
-
-        e.stopPropagation();
-
-        if (handled) {
-          return false;
-        }
-      }); // Keydown on focusable elements in slides content to
-      // prevent hidden slide's content to be get focused
-
-      this.element.on('keydown.circlepager', '*', function (e) {
-        // eslint-disable-line
-        var handled = false;
-        var key = e.which || e.keyCode || e.charCode || 0;
-        var canfocus = $(':focusable');
-        var index = canfocus.index(this);
-
-        if (key === 9) {
-          // tab
-          // Using shift key with tab (going backwards)
-          if (e.shiftKey) {
-            for (var _i2 = index - 1; _i2 >= 0; _i2--) {
-              if (self.element.has(canfocus.eq(_i2)).length < 1 || self.isVisibleInContainer(canfocus.eq(_i2))) {
-                canfocus.eq(_i2).focus();
-                handled = true;
-                break;
-              }
-            }
-          } else if (!self.isVisibleInContainer(canfocus.eq(index + 1))) {
-            // Using only tab key (going forward)
-            self.controlButtons.first().focus();
-            handled = true;
-          }
-        }
-
-        e.stopPropagation();
-
-        if (handled) {
-          return false;
-        }
-      }); // Control buttons
-
-      this.controlButtons.on('keydown.circlepager', function (e) {
-        // eslint-disable-line
-        var handled = false;
-        var key = e.which || e.keyCode || e.charCode || 0;
-        var isRTL = Locale.isRTL(); // Left and Right arrow keys
-
-        if ([37, 39].indexOf(key) !== -1) {
-          self.isFocus = true; // Move focus
-
-          if (e.altKey) {
-            // [Alt + Left/Right arrow] to move to the first or last
-            if (key === 37 && !isRTL || key === 39 && isRTL) {
-              self.first();
-            } else {
-              self.last();
-            }
-          } else {
-            // Left and Right arrow keys to navigate
-            if (!isRTL && key === 37 || isRTL && key === 39) {
-              self.prev();
-            } else {
-              self.next();
-            }
-
-            handled = true;
-          }
-        }
-
-        if (handled) {
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
-        }
-      }); // Set max number of slides can view on resize
-
-      $('body').on('resize.circlepager', function () {
-        self.responsiveSlidesToShow();
-      });
-      var possibleTab = self.element.closest('.tab-panel-container').prev('.tab-container');
-      possibleTab.off('activated.circlepager').on('activated.circlepager', function () {
-        self.responsiveSlidesToShow();
-      });
-    }
-  };
-
-  /**
-   * jQuery Component Wrapper for CirclePager
-   * @param {object} [settings] incoming settings
-   * @returns {jQuery[]} elements being acted on
-   */
-
-  $.fn.circlepager = function (settings) {
-    return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$G);
-
-      if (instance) {
-        instance.updated(settings);
-      } else {
-        instance = $.data(this, COMPONENT_NAME$G, new CirclePager(this, settings));
-      }
-    });
-  };
-
-  /**
-   * jQuery Component Wrapper for CalendarToolbar
-   * @param {object} [settings] incoming settings
-   * @returns {jQuery[]} elements being acted on
-   */
-
-  $.fn.calendartoolbar = function (settings) {
-    return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$C);
-
-      if (instance) {
-        instance.updated(settings);
-      } else {
-        instance = $.data(this, COMPONENT_NAME$C, new CalendarToolbar(this, settings));
-      }
-    });
-  };
-
-  var COMPONENT_NAME$H = 'compositeform';
-  /**
-  * CompositeForm is a specialized responsive form component.
-  * @class CompositeForm
-  * @deprecated as of v4.20.0. This component is no longer supported by the IDS team.
-  * @constructor
-  * @param {jQuery[]|HTMLElement} element The component element.
-  * @param {object} [settings] The component settings.
-  * @param {string} [settings.breakpoint = 'phone-to-tablet'] Defines the breakpoint at which the composite form will change into its responsive mode
-  * @param {string} [settings.trigger = null] Expandable area trigger selector. Passed to expandable area.
-  * @param {string} [settings.expandedText = Locale.translate('ShowLess')] Text to use for the expand button (Default localized)
-  * @param {string} [settings.collapsedText = Locale.translate('ShowMore')] Text to use for the collapse button (Default localized)
-  */
-
-  var COMPOSITEFORM_DEFAULTS = {
-    breakpoint: 'phone-to-tablet',
-    trigger: null,
-    expandedText: Locale.translate('ShowLess'),
-    collapsedText: Locale.translate('ShowMore')
-  };
-
-  function CompositeForm(element, settings) {
-    this.settings = utils.mergeSettings(element, settings, COMPOSITEFORM_DEFAULTS);
-    this.element = $(element);
-    this.init();
-    warnAboutRemoval('CompositeForm');
-  } // Component API
-
-
-  CompositeForm.prototype = {
-    /**
-    * Initialize the component
-    * @private
-    * @returns {object} The component api for chaining.
-    */
-    init: function init() {
-      return this.build().handleEvents();
-    },
-
-    /**
-    * Adds markup to the control and stores references to some sub-elements
-    * @private
-    * @returns {object} The component api for chaining.
-    */
-    build: function build() {
-      var componentClassList = this.element[0].classList;
-
-      if (!componentClassList.contains('composite-form')) {
-        componentClassList.add('composite-form');
-      } // Get expandable area reference, if applicable
-
-
-      var expandableArea = this.element.find('.expandable-area');
-
-      if (expandableArea.length) {
-        this.hasSummary = true;
-        this.expandableArea = expandableArea;
-        this.expandableAreaAPI = this.expandableArea.data('expandablearea');
-
-        if (!this.expandableAreaAPI) {
-          this.expandableArea.expandablearea({
-            trigger: this.settings.trigger
-          });
-          this.expandableAreaAPI = this.expandableArea.data('expandablearea');
-        } // Get expandable trigger
-
-
-        this.expander = this.expandableAreaAPI.expander;
-        this.setExpanderText(this.settings.expandedText);
-      } else {
-        this.hasSummary = false;
-      } // Check size and append class, if necessary
-
-
-      this.checkResponsive();
-      return this;
-    },
-
-    /**
-     * Sets up event handlers for this control and its sub-elements
-     * @param {string} expanderText - the text content
-     * @returns {undefined}
-     */
-    handleEvents: function handleEvents() {
-      var self = this;
-      $('body').off("resize.".concat(COMPONENT_NAME$H)).on("resize.".concat(COMPONENT_NAME$H), function (e) {
-        self.checkResponsive(e);
-      });
-      this.element.on("updated.".concat(COMPONENT_NAME$H), function () {
-        self.updated();
-      });
-
-      function changeExpanderText() {
-        var isExpanded = self.expandableAreaAPI.isExpanded();
-        self.setExpanderText(self.settings[isExpanded ? 'expandedText' : 'collapsedText']);
-      }
-
-      if (this.hasSummary) {
-        this.expandableArea.on("expand.".concat(COMPONENT_NAME$H), changeExpanderText).on("collapse.".concat(COMPONENT_NAME$H), changeExpanderText);
-      }
-
-      return this;
-    },
-
-    /**
-     * Checks if we've passed the breakpoint for switching into Responsive mode.
-     * @returns {undefined}
-     */
-    checkResponsive: function checkResponsive() {
-      var cl = this.element[0].classList;
-
-      if (breakpoints.isBelow(this.settings.breakpoint)) {
-        cl.add('is-in-responsive-mode');
-      } else {
-        cl.remove('is-in-responsive-mode');
-
-        if (this.isSideOriented() && !this.expandableAreaAPI.isExpanded()) {
-          this.expandableAreaAPI.open();
-        }
-      }
-    },
-
-    /**
-     * Sets the text content of the Composite Form's Expandable Area Expander.
-     * @param {string} expanderText - the text content
-     * @returns {undefined}
-     */
-    setExpanderText: function setExpanderText(expanderText) {
-      if (!this.hasSummary) {
-        return;
-      }
-
-      if (!(expanderText instanceof String) || !expanderText.length) {
-        return;
-      }
-
-      var textSpan = this.expander.find('span');
-
-      if (!textSpan) {
-        textSpan = this.expander;
-      }
-
-      textSpan.text(expanderText);
-    },
-
-    /**
-     * Determines if this component is configured for "on-side" orientation of the Summary area.
-     * @returns {boolean} If the component is currently side oriented.
-     */
-    isSideOriented: function isSideOriented() {
-      return this.element[0].classList.contains('on-side');
-    },
-
-    /**
-     * Re-invokes the Composite Form
-     * @returns {object} The component API for chaining.
-     */
-    updated: function updated() {
-      return this.teardown().init();
-    },
-
-    /**
-     * Simple Teardown - remove events & rebuildable markup.
-     * @private
-     * @returns {object} The component API for chaining.
-     */
-    teardown: function teardown() {
-      $('body').off("resize.".concat(COMPONENT_NAME$H));
-      this.element.off("updated.".concat(COMPONENT_NAME$H));
-
-      if (this.hasSummary) {
-        this.expandableArea.off("expand.".concat(COMPONENT_NAME$H, " collapse.").concat(COMPONENT_NAME$H));
-      }
-
-      return this;
-    },
-
-    /**
-     * Destroys the component instance by removing it from its associated element.
-     * @returns {void}
-     */
-    destroy: function destroy() {
-      this.teardown();
-      $.removeData(this.element[0], COMPONENT_NAME$H);
-    }
-  };
-
-  /**
-   * jQuery Component Wrapper for Composite Form
-   * @param {object} [settings] incoming settings
-   * @returns {jQuery[]} elements being acted on
-   */
-
-  $.fn.compositeform = function (settings) {
-    return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$H);
-
-      if (instance) {
-        instance.updated(settings);
-      } else {
-        instance = $.data(this, COMPONENT_NAME$H, new CompositeForm(this, settings));
-      }
-    });
-  };
-
-  var COMPONENT_NAME$I = 'contextualactionpanel';
-  /**
-  * A more complex modal for complex in page interactions.
-  * @class ContextualActionPanel
-  * @param {string} element The component element.
-  * @param {string} settings The component settings.
-  * @param {jQuery|string} [settings.content = null] Pass content through to CAP.
-  * @param {boolean} [settings.initializeContent = true] Initialize content before opening with defaults.
-  * @param {string} [settings.title = 'Contextual Action Panel'] String that sits in the toolbar's title field.
-  * @param {object} [settings.modalSettings = {}] an object containing settings for the internal Modal component.
-  * @param {array} [settings.modalSettings.buttons = null] A list of buttons that will sit in the toolbar's Buttonset area.
-  * @param {boolean} [settings.modalSettings.centerTitle = false] If true the title will be centered.
-  * @param {string} [settings.modalSettings.id = `contextual-action-modal-[number]`] The id to use for the CAP, or defaults to generated.
-  * @param {boolean} [settings.modalSettings.showCloseBtn = false] if true, displays a "close (X)" button in the button row that cancels the CAP's Modal action.
-  * @param {string} [settings.modalSettings.trigger = 'click'] Can be 'click' or 'immediate'.
-  * @param {boolean} [settings.modalSettings.useFlexToolbar = false] If true the new flex toolbar will be used (For CAP)
-  */
-
-  var CONTEXTUALACTIONPANEL_DEFAULTS = {
-    content: null,
-    initializeContent: true,
-    // initialize content before opening
-    title: 'Contextual Action Panel',
-    modalSettings: {
-      buttons: null,
-      centerTitle: false,
-      id: null,
-      showCloseBtn: false,
-      trigger: 'click',
-      useFlexToolbar: false
-    }
-  }; // List of settings that used to reside directly underneath the `defaults`, but have
-  // been re-located to `settings.modalSettings` as of v4.22.x.
-  // See `infor-design/enterprise#2433` for more information.
-  // TODO: find a way to normalize CAP's `content` setting with Modal's.  For some reason,
-  // they are different and have been that way for some time.
-
-  var CONTEXTUAL_MODAL_SETTINGS = ['buttons', 'centerTitle', 'id', 'showCloseButton', 'trigger', 'useFlexToolbar']; // Handles the conversion of legacy CAP settings to `modalSettings` setting.
-
-  function handleLegacyCAPSettings(settings) {
-    // Some settings are renamed to match their Modal counterparts
-    var conversionMap = {
-      showCloseButton: 'showCloseBtn'
-    };
-    CONTEXTUAL_MODAL_SETTINGS.forEach(function (setting) {
-      if ([null, undefined].indexOf(settings[setting]) === -1) {
-        var targetSettingName = setting;
-
-        if (!settings.modalSettings) {
-          settings.modalSettings = {};
-        }
-
-        if (conversionMap[setting]) {
-          // Convert a differently-named setting to the correct name
-          targetSettingName = conversionMap[setting];
-          settings.modalSettings[targetSettingName] = settings[setting];
-        } else {
-          // Simply append the actual setting
-          settings.modalSettings[setting] = settings[setting];
-        }
-
-        delete settings[setting];
-        warnAboutDeprecation("settings.modalSettings.".concat(targetSettingName), "settings.".concat(setting));
-      }
-    });
-    return settings;
-  }
-
-  function ContextualActionPanel(element, settings) {
-    this.settings = utils.mergeSettings(element, settings, CONTEXTUALACTIONPANEL_DEFAULTS);
-    this.settings = handleLegacyCAPSettings(this.settings);
-    this.element = $(element);
-    this.init();
-  } // Plugin Methods
-
-
-  ContextualActionPanel.prototype = {
-    /**
-     * @returns {Modal|undefined} instance of an IDS modal, or undefined if one doesn't exist
-     */
-    get modalAPI() {
-      var api;
-
-      if (this.panel && this.panel.length) {
-        api = this.panel.data('modal');
-      }
-
-      return api;
-    },
-
-    /**
-    * Initialize the CAP.
-    * @private
-    */
-    init: function init() {
-      this.setup().build().handleEvents();
-    },
-
-    /**
-    * Setup internal variables.
-    * NOTE: Does not do any building.
-    * @private
-    * @returns {object} The Api for chaining.
-    */
-    setup: function setup() {
-      var existingPanel = this.element.next('.contextual-action-panel');
-      var modalId = this.id;
-
-      var setPanel = function setPanel(id) {
-        var panelFromID = $("#".concat(id));
-
-        if (panelFromID.length) {
-          existingPanel = panelFromID;
-        }
-      };
-
-      if (typeof dataModal === 'string') {
-        setPanel(modalId);
-      } // Handle case with popup triggered from a menu
-
-
-      if (this.element.closest('.popupmenu').length === 1) {
-        existingPanel = this.element.closest('.popupmenu').next('.contextual-action-panel');
-      }
-
-      if (existingPanel[0]) {
-        existingPanel[0].style.display = 'none';
-        existingPanel.addClass('is-animating');
-        this.panel = existingPanel;
-      }
-
-      return this;
-    },
-
-    /**
-    * Add markup to build up the component.
-    * @private
-    * @returns {object} The Api for chaining.
-    */
-    build: function build() {
-      var _this$settings, _this$settings$modalS, _this$settings2, _this$settings2$modal;
-
-      var self = this;
-      var modalContent = this.settings.content;
-      this.id = ((_this$settings = this.settings) === null || _this$settings === void 0 ? void 0 : (_this$settings$modalS = _this$settings == null ? void 0 : _this$settings.modalSettings) === null || _this$settings$modalS === void 0 ? void 0 : _this$settings$modalS == null ? void 0 : _this$settings$modalS.id) || (modalContent === null || modalContent === void 0 ? void 0 : modalContent == null ? void 0 : modalContent.attr('id')) || utils.uniqueId(this.element, 'contextual-action-modal');
-
-      if (!((_this$settings2 = this.settings) === null || _this$settings2 === void 0 ? void 0 : (_this$settings2$modal = _this$settings2 == null ? void 0 : _this$settings2.modalSettings) === null || _this$settings2$modal === void 0 ? void 0 : _this$settings2$modal == null ? void 0 : _this$settings2$modal.id)) {
-        this.settings.modalSettings.id = this.id;
-      } // Build the Content if it's not present
-
-
-      if (!this.panel || !this.panel.length) {
-        if (modalContent instanceof jQuery) {
-          if (modalContent.is('.contextual-action-panel')) {
-            this.panel = modalContent;
-          } else {
-            modalContent.wrap('<div class="contextual-action-panel"></div>');
-            this.panel = modalContent.parent();
-          }
-
-          this.panel.addClass('modal').appendTo('body');
-
-          if (modalContent.is('iframe')) {
-            modalContent.ready(function () {
-              self.completeBuild();
-              modalContent.show();
-            });
-            return self;
-          }
-
-          modalContent.show();
-        } else {
-          this.panel = $("<div class=\"contextual-action-panel\">".concat(modalContent, "</div>")).appendTo('body');
-          this.panel.addClass('modal').attr('id', this.settings.modalSettings.id);
-        }
-      }
-
-      this.completeBuild();
-      return this;
-    },
-
-    /**
-    * Finalize build up/
-    * @private
-    * @returns {object} The Api for chaining.
-    */
-    completeBuild: function completeBuild() {
-      var children;
-      var isIframe = false;
-      var contents;
-      var hasSearchfield = false;
-      var predefined = true; // Invoke Icons
-
-      this.panel.find('svg').icon(); // Get a reference to `.modal-content`
-
-      var modalContent = this.panel.find('.modal-content');
-
-      if (modalContent.length === 0) {
-        children = this.panel.children();
-
-        if (children.is('iframe')) {
-          contents = children.contents();
-          this.toolbar = contents.find('.toolbar, .flex-toolbar');
-          isIframe = true;
-        }
-
-        if (!isIframe) {
-          children.wrapAll('<div class="modal-content"></div>').wrapAll('<div class="modal-body"></div>');
-          this.panel.addClass('modal');
-        }
-      } // Build/reference the header
-
-
-      var modalHeader = this.panel.find('.modal-header');
-
-      if (modalHeader.length === 0) {
-        modalHeader = $('<div class="modal-header"></div>');
-        modalHeader.insertBefore(this.panel.find('.modal-body'));
-      }
-
-      this.header = modalHeader; // Detect existence of buttonset for later
-
-      var buttonset = this.panel.find('.toolbar .buttonset, .flex-toolbar .buttonset'); // Build/reference the CAP header toolbar
-
-      if (!this.toolbar) {
-        this.toolbar = this.panel.find('.toolbar, .flex-toolbar');
-      }
-
-      if (!this.toolbar.length) {
-        predefined = false;
-
-        if (this.settings.modalSettings.buttons) {
-          this.settings.modalSettings.buttons.forEach(function (button) {
-            if (button.type === 'input') {
-              hasSearchfield = true;
-            }
-          });
-        }
-
-        if (this.settings.title && this.settings.modalSettings.centerTitle) {
-          var toolbarSearchfieldSection = hasSearchfield ? '<div class="toolbar-section search"></div>' : '';
-          var toolbarHTML = "<div class=\"flex-toolbar\">\n          <div class=\"toolbar-section static\"></div>\n          <div class=\"toolbar-section title center-text\">\n            <h2>".concat(this.settings.title, "</h2>\n          </div>\n          ").concat(toolbarSearchfieldSection, "\n          <div class=\"toolbar-section buttonset static\"></div>\n        </div>");
-          this.toolbar = $(toolbarHTML);
-        } else if (!buttonset.length) {
-          var toolbarCSSClass = this.settings.modalSettings.useFlexToolbar ? 'flex-toolbar' : 'toolbar';
-          var toolbarTitleSection = this.settings.modalSettings.useFlexToolbar ? "<div class=\"toolbar-section title\"><h2>".concat(this.settings.title, "</h2></div>") : '';
-          var toolbarButtonsetCSSClass = this.settings.modalSettings.useFlexToolbar ? 'toolbar-section buttonset' : 'buttonset';
-          var toolbarButtonsetSection = "<div class=\"".concat(toolbarButtonsetCSSClass, "\"></div>");
-
-          var _toolbarSearchfieldSection = this.settings.modalSettings.useFlexToolbar && hasSearchfield ? '<div class="toolbar-section search"></div>' : '';
-
-          var _toolbarHTML = "<div class=\"".concat(toolbarCSSClass, "\">\n          ").concat(toolbarTitleSection, "\n          ").concat(_toolbarSearchfieldSection, "\n          ").concat(toolbarButtonsetSection, "\n        </div>");
-
-          var toolbar = $(_toolbarHTML);
-          toolbar.appendTo(this.panel.find('.modal-header'));
-          this.toolbar = toolbar;
-          buttonset = toolbar.children('.buttonset');
-        }
-      }
-
-      this.toolbar.appendTo(this.header); // Only add certain elements if a Toolbar was generated with JS-options
-      // and not by HTML markup.
-
-      if (!predefined) {
-        if (!buttonset || !buttonset.length && !this.settings.modalSettings.centerTitle) {
-          buttonset = $('<div class="toolbar-section buttonset"></div>');
-          buttonset.appendTo(this.toolbar);
-        }
-
-        var toolbarTitle = this.toolbar.find('.title');
-
-        if (!toolbarTitle.length) {
-          var centerTextCSS = this.settings.modalSettings.centerTitle ? ' center-text' : '';
-          toolbarTitle = $("\n          <div class=\"toolbar-section title".concat(centerTextCSS, "\">\n            <h2>").concat(this.settings.title, "</h2>\n          </div>\n        "));
-
-          if (buttonset) {
-            toolbarTitle.insertBefore(buttonset);
-          } else {
-            this.toolbar.prepend(toolbarTitle);
-          }
-        }
-
-        if (!toolbarTitle.length) {
-          toolbarTitle = $("\n          <div class=\"title\">\n            ".concat(this.settings.title, "\n          </div>\n        "));
-          this.toolbar.prepend(toolbarTitle);
-        }
-      } // Move to the body element to break stacking context issues.
-
-
-      if (!isIframe) {
-        this.panel.detach().appendTo('body');
-      }
-
-      this.element.attr('data-modal', this.settings.modalSettings.id);
-
-      if (!this.panel.attr('id')) {
-        this.panel.attr('id', this.settings.modalSettings.id);
-      } // Invoke the underlying Modal API
-
-
-      this.panel.modal(this.settings.modalSettings);
-      this.buttons = this.panel.find('.buttonset').children('button');
-      this.closeButton = this.panel.find('.modal-header').find('.btn-close, [name="close"], button.close-button');
-
-      if (this.settings.modalSettings.showCloseBtn && !this.closeButton.length) {
-        var closeText = Locale.translate('Close');
-        this.closeButton = $("\n        <button class=\"btn-close\" type=\"button\" title=\"".concat(closeText, "\">\n          ").concat($.createIcon('close'), "\n          <span class=\"audible\">").concat(closeText, "</span>\n        </button>\n      "));
-
-        if (!this.settings.modalSettings.useFlexToolbar) {
-          buttonset.append(this.closeButton);
-        } else {
-          var standaloneSection = $('<div class="toolbar-section static"></div>').append(this.closeButton);
-          var more = this.toolbar.find('.toolbar-section.more');
-          standaloneSection.insertAfter(more.length ? more : buttonset);
-        }
-      }
-
-      if (this.closeButton.length) {
-        this.toolbar.addClass('has-close-button');
-      }
-
-      if (this.toolbar.is('.toolbar')) {
-        this.toolbar.toolbar();
-      }
-
-      if (this.toolbar.is('.flex-toolbar')) {
-        this.toolbar.toolbarflex();
-      }
-
-      utils.fixSVGIcons(this.element);
-      return this;
-    },
-
-    /**
-    * Attach event handlers.
-    * @private
-    * @returns {object} The Api for chaining.
-    */
-    handleEvents: function handleEvents() {
-      var self = this; // Convenience method that takes an event from the Modal control's panel element,
-      // and triggers any listeners that may be looking at the Contextual Action Panel's
-      // trigger instead.
-
-      function passEvent(e) {
-        self.element.triggerHandler(e.type);
-      }
-
-      this.panel.addClass('is-animating').off('open.contextualactionpanel').on('open.contextualactionpanel', function (e) {
-        passEvent(e);
-        self.panel.removeClass('is-animating');
-      }).off('close.contextualactionpanel').on('close.contextualactionpanel', function (e) {
-        passEvent(e);
-      }).off('beforeopen.contextualactionpanel').on('beforeopen.contextualactionpanel', function (e) {
-        if (self.settings.initializeContent) {
-          $(this).initialize();
-        }
-
-        passEvent(e);
-      }).off('afteropen.contextualactionpanel').on('afteropen.contextualactionpanel', function () {
-        if (self.toolbar) {
-          self.toolbar.trigger('recalculate-buttons');
-        } // Select the proper element on the toolbar
-
-
-        if (self.toolbar.length) {
-          var selected = self.toolbar.find('.buttonset > .is-selected');
-
-          if (!selected.length) {
-            selected = self.toolbar.find('.buttonset > *:first-child');
-
-            if (selected.is('.searchfield-wrapper')) {
-              selected = selected.children('.searchfield');
-            }
-          }
-
-          if (!selected.length && self.toolbar.is('.flex-toolbar')) {
-            selected = self.toolbar.find('button').first();
-            selected.focus();
-            return;
-          }
-
-          var toolbarData = self.toolbar.data('toolbar');
-
-          if (toolbarData) {
-            toolbarData.setActiveButton(selected, true);
-          }
-        } // Focus the first focusable element inside the Contextual Panel's Body
-
-
-        self.panel.find('.modal-body-wrapper').find(':focusable').first().focus();
-        utils.fixSVGIcons(self.panel);
-      });
-
-      if (self.closeButton && self.closeButton.length) {
-        self.closeButton.on('click.contextualactionpanel', function () {
-          self.handleToolbarSelected();
-        });
-      }
-
-      return this;
-    },
-
-    /**
-    * Toolbar select event handler.
-    * @private
-    * @returns {void}
-    */
-    handleToolbarSelected: function handleToolbarSelected() {
-      this.close();
-    },
-
-    /**
-    * Detach events and restore markup.
-    * @private
-    * @returns {void}
-    */
-    teardown: function teardown() {
-      var self = this;
-      var buttonset = self.toolbar.children('.buttonset');
-      this.panel.off('open.contextualactionpanel close.contextualactionpanel ' + 'beforeopen.contextualactionpanel afterclose.contextualactionpanel');
-      buttonset.children('*:not(.searchfield)').off('click.contextualactionpanel');
-      var menuButtons = buttonset.children('.btn-menu');
-      menuButtons.each(function () {
-        var popup = $(this).data('popupmenu');
-
-        if (popup) {
-          popup.destroy();
-        }
-      });
-
-      if (self.header) {
-        self.header.remove();
-      }
-
-      var children = self.panel.find('.modal-body').children();
-      children.first().unwrap().unwrap();
-      self.element.removeAttr('data-modal');
-
-      if (self.closeButton && self.closeButton.length) {
-        self.closeButton.off('click.contextualactionpanel');
-        delete self.closeButton;
-      } // Trigger an afterclose event on the Contextual Action Panel's trigger element
-      // (different from the panel, which is already removed).
-
-
-      self.element.trigger('afterteardown');
-    },
-
-    /**
-    * Close the Contextual Action Panel if open and call destroy.
-    * @returns {void}
-    */
-    close: function close() {
-      var destroy;
-
-      if (this.settings.modalSettings.trigger === 'immediate') {
-        destroy = true;
-      }
-
-      if (this.modalAPI) {
-        this.modalAPI.close(destroy);
-      }
-    },
-
-    /**
-    * Add a disabled attribute to the main component element.
-    * @returns {void}
-    */
-    disable: function disable() {
-      this.element.prop('disabled', true);
-
-      if (this.panel.hasClass('is-visible')) {
-        this.close();
-      }
-    },
-
-    /**
-    * Remove disabled attribute from the main component element.
-    * @returns {void}
-    */
-    enable: function enable() {
-      this.element.prop('disabled', false);
-    },
-
-    /**
-     * Update the component and optionally apply new settings.
-     *
-     * @param  {object} settings the settings to update to.
-     * @returns {object} The plugin api for chaining.
-     */
-    updated: function updated(settings) {
-      this.settings = utils.mergeSettings(this.element, settings, this.settings);
-      this.settings = handleLegacyCAPSettings(this.settings);
-      this.setup();
-
-      if (this.modalAPI) {
-        this.modalAPI.updated(this.settings.modalSettings);
-      }
-
-      return this;
-    },
-
-    /**
-    * Destroy and remove added markup and events
-    * @returns {void}
-    */
-    destroy: function destroy() {
-      // ModalAPI calls `capAPI.teardown()` at the correct timing
-      if (this.modalAPI && this.modalAPI.isOpen) {
-        this.modalAPI.close(true);
-      }
-
-      $.removeData(this.element[0], COMPONENT_NAME$I);
-
-      if (this.toolbar && this.toolbar.data('toolbar')) {
-        this.toolbar.data('toolbar').destroy();
-      }
-
-      if (this.toolbar && this.toolbar.data('toolbarFlex')) {
-        this.toolbar.data('toolbarFlex').destroy();
-      }
-    },
-
-    /**
-    * Destroy an and all active cap instances
-    * @returns {void}
-    */
-    destroyAll: function destroyAll() {
-      modalManager.destroyAll(true);
-    }
-  };
-
-  /**
-   * jQuery Component Wrapper for Contextual Action Panel
-   * @param {object} [settings] incoming settings
-   * @returns {jQuery[]} elements being acted on
-   */
-
-  $.fn.contextualactionpanel = function (settings) {
-    return this.each(function () {
-      var _settings$modalSettin;
-
-      var id = settings === null || settings === void 0 ? void 0 : (_settings$modalSettin = settings == null ? void 0 : settings.modalSettings) === null || _settings$modalSettin === void 0 ? void 0 : _settings$modalSettin == null ? void 0 : _settings$modalSettin.id;
-
-      if (!id && (settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.content) && (settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.content) instanceof jQuery) {
-        var _settings$content;
-
-        id = settings === null || settings === void 0 ? void 0 : (_settings$content = settings == null ? void 0 : settings.content) === null || _settings$content === void 0 ? void 0 : _settings$content == null ? void 0 : _settings$content.attr('id');
-      }
-
-      var instance = modalManager.findById(id);
-
-      if (instance) {
-        instance.updated(settings);
-        return;
-      }
-
-      $.data(this, COMPONENT_NAME$I, new ContextualActionPanel(this, settings));
     });
   };
 
@@ -57263,9 +58056,8 @@ var Soho = (function (exports) {
         _this13.textarea.off('input.editor-firechange');
 
         setTimeout(function () {
-          _this13.element.html(content);
-
-          content = _this13.element.html();
+          _this13.element[0].innerHTML = content;
+          content = _this13.element[0].innerHTML;
           /**
            * Fires after preview mode activated.
            * @event afterpreviewmode
@@ -61356,17 +62148,20 @@ var Soho = (function (exports) {
                 if (result && result.then && typeof result.then === 'function') {
                   // A promise is returned
                   result.then(function () {
+                    card.triggerHandler('removecard', [card, homepage.state]);
                     card.remove();
                     homepage.refresh(false);
                     homepage.element.triggerHandler('removecard', [card, homepage.state]);
                   });
                 } else if (result) {
                   // Boolean is returned instead of a promise
+                  card.triggerHandler('removecard', [card, homepage.state]);
                   card.remove();
                   homepage.refresh(false);
                   homepage.element.triggerHandler('removecard', [card, homepage.state]);
                 }
               } else {
+                card.triggerHandler('removecard', [card, homepage.state]);
                 card.remove();
                 homepage.refresh(false);
                 homepage.element.triggerHandler('removecard', [card, homepage.state]);
@@ -61379,6 +62174,7 @@ var Soho = (function (exports) {
           var eastHandle = $('<div>').addClass('ui-resizable-handle ui-resizable-e').drag({
             axis: 'x'
           }).on('dragstart.handle', function (dragevent) {
+            dragevent.stopPropagation();
             dragevent.preventDefault();
             card.addClass('ui-resize-passive');
             card.css({
@@ -61418,12 +62214,14 @@ var Soho = (function (exports) {
                 width: ''
               });
               homepage.refresh(false);
+              card.triggerHandler('resizecard', [card, homepage.state]);
               homepage.element.triggerHandler('resizecard', [card, homepage.state]);
             });
           });
           var southHandle = $('<div>').addClass('ui-resizable-handle ui-resizable-s').drag({
             axis: 'y'
           }).on('dragstart.handle', function (dragevent) {
+            dragevent.stopPropagation();
             dragevent.preventDefault();
             card.addClass('ui-resize-passive');
             card.css({
@@ -61459,6 +62257,7 @@ var Soho = (function (exports) {
                 height: ''
               });
               homepage.refresh(false);
+              card.triggerHandler('resizecard', [card, homepage.state]);
               homepage.element.triggerHandler('resizecard', [card, homepage.state]);
             });
           });
@@ -61507,19 +62306,23 @@ var Soho = (function (exports) {
           card.append(homepage.guide);
           homepage.refresh(false);
         }).on('dragend.card', function () {
-          var card = $(this);
-          var cardOver = $(cards).has('.drop-indicator');
+          var card = $(this); // Make sure this is not from a resize event, card should have is-dragging class
 
-          if (card.index() < cardOver.index()) {
-            card.insertAfter(cardOver);
-          } else {
-            card.insertBefore(cardOver);
+          if (card.hasClass('is-dragging')) {
+            var cardOver = $(cards).has('.drop-indicator');
+
+            if (card.index() < cardOver.index()) {
+              card.insertAfter(cardOver);
+            } else {
+              card.insertBefore(cardOver);
+            }
+
+            card.removeClass('is-dragging');
+            homepage.guide.remove();
+            homepage.refresh(false);
+            card.triggerHandler('reordercard', [card, homepage.state]);
+            homepage.element.triggerHandler('reordercard', [card, homepage.state]);
           }
-
-          card.removeClass('is-dragging');
-          homepage.guide.remove();
-          homepage.refresh(false);
-          homepage.element.triggerHandler('reordercard', [card, homepage.state]);
         });
       } else {
         cards.attr('draggable', false);
@@ -65319,7 +66122,9 @@ var Soho = (function (exports) {
       var setAction = function setAction(selector) {
         if (_this2.isjQuery(selector)) {
           return selector;
-        } else if (typeof selector === 'string') {
+        }
+
+        if (typeof selector === 'string') {
           return $("[data-action=\"".concat(selector, "\"]"), _this2.element);
         }
 
@@ -65886,7 +66691,9 @@ var Soho = (function (exports) {
 
       if (li.length < 1) {
         return null;
-      } else if (li.length > 1) {
+      }
+
+      if (li.length > 1) {
         return li.eq(0);
       }
 
@@ -66074,6 +66881,21 @@ var Soho = (function (exports) {
 
 
   Modal.prototype = {
+    /**
+     * @private
+     */
+    get aboutAPI() {
+      var api;
+
+      if (this.trigger && this.trigger.length) {
+        api = this.trigger.data('about');
+      } else if (this.mainContent && this.mainContent.length && this.mainContent.is('body')) {
+        api = this.mainContent.data('about');
+      }
+
+      return api;
+    },
+
     /**
      * @private
      * @returns {boolean} whether or not the Modal is a Contextual Action Panel (CAP)
@@ -67325,6 +68147,10 @@ var Soho = (function (exports) {
 
         if (self.isCAP && self.capAPI) {
           self.capAPI.destroy();
+        }
+
+        if (self.aboutAPI) {
+          self.aboutAPI.destroy(true);
         } // If a buttonset exists, remove events and destroy completely.
 
 
@@ -67585,12 +68411,12 @@ var Soho = (function (exports) {
 
   $.fn.monthview = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$D);
+      var instance = $.data(this, COMPONENT_NAME$z);
 
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$D, new MonthView(this, settings));
+        instance = $.data(this, COMPONENT_NAME$z, new MonthView(this, settings));
       }
     });
   };
@@ -67607,7 +68433,9 @@ var Soho = (function (exports) {
     showEmptyGroupHeaders: false,
     showSelectAll: false,
     showTags: false,
-    source: undefined
+    source: undefined,
+    allTextString: null,
+    selectedTextString: null
   };
   /**
    * The MultiSelect Component allows selecting multiple items from a list
@@ -67621,6 +68449,8 @@ var Soho = (function (exports) {
    * @param {boolean} [settings.showEmptyGroupHeaders = false]  If true groups with no items will still show the empty group header.
    * @param {boolean} [settings.showSelectAll = false]  Show the select all button and text .
    * @param {function} [settings.source]  The calback for ajax.
+   * @param {string} [settings.allTextString]  Custom text string for `All` text header.
+   * @param {string} [settings.selectedTextString]  Custom text string for `Selected` text header.
    */
 
   function MultiSelect(element, settings) {
@@ -67991,6 +68821,7 @@ var Soho = (function (exports) {
   // Component Name
 
   var COMPONENT_NAME$Z = 'popdown';
+  var loopDuration = 30;
   /**
    * The Popdown Component can be used to open an animated popdown from a button. This may in the future
    * be deprecated to one thing. Popup vs Popdown vs Tooltip.
@@ -68125,7 +68956,17 @@ var Soho = (function (exports) {
         self.updated();
       }); // First and last tab
 
-      this.setFirstLastTab(); // Toggle on focus for popdown trigger
+      this.setFirstLastTab(); // When changes happen within the subtree on the Popdown, rebuilds the internal hash of
+      // tabbable elements used for retaining focus.
+
+      this.changeObserver = new MutationObserver(function () {
+        _this.setFocusableElems();
+      });
+      this.changeObserver.observe(this.element[0], {
+        childList: true,
+        subtree: true
+      });
+      this.setFocusableElems(); // Toggle on focus for popdown trigger
 
       if (this.settings.toggleOnFocus) {
         this.trigger.on('focus.popdown', function () {
@@ -68140,33 +68981,115 @@ var Soho = (function (exports) {
     },
 
     /**
-     * Detects whether or not the Popdown has focus.
-     * @private
-     * @param {HTMLElement|SVGElement} [target=undefined] an element to be checked for focus.
-     * @returns {boolean} whether or not the element is currently focused.
+     * Standard IDS check for focus.
+     * @returns {boolean} whether or not the Popdown itself, or a component inside the Popdown, currently has focus.
+     * In some cases, this needs to get access to child components to determine focus state.
      */
-    hasFocus: function hasFocus(target) {
-      var active = target || document.activeElement;
+    get isFocused() {
+      return this.hasFocus();
+    },
 
-      if (this.trigger.is(active)) {
+    /**
+     * @private
+     * @param {HTMLElement} [targetElem=undefined] if defined as an HTMLElement, will be evaluated along with
+     * the active element when checking to see if a child element of an IDS component has focus.
+     * @returns {boolean} whether or not the Popdown itself, or a component inside the Popdown, currently has focus.
+     * In some cases, this needs to get access to child components to determine focus state.
+     */
+    hasFocus: function hasFocus() {
+      var targetElem = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : undefined;
+      var componentHasFocus = false;
+      var activeElem = document.activeElement; // If a valid HTMLElement isn't provided, cancel it out.
+
+      if (!(targetElem instanceof HTMLElement)) {
+        targetElem = undefined;
+      }
+
+      if (this.trigger.is($(activeElem))) {
         return true;
       }
 
-      if (this.popdown[0].contains(active)) {
+      if (this.popdown[0].contains(activeElem)) {
         return true;
-      } // If focus is on an internal open Dropdown/Multiselect, stay open.
+      } // If a target element is passed from an event, check it for some easy types.
 
 
-      var dds = this.popdown[0].querySelectorAll('.dropdown, .multiselect');
-      var isOpen = false;
-      dds.forEach(function (dd) {
-        var api = $(dd).data('dropdown');
-
-        if (api && api.list && api.list.length && api.list[0].contains(active)) {
-          isOpen = true;
+      if (targetElem) {
+        if (targetElem.classList.contains('overlay')) {
+          return true;
         }
-      });
-      return isOpen;
+
+        if (this.popdown[0].contains(targetElem)) {
+          return true;
+        }
+      }
+
+      if (!this.focusableElems) {
+        this.setFocusableElems();
+      } // Check each match for IDS components that may have a more complex focus routine
+      // NOTE: Some elements that come through may be SVGs, careful which methods are used.
+
+
+      this.focusableElems.forEach(function (elem) {
+        if (componentHasFocus) {
+          return;
+        } // Check the base element
+
+
+        var $elem = $(elem);
+
+        if ($elem.is($(activeElem)) || typeof elem.contains === 'function' && elem.contains(activeElem)) {
+          componentHasFocus = true;
+        } // Dropdown/Multiselect
+
+
+        if ($elem.is('div.dropdown, div.multiselect')) {
+          var _$elem$parent$prev$da;
+
+          componentHasFocus = (_$elem$parent$prev$da = $elem.parent().prev('select').data('dropdown')) === null || _$elem$parent$prev$da === void 0 ? void 0 : _$elem$parent$prev$da == null ? void 0 : _$elem$parent$prev$da.isFocused;
+        } // Lookup
+
+
+        if ($elem.is('.lookup')) {
+          var lookupAPI = $elem.data('lookup');
+          componentHasFocus = lookupAPI === null || lookupAPI === void 0 ? void 0 : lookupAPI == null ? void 0 : lookupAPI.isFocused;
+
+          if (!componentHasFocus && targetElem) {
+            var _lookupAPI$modal;
+
+            componentHasFocus = lookupAPI === null || lookupAPI === void 0 ? void 0 : (_lookupAPI$modal = lookupAPI == null ? void 0 : lookupAPI.modal) === null || _lookupAPI$modal === void 0 ? void 0 : _lookupAPI$modal == null ? void 0 : _lookupAPI$modal.element[0].contains(targetElem);
+          }
+        } // Popupmenu
+
+
+        if ($elem.is('.btn-menu, .btn-actions')) {
+          var _$elem$data;
+
+          componentHasFocus = (_$elem$data = $elem.data('popupmenu')) === null || _$elem$data === void 0 ? void 0 : _$elem$data == null ? void 0 : _$elem$data.isFocused;
+        } // Searchfield
+
+
+        if ($elem.is('.searchfield')) {
+          var _$elem$data2;
+
+          componentHasFocus = (_$elem$data2 = $elem.data('searchfield')) === null || _$elem$data2 === void 0 ? void 0 : _$elem$data2 == null ? void 0 : _$elem$data2.isFocused;
+        }
+      }); // Check to see if a Popover/Tooltip has focus, and if that component's parent
+      // element is inside the Popdown
+
+      var tooltipParents = $(activeElem).parents('.tooltip, .popover');
+
+      if (tooltipParents.length) {
+        tooltipParents.each(function (i, elem) {
+          var api = $(elem).data('tooltip');
+
+          if (api && api.isFocused) {
+            componentHasFocus = true;
+          }
+        });
+      }
+
+      return componentHasFocus;
     },
 
     /**
@@ -68259,6 +69182,21 @@ var Soho = (function (exports) {
     },
 
     /**
+     * Creates an internal list of focusable items within the Popdown component,
+     * which is used for managing tab order.
+     * @private
+     * @returns {void}
+     */
+    setFocusableElems: function setFocusableElems() {
+      var extraSelectors = ['div.dropdown', 'div.multiselect', '.lookup-wrapper > span.trigger'];
+      var ignoredSelectors = ['select', 'option'];
+      var elems = DOM.focusableElems(this.popdown[0], extraSelectors, ignoredSelectors);
+      this.focusableElems = elems;
+      this.focusableElems.first = elems[0];
+      this.focusableElems.last = elems[elems.length - 1];
+    },
+
+    /**
      * Close the popdown and if available focus to prev/next focusable item.
      * @private
      * @param  {object} args The keydown event, first or last element and popdown reference
@@ -68304,32 +69242,73 @@ var Soho = (function (exports) {
       this.popdown.addClass('visible'); // Auto focus
 
       if (this.settings.autoFocus) {
-        var focusElem = this.focusableElem ? this.focusableElem.first : this.popdown.find(':focusable').first();
+        var focusElem = this.focusableElems ? this.focusableElems.first : this.popdown.find(':focusable').first();
         focusElem.focus();
-      }
+      } // Generic function for checking Popdown focus before closing
+
 
       function handleFocusOut(e) {
-        if (!self.hasFocus(e.target)) {
-          self.close();
+        if (self.focusableElems.includes(e.target) || self.hasFocus(e.target)) {
+          self.keyTarget = e.target;
+          return;
+        } // Using `keydown` sometimes prematurely causes the Popdown to close if elements
+        // near the front or back are focused. `keyTarget` detects what was previously clicked
+        // and is used as an additional element check in these cases.
+
+
+        if (e.target.tagName === 'BODY' && self.keyTarget) {
+          delete self.keyTarget;
+          return;
         }
+
+        self.close();
       } // Setup events that happen on open
       // Needs to be on a timer to prevent automatic closing of popdown.
 
 
-      setTimeout(function () {
-        $('body').on('resize.popdown', function () {
-          if (!self.hasFocus()) {
-            self.close();
-          }
-        }); // Only allow $(document).click() to close the Popdown if `keepOpen` isn't set.
-        // Also run this on `focusin` events that occur outside the Popdown, for keyboard access.
+      if (this.addEventsTimer) {
+        this.addEventsTimer.destroy(true);
+        delete this.addEventsTimer;
+      }
 
-        if (!self.settings.keepOpen) {
-          $(document).on('click.popdown', handleFocusOut).on('focusin.popdown', handleFocusOut);
+      this.addEventsTimer = new RenderLoopItem({
+        duration: loopDuration,
+        timeoutCallback: function timeoutCallback() {
+          $('body').on('resize.popdown', function (e) {
+            handleFocusOut(e);
+          }); // Only allow $(document).click() to close the Popdown if `keepOpen` isn't set.
+          // Also run this on `focusout` events that occur outside the Popdown, for keyboard access.
+
+          if (!self.settings.keepOpen) {
+            $(document).on('click.popdown', function (e) {
+              handleFocusOut(e);
+            });
+          } // Setup a global keydown event that can handle the closing of modals in the proper order.
+
+
+          $(document).on('keydown.popdown', function (e) {
+            var popdownTargetElem = $(e.target).parents('.popdown');
+            var keyCode = e.which || e.keyCode;
+
+            switch (keyCode) {
+              // Escape Key
+              case 27:
+                if (popdownTargetElem.length) {
+                  self.close();
+                }
+
+                break;
+              // Tab Key
+
+              case 9:
+                handleFocusOut(e);
+                break;
+            }
+          });
+          self.isAnimating = false;
         }
-
-        self.isAnimating = false;
-      }, 400);
+      });
+      renderLoop.register(this.addEventsTimer);
     },
 
     /**
@@ -68340,18 +69319,36 @@ var Soho = (function (exports) {
         return;
       }
 
+      if (this.addEventsTimer) {
+        this.addEventsTimer.destroy(true);
+        delete this.addEventsTimer;
+      }
+
+      if (this.keyTarget) {
+        delete this.keyTarget;
+      }
+
       var self = this;
       this.isAnimating = true;
       this.trigger.attr('aria-expanded', 'false');
       this.popdown.removeClass('visible'); // Turn off events
 
       $('body').off('resize.popdown');
-      $(document).off('click.popdown focusin.popdown'); // Sets the element to "display: none" to prevent interactions while hidden.
+      $(document).off('click.popdown focusout.popdown keydown.popdown'); // Sets the element to "display: none" to prevent interactions while hidden.
 
-      setTimeout(function () {
-        self.popdown[0].style.display = 'none';
-        self.isAnimating = false;
-      }, 400);
+      if (this.closeTimer) {
+        this.closeTimer.destroy(true);
+        delete this.closeTimer;
+      }
+
+      this.closeTimer = new RenderLoopItem({
+        duration: loopDuration,
+        timeoutCallback: function timeoutCallback() {
+          self.popdown[0].style.display = 'none';
+          self.isAnimating = false;
+        }
+      });
+      renderLoop.register(this.closeTimer);
     },
 
     /**
@@ -68513,12 +69510,24 @@ var Soho = (function (exports) {
         this.close();
       }
 
-      this.trigger.off('updated.popdown click.popdown focus.popdown').removeAttr('aria-controls').removeAttr('aria-expanded'); // First and last turn off and withdraw
+      this.trigger.off('updated.popdown click.popdown focus.popdown').removeAttr('aria-controls').removeAttr('aria-expanded');
+
+      if (this.changeObserver) {
+        this.changeObserver.disconnect();
+        delete this.changeObserver;
+      } // First and last turn off and withdraw
+
 
       if (this.focusableElem) {
         this.focusableElem.first.off('keydown.popdown');
         this.focusableElem.last.off('keydown.popdown');
         delete this.focusableElem;
+      }
+
+      if (this.focusableElems) {
+        this.focusableElems.first.off('keydown.popdown');
+        this.focusableElems.last.off('keydown.popdown');
+        delete this.focusableElems;
       }
 
       if (this.originalParent && this.originalParent.length) {
@@ -68903,6 +69912,7 @@ var Soho = (function (exports) {
     step: undefined,
     ticks: [],
     tooltipContent: undefined,
+    tooltipPosition: 'top',
     persistTooltip: false
   };
   /**
@@ -68917,6 +69927,7 @@ var Soho = (function (exports) {
    * @param {undefined|Number} [settings.step] If added will be the number of slider steps to use.
    * @param {array} [settings.ticks = []] An array of the ticks to use for the steps
    * @param {undefined|Array} [settings.tooltipContent] Special customizable tooltip content.
+   * @param {string} [settings.tooltipPosition = 'top'] Option to control the position of tooltip. ['top' , 'bottom']
    * @param {boolean} [settings.persistTooltip = false] If true the tooltip will stay visible.
    */
 
@@ -68986,6 +69997,10 @@ var Soho = (function (exports) {
 
       if (this.settings.value === '') {
         this.settings.value = this.settings.min;
+      }
+
+      if (this.settings.step === 1) {
+        this.settings.step = undefined;
       } // build tick list
 
 
@@ -69224,7 +70239,7 @@ var Soho = (function (exports) {
             content: function content() {
               return "".concat(self.getModifiedTextValue(Math.floor(self.value()[i])));
             },
-            placement: isVertical ? 'right' : 'bottom',
+            placement: isVertical ? 'right' : self.settings.tooltipPosition,
             trigger: 'focus',
             keepOpen: self.settings.persistTooltip
           });
@@ -69300,8 +70315,6 @@ var Soho = (function (exports) {
         } else {
           self.value([rangeVal]);
         }
-      } else {
-        self.value([rangeVal]);
       }
 
       self.checkHandleDifference(targetHandle, targetOldVal, rangeVal);
@@ -69747,11 +70760,6 @@ var Soho = (function (exports) {
      * @param {number} updatedVal the target value
      */
     checkHandleDifference: function checkHandleDifference(handle, originalVal, updatedVal) {
-      // IE9 doesn't support animation so return immediately.
-      if ($('html').hasClass('ie9')) {
-        return;
-      }
-
       var origPercent = this.convertValueToPercentage(originalVal);
       var updatedPercent = this.convertValueToPercentage(updatedVal);
 
@@ -69910,7 +70918,14 @@ var Soho = (function (exports) {
           'aria-valuetext': valueText
         });
       });
-      self.element.trigger('change');
+
+      if (this.element.next().find('.slider-handle.is-dragging').length === 0) {
+        self.element.trigger('change', {
+          element: self.element,
+          value: self._value
+        });
+      }
+
       return self._value;
     },
 
@@ -70121,11 +71136,11 @@ var Soho = (function (exports) {
   var COMPONENT_NAME$11 = 'spinbox'; // Component Defaults
 
   var SPINBOX_DEFAULTS = {
-    autocorrectOnBlur: false,
+    autocorrectOnBlur: true,
     min: -2147483647,
     max: 2147483647,
     step: null,
-    validateOnInput: true
+    maskOptions: null
   };
   /**
    * The Spinbox component provides easy access to modification of a numeric input field.
@@ -70133,12 +71148,12 @@ var Soho = (function (exports) {
    * @constructor
    * @param {jQuery[]|HTMLElement} element the base element
    * @param {object} [settings] incoming settings
-   * @param {boolean} [settings.autocorrectOnBlur = false] If true the input will adjust to the nearest step on blur.
+   * @param {boolean} [settings.autocorrectOnBlur = true] If true the input will adjust to the nearest step on blur.
    * @param {Number} [settings.min = -2147483647] if defined, provides a minimum numeric limit
    * @param {Number} [settings.max = 2147483647]  if defined, provides a maximum numeric limit
+   * @param {Number} [settings.maskOptions = null]  if defined this is passed to the internal mask component
    * @param {null|Number} [settings.step = null]  if defined, increases or decreases the spinbox value
    *  by a specific interval whenever the control buttons are used.
-   * @param {boolean} [settings.validateOnInput = true]  If set to false, will only automatically correct
    *  the spinbox value after the spinbox has lost focus.
    */
 
@@ -70231,7 +71246,7 @@ var Soho = (function (exports) {
       }
 
       if (this.element.attr('min')) {
-        this.settings.max = this.element.attr('min');
+        this.settings.min = this.element.attr('min');
       } else if (this.settings.min) {
         this.element.attr('min', this.settings.min);
       }
@@ -70298,67 +71313,21 @@ var Soho = (function (exports) {
 
       var min = this.element.attr('min');
       var max = this.element.attr('max');
-      var mask = this.element.attr('data-mask');
-      var maskValue = '';
       var attributes = {
         role: 'spinbutton'
-      };
-      var i = 0; // Define a default Max value if none of these attributes exist, to ensure the mask plugin will
+      }; // Define a default Max value if none of these attributes exist, to ensure the mask plugin will
       // work correctly.  Cannot define a Min value here because the plugin must be able to invoke
       // itself with a NULL value.
 
-      if (!min && !max && !mask) {
+      if (!min && !max) {
         max = '9999999';
-      } // If a mask doesn't exist, but min and max values do exist, create a mask that reflects
-      // those min/max values
-
-
-      if ((min || max) && !mask) {
-        var newMask = '';
-        var tempMin = min || '';
-        var tempMax = max || '';
-        var longerVal = tempMin.length > tempMax.length ? tempMin : tempMax;
-        i = 0;
-
-        while (i <= longerVal.length) {
-          newMask += '#';
-          i++;
-        } // Add a negative symbol to the mask if it exists within the longer value.
-
-
-        if (tempMin.indexOf('-') !== -1 || tempMax.indexOf('-') !== -1) {
-          newMask = "-".concat(newMask.substring(0, newMask.length - 1));
-        }
-
-        attributes['data-mask'] = newMask;
-        mask = newMask;
-      } // If a "data-mask" attribute is already defined, use it to determine missing values
-      // for min/max, if they don't already exist.
-
-
-      var maskSize = mask.length;
-      i = 0;
-
-      while (i <= maskSize) {
-        maskValue += '9';
-        i++;
       } // If no negative symbol exists in the mask, the minimum value must be zero.
 
 
-      if (mask.indexOf('-') === -1) {
-        attributes.min = min || 0;
-        attributes.max = max || maskValue;
-      } else {
-        attributes.min = min || maskValue;
-        attributes.max = max || maskValue.substring(0, maskValue.length - 1);
-      }
-
-      if (!this.element.attr('data-mask-mode') || this.element.attr('data-mask-mode') !== 'number') {
-        attributes['data-mask-mode'] = 'number';
-      } // Destroy the Mask Plugin if it's already been invoked.  We will reinvoke it later
+      attributes.min = min || 0;
+      attributes.max = max; // Destroy the Mask Plugin if it's already been invoked.  We will reinvoke it later
       // on during initialization.  Check to make sure its the actual Mask plugin object,
       // and not the "data-mask" pattern string.
-
 
       if (this.element.data('mask') && _typeof(this.element.data('mask')) === 'object') {
         this.element.data('mask').destroy();
@@ -70371,7 +71340,17 @@ var Soho = (function (exports) {
 
       this.updateAria(self.element.val()); // Invoke the mask plugin
 
-      this.element.mask(); // Disable in full if the settings have determined we need to disable on init.
+      var maskOptions = {
+        process: 'number',
+        patternOptions: {
+          allowDecimal: false,
+          allowThousandsSeparator: false,
+          allowNegative: Math.min(this.settings.min, this.settings.max) < 0,
+          decimalLimit: 0,
+          integerLimit: String(this.settings.max).length
+        }
+      };
+      this.element.mask(this.settings.maskOptions || maskOptions); // Disable in full if the settings have determined we need to disable on init.
 
       if (this.isDisabled()) {
         this.disable();
@@ -70488,44 +71467,6 @@ var Soho = (function (exports) {
     },
 
     /**
-     * Event handler for 'keypress' events
-     * TODO: Deprecate in 4.4.0
-     * @private
-     * @param {jQuery.Event} e jQuery `keypress` event
-     * @param {Spinbox} self component instance
-     * @returns {void}
-     */
-    handleKeyPress: function handleKeyPress(e, self) {
-      var key = e.which; // NOTE:
-
-      if (key < 48 || key > 57 && key < 96 || key > 105) {
-        return undefined;
-      }
-
-      return this.handleInput(e, self);
-    },
-
-    /**
-     * Event handler for the 'input' event
-     * @private
-     * @param {jQuery.Event} e jQuery `input` event
-     * @param {Spinbox} self this component instance
-     * @returns {void}
-     */
-    handleInput: function handleInput(e, self) {
-      if (self.isDisabled() || this.isReadonly()) {
-        return undefined;
-      } // If we're only auto-correcting on blur, don't continue.
-
-
-      if (this.settings.autocorrectOnBlur) {
-        return undefined;
-      }
-
-      return this.correctValue(e);
-    },
-
-    /**
      * Event handler for 'keyup' events
      * @private
      * @param {jQuery.Event} e jQuery `input` event
@@ -70597,8 +71538,8 @@ var Soho = (function (exports) {
      */
     correctValue: function correctValue(e) {
       var num = Number(this.element.val());
-      var min = this.element.attr('min');
-      var max = this.element.attr('max');
+      var min = parseInt(this.element.attr('min'), 10);
+      var max = parseInt(this.element.attr('max'), 10);
 
       if (num < min) {
         if (e) {
@@ -70901,8 +71842,6 @@ var Soho = (function (exports) {
         }
       }).on('keydown.spinbox', function (e) {
         self.handleKeyDown(e, self);
-      }).on('input.spinbox', function (e) {
-        self.handleInput(e, self);
       }).on('keyup.spinbox', function (e) {
         self.handleKeyup(e, self);
       }).on('afterpaste.mask', function () {
@@ -71003,15 +71942,19 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     build: function build() {
+      var _this = this;
+
       var self = this;
       var s = this.settings;
       var splitter = this.element;
       var parent = splitter.parent();
       var direction = s.axis === 'x' ? 'left' : 'top';
       var thisSide = parent.is('.content') ? parent.parent() : parent;
+      var dragHandle = $("<div class=\"splitter-drag-handle\">".concat($.createIcon('drag'), "</div>"));
       var defaultOffset = 299;
       var w = parent.width();
       var parentHeight;
+      this.isRTL = Locale.isRTL();
       setTimeout(function () {
         parentHeight = parent.height();
       }, 0);
@@ -71019,6 +71962,7 @@ var Soho = (function (exports) {
       this.isSplitterRightSide = splitter.is('.splitter-right') || s.axis === 'x' && s.side === 'right';
       this.isSplitterHorizontal = splitter.is('.splitter-horizontal') || s.axis === 'y';
       s.uniqueId = utils.uniqueId(this.element, 'splitter');
+      dragHandle.appendTo(splitter);
 
       if (this.isSplitterRightSide) {
         var thisPrev = thisSide.prev();
@@ -71035,6 +71979,13 @@ var Soho = (function (exports) {
 
         if (s.collapseButton) {
           var savedOffset = 0;
+          var isClickedOnce = false;
+
+          var splitAndRotate = function splitAndRotate(splitVal, el, isRotate) {
+            self.splitTo(splitVal, parentHeight);
+            $(el)[isRotate ? 'addClass' : 'removeClass']('rotate');
+          };
+
           this.splitterCollapseButton = $('<button type="button" class="splitter-btn" id="splitter-collapse-btn"><svg class="icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-double-chevron"></use></svg></button>');
           this.splitterCollapseButton.appendTo(splitter);
 
@@ -71043,26 +71994,55 @@ var Soho = (function (exports) {
           }
 
           this.splitterCollapseButton.click(function () {
-            if (savedOffset <= 0) {
-              if (splitter[0].offsetLeft <= 10) {
-                self.splitTo(defaultOffset, parentHeight);
-                $(this).addClass('rotate');
-              } else {
-                savedOffset = splitter[0].offsetLeft;
-                self.splitTo(0, parentHeight);
-                $(this).removeClass('rotate');
+            if (self.isRTL && !self.isSplitterHorizontal) {
+              var containerWidth = self.getContainerWidth() - 20;
+              var x = containerWidth;
+
+              if (!isClickedOnce) {
+                savedOffset = containerWidth - savedOffset;
+                defaultOffset = containerWidth - defaultOffset;
               }
-            } else if (splitter[0].offsetLeft > 10) {
-              savedOffset = splitter[0].offsetLeft;
-              self.splitTo(0, parentHeight);
-              $(this).removeClass('rotate');
+
+              var left = splitter[0].offsetLeft;
+
+              if (savedOffset >= x) {
+                if (left >= containerWidth) {
+                  splitAndRotate(defaultOffset, this, true);
+                } else {
+                  savedOffset = left;
+                  splitAndRotate(x, this, false);
+                }
+              } else if (left < containerWidth) {
+                savedOffset = left;
+                splitAndRotate(x, this, false);
+              } else {
+                splitAndRotate(savedOffset, this, true);
+                savedOffset = x;
+              }
             } else {
-              self.splitTo(savedOffset, parentHeight);
-              $(this).addClass('rotate');
-              savedOffset = 0;
+              var _left = splitter[0].offsetLeft;
+
+              if (savedOffset <= 0) {
+                if (_left <= 10) {
+                  splitAndRotate(defaultOffset, this, true);
+                } else {
+                  savedOffset = _left;
+                  splitAndRotate(0, this, false);
+                }
+              } else if (_left > 10) {
+                savedOffset = _left;
+                splitAndRotate(0, this, false);
+              } else {
+                splitAndRotate(savedOffset, this, true);
+                savedOffset = 0;
+              }
             }
+
+            isClickedOnce = true;
           });
         }
+
+        this.setSplitterContainer(thisSide.parent());
       } else if (this.isSplitterHorizontal) {
         this.topPanel = splitter.prev();
         w = this.topPanel.height();
@@ -71073,6 +72053,12 @@ var Soho = (function (exports) {
         this.rightSide = thisSide;
         this.leftSide = thisSide.prev().parent();
         thisSide.prev().addClass('flex-grow-shrink').parent().addClass('splitter-container');
+        this.setSplitterContainer(thisSide.parent());
+      }
+
+      if (this.isRTL && !this.isSplitterHorizontal) {
+        var containerWidth = this.getContainerWidth();
+        w = containerWidth >= w ? containerWidth - w : w;
       } // Restore from local storage
 
 
@@ -71104,21 +72090,21 @@ var Soho = (function (exports) {
           top: 0
         }
       }).on('dragstart.splitter', function () {
-        var iframes = $('iframe');
+        var iframes = thisSide.parent().find('iframe');
         self.documentWidth = $(document).width();
 
         if (iframes.length > 0) {
           for (var i = 0, l = iframes.length; i < l; i++) {
             var frame = $(iframes[i]); // eslint-disable-next-line
 
-            var width = "".concat(parseInt(getComputedStyle(frame.parent()[0]).width, 10) - 40, "px");
+            var width = "".concat(parseInt(getComputedStyle(frame.parent()[0]).width, 10), "px");
             var overlay = $('<div class="overlay splitter-overlay"></div>');
             overlay.css('width', width);
             frame.before(overlay);
           }
         }
       }).on('dragend.splitter', function (e, args) {
-        $('.splitter-overlay').remove();
+        thisSide.parent().find('.splitter-overlay').remove();
 
         if (s.collapseButton) {
           if (args[direction] <= 10) {
@@ -71130,6 +72116,14 @@ var Soho = (function (exports) {
 
         if (s.resize === 'end') {
           self.splitTo(args[direction], parentHeight);
+        } // Run here on `dragend` and `drag` because it take some time to apply, which leaving some gap in between especially with case zero or less value.
+
+
+        if (s.resize === 'immediate' && _this.isRTL && !_this.isSplitterHorizontal) {
+          setTimeout(function () {
+            var left = parseInt(_this.element.css('left'), 10);
+            self.splitTo(left, parentHeight);
+          }, 0);
         }
       }).on('drag.splitter', function (e, args) {
         if (args.left <= 0) {
@@ -71154,6 +72148,32 @@ var Soho = (function (exports) {
         'aria-grabbed': 'false'
       });
       return this;
+    },
+
+    /**
+     * Set the splitter container
+     * @private
+     * @param {jQueryElement} parentEl The main parent container element.
+     * @returns {void}
+     */
+    setSplitterContainer: function setSplitterContainer(parentEl) {
+      this.container = this.element.closest('.splitter-container');
+
+      if (!this.container.length && parentEl && parentEl.length) {
+        parentEl.addClass('splitter-container');
+        this.container = this.element.closest('.splitter-container');
+      }
+    },
+
+    /**
+     * Get splitter container width
+     * @private
+     * @returns {number} Container width
+     */
+    getContainerWidth: function getContainerWidth() {
+      var _this$container;
+
+      return ((_this$container = this.container) === null || _this$container === void 0 ? void 0 : _this$container == null ? void 0 : _this$container.outerWidth()) || 0;
     },
 
     /**
@@ -71189,7 +72209,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     resizeLeft: function resizeLeft(splitter, leftArg) {
-      var left = this.leftSide.outerWidth() - leftArg; // Adjust Left and Right Side
+      var left = this.isRTL ? leftArg + 20 : this.leftSide.outerWidth() - leftArg; // Adjust Left and Right Side
 
       this.rightSide[0].style.width = "".concat(left, "px"); // Reset the Width
 
@@ -71204,9 +72224,18 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     resizeRight: function resizeRight(splitter, w) {
-      // Adjust Left and Right Side
-      this.leftSide[0].style.width = "".concat(w, "px");
-      splitter[0].style.left = "".concat(w - 1, "px");
+      var width = w;
+      var left = w - 1;
+
+      if (this.isRTL && !this.isSplitterHorizontal) {
+        var containerWidth = this.getContainerWidth();
+        width = containerWidth >= w ? containerWidth - w - 20 : w;
+        left = w;
+      } // Adjust Left and Right Side
+
+
+      this.leftSide[0].style.width = "".concat(width, "px");
+      splitter[0].style.left = "".concat(left, "px");
     },
 
     /**
@@ -71222,7 +72251,7 @@ var Soho = (function (exports) {
       var splitter = this.element;
 
       if (this.isSplitterRightSide) {
-        if (split > s.maxWidth.right) {
+        if (!this.isRTL && split > s.maxWidth.right || this.isRTL && split < s.maxWidth.right) {
           split = s.maxWidth.right;
         }
 
@@ -71230,7 +72259,7 @@ var Soho = (function (exports) {
       } else if (this.isSplitterHorizontal) {
         this.resizeTop(splitter, split, parentHeight);
       } else {
-        if (split > s.maxWidth.left) {
+        if (!this.isRTL && split > s.maxWidth.left || this.isRTL && split < s.maxWidth.left) {
           split = s.maxWidth.left;
         }
 
@@ -71299,7 +72328,7 @@ var Soho = (function (exports) {
      * @returns {void}
      */
     handleEvents: function handleEvents() {
-      var _this = this;
+      var _this2 = this;
 
       this.element
       /**
@@ -71311,7 +72340,7 @@ var Soho = (function (exports) {
       * @property {object} event - The jquery event object
       */
       .on("updated.".concat(COMPONENT_NAME$12), function () {
-        _this.updated();
+        _this2.updated();
       })
       /**
       * Fires when a key is pressed while the component is focused.
@@ -71324,17 +72353,17 @@ var Soho = (function (exports) {
       .on("keydown.".concat(COMPONENT_NAME$12), function (e) {
         // Space will toggle selection
         if (e.which === 32) {
-          _this.toggleSelection();
+          _this2.toggleSelection();
 
           e.preventDefault();
         }
 
         if (e.which === 37) {
-          _this.splitTo(_this.split - 15, _this.parentHeight);
+          _this2.splitTo(_this2.split - 15, _this2.parentHeight);
         }
 
         if (e.which === 39) {
-          _this.splitTo(_this.split + 15, _this.parentHeight);
+          _this2.splitTo(_this2.split + 15, _this2.parentHeight);
         }
       });
       return this;
@@ -71548,7 +72577,7 @@ var Soho = (function (exports) {
 
       s.numOfSelectionsClass = 'num-of-selections';
       s.itemContentClass = 'swaplist-item-content';
-      s.itemContentTempl = $("<div><p><span class=\"".concat(s.numOfSelectionsClass, "\">###</span> ").concat(Locale ? Locale.translate('ItemsSelected') : ' Items Selected ', "</p><div/>")); // Make top buttons disabled if not draggable
+      s.itemContentTempl = $("<div><p><span class=\"".concat(s.numOfSelectionsClass, "\">###</span>\n      <span class=\"").concat(s.numOfSelectionsClass, "-text\">&nbsp;</span></p><div/>")); // Make top buttons disabled if not draggable
 
       if (!s.draggable.available) {
         disabledBtnStr = "".concat(s.availableClass, " ").concat(s.availableBtn, ",").concat(s.selectedBtnLeft);
@@ -71786,8 +72815,7 @@ var Soho = (function (exports) {
       if (this.isDragAndDropSupports) {
         // Use Handle if available
         this.handle = ul.first().attr('data-swap-handle');
-        this.handle = $(this.handle, ul).length > 0 ? this.handle : null; // this.handle = (!this.isTouch && $(this.handle, ul).length > 0) ? this.handle : null;
-
+        this.handle = !this.isTouch && $(this.handle, ul).length > 0 ? this.handle : null;
         $(this.handle, ul).addClass('draggable').off('mousedown.swaplist touchstart.swaplist').on('mousedown.swaplist touchstart.swaplist', function () {
           _this2.selections.isHandle = true;
         }).off('mouseup.swaplist touchend.swaplist').on('mouseup.swaplist touchend.swaplist', function () {
@@ -72068,19 +73096,44 @@ var Soho = (function (exports) {
         return false;
       };
 
-      for (var i = 0, l = this.selections.items.length; i < l; i++) {
-        var item = this.selections.items[i];
+      if (owner.is(droptarget)) {
+        var syncedList = [];
 
-        for (var dtIndex = 0, l2 = droptargetNodes.length; dtIndex < l2; dtIndex++) {
-          if ($(droptargetNodes[dtIndex]).is(item)) {
-            for (var ownerIndex = 0, l3 = ownerDataList.length; ownerIndex < l3; ownerIndex++) {
-              var ownerItem = ownerDataList[ownerIndex];
+        for (var i = 0, l = droptargetNodes.length; i < l; i++) {
+          var item = droptargetNodes[i];
 
-              if (isMoved(ownerItem.node[0], item[0])) {
-                dtDataList.push(ownerItem);
-                ownerDataList.splice(ownerIndex, 1);
-                this.arrayIndexMove(dtDataList, dtDataList.length - 1, dtIndex);
-                break;
+          for (var ownerIndex = 0, l2 = ownerDataList.length; ownerIndex < l2; ownerIndex++) {
+            var ownerItem = ownerDataList[ownerIndex];
+
+            if (isMoved(ownerItem.node[0], item)) {
+              syncedList.push(ownerItem);
+              break;
+            }
+          }
+        }
+
+        ownerDataList.splice(0, ownerDataList.length);
+
+        for (var _i3 = 0, _l3 = syncedList.length; _i3 < _l3; _i3++) {
+          ownerDataList.push(syncedList[_i3]);
+        }
+      } else {
+        for (var _i4 = 0, _l4 = this.selections.items.length; _i4 < _l4; _i4++) {
+          var _item = this.selections.items[_i4];
+          var canLoop = true;
+
+          for (var dtIndex = 0, _l5 = droptargetNodes.length; dtIndex < _l5 && canLoop; dtIndex++) {
+            if ($(droptargetNodes[dtIndex]).is(_item)) {
+              for (var _ownerIndex = 0, l3 = ownerDataList.length; _ownerIndex < l3; _ownerIndex++) {
+                var _ownerItem = ownerDataList[_ownerIndex];
+
+                if (isMoved(_ownerItem.node[0], _item[0])) {
+                  dtDataList.push(_ownerItem);
+                  ownerDataList.splice(_ownerIndex, 1);
+                  this.arrayIndexMove(dtDataList, dtDataList.length - 1, dtIndex);
+                  canLoop = false;
+                  break;
+                }
               }
             }
           }
@@ -72497,6 +73550,7 @@ var Soho = (function (exports) {
         }
 
         $(".".concat(settings.numOfSelectionsClass), settings.itemContentTempl).html(selections.items.length);
+        $(".".concat(settings.numOfSelectionsClass, "-text"), settings.itemContentTempl).text(Locale.translate('ItemsSelected'));
         self.addDropeffects();
 
         if (!self.isTouch) {
@@ -72595,7 +73649,7 @@ var Soho = (function (exports) {
         e.stopPropagation();
       }) // Dragend - implement items being validly dropped into targets
       .on(self.dragEnd, self.dragElements, function (e) {
-        if (!selections.dragged) {
+        if (!selections.dragged || !selections.droptarget) {
           return;
         }
 
@@ -72609,7 +73663,7 @@ var Soho = (function (exports) {
           val.find('mark.highlight').contents().unwrap();
 
           if (currentSize && !$(selections.related).is('ul')) {
-            var isLess = related.index() < selections.draggedIndex;
+            var isLess = related.index() < selections.draggedIndex && selections.owner.is(selections.droptarget);
             var el = isLess ? val : $(selections.items[selections.items.length - 1 - index]);
             var posinset = related.index() + (isLess ? index + 1 : index + 2);
             val.attr({
@@ -75661,7 +76715,9 @@ var Soho = (function (exports) {
 
       if (e) {
         return getTabFromEvent(e);
-      } else if (tabId) {
+      }
+
+      if (tabId) {
         return getTabFromId(tabId);
       }
 
@@ -76417,11 +77473,6 @@ var Soho = (function (exports) {
 
       var self = this;
       var target = li;
-      var scrollingTablist = this.tablistContainer;
-      var isRTL = Locale.isRTL();
-      var tablistScrollWidth;
-      var tablistScrollLeft;
-      var anchorStyle;
       this.animatedBar.removeClass('no-transition');
 
       if (!target || target === undefined || !target.length || !self.anchors.length) {
@@ -76429,31 +77480,11 @@ var Soho = (function (exports) {
         return;
       }
 
-      var targetStyle = window.getComputedStyle(target[0], null);
-      var paddingRight = parseInt(targetStyle.getPropertyValue('padding-right'), 10) || 0;
-      var width = parseInt(targetStyle.getPropertyValue('width'), 10) || 0;
-
-      if (target.is('.tab')) {
-        anchorStyle = window.getComputedStyle(target.children('a')[0]);
-        paddingRight += parseInt(anchorStyle.getPropertyValue('padding-right'), 10) || 0;
-      }
-
-      var left = isRTL ? paddingRight + target.position().left + target.outerWidth(true) : target.position().left;
       clearTimeout(self.animationTimeout);
       this.animatedBar.addClass('visible');
 
       function animationTimeout(cb) {
-        var style = self.animatedBar[0].style;
-        tablistScrollLeft = scrollingTablist[0].scrollLeft;
-        tablistScrollWidth = scrollingTablist[0].scrollWidth;
-
-        if (isRTL) {
-          style.right = "".concat(tablistScrollWidth + paddingRight - (left + tablistScrollLeft), "px");
-        } else {
-          style.left = "".concat(left + tablistScrollLeft, "px");
-        }
-
-        style.width = "".concat(width, "px");
+        self.sizeBar(target);
 
         if (cb && typeof cb === 'function') {
           cb();
@@ -76461,6 +77492,39 @@ var Soho = (function (exports) {
       }
 
       animationTimeout(callback);
+    },
+
+    /**
+     * Recalculate the sizes on the animated bar
+     * @param {jQuery} target The target tab element
+     * @private
+     * @returns {void}
+     */
+    sizeBar: function sizeBar(target) {
+      target = target || this.element.find('.tab.is-selected');
+      var style = this.animatedBar[0].style;
+      var scrollingTablist = this.tablistContainer;
+      var tablistScrollLeft = scrollingTablist[0].scrollLeft;
+      var tablistScrollWidth = scrollingTablist[0].scrollWidth;
+      var targetStyle = window.getComputedStyle(target[0], null);
+      var paddingRight = parseInt(targetStyle.getPropertyValue('padding-right'), 10) || 0;
+      var width = parseInt(targetStyle.getPropertyValue('width'), 10) || 0;
+
+      if (target.is('.tab')) {
+        var anchorStyle = window.getComputedStyle(target.children('a')[0]);
+        paddingRight += parseInt(anchorStyle.getPropertyValue('padding-right'), 10) || 0;
+      }
+
+      var left = Locale.isRTL() ? paddingRight + target.position().left + target.outerWidth(true) : target.position().left;
+
+      if (Locale.isRTL()) {
+        style.right = "".concat(tablistScrollWidth + paddingRight - (left + tablistScrollLeft), "px");
+      } else {
+        style.left = "".concat(left + tablistScrollLeft, "px");
+      }
+
+      style.width = "".concat(width, "px");
+      this.focusState[0].style.width = "".concat(width, "px");
     },
 
     /**
@@ -76909,6 +77973,13 @@ var Soho = (function (exports) {
       }
 
       $('.tab-panel input').off('error.tabs valid.tabs');
+
+      if (this.addTabButton) {
+        this.addTabButton.remove();
+        this.addTabButton = undefined;
+      }
+
+      this.element.find('.close.icon').remove();
       return this;
     },
 
@@ -77039,7 +78110,9 @@ var Soho = (function (exports) {
     isSelected: function isSelected(input) {
       if (typeof input.selectionStart === 'number') {
         return input.selectionStart === 0 && input.selectionEnd === input.value.length;
-      } else if (typeof document.selection !== 'undefined') {
+      }
+
+      if (typeof document.selection !== 'undefined') {
         return document.selection.createRange().text === input.value;
       }
 
@@ -77216,7 +78289,9 @@ var Soho = (function (exports) {
     getMaxLength: function getMaxLength() {
       if (this.settings.maxLength) {
         return this.settings.maxLength;
-      } else if (this.element.attr('maxlength')) {
+      }
+
+      if (this.element.attr('maxlength')) {
         return parseInt(this.element.attr('maxlength'), 10);
       }
 
@@ -77711,6 +78786,7 @@ var Soho = (function (exports) {
       listItems.forEach(function (li) {
         return _this.setNodeStatus($(li.querySelector('a')));
       });
+      this.syncDataset();
     },
 
     /**
@@ -78104,7 +79180,7 @@ var Soho = (function (exports) {
       // Don't do selection for toggle type only
       if (this.isMultiselect && e) {
         if (e.type === 'click' || e.type === 'touch') {
-          if (e.target.classList.contains('icon') && node[0].parentNode.classList.contains('folder')) {
+          if (DOM.hasClass(e.target, 'icon') && node[0].parentNode.classList.contains('folder')) {
             return;
           }
         } else if (e.type === 'keydown') {
@@ -78174,7 +79250,7 @@ var Soho = (function (exports) {
         /**
          * Fires when the node is selected.
          * @memberof Tree
-         * @event unselected
+         * @event selected
          * @type {object}
          * @property {object} event - The jquery event object
          * @property {object} args for node element, item
@@ -78209,8 +79285,8 @@ var Soho = (function (exports) {
           a.classList.add('is-selected');
           a.setAttribute('aria-selected', true);
         } else {
-          li.classList.remove('is-selected', 'is-partial');
-          a.classList.remove('is-selected', 'is-partial');
+          DOM.removeClass(li, 'is-selected', 'is-partial');
+          DOM.removeClass(a, 'is-selected', 'is-partial');
           a.setAttribute('aria-selected', false);
         }
 
@@ -78223,13 +79299,13 @@ var Soho = (function (exports) {
           var status = self.getSelectedStatus(a, isFirstSkipped);
 
           if (status === 'mixed') {
-            li.classList.remove('is-selected', 'is-partial');
+            DOM.removeClass(li, 'is-selected', 'is-partial');
             li.classList.add('is-partial');
           } else if (status) {
-            li.classList.remove('is-selected', 'is-partial');
+            DOM.removeClass(li, 'is-selected', 'is-partial');
             li.classList.add('is-selected');
           } else {
-            li.classList.remove('is-selected', 'is-partial');
+            DOM.removeClass(li, 'is-selected', 'is-partial');
           }
 
           self.syncNode(a);
@@ -78520,7 +79596,7 @@ var Soho = (function (exports) {
 
         if (!target[0].classList.contains('is-disabled') && !target[0].classList.contains('is-loading')) {
           if (self.isMultiselect) {
-            if (e.target.classList.contains('icon') && parent.classList.contains('folder')) {
+            if (DOM.hasClass(e.target, 'icon') && parent.classList.contains('folder')) {
               self.toggleNode(target, e);
             } else if (parent.classList.contains('is-selected') || parent.classList.contains('is-partial')) {
               self.unSelectedNode(target, true);
@@ -78540,6 +79616,7 @@ var Soho = (function (exports) {
           self.popupEl = null;
         }
 
+        self.syncDataset();
         return false; // Prevent Click from Going to Top
       });
       this.element // Focus on "a" elements
@@ -79525,7 +80602,7 @@ var Soho = (function (exports) {
         if (!badge && !nodeData.badge.remove) {
           if (typeof nodeData.badge.text !== 'undefined' && $.trim(nodeData.badge.text) !== '') {
             var newBadge = document.createElement('span');
-            newBadge.classList.add('tree-badge', 'badge');
+            DOM.addClass(newBadge, 'tree-badge', 'badge');
             nodetext.parentNode.insertBefore(newBadge, nodetext);
             badge = elem.node[0].querySelector('.tree-badge');
           }
@@ -79544,7 +80621,7 @@ var Soho = (function (exports) {
           }
 
           if (typeof nodeData.badge.type !== 'undefined') {
-            badge.classList.remove('info', 'good', 'error', 'alert', 'pending');
+            DOM.removeClass(badge, 'info', 'good', 'error', 'alert', 'pending');
 
             if (/info|good|error|alert|pending/i.test(nodeData.badge.type)) {
               badge.classList.add(nodeData.badge.type);
@@ -79644,7 +80721,7 @@ var Soho = (function (exports) {
       li = this.isjQuery(li) ? li[0] : li;
       var ul = li.querySelector('ul');
       this.setTreeIcon(li.querySelector('svg.icon-tree'), nodeData.icon || 'icon-tree-node');
-      li.classList.remove('folder', 'is-open');
+      DOM.removeClass(li, 'folder', 'is-open');
 
       if (ul) {
         ul.parentNode.removeChild(ul);
@@ -80465,12 +81542,12 @@ var Soho = (function (exports) {
 
   $.fn.weekview = function (settings) {
     return this.each(function () {
-      var instance = $.data(this, COMPONENT_NAME$E);
+      var instance = $.data(this, COMPONENT_NAME$A);
 
       if (instance) {
         instance.updated(settings);
       } else {
-        instance = $.data(this, COMPONENT_NAME$E, new WeekView(this, settings));
+        instance = $.data(this, COMPONENT_NAME$A, new WeekView(this, settings));
       }
     });
   };
@@ -81714,6 +82791,683 @@ var Soho = (function (exports) {
 
   };
 
+  /* eslint-disable import/prefer-default-export */
+
+  var excel = {};
+  /**
+   * Remove Hidden Columns and Non Exportable Columns.
+   * @private
+   * @param {string} customDs An optional customized version of the data to use.
+   * @param {string} self The grid api to use (if customDs is not used)
+   * @returns {object} an table element cleaned extra stuff
+   */
+
+  excel.cleanExtra = function (customDs, self) {
+    var clean = function clean(table) {
+      var removeNode = function removeNode(node) {
+        if (node.parentNode) {
+          node.parentNode.removeChild(node);
+        }
+      };
+
+      var nonExportables = [];
+      var rows = [].slice.call(table[0].querySelectorAll('tr'));
+      rows.forEach(function (row) {
+        if (row.classList.contains('is-hidden') || row.classList.contains('datagrid-expandable-row')) {
+          removeNode(row);
+          return;
+        }
+
+        var elements = [].slice.call(row.querySelectorAll('th, td, div, span'));
+        elements.forEach(function (el) {
+          if (el.classList.contains('is-hidden')) {
+            removeNode(el);
+            return;
+          } // THEAD
+
+
+          var attrExportable = el.getAttribute('data-exportable');
+
+          if (attrExportable && attrExportable === 'no') {
+            var index = parseInt(el.id.slice(-1), 10);
+            nonExportables.push(index + 1);
+            removeNode(el);
+            return;
+          } // TBODY
+
+
+          var attrAriaColindex = el.getAttribute('aria-colindex');
+
+          if (el.tagName.toLowerCase() === 'td' && attrAriaColindex) {
+            if (nonExportables.indexOf(parseInt(attrAriaColindex, 10)) !== -1) {
+              removeNode(el);
+              return;
+            }
+          }
+
+          var innerElements = [].slice.call(el.querySelectorAll('.is-hidden, .datagrid-expand-btn, .is-draggable-target, .handle, .sort-indicator, .datagrid-filter-wrapper'));
+          innerElements.forEach(function (innerEl) {
+            return removeNode(innerEl);
+          });
+
+          while (el.attributes.length > 0) {
+            el.removeAttribute(el.attributes[0].name);
+          } // White Hat Security Violation. Remove Excel formulas
+          // Excel Formulas Start with =SOMETHING
+
+
+          var text = el.textContent;
+
+          if (text.substr(0, 1) === '=' && text.substr(1, 1) !== '') {
+            el.textContent = "'".concat(text, "'");
+          }
+        });
+      });
+      return table;
+    };
+
+    var table = [];
+
+    if (!self && customDs) {
+      table = excel.datasetToHtml(customDs);
+    } else {
+      table = excel.appendRows(self.settings.dataset, self.table[0].cloneNode(true), self);
+    } // Create the header row
+
+
+    if (!customDs && !table[0].querySelector('thead')) {
+      var tbody = table[0].querySelector('tbody');
+      var header = table[0].createTHead();
+      var row = header.insertRow(0);
+      var allHeaderNodes = self.headerNodes();
+
+      for (var i = 0; i < allHeaderNodes.length; i++) {
+        var headerNode = allHeaderNodes[i];
+        var cell = row.insertCell(i);
+        cell.innerHTML = headerNode.querySelector('.datagrid-header-text').textContent.trim();
+        cell.setAttribute('class', headerNode.classList);
+        cell.setAttribute('id', headerNode.getAttribute('id'));
+
+        if (headerNode.getAttribute('data-exportable')) {
+          cell.setAttribute('data-exportable', headerNode.getAttribute('data-exportable'));
+        }
+      }
+
+      tbody.parentNode.insertBefore(header, tbody);
+    }
+
+    table = clean(table); // Exporting data with trailing negative signs moved in front
+
+    if (self && self.settings.exportConvertNegative) {
+      var cells = [].slice.call(table[0].querySelectorAll('td'));
+      cells.forEach(function (td) {
+        td.textContent = td.textContent.replace(/^(.+)(-$)/, '$2$1');
+      });
+    }
+
+    return table;
+  };
+  /**
+   * Save file to download `.xls or .csv`.
+   * @private
+   * @param {string} content The content for the file in the download.
+   * @param {string} fileName The desired export filename in the download.
+   * @returns {void}
+   */
+
+
+  excel.save = function (content, fileName) {
+    var ext = (fileName.match(/\.([^.]*?)(?=\?|#|$)/) || [])[1];
+    var isTypeExcel = typeof ext === 'string' && /\b(xlsx|xls)\b/g.test(ext);
+
+    if (Environment.browser.name === 'ie' || Environment.browser.name === 'edge') {
+      if (window.navigator.msSaveBlob) {
+        var blob = new Blob([content], {
+          type: 'application/csv;charset=utf-8;'
+        });
+        navigator.msSaveBlob(blob, fileName);
+      }
+    } else if (window.URL.createObjectURL) {
+      // createObjectURL api allows downloading larger files
+      var _blob = new Blob([content], {
+        type: "application/".concat(isTypeExcel ? 'vnd.ms-excel' : 'csv', ";charset=utf-8;")
+      });
+
+      var objectUrl = URL.createObjectURL(_blob);
+      var link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(objectUrl);
+    } else {
+      var _link = document.createElement('a');
+
+      _link.href = this.base64(content);
+      _link.download = fileName;
+      document.body.appendChild(_link);
+
+      _link.click();
+
+      document.body.removeChild(_link);
+    }
+  };
+  /**
+  * Convert a dataset to a html table for conversion to excel.
+  * @private
+  * @param {string} dataset The array of objects to convert
+  * @returns {string} an html table as a string
+  */
+
+
+  excel.datasetToHtml = function (dataset) {
+    var tableHtml = '<tbody>';
+
+    var _loop = function _loop(i, l) {
+      tableHtml += '<tr>';
+      Object.keys(dataset[i]).forEach(function (key, index) {
+        //eslint-disable-line
+        if (dataset[i] && Object.prototype.hasOwnProperty.call(dataset[i], key)) {
+          tableHtml += "<td>".concat(dataset[i][key], "</td>");
+        }
+      });
+      tableHtml += '</tr>';
+    };
+
+    for (var i = 0, l = dataset.length; i < l; i++) {
+      _loop(i);
+    }
+
+    tableHtml += '</tbody>';
+    return $('<table></table>').append(tableHtml);
+  };
+  /**
+  * Convert a dataset to a html table for conversion to excel.
+  * @private
+  * @param {array} dataset The array of objects to convert.
+  * @param {object} table The table object.
+  * @param {object} self The grid API.
+  * @returns {object} The table with rows appended.
+  */
+
+
+  excel.appendRows = function (dataset, table, self) {
+    var isjQuery = function isjQuery(obj) {
+      return obj && (obj instanceof jQuery || obj.constructor.prototype.jquery);
+    };
+
+    var tableJq = isjQuery(table) ? table : $(table);
+    table = tableJq[0];
+    var tableHtml = '';
+    var body = table.querySelector('tbody');
+    body.innerHTML = '';
+
+    var appendRow = function appendRow(d, i) {
+      if (!d._isFilteredOut) {
+        var rowHtml = self.rowHtml(d, i, i, false, false, i, true);
+        var tr = document.createElement('tr');
+        tr.innerHTML = rowHtml.left + rowHtml.center + rowHtml.right;
+        tableHtml += tr.outerHTML; // Add tree rows
+
+        if (d.children) {
+          for (var j = 0, l = d.children.length; j < l; j++) {
+            appendRow(d.children[j], j);
+          }
+        }
+      }
+    };
+
+    dataset.forEach(function (d, i) {
+      appendRow(d, i);
+    });
+    body.insertAdjacentHTML('beforeend', tableHtml);
+    return tableJq;
+  };
+  /**
+   * Convert a excel string to base64 format for download.
+   * @private
+   * @param {string} s The string containing the document.
+   * @returns {string} The excel doc as a base64 string.
+   */
+
+
+  excel.base64 = function (s) {
+    if (window.btoa) {
+      return "data:application/vnd.ms-excel;base64,".concat(window.btoa(unescape(encodeURIComponent(s))));
+    }
+
+    return "data:application/vnd.ms-excel;,".concat(unescape(encodeURIComponent(s)));
+  };
+  /**
+   * Copy pasted data into the dataset to facilitate copy from excel.
+   * @param {object} pastedData The paste data from the paste event.
+   * @param {[type]} rowCount The number of rows.
+   * @param {[type]} colIndex The column index we started on.
+   * @param {[type]} dataSet The dataset.
+   * @param {[type]} self The datagrid API.
+   * @returns {void}
+   */
+
+
+  excel.copyToDataSet = function (pastedData, rowCount, colIndex, dataSet, self) {
+    var validateFields = function validateFields(values, settings, rowData, idx) {
+      for (var j = 0, l = values.length; j < l; j++) {
+        var col = settings.columns[idx];
+
+        if (col.formatter !== formatters.Readonly) {
+          if (col.editor.name === 'input') {
+            if (col.filterType === 'integer' || col.filterType === 'decimal' || col.filterType === 'number') {
+              // Number Values
+              // Validates if input is number. If true, will overwrite the data in cell otherwise nothing will happen.
+              if (!isNaN(values[j].trim())) {
+                rowData[col.field] = values[j];
+              }
+            } else {
+              // String Values
+              // Just overwrite the data in the cell
+              rowData[col.field] = values[j];
+            }
+          } else if (col.editor.name === 'input') {
+            // Validates if input is date. If true, will overwrite the data in cell otherwise nothing will happen.
+            if (!isNaN(Date.parse(values[j]))) {
+              rowData[col.field] = new Date(values[j]);
+            }
+          }
+        }
+
+        idx++;
+      }
+    };
+
+    var pastedDataLen = pastedData.length;
+    var columnsLen = self.settings.columns.length;
+
+    for (var i = 0; i < pastedDataLen; i++) {
+      var rawVal = pastedData[i].split('\t');
+      var startColIndex = colIndex;
+
+      if (rowCount < dataSet.length) {
+        var currentRowData = dataSet[rowCount];
+        validateFields(rawVal, self.settings, currentRowData, startColIndex);
+      } else {
+        var newRowData = {};
+
+        for (var k = 0; k < columnsLen; k++) {
+          newRowData[self.settings.columns[k].field] = '';
+        }
+
+        validateFields(rawVal, self.settings, newRowData, startColIndex);
+        dataSet.push(newRowData);
+      }
+
+      rowCount++;
+    }
+
+    self.renderRows();
+    self.syncSelectedUI();
+    self.pagerRefresh('bottom');
+  };
+  /**
+   * Export the grid contents to xls format. This may give a warning when opening the file.
+   * exportToCsv may be prefered.
+   * @param {string} fileName The desired export filename in the download.
+   * @param {string} worksheetName A name to give the excel worksheet tab.
+   * @param {string} customDs An optional customized version of the data to use.
+   * @param {object} self The grid api if customDS is not used
+   * @returns {void}
+   */
+
+
+  excel.exportToExcel = function (fileName, worksheetName, customDs, self) {
+    var template = '' + '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">' + '<head>' + '<!--[if gte mso 9]>' + '<xml>' + '<x:ExcelWorkbook>' + '<x:ExcelWorksheets>' + '<x:ExcelWorksheet>' + '<x:Name>{worksheet}</x:Name>' + '<x:WorksheetOptions>' + '<x:Panes></x:Panes>' + '<x:DisplayGridlines></x:DisplayGridlines>' + '</x:WorksheetOptions>' + '</x:ExcelWorksheet>' + '</x:ExcelWorksheets>' + '</x:ExcelWorkbook>' + '</xml>' + '<![endif]-->' + '<meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>' + '</head>' + '<body>' + '<table border="1px solid #999999">{table}</table>' + '</body>' + '</html>';
+
+    var formatExcel = function formatExcel(s, c) {
+      return s.replace(/{(\w+)}/g, function (m, p) {
+        return c[p];
+      });
+    };
+
+    var table = excel.cleanExtra(customDs, self);
+    var ctx = {
+      worksheet: worksheetName || 'Worksheet',
+      table: table[0].innerHTML
+    };
+    fileName = "".concat(fileName || self.element[0].id || 'Export', ".xls");
+    excel.save(formatExcel(template, ctx), fileName);
+  };
+  /**
+   * Export the grid contents to csv
+   * @param {string} fileName The desired export filename in the download.
+   * @param {string} customDs An optional customized version of the data to use.
+   * @param {string|object} sep (optional) If user's machine is configured for a locale with alternate default seperator.
+   * The char double quote `"` is not allowed to be use as seperator char
+   * Can use as custom string `sep=;` or `;` will add to first line and use `;` as seperator
+   * @param {boolean} [sep.firstLine=true] if false will not added to first line `sep=<separator.char>`
+   * @param {string} [sep.char=','] custom separator char
+   * @param {string} self The grid api to use (if customDs is not used)
+   * @returns {void}
+   */
+
+
+  excel.exportToCsv = function (fileName, customDs) {
+    var sep = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'sep=,';
+    var self = arguments.length > 3 ? arguments[3] : undefined;
+
+    var isObject = function isObject(v) {
+      return v && _typeof(v) === 'object' && v.constructor === Object;
+    };
+
+    var isFalse = function isFalse(v) {
+      return /^(false|0+|null)$/gi.test(v);
+    }; // Set Separator
+
+
+    var separator = {
+      firstLine: true,
+      char: ','
+    };
+
+    if (sep !== 'sep=,' && !isFalse(sep)) {
+      var setChar = function setChar(char) {
+        return char !== '"' ? char : separator.char;
+      };
+
+      if (isObject(sep)) {
+        separator.firstLine = !isFalse(sep.firstLine);
+
+        if (typeof sep.char === 'string' && sep.char.length === 1 && !isFalse(sep.char)) {
+          separator.char = setChar(sep.char);
+        }
+      } else if (typeof sep === 'string') {
+        if (sep.length === 1 && !isFalse(sep)) {
+          separator.char = setChar(sep);
+        } else if (/^sep=.$/.test(sep)) {
+          var char = sep.replace('sep=', '');
+          separator.char = !isFalse(char) ? setChar(char) : separator.char;
+        }
+      }
+    }
+
+    var formatCsv = function formatCsv(table) {
+      var csv = [];
+      var rows = [].slice.call(table[0].querySelectorAll('tr'));
+      rows.forEach(function (row) {
+        var rowContent = [];
+        var cols = [].slice.call(row.querySelectorAll('td, th'));
+        cols.forEach(function (col) {
+          return rowContent.push(col.textContent.replace(/\r?\n|\r/g, '').replace(/"/g, '""').trim());
+        });
+        csv.push(rowContent.join("\"".concat(separator.char, "\"")));
+      });
+
+      if (separator.firstLine) {
+        csv.unshift(["sep=".concat(separator.char)]);
+      }
+
+      return "\"".concat(csv.join('"\n"'), "\"");
+    };
+
+    var table = excel.cleanExtra(customDs, self);
+    fileName = "".concat(fileName || self.element[0].id || 'Export', ".csv");
+    excel.save(formatCsv(table), fileName);
+  };
+  /* eslint-enable import/prefer-default-export */
+
+  /**
+  * An api for grouping data by a given field (s)
+  * @private
+  */
+
+  var groupBy = function () {
+    var equals = utils.equals; // See if the object has these proprties or not
+
+    var has = function has(obj, target) {
+      return obj.some(function (value) {
+        return equals(value, target);
+      });
+    }; // Return just the object properties matching the names
+
+
+    var pick = function pick(obj, names) {
+      var chosen = {};
+
+      for (var i = 0, l = names.length; i < l; i++) {
+        chosen[names[i]] = obj[names[i]];
+      }
+
+      return chosen;
+    }; // Return the specific keys from the object
+
+
+    var keys = function keys(data, names) {
+      return data.reduce(function (memo, item) {
+        var key = pick(item, names);
+
+        if (!has(memo, key)) {
+          memo.push(key);
+        }
+
+        return memo;
+      }, []);
+    }; // Look through each value in the list and return an array of all the values
+    // that contain all of the key-value pairs listed in properties.
+
+
+    var where = function where(data, names) {
+      var chosen = [];
+      /* eslint-disable */
+
+      data.map(function (item, idx) {
+
+        for (var prop in names) {
+          if (names[prop] !== item[prop]) {
+            return;
+          }
+        }
+
+        item.idx = idx;
+        chosen.push(item);
+        return;
+      });
+      /* eslint-enable */
+
+      return chosen;
+    }; // Grouping Function with Plugins/Aggregator
+
+
+    var group = function group(data, names) {
+      var stems = keys(data, names);
+      return stems.map(function (stem) {
+        return {
+          key: stem,
+          values: where(data, stem).map(function (item) {
+            return item;
+          })
+        };
+      });
+    }; // Register an aggregator
+
+
+    group.register = function (name, converter) {
+      group[name] = function (data, names, extra) {
+        var that = this;
+        that.extra = extra;
+        return group(data, names).map(converter, that);
+      };
+
+      return group[name];
+    };
+
+    return group;
+  }();
+  /**
+  * Register built in aggregators
+  * @private
+  */
+
+
+  groupBy.register('none', function (item) {
+    return $.extend({}, item.key, {
+      values: item.values
+    });
+  });
+  groupBy.register('sum', function (item) {
+    var field = this.extra;
+    var nonEmpty = item.values.map(function (row) {
+      return row[field];
+    }).filter(function (val) {
+      return val !== undefined && val !== null;
+    });
+    return $.extend({}, item.key, {
+      values: item.values
+    }, {
+      sum: nonEmpty.reduce(function (a, b) {
+        return Number(a) + Number(b);
+      }, 0)
+    });
+  });
+  groupBy.register('max', function (item) {
+    var field = this.extra;
+    return $.extend({}, item.key, {
+      values: item.values
+    }, // eslint-disable-next-line
+    {
+      max: Math.max.apply(Math, _toConsumableArray(item.values.map(function (row) {
+        return row[field];
+      }).filter(function (val) {
+        return val !== undefined && val !== null;
+      })))
+    });
+  });
+  groupBy.register('min', function (item) {
+    var field = this.extra;
+    return $.extend({}, item.key, {
+      values: item.values
+    }, // eslint-disable-next-line
+    {
+      min: Math.min.apply(Math, _toConsumableArray(item.values.map(function (row) {
+        return row[field];
+      }).filter(function (val) {
+        return val !== undefined && val !== null;
+      })))
+    });
+  });
+  groupBy.register('avg', function (item) {
+    var field = this.extra;
+    var nonEmpty = item.values.map(function (row) {
+      return row[field];
+    }).filter(function (val) {
+      return val !== undefined && val !== null;
+    });
+    return $.extend({}, item.key, {
+      values: item.values
+    }, {
+      avg: nonEmpty.reduce(function (a, b) {
+        return Number(a) + Number(b);
+      }, 0) / nonEmpty.length
+    });
+  });
+  groupBy.register('count', function (item) {
+    var field = this.extra;
+    var nonEmpty = item.values.map(function (row) {
+      return row[field];
+    }).filter(function (val) {
+      return val !== undefined && val !== null;
+    });
+    return $.extend({}, item.key, {
+      values: item.values
+    }, {
+      count: nonEmpty.length
+    });
+  });
+  groupBy.register('list', function (item) {
+    var extra = this.extra;
+    return $.extend({}, item.key, {
+      values: item.values
+    }, {
+      list: item.values.map(function (thisItem) {
+        var list = [];
+
+        for (var i = 0, l = extra.list.length; i < l; i++) {
+          var exclude = extra.exclude ? thisItem[extra.exclude] : false;
+
+          if (thisItem[extra.list[i]] && !exclude) {
+            list.push({
+              value: thisItem[extra.list[i]],
+              key: extra.list[i]
+            });
+          }
+        }
+
+        return list;
+      })
+    });
+  });
+  /**
+  * Simple Summary Row Accumlator
+  * @private
+  */
+
+  var aggregators = {};
+
+  aggregators.aggregate = function (items, columns) {
+    var totals = {};
+    var self = this;
+
+    for (var i = 0, l = columns.length; i < l; i++) {
+      if (columns[i].aggregator) {
+        (function () {
+          var field = columns[i].field;
+
+          self.sum = function (sum, node) {
+            if (node._isFilteredOut) {
+              // eslint-disable-line
+              return sum;
+            }
+
+            var value;
+
+            if (field.indexOf('.') > -1) {
+              value = field.split('.').reduce(function (o, x) {
+                return o ? o[x] : '';
+              }, node);
+            } else {
+              value = node[field];
+            }
+
+            value = Number(value);
+            var valuePlaces = numberUtils.decimalPlaces(value);
+            var sumPlaces = numberUtils.decimalPlaces(sum);
+            return Number((sum + value).toFixed(Math.max(valuePlaces, sumPlaces)));
+          };
+
+          var total = items.reduce(self[columns[i].aggregator], 0);
+
+          if (field.indexOf('.') > -1) {
+            var currentObj = totals;
+
+            for (var j = 0, k = field.split('.').length; j < k; j++) {
+              if (j === field.split('.').length - 1) {
+                currentObj[field.split('.')[j]] = total;
+              } else {
+                if (!(field.split('.')[j] in currentObj)) {
+                  currentObj[field.split('.')[j]] = {};
+                }
+
+                currentObj = currentObj[field.split('.')[j]];
+              }
+            }
+          } else {
+            totals[field] = total;
+          }
+        })();
+      }
+    }
+
+    return totals;
+  };
+
   /* eslint-disable no-underscore-dangle */
 
   var COMPONENT_NAME$1c = 'lookup'; // Lookup components are "modal" (one on-screen at any given time)
@@ -81739,6 +83493,7 @@ var Soho = (function (exports) {
    * @param {boolean} [settings.autoWidth=false] If true the field will grow/change in size based on the content selected.
    * @param {char} [settings.delimiter=','] A character being used to separate data strings
    * @param {int} [settings.minWidth=400] Applys a minimum width to the lookup
+   * @param {boolean} [settings.clearable=false] Add an ability to clear the lookup field. If "true", it will affix an "x" button to the right section of the field.
    */
 
   var LOOKUP_DEFAULTS = {
@@ -81757,7 +83512,8 @@ var Soho = (function (exports) {
     autoWidth: false,
     clickArguments: {},
     delimiter: ',',
-    minWidth: null
+    minWidth: null,
+    clearable: false
   };
 
   function Lookup(element, settings) {
@@ -81771,10 +83527,13 @@ var Soho = (function (exports) {
      * @returns {boolean} true if the Lookup is currently the active element.
      */
     get isFocused() {
+      var _this$modal;
+
       var active = document.activeElement;
       var inputIsActive = this.element.is(active);
       var wrapperHasActive = this.element.parent('.lookup-wrapper')[0].contains(active);
-      return inputIsActive || wrapperHasActive;
+      var lookupModalHasActive = (_this$modal = this.modal) === null || _this$modal === void 0 ? void 0 : _this$modal == null ? void 0 : _this$modal.element[0].contains(active);
+      return inputIsActive || wrapperHasActive || lookupModalHasActive;
     },
 
     /**
@@ -81863,6 +83622,12 @@ var Soho = (function (exports) {
         this.disable();
       }
 
+      if (this.settings.clearable) {
+        lookup.searchfield({
+          clearable: true
+        });
+      }
+
       if (!this.settings.editable) {
         this.element.attr('readonly', 'true').addClass('is-not-editable');
       } // Fix field options in case lookup is initialized after
@@ -81913,6 +83678,29 @@ var Soho = (function (exports) {
           self.openDialog(e);
         }
       });
+    },
+
+    /**
+     * Triggers tooltip
+     * @private
+     * @returns {void}
+     */
+    setTooltip: function setTooltip() {
+      var _this = this;
+
+      setTimeout(function () {
+        var isOverlapping = _this.element[0].scrollWidth > _this.element[0].offsetWidth;
+
+        var tooltipApi = _this.element.data('tooltip');
+
+        if (isOverlapping) {
+          _this.element.tooltip({
+            content: _this.element.val()
+          });
+        } else if (tooltipApi && !isOverlapping) {
+          tooltipApi.destroy();
+        }
+      }, 100);
     },
 
     /**
@@ -82117,6 +83905,14 @@ var Soho = (function (exports) {
             modal.oldActive = self.element;
             modal.close();
           }
+        }, {
+          text: Locale.translate('Apply'),
+          click: function click(e, modal) {
+            modal.oldActive = self.element;
+            modal.close();
+            self.insertRows();
+          },
+          isDefault: true
         }];
       }
 
@@ -82142,6 +83938,7 @@ var Soho = (function (exports) {
           */
 
         self.element.triggerHandler('close', [self.modal, self.grid]);
+        self.setTooltip();
       });
       self.modal = $('body').data('modal');
 
@@ -82227,7 +84024,7 @@ var Soho = (function (exports) {
       var _this$settings,
           _this$settings$option,
           _this$settings$option2,
-          _this = this;
+          _this2 = this;
 
       var self = this;
       var lookupGrid;
@@ -82289,7 +84086,7 @@ var Soho = (function (exports) {
         lookupGrid.off('afterpaging.lookup').on('afterpaging.lookup', function () {
           var fieldVal = self.element.val();
 
-          _this.selectGridRows(fieldVal);
+          _this2.selectGridRows(fieldVal);
         });
       }
 
@@ -82314,21 +84111,21 @@ var Soho = (function (exports) {
 
       if (this.settings.options.source) {
         this.grid.element.one('afterrender.lookup', function () {
-          if (!_this.initValues || _this.initValues && !_this.initValues.length) {
-            _this.initValues = [];
+          if (!_this2.initValues || _this2.initValues && !_this2.initValues.length) {
+            _this2.initValues = [];
 
             var isMatch = function isMatch(node, v) {
-              return (node[_this.settings.field] || '').toString() === v.toString();
+              return (node[_this2.settings.field] || '').toString() === v.toString();
             };
 
-            var fieldVal = _this.element.val();
+            var fieldVal = _this2.element.val();
 
             if (fieldVal) {
-              var fieldValues = fieldVal.indexOf(_this.settings.delimiter) > 1 ? fieldVal.split(_this.settings.delimiter) : [fieldVal];
+              var fieldValues = fieldVal.indexOf(_this2.settings.delimiter) > 1 ? fieldVal.split(_this2.settings.delimiter) : [fieldVal];
               fieldValues.forEach(function (v) {
-                _this.initValues.push({
+                _this2.initValues.push({
                   value: v,
-                  visited: !!_this.grid.settings.dataset.filter(function (node) {
+                  visited: !!_this2.grid.settings.dataset.filter(function (node) {
                     return isMatch(node, v);
                   }).length // eslint-disable-line
 
@@ -83647,683 +85444,6 @@ var Soho = (function (exports) {
 
       this.init();
     }
-  };
-
-  /* eslint-disable import/prefer-default-export */
-
-  var excel = {};
-  /**
-   * Remove Hidden Columns and Non Exportable Columns.
-   * @private
-   * @param {string} customDs An optional customized version of the data to use.
-   * @param {string} self The grid api to use (if customDs is not used)
-   * @returns {object} an table element cleaned extra stuff
-   */
-
-  excel.cleanExtra = function (customDs, self) {
-    var clean = function clean(table) {
-      var removeNode = function removeNode(node) {
-        if (node.parentNode) {
-          node.parentNode.removeChild(node);
-        }
-      };
-
-      var nonExportables = [];
-      var rows = [].slice.call(table[0].querySelectorAll('tr'));
-      rows.forEach(function (row) {
-        if (row.classList.contains('is-hidden') || row.classList.contains('datagrid-expandable-row')) {
-          removeNode(row);
-          return;
-        }
-
-        var elements = [].slice.call(row.querySelectorAll('th, td, div, span'));
-        elements.forEach(function (el) {
-          if (el.classList.contains('is-hidden')) {
-            removeNode(el);
-            return;
-          } // THEAD
-
-
-          var attrExportable = el.getAttribute('data-exportable');
-
-          if (attrExportable && attrExportable === 'no') {
-            var index = parseInt(el.id.slice(-1), 10);
-            nonExportables.push(index + 1);
-            removeNode(el);
-            return;
-          } // TBODY
-
-
-          var attrAriaColindex = el.getAttribute('aria-colindex');
-
-          if (el.tagName.toLowerCase() === 'td' && attrAriaColindex) {
-            if (nonExportables.indexOf(parseInt(attrAriaColindex, 10)) !== -1) {
-              removeNode(el);
-              return;
-            }
-          }
-
-          var innerElements = [].slice.call(el.querySelectorAll('.is-hidden, .datagrid-expand-btn, .is-draggable-target, .handle, .sort-indicator, .datagrid-filter-wrapper'));
-          innerElements.forEach(function (innerEl) {
-            return removeNode(innerEl);
-          });
-
-          while (el.attributes.length > 0) {
-            el.removeAttribute(el.attributes[0].name);
-          } // White Hat Security Violation. Remove Excel formulas
-          // Excel Formulas Start with =SOMETHING
-
-
-          var text = el.textContent;
-
-          if (text.substr(0, 1) === '=' && text.substr(1, 1) !== '') {
-            el.textContent = "'".concat(text, "'");
-          }
-        });
-      });
-      return table;
-    };
-
-    var table = [];
-
-    if (!self && customDs) {
-      table = excel.datasetToHtml(customDs);
-    } else {
-      table = excel.appendRows(self.settings.dataset, self.table[0].cloneNode(true), self);
-    } // Create the header row
-
-
-    if (!customDs && !table[0].querySelector('thead')) {
-      var tbody = table[0].querySelector('tbody');
-      var header = table[0].createTHead();
-      var row = header.insertRow(0);
-      var allHeaderNodes = self.headerNodes();
-
-      for (var i = 0; i < allHeaderNodes.length; i++) {
-        var headerNode = allHeaderNodes[i];
-        var cell = row.insertCell(i);
-        cell.innerHTML = headerNode.querySelector('.datagrid-header-text').textContent.trim();
-        cell.setAttribute('class', headerNode.classList);
-        cell.setAttribute('id', headerNode.getAttribute('id'));
-
-        if (headerNode.getAttribute('data-exportable')) {
-          cell.setAttribute('data-exportable', headerNode.getAttribute('data-exportable'));
-        }
-      }
-
-      tbody.parentNode.insertBefore(header, tbody);
-    }
-
-    table = clean(table); // Exporting data with trailing negative signs moved in front
-
-    if (self && self.settings.exportConvertNegative) {
-      var cells = [].slice.call(table[0].querySelectorAll('td'));
-      cells.forEach(function (td) {
-        td.textContent = td.textContent.replace(/^(.+)(-$)/, '$2$1');
-      });
-    }
-
-    return table;
-  };
-  /**
-   * Save file to download `.xls or .csv`.
-   * @private
-   * @param {string} content The content for the file in the download.
-   * @param {string} fileName The desired export filename in the download.
-   * @returns {void}
-   */
-
-
-  excel.save = function (content, fileName) {
-    var ext = (fileName.match(/\.([^.]*?)(?=\?|#|$)/) || [])[1];
-    var isTypeExcel = typeof ext === 'string' && /\b(xlsx|xls)\b/g.test(ext);
-
-    if (Environment.browser.name === 'ie' || Environment.browser.name === 'edge') {
-      if (window.navigator.msSaveBlob) {
-        var blob = new Blob([content], {
-          type: 'application/csv;charset=utf-8;'
-        });
-        navigator.msSaveBlob(blob, fileName);
-      }
-    } else if (window.URL.createObjectURL) {
-      // createObjectURL api allows downloading larger files
-      var _blob = new Blob([content], {
-        type: "application/".concat(isTypeExcel ? 'vnd.ms-excel' : 'csv', ";charset=utf-8;")
-      });
-
-      var objectUrl = URL.createObjectURL(_blob);
-      var link = document.createElement('a');
-      link.href = objectUrl;
-      link.download = fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(objectUrl);
-    } else {
-      var _link = document.createElement('a');
-
-      _link.href = this.base64(content);
-      _link.download = fileName;
-      document.body.appendChild(_link);
-
-      _link.click();
-
-      document.body.removeChild(_link);
-    }
-  };
-  /**
-  * Convert a dataset to a html table for conversion to excel.
-  * @private
-  * @param {string} dataset The array of objects to convert
-  * @returns {string} an html table as a string
-  */
-
-
-  excel.datasetToHtml = function (dataset) {
-    var tableHtml = '<tbody>';
-
-    var _loop = function _loop(i, l) {
-      tableHtml += '<tr>';
-      Object.keys(dataset[i]).forEach(function (key, index) {
-        //eslint-disable-line
-        if (dataset[i] && Object.prototype.hasOwnProperty.call(dataset[i], key)) {
-          tableHtml += "<td>".concat(dataset[i][key], "</td>");
-        }
-      });
-      tableHtml += '</tr>';
-    };
-
-    for (var i = 0, l = dataset.length; i < l; i++) {
-      _loop(i);
-    }
-
-    tableHtml += '</tbody>';
-    return $('<table></table>').append(tableHtml);
-  };
-  /**
-  * Convert a dataset to a html table for conversion to excel.
-  * @private
-  * @param {array} dataset The array of objects to convert.
-  * @param {object} table The table object.
-  * @param {object} self The grid API.
-  * @returns {object} The table with rows appended.
-  */
-
-
-  excel.appendRows = function (dataset, table, self) {
-    var isjQuery = function isjQuery(obj) {
-      return obj && (obj instanceof jQuery || obj.constructor.prototype.jquery);
-    };
-
-    var tableJq = isjQuery(table) ? table : $(table);
-    table = tableJq[0];
-    var tableHtml = '';
-    var body = table.querySelector('tbody');
-    body.innerHTML = '';
-
-    var appendRow = function appendRow(d, i) {
-      if (!d._isFilteredOut) {
-        var rowHtml = self.rowHtml(d, i, i, false, false, i, true);
-        var tr = document.createElement('tr');
-        tr.innerHTML = rowHtml.left + rowHtml.center + rowHtml.right;
-        tableHtml += tr.outerHTML; // Add tree rows
-
-        if (d.children) {
-          for (var j = 0, l = d.children.length; j < l; j++) {
-            appendRow(d.children[j], j);
-          }
-        }
-      }
-    };
-
-    dataset.forEach(function (d, i) {
-      appendRow(d, i);
-    });
-    body.insertAdjacentHTML('beforeend', tableHtml);
-    return tableJq;
-  };
-  /**
-   * Convert a excel string to base64 format for download.
-   * @private
-   * @param {string} s The string containing the document.
-   * @returns {string} The excel doc as a base64 string.
-   */
-
-
-  excel.base64 = function (s) {
-    if (window.btoa) {
-      return "data:application/vnd.ms-excel;base64,".concat(window.btoa(unescape(encodeURIComponent(s))));
-    }
-
-    return "data:application/vnd.ms-excel;,".concat(unescape(encodeURIComponent(s)));
-  };
-  /**
-   * Copy pasted data into the dataset to facilitate copy from excel.
-   * @param {object} pastedData The paste data from the paste event.
-   * @param {[type]} rowCount The number of rows.
-   * @param {[type]} colIndex The column index we started on.
-   * @param {[type]} dataSet The dataset.
-   * @param {[type]} self The datagrid API.
-   * @returns {void}
-   */
-
-
-  excel.copyToDataSet = function (pastedData, rowCount, colIndex, dataSet, self) {
-    var validateFields = function validateFields(values, settings, rowData, idx) {
-      for (var j = 0, l = values.length; j < l; j++) {
-        var col = settings.columns[idx];
-
-        if (col.formatter !== formatters.Readonly) {
-          if (col.editor.name === editors.Input.name) {
-            if (col.filterType === 'integer' || col.filterType === 'decimal' || col.filterType === 'number') {
-              // Number Values
-              // Validates if input is number. If true, will overwrite the data in cell otherwise nothing will happen.
-              if (!isNaN(values[j].trim())) {
-                rowData[col.field] = values[j];
-              }
-            } else {
-              // String Values
-              // Just overwrite the data in the cell
-              rowData[col.field] = values[j];
-            }
-          } else if (col.editor.name === editors.Input.name) {
-            // Validates if input is date. If true, will overwrite the data in cell otherwise nothing will happen.
-            if (!isNaN(Date.parse(values[j]))) {
-              rowData[col.field] = new Date(values[j]);
-            }
-          }
-        }
-
-        idx++;
-      }
-    };
-
-    var pastedDataLen = pastedData.length;
-    var columnsLen = self.settings.columns.length;
-
-    for (var i = 0; i < pastedDataLen; i++) {
-      var rawVal = pastedData[i].split('\t');
-      var startColIndex = colIndex;
-
-      if (rowCount < dataSet.length) {
-        var currentRowData = dataSet[rowCount];
-        validateFields(rawVal, self.settings, currentRowData, startColIndex);
-      } else {
-        var newRowData = {};
-
-        for (var k = 0; k < columnsLen; k++) {
-          newRowData[self.settings.columns[k].field] = '';
-        }
-
-        validateFields(rawVal, self.settings, newRowData, startColIndex);
-        dataSet.push(newRowData);
-      }
-
-      rowCount++;
-    }
-
-    self.renderRows();
-    self.syncSelectedUI();
-    self.pagerRefresh('bottom');
-  };
-  /**
-   * Export the grid contents to xls format. This may give a warning when opening the file.
-   * exportToCsv may be prefered.
-   * @param {string} fileName The desired export filename in the download.
-   * @param {string} worksheetName A name to give the excel worksheet tab.
-   * @param {string} customDs An optional customized version of the data to use.
-   * @param {object} self The grid api if customDS is not used
-   * @returns {void}
-   */
-
-
-  excel.exportToExcel = function (fileName, worksheetName, customDs, self) {
-    var template = '' + '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">' + '<head>' + '<!--[if gte mso 9]>' + '<xml>' + '<x:ExcelWorkbook>' + '<x:ExcelWorksheets>' + '<x:ExcelWorksheet>' + '<x:Name>{worksheet}</x:Name>' + '<x:WorksheetOptions>' + '<x:Panes></x:Panes>' + '<x:DisplayGridlines></x:DisplayGridlines>' + '</x:WorksheetOptions>' + '</x:ExcelWorksheet>' + '</x:ExcelWorksheets>' + '</x:ExcelWorkbook>' + '</xml>' + '<![endif]-->' + '<meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>' + '</head>' + '<body>' + '<table border="1px solid #999999">{table}</table>' + '</body>' + '</html>';
-
-    var formatExcel = function formatExcel(s, c) {
-      return s.replace(/{(\w+)}/g, function (m, p) {
-        return c[p];
-      });
-    };
-
-    var table = excel.cleanExtra(customDs, self);
-    var ctx = {
-      worksheet: worksheetName || 'Worksheet',
-      table: table[0].innerHTML
-    };
-    fileName = "".concat(fileName || self.element[0].id || 'Export', ".xls");
-    excel.save(formatExcel(template, ctx), fileName);
-  };
-  /**
-   * Export the grid contents to csv
-   * @param {string} fileName The desired export filename in the download.
-   * @param {string} customDs An optional customized version of the data to use.
-   * @param {string|object} sep (optional) If user's machine is configured for a locale with alternate default seperator.
-   * The char double quote `"` is not allowed to be use as seperator char
-   * Can use as custom string `sep=;` or `;` will add to first line and use `;` as seperator
-   * @param {boolean} [sep.firstLine=true] if false will not added to first line `sep=<separator.char>`
-   * @param {string} [sep.char=','] custom separator char
-   * @param {string} self The grid api to use (if customDs is not used)
-   * @returns {void}
-   */
-
-
-  excel.exportToCsv = function (fileName, customDs) {
-    var sep = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'sep=,';
-    var self = arguments.length > 3 ? arguments[3] : undefined;
-
-    var isObject = function isObject(v) {
-      return v && _typeof(v) === 'object' && v.constructor === Object;
-    };
-
-    var isFalse = function isFalse(v) {
-      return /^(false|0+|null)$/gi.test(v);
-    }; // Set Separator
-
-
-    var separator = {
-      firstLine: true,
-      char: ','
-    };
-
-    if (sep !== 'sep=,' && !isFalse(sep)) {
-      var setChar = function setChar(char) {
-        return char !== '"' ? char : separator.char;
-      };
-
-      if (isObject(sep)) {
-        separator.firstLine = !isFalse(sep.firstLine);
-
-        if (typeof sep.char === 'string' && sep.char.length === 1 && !isFalse(sep.char)) {
-          separator.char = setChar(sep.char);
-        }
-      } else if (typeof sep === 'string') {
-        if (sep.length === 1 && !isFalse(sep)) {
-          separator.char = setChar(sep);
-        } else if (/^sep=.$/.test(sep)) {
-          var char = sep.replace('sep=', '');
-          separator.char = !isFalse(char) ? setChar(char) : separator.char;
-        }
-      }
-    }
-
-    var formatCsv = function formatCsv(table) {
-      var csv = [];
-      var rows = [].slice.call(table[0].querySelectorAll('tr'));
-      rows.forEach(function (row) {
-        var rowContent = [];
-        var cols = [].slice.call(row.querySelectorAll('td, th'));
-        cols.forEach(function (col) {
-          return rowContent.push(col.textContent.replace(/\r?\n|\r/g, '').replace(/"/g, '""').trim());
-        });
-        csv.push(rowContent.join("\"".concat(separator.char, "\"")));
-      });
-
-      if (separator.firstLine) {
-        csv.unshift(["sep=".concat(separator.char)]);
-      }
-
-      return "\"".concat(csv.join('"\n"'), "\"");
-    };
-
-    var table = excel.cleanExtra(customDs, self);
-    fileName = "".concat(fileName || self.element[0].id || 'Export', ".csv");
-    excel.save(formatCsv(table), fileName);
-  };
-  /* eslint-enable import/prefer-default-export */
-
-  /**
-  * An api for grouping data by a given field (s)
-  * @private
-  */
-
-  var groupBy = function () {
-    var equals = utils.equals; // See if the object has these proprties or not
-
-    var has = function has(obj, target) {
-      return obj.some(function (value) {
-        return equals(value, target);
-      });
-    }; // Return just the object properties matching the names
-
-
-    var pick = function pick(obj, names) {
-      var chosen = {};
-
-      for (var i = 0, l = names.length; i < l; i++) {
-        chosen[names[i]] = obj[names[i]];
-      }
-
-      return chosen;
-    }; // Return the specific keys from the object
-
-
-    var keys = function keys(data, names) {
-      return data.reduce(function (memo, item) {
-        var key = pick(item, names);
-
-        if (!has(memo, key)) {
-          memo.push(key);
-        }
-
-        return memo;
-      }, []);
-    }; // Look through each value in the list and return an array of all the values
-    // that contain all of the key-value pairs listed in properties.
-
-
-    var where = function where(data, names) {
-      var chosen = [];
-      /* eslint-disable */
-
-      data.map(function (item, idx) {
-
-        for (var prop in names) {
-          if (names[prop] !== item[prop]) {
-            return;
-          }
-        }
-
-        item.idx = idx;
-        chosen.push(item);
-        return;
-      });
-      /* eslint-enable */
-
-      return chosen;
-    }; // Grouping Function with Plugins/Aggregator
-
-
-    var group = function group(data, names) {
-      var stems = keys(data, names);
-      return stems.map(function (stem) {
-        return {
-          key: stem,
-          values: where(data, stem).map(function (item) {
-            return item;
-          })
-        };
-      });
-    }; // Register an aggregator
-
-
-    group.register = function (name, converter) {
-      group[name] = function (data, names, extra) {
-        var that = this;
-        that.extra = extra;
-        return group(data, names).map(converter, that);
-      };
-
-      return group[name];
-    };
-
-    return group;
-  }();
-  /**
-  * Register built in aggregators
-  * @private
-  */
-
-
-  groupBy.register('none', function (item) {
-    return $.extend({}, item.key, {
-      values: item.values
-    });
-  });
-  groupBy.register('sum', function (item) {
-    var field = this.extra;
-    var nonEmpty = item.values.map(function (row) {
-      return row[field];
-    }).filter(function (val) {
-      return val !== undefined && val !== null;
-    });
-    return $.extend({}, item.key, {
-      values: item.values
-    }, {
-      sum: nonEmpty.reduce(function (a, b) {
-        return Number(a) + Number(b);
-      }, 0)
-    });
-  });
-  groupBy.register('max', function (item) {
-    var field = this.extra;
-    return $.extend({}, item.key, {
-      values: item.values
-    }, // eslint-disable-next-line
-    {
-      max: Math.max.apply(Math, _toConsumableArray(item.values.map(function (row) {
-        return row[field];
-      }).filter(function (val) {
-        return val !== undefined && val !== null;
-      })))
-    });
-  });
-  groupBy.register('min', function (item) {
-    var field = this.extra;
-    return $.extend({}, item.key, {
-      values: item.values
-    }, // eslint-disable-next-line
-    {
-      min: Math.min.apply(Math, _toConsumableArray(item.values.map(function (row) {
-        return row[field];
-      }).filter(function (val) {
-        return val !== undefined && val !== null;
-      })))
-    });
-  });
-  groupBy.register('avg', function (item) {
-    var field = this.extra;
-    var nonEmpty = item.values.map(function (row) {
-      return row[field];
-    }).filter(function (val) {
-      return val !== undefined && val !== null;
-    });
-    return $.extend({}, item.key, {
-      values: item.values
-    }, {
-      avg: nonEmpty.reduce(function (a, b) {
-        return Number(a) + Number(b);
-      }, 0) / nonEmpty.length
-    });
-  });
-  groupBy.register('count', function (item) {
-    var field = this.extra;
-    var nonEmpty = item.values.map(function (row) {
-      return row[field];
-    }).filter(function (val) {
-      return val !== undefined && val !== null;
-    });
-    return $.extend({}, item.key, {
-      values: item.values
-    }, {
-      count: nonEmpty.length
-    });
-  });
-  groupBy.register('list', function (item) {
-    var extra = this.extra;
-    return $.extend({}, item.key, {
-      values: item.values
-    }, {
-      list: item.values.map(function (thisItem) {
-        var list = [];
-
-        for (var i = 0, l = extra.list.length; i < l; i++) {
-          var exclude = extra.exclude ? thisItem[extra.exclude] : false;
-
-          if (thisItem[extra.list[i]] && !exclude) {
-            list.push({
-              value: thisItem[extra.list[i]],
-              key: extra.list[i]
-            });
-          }
-        }
-
-        return list;
-      })
-    });
-  });
-  /**
-  * Simple Summary Row Accumlator
-  * @private
-  */
-
-  var aggregators = {};
-
-  aggregators.aggregate = function (items, columns) {
-    var totals = {};
-    var self = this;
-
-    for (var i = 0, l = columns.length; i < l; i++) {
-      if (columns[i].aggregator) {
-        (function () {
-          var field = columns[i].field;
-
-          self.sum = function (sum, node) {
-            if (node._isFilteredOut) {
-              // eslint-disable-line
-              return sum;
-            }
-
-            var value;
-
-            if (field.indexOf('.') > -1) {
-              value = field.split('.').reduce(function (o, x) {
-                return o ? o[x] : '';
-              }, node);
-            } else {
-              value = node[field];
-            }
-
-            value = Number(value);
-            var valuePlaces = numberUtils.decimalPlaces(value);
-            var sumPlaces = numberUtils.decimalPlaces(sum);
-            return Number((sum + value).toFixed(Math.max(valuePlaces, sumPlaces)));
-          };
-
-          var total = items.reduce(self[columns[i].aggregator], 0);
-
-          if (field.indexOf('.') > -1) {
-            var currentObj = totals;
-
-            for (var j = 0, k = field.split('.').length; j < k; j++) {
-              if (j === field.split('.').length - 1) {
-                currentObj[field.split('.')[j]] = total;
-              } else {
-                if (!(field.split('.')[j] in currentObj)) {
-                  currentObj[field.split('.')[j]] = {};
-                }
-
-                currentObj = currentObj[field.split('.')[j]];
-              }
-            }
-          } else {
-            totals[field] = total;
-          }
-        })();
-      }
-    }
-
-    return totals;
   };
 
   var COMPONENT_NAME$1d = 'datagrid';
@@ -89199,8 +90319,8 @@ var Soho = (function (exports) {
       var handleShow = function handleShow(elem, delay) {
         delay = typeof delay === 'undefined' ? defaultDelay : delay;
         tooltipTimer = setTimeout(function () {
-          var isHeaderColumn = utils.hasClass(elem, 'datagrid-column-wrapper');
-          var isHeaderFilter = utils.hasClass(elem.parentNode, 'datagrid-filter-wrapper');
+          var isHeaderColumn = DOM.hasClass(elem, 'datagrid-column-wrapper');
+          var isHeaderFilter = DOM.hasClass(elem.parentNode, 'datagrid-filter-wrapper');
           var isPopup = isHeaderFilter ? elem.parentNode.querySelectorAll('.popupmenu.is-open').length > 0 : false;
           var tooltip = $(elem).data('gridtooltip') || self.cacheTooltip(elem);
           var containerEl = isHeaderColumn ? elem.parentNode : elem;
@@ -89219,7 +90339,7 @@ var Soho = (function (exports) {
         setTimeout(function () {
           self.hideTooltip(); // Clear cache for header filter, so it can use always current selected
 
-          if (utils.hasClass(elem.parentNode, 'datagrid-filter-wrapper')) {
+          if (DOM.hasClass(elem.parentNode, 'datagrid-filter-wrapper')) {
             self.removeTooltipData(elem);
           }
         }, delay);
@@ -90245,7 +91365,7 @@ var Soho = (function (exports) {
       if (self.settings.resultsText) {
         if (typeof self.settings.resultsText === 'function') {
           if (self.grandTotal) {
-            countText = self.settings.resultsText(self, self.grandTotal, count);
+            countText = self.settings.resultsText(self, self.grandTotal, count === self.grandTotal ? 0 : count);
           } else {
             var filteredCount = self.filteredCount === 0 ? 0 : count - self.filteredCount;
             countText = self.settings.resultsText(self, count, filteredCount);
@@ -91186,7 +92306,8 @@ var Soho = (function (exports) {
       this.clearCache();
       this.renderRows();
       this.setSearchActivePage({
-        trigger: 'searched'
+        trigger: 'searched',
+        type: 'filtered'
       });
 
       if (!(this.settings.paging && this.settings.source)) {
@@ -91335,12 +92456,16 @@ var Soho = (function (exports) {
             if (cellText.indexOf(term) > -1 && isSearchExpandableRow) {
               found = true;
               [].slice.call(cell.querySelectorAll('*')).forEach(function (node) {
-                if (xssUtils.unescapeHTML(node.innerHTML) === node.textContent) {
-                  var contents = node.textContent;
-                  var exp = new RegExp("(".concat(stringUtils.escapeRegExp(term), ")"), 'gi');
-                  DOM.addClass(node, 'search-mode');
-                  DOM.html(node, contents.replace(exp, '<i>$1</i>'));
-                }
+                [].slice.call(node.childNodes).forEach(function (childNode) {
+                  var parent = childNode.parentElement;
+
+                  if (childNode.nodeType === 3 && parent.tagName.toLowerCase() !== 'i' && xssUtils.unescapeHTML(parent.innerHTML) === childNode.textContent) {
+                    var contents = childNode.textContent;
+                    var exp = new RegExp("(".concat(stringUtils.escapeRegExp(term), ")"), 'gi');
+                    DOM.addClass(parent, 'search-mode');
+                    DOM.html(parent, contents.replace(exp, '<i>$1</i>'));
+                  }
+                });
               });
             }
           });
@@ -91420,7 +92545,7 @@ var Soho = (function (exports) {
       this.syncSelectedUI();
       /**
       * Fires after a row is selected.
-      * @event contextmenu
+      * @event selected
       * @memberof Datagrid
       * @property {object} event The jquery event object
       * @property {object} args Additional arguments
@@ -93286,7 +94411,7 @@ var Soho = (function (exports) {
       cellValue = xssUtils.sanitizeConsoleMethods(cellValue);
       /**
       * Fires before a cell goes into edit mode. Giving you a chance to adjust column settings.
-      * @event entereditmode
+      * @event beforeentereditmode
       * @memberof Datagrid
       * @property {object} event The jquery event object
       * @property {object} args Additional arguments
@@ -94159,7 +95284,9 @@ var Soho = (function (exports) {
         var rowData = s.treeGrid ? dataset[row].node : dataset[row];
         newVal = col.serialize(value, oldVal, col, row, cell, rowData);
         return newVal;
-      } else if (col.sourceFormat) {
+      }
+
+      if (col.sourceFormat) {
         if (value instanceof Date) {
           newVal = Locale.parseDate(value, col.sourceFormat);
         } else {
@@ -95788,11 +96915,11 @@ var Soho = (function (exports) {
       if (typeof tooltip === 'undefined') {
         var contentTooltip = elem.querySelector('.is-editor.content-tooltip');
         var aTitle = elem.querySelector('a[title]');
-        var isRowstatus = utils.hasClass(elem, 'rowstatus-cell');
+        var isRowstatus = DOM.hasClass(elem, 'rowstatus-cell');
         var isSvg = elem.tagName.toLowerCase() === 'svg';
         var isTh = elem.tagName.toLowerCase() === 'th';
-        var isHeaderColumn = utils.hasClass(elem, 'datagrid-column-wrapper');
-        var isHeaderFilter = utils.hasClass(elem.parentNode, 'datagrid-filter-wrapper');
+        var isHeaderColumn = DOM.hasClass(elem, 'datagrid-column-wrapper');
+        var isHeaderFilter = DOM.hasClass(elem.parentNode, 'datagrid-filter-wrapper');
         var cell = elem.getAttribute('aria-colindex') - 1;
         var col = this.columnSettings(cell);
         var title;
@@ -95810,7 +96937,7 @@ var Soho = (function (exports) {
 
         if (isRowstatus || isSvg) {
           var rowNode = this.closest(elem, function (el) {
-            return utils.hasClass(el, 'datagrid-row');
+            return DOM.hasClass(el, 'datagrid-row');
           });
           var classList = rowNode ? rowNode.classList : [];
           tooltip.isError = classList.contains('rowstatus-row-error');
@@ -95859,7 +96986,7 @@ var Soho = (function (exports) {
             }
           } else {
             // Default use wrapper content
-            tooltip.content = xssUtils.stripHTML(tooltip.wrapper.textContent);
+            tooltip.content = xssUtils.stripHTML(tooltip.wrapper.textContent).trim();
           }
         } // Clean up text in selects
 
@@ -95875,7 +97002,7 @@ var Soho = (function (exports) {
         }
 
         if (tooltip.content !== '') {
-          var isEllipsis = utils.hasClass(isHeaderColumn ? elem.parentNode : elem, 'text-ellipsis');
+          var isEllipsis = DOM.hasClass(isHeaderColumn ? elem.parentNode : elem, 'text-ellipsis');
           var icons = [].slice.call(elem.querySelectorAll('.icon'));
           var extraWidth = isEllipsis ? 8 : 0;
           icons.forEach(function (icon) {
@@ -95902,7 +97029,7 @@ var Soho = (function (exports) {
 
         if (typeof col.tooltip === 'function') {
           var _rowNode = this.closest(elem, function (el) {
-            return utils.hasClass(el, 'datagrid-row');
+            return DOM.hasClass(el, 'datagrid-row');
           });
 
           var rowIdx = _rowNode.getAttribute('data-index');
@@ -96133,9 +97260,13 @@ var Soho = (function (exports) {
 
       if (this.removeToolbarOnDestroy && this.settings.toolbar && this.settings.toolbar.keywordFilter) {
         var searchfield = toolbar.find('.searchfield');
+        var searchfieldApi = searchfield.data('searchfield');
+        var xIcon = searchfield.parent().find('.close.icon');
+        searchfield.off('keypress.datagrid');
+        xIcon.off('click.datagrid');
 
-        if (searchfield.data('searchfield')) {
-          searchfield.data('searchfield').destroy();
+        if (searchfieldApi && typeof searchfieldApi.destroy === 'function') {
+          searchfieldApi.destroy();
         }
 
         searchfield.removeData('options');
@@ -99598,6 +100729,7 @@ var Soho = (function (exports) {
   exports.Validation = Validation;
   exports.base = base;
   exports.breakpoints = breakpoints;
+  exports.colors = colorUtils;
   exports.components = components;
   exports.debug = debug;
   exports.defer = defer;

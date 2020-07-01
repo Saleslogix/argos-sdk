@@ -9,7 +9,7 @@
       "isDebug": true,
       "fileIncludes": [
         {
-          "text": "jquery-3.4.1.js",
+          "text": "jquery-3.5.1.js",
           "path": "../libraries/soho/js/"
         },
         {

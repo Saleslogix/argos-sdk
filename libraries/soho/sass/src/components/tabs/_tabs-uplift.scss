@@ -28,11 +28,32 @@
   }
 }
 
-.tab-container.horizontal > .tab-list-container .tab:not(.last-child).is-error .icon-error,
-.tab-container.header-tabs > .tab-list-container .tab:not(.last-child).is-error .icon-error {
-  height: 15px;
-  margin-top: -3px;
+.popupmenu.tab-list-spillover,
+.popupmenu.dropdown-tab {
+  .icon {
+    &.icon-error,
+    &.icon-info,
+    &.icon-alert {
+      top: 10px;
+    }
+  }
+}
+
+.tab-container.horizontal > .tab-list-container .tab .icon-error {
+  right: 3px;
+  top: 16px;
   width: 15px;
+}
+
+.tab-container.horizontal .add-tab-button {
+  margin-top: 7px;
+  padding: 0;
+  width: 35px;
+
+  span[aria-hidden] {
+    font-size: 25px;
+    top: -1px;
+  }
 }
 
 @import '../tabs-module/tabs-module-uplift';
