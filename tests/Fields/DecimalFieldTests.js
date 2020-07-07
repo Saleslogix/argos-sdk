@@ -34,7 +34,7 @@ return describe('Sage.Platform.Mobile.Fields.DecimalField', function() {
         field.setValue(value);
         expect(field.getValue()).toEqual(1);
     });
-    it('Can round to 0 decimal places up', function() {
+    it('Can round to 0 decimal places up 2', function() {
         var field = new DecimalField();
         var value = 1000.55;
         field.precision = 0;
@@ -119,9 +119,9 @@ return describe('Sage.Platform.Mobile.Fields.DecimalField', function() {
     });
     it('Can parse a number with currency symbol', function() {
         var field = new DecimalField();
-        var value = '$1,000,000.00';
+        var value = '$1,000,000,000.00';
         field.inputNode.value = value;
-        expect(field.getValue()).toEqual(1000000);
+        expect(field.getValue()).toEqual(1000000000);
 
         value = '$9,000.50';
         field.inputNode.value = value;
