@@ -259,6 +259,9 @@
             "text": "LookupField.js",
             "path": "../src-out/Fields/"
           }, {
+            "text": "RadioField.js",
+            "path": "../src-out/Fields/"
+          }, {
             "text": "TextField.js",
             "path": "../src-out/Fields/"
           }, {

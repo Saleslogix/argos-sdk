@@ -40,6 +40,7 @@ import './Fields/SelectField';
 import './Fields/SignatureField';
 import './Fields/TextAreaField';
 import './Fields/TextField';
+import './Fields/RadioField';
 
 const resource = getResource('editBase');
 
