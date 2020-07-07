@@ -4,6 +4,17 @@
 
 <head>
   <title>Argos-sdk Test Runner</title>
+
+    <!-- Soho Configuration -->
+    <script type="application/javascript">
+      var SohoConfig = {
+        culturesPath: '../libraries/soho/js/cultures/',
+        minifyCultures: false,
+        personalize: {
+          noInit: true
+        }
+      };
+    </script>
   <!-- jasmine -->
   <link rel="stylesheet" type="text/css" href="../libraries/jasmine-2.0.0/jasmine.css">
   <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine.js"></script>
@@ -35,7 +46,7 @@
   <script type="text/javascript" src="../libraries/l20n/l20n.js"></script>
 
   <!-- jQuery -->
-  <script type="text/javascript" src="../libraries/soho/js/jquery-3.4.1.js"></script>
+  <script type="text/javascript" src="../libraries/soho/js/jquery-3.5.1.js"></script>
 
   <!-- SohoXi -->
   <script type="text/javascript" src="../libraries/soho/js/sohoxi.js"></script>
@@ -114,7 +125,8 @@
       return ctx;
     }
     var ctx = buildContext();
-    ctx.ready(function() {
+    Soho.Locale.set('en-US').done(function() {
+      ctx.ready(function() {
       // Shim, sohoxi will use define.amd and require it.
       define('jquery', function() {
         return window.$;
@@ -123,6 +135,8 @@
         'tests/all'
       ]);
     });
+    });
+
     require(['../libraries/jasmine-2.0.0/boot.js']);
 
   </script>

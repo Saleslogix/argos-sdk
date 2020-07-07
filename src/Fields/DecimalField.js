@@ -57,20 +57,16 @@ const control = declare('argos.Fields.DecimalField', [TextField], /** @lends mod
    * @param {Number/String} val Value to be set
    */
   setValue: function setValue(val) {
-    const perc = this.getPrecision();
-    let newVal = Utility.roundNumberTo(parseFloat(val), perc);
-    newVal = newVal.toFixed(perc);
-    if (isNaN(newVal)) {
-      if (perc === 0) {
-        newVal = '0';
-      } else {
-        newVal = `0${Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.'}00`;
-      }
-    } else {
-      if (perc !== 0) {
-        newVal = `${parseInt(newVal, 10)}${Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.'}${newVal.substr(-perc)}`;
-      }
-    }
+    const precision = this.getPrecision();
+    let parsed = Utility.roundNumberTo(parseFloat(val), precision);
+    parsed = Number.isNaN(parsed) ? 0 : parsed;
+    const newVal = Soho.Locale.formatNumber(parsed, {
+      style: 'decimal',
+      minimumFractionDigits: precision,
+      maximumFractionDigits: precision,
+      round: false,
+    });
+
     this.inherited(setValue, arguments, [newVal]);
   },
   /**
@@ -80,13 +76,13 @@ const control = declare('argos.Fields.DecimalField', [TextField], /** @lends mod
    */
   getValue: function getValue() {
     let value = this.inherited(getValue, arguments);
-    // SData (and other functions) expect American formatted numbers
+    const data = Soho.Locale.currentLocale.data;
+    // // SData (and other functions) expect American formatted numbers
     value = value
-      .replace(Mobile.CultureInfo.numberFormat.currencySymbol, '')
-      .replace(Mobile.CultureInfo.numberFormat.currencyGroupSeparator, '')
-      .replace(Mobile.CultureInfo.numberFormat.numberGroupSeparator, '')
-      .replace(Mobile.CultureInfo.numberFormat.currencyDecimalSeparator, '.')
-      .replace(Mobile.CultureInfo.numberFormat.numberDecimalSeparator, '.');
+      .replace(data.currencySign, '')
+      .replace(data.numbers.percentSign, '')
+      .replace(new RegExp(data.numbers.group, 'ig'), '')
+      .replace(data.numbers.decimal, '.');
     return parseFloat(value);
   },
   /**
