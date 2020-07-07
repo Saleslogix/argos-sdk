@@ -170,7 +170,7 @@ const control = declare('argos.Fields.DurationField', [LookupField], /** @lends 
   init: function init() {
     // do not use lookups connects
 
-    const numberDecimalSeparator = Mobile.CultureInfo.numberFormat.numberDecimalSeparator;
+    const numberDecimalSeparator = Soho.Locale.currentLocale.data.numbers.decimal;
 
     this.autoCompletePhraseRE = new RegExp(
       string.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator])
@@ -363,7 +363,7 @@ const control = declare('argos.Fields.DurationField', [LookupField], /** @lends 
         } else {
           sval = string.substitute('${0}${1}${2}', [
             sval[0],
-            Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.',
+            Soho.Locale.currentLocale.data.numbers.decimal || '.',
             sval[1],
           ]);
         }

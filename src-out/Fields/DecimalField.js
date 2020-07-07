@@ -59,6 +59,7 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
      * Defines how many decimal places to format when setting the value.
      */
     precision: 2,
+
     /**
      * @property {Boolean}
      * Disables the display of the clear (x) button inherited from {@link TextField TextField}.
@@ -100,13 +101,13 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
      * @return {Number}
      */
     getPrecision: function getPrecision() {
-      var perc = void 0;
-      if (this.precision === 0) {
-        perc = this.precision;
-      } else {
-        perc = this.precision || Mobile.CultureInfo.numberFormat.currencyDecimalDigits;
+      var precision = Number(this.precision);
+
+      if (this.precision === null || typeof this.precision === 'undefined') {
+        return 2;
       }
-      return perc;
+
+      return Number.isNaN(precision) ? 2 : precision;
     }
   });
 

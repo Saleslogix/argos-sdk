@@ -171,7 +171,7 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
     init: function init() {
       // do not use lookups connects
 
-      var numberDecimalSeparator = Mobile.CultureInfo.numberFormat.numberDecimalSeparator;
+      var numberDecimalSeparator = Soho.Locale.currentLocale.data.numbers.decimal;
 
       this.autoCompletePhraseRE = new RegExp(_string2.default.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator]));
 
@@ -360,7 +360,7 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
           if (sval[1] === '0') {
             sval = sval[0];
           } else {
-            sval = _string2.default.substitute('${0}${1}${2}', [sval[0], Mobile.CultureInfo.numberFormat.currencyDecimalSeparator || '.', sval[1]]);
+            sval = _string2.default.substitute('${0}${1}${2}', [sval[0], Soho.Locale.currentLocale.data.numbers.decimal || '.', sval[1]]);
           }
         }
       }

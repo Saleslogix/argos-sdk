@@ -45,6 +45,7 @@ const control = declare('argos.Fields.DecimalField', [TextField], /** @lends mod
    * Defines how many decimal places to format when setting the value.
    */
   precision: 2,
+
   /**
    * @property {Boolean}
    * Disables the display of the clear (x) button inherited from {@link TextField TextField}.
@@ -90,13 +91,13 @@ const control = declare('argos.Fields.DecimalField', [TextField], /** @lends mod
    * @return {Number}
    */
   getPrecision: function getPrecision() {
-    let perc;
-    if (this.precision === 0) {
-      perc = this.precision;
-    } else {
-      perc = this.precision || Mobile.CultureInfo.numberFormat.currencyDecimalDigits;
+    const precision = Number(this.precision);
+
+    if (this.precision === null || typeof this.precision === 'undefined') {
+      return 2;
     }
-    return perc;
+
+    return Number.isNaN(precision) ? 2 : precision;
   },
 });
 
