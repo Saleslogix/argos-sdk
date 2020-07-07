@@ -29,6 +29,7 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
    *           id: 'red',
    *           label: 'Cherry Red',
    *           value: 'E12E00',
+   *           checked: true,
    *         }, {
    *         }]
    *     }
@@ -36,6 +37,10 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
    * @extends module:argos/Fields/_Field
    */
   var control = (0, _declare2.default)('argos.Fields.RadioField', [_Field2.default], /** @lends module:argos/Fields/RadioField.prototype */{
+    options: null,
+    mixedOptions: null,
+    getOptions: null,
+
     /**
      * @property {Simplate}
      * Simplate that defines the fields HTML Markup
@@ -49,11 +54,11 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
      * @property {Simplate}
      * Simplate that defines the radio HTML Markup
      *
-     * * `$` => Options object
+     * * `$` => Options object with a generatedId property added
      * * `$$` => Field instance
      *
      */
-    radioTemplate: new Simplate(['\n    <input type="radio" class="radio" name="options" id="{%: $.id %}" data-automation-id="{%: $.id %}" value="{%: $.value %}" />\n    <label for="{%: $.id %}" class="radio-label">{%: $.label %}</label>\n    <br />\n  ']),
+    radioTemplate: new Simplate(['\n    <input type="radio" class="radio" name="{%: $$.name %}" id="{%: $.generatedId %}" data-automation-id="{%: $.generatedId %}" value="{%: $.value %}" {% if ($.checked) { %} checked {% } %}/>\n    <label for="{%: $.generatedId %}" class="radio-label">{%: $.label %}</label>\n    <br />\n  ']),
 
     /**
      * Value used during dirty/modified comparison
@@ -67,26 +72,42 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
 
       this.inherited(postCreate, arguments);
       var options = this.options || [];
-      var radios = options.map(function (option) {
-        return _this.radioTemplate.apply(option, _this);
+
+      var mixedOptions = options.map(function (option) {
+        var mixedOption = Object.assign({}, option, {
+          generatedId: _this.generateOptionId(option)
+        });
+
+        return mixedOption;
       });
 
-      $('.radio-group', this.domNode).append(radios.join());
+      this.mixedOptions = mixedOptions;
+
+      var radios = mixedOptions.map(function (mixedOption) {
+        return _this.radioTemplate.apply(mixedOption, _this);
+      });
+
+      var parent = $(this.domNode);
+      parent.append(radios.join(''));
+    },
+
+    generateOptionId: function generateOptionId(option) {
+      return this.name + '_' + option.id;
     },
 
     /**
-     * Returns the current toggled state
-     * @return {Boolean}
+     * Returns the current value
+     * @return {String}
      */
     getValue: function getValue() {
-      return ''; // TODO
+      return $(':checked', this.domNode).last().val();
     },
     /**
      * Sets the toggled attribute of the field and applies the needed styling.
      *
      * It also directly fires the {@link _Field#onChange onChange} event.
      *
-     * @param {Boolean/String/Number} val Value to set
+     * @param {String} val Value to set
      * @param {Boolean} initial If true sets the value as the original value and is later used for dirty/modified detection.
      */
     setValue: function setValue(val, initial) {
@@ -94,7 +115,17 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
         this.originalValue = val;
       }
 
-      // TODO: Update DOM state here
+      var radioNode = $('input[value="' + val + '"]', this.domNode).get(0);
+
+      // We were passed a value that matched one of our radios,
+      // so we will set that to checked.
+      if (radioNode) {
+        radioNode.checked = true;
+      } else if (val === '' && !initial) {
+        $('input', this.domNode).each(function (_, elem) {
+          elem.checked = false;
+        });
+      }
 
       // Fire onChange with new value
       this.onChange(val, this);

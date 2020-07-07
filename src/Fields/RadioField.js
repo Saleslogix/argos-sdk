@@ -34,6 +34,7 @@ import FieldManager from '../FieldManager';
  *           id: 'red',
  *           label: 'Cherry Red',
  *           value: 'E12E00',
+ *           checked: true,
  *         }, {
  *         }]
  *     }
@@ -41,6 +42,10 @@ import FieldManager from '../FieldManager';
  * @extends module:argos/Fields/_Field
  */
 const control = declare('argos.Fields.RadioField', [Field], /** @lends module:argos/Fields/RadioField.prototype */{
+  options: null,
+  mixedOptions: null,
+  getOptions: null,
+
   /**
    * @property {Simplate}
    * Simplate that defines the fields HTML Markup
@@ -59,13 +64,13 @@ const control = declare('argos.Fields.RadioField', [Field], /** @lends module:ar
    * @property {Simplate}
    * Simplate that defines the radio HTML Markup
    *
-   * * `$` => Options object
+   * * `$` => Options object with a generatedId property added
    * * `$$` => Field instance
    *
    */
   radioTemplate: new Simplate([`
-    <input type="radio" class="radio" name="options" id="{%: $.id %}" data-automation-id="{%: $.id %}" value="{%: $.value %}" />
-    <label for="{%: $.id %}" class="radio-label">{%: $.label %}</label>
+    <input type="radio" class="radio" name="{%: $$.name %}" id="{%: $.generatedId %}" data-automation-id="{%: $.generatedId %}" value="{%: $.value %}" {% if ($.checked) { %} checked {% } %}/>
+    <label for="{%: $.generatedId %}" class="radio-label">{%: $.label %}</label>
     <br />
   `]),
 
@@ -80,26 +85,44 @@ const control = declare('argos.Fields.RadioField', [Field], /** @lends module:ar
   postCreate: function postCreate() {
     this.inherited(postCreate, arguments);
     const options = this.options || [];
-    const radios = options.map((option) => {
-      return this.radioTemplate.apply(option, this);
+
+    const mixedOptions = options.map((option) => {
+      const mixedOption = Object.assign({}, option, {
+        generatedId: this.generateOptionId(option),
+      });
+
+      return mixedOption;
     });
 
-    $('.radio-group', this.domNode).append(radios.join());
+    this.mixedOptions = mixedOptions;
+
+    const radios = mixedOptions.map((mixedOption) => {
+      return this.radioTemplate.apply(mixedOption, this);
+    });
+
+    const parent = $(this.domNode);
+    parent.append(radios.join(''));
+  },
+
+  generateOptionId: function generateOptionId(option) {
+    return `${this.name}_${option.id}`;
   },
 
   /**
-   * Returns the current toggled state
-   * @return {Boolean}
+   * Returns the current value
+   * @return {String}
    */
   getValue: function getValue() {
-    return '';// TODO
+    return $(':checked', this.domNode)
+      .last()
+      .val();
   },
   /**
    * Sets the toggled attribute of the field and applies the needed styling.
    *
    * It also directly fires the {@link _Field#onChange onChange} event.
    *
-   * @param {Boolean/String/Number} val Value to set
+   * @param {String} val Value to set
    * @param {Boolean} initial If true sets the value as the original value and is later used for dirty/modified detection.
    */
   setValue: function setValue(val, initial) {
@@ -107,7 +130,18 @@ const control = declare('argos.Fields.RadioField', [Field], /** @lends module:ar
       this.originalValue = val;
     }
 
-    // TODO: Update DOM state here
+    const radioNode = $(`input[value="${val}"]`, this.domNode)
+      .get(0);
+
+    // We were passed a value that matched one of our radios,
+    // so we will set that to checked.
+    if (radioNode) {
+      radioNode.checked = true;
+    } else if (val === '' && !initial) {
+      $('input', this.domNode).each((_, elem) => {
+        elem.checked = false;
+      });
+    }
 
     // Fire onChange with new value
     this.onChange(val, this);
