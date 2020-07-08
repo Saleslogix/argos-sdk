@@ -6,7 +6,7 @@
     "url": "https://github.com/Saleslogix/argos-sdk"
   },
   "scripts": {
-    "test": "npm run build && grunt --debug --force test",
+    "test": "grunt test",
     "build": "babel src --out-dir src-out",
     "build:watch": "babel src --out-dir src-out --watch",
     "less": "grunt less",
