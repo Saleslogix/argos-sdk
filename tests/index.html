@@ -128,8 +128,7 @@
       return ctx;
     }
     var ctx = buildContext();
-    Soho.Locale.set('en-US').done(function() {
-      ctx.ready(function() {
+    ctx.ready(function() {
       // Shim, sohoxi will use define.amd and require it.
       define('jquery', function() {
         return window.$;
@@ -137,7 +136,6 @@
       require([
         'tests/all'
       ]);
-    });
     });
 
     require(['../libraries/jasmine/boot.js']);

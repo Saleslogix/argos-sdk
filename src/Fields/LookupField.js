@@ -426,7 +426,7 @@ const control = declare('argos.Fields.LookupField', [_Field], /** @lends module:
     }
 
     if (this.dependsOn && !dependentValue) {
-      console.error(string.substitute(this.dependentErrorText, [this.getDependentLabel() || '']));//eslint-disable-line
+      console.warn(string.substitute(this.dependentErrorText, [this.getDependentLabel() || '']));//eslint-disable-line
       return false;
     }
 

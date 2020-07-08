@@ -117,19 +117,22 @@ return describe('Sage.Platform.Mobile.Fields.DecimalField', function() {
         field.setValue(value);
         expect(field.getValue()).toEqual(0);
     });
-    it('Can parse a number with currency symbol', function() {
-        var field = new DecimalField();
-        var value = '$1,000,000,000.00';
-        field.inputNode.value = value;
-        expect(field.getValue()).toEqual(1000000000);
+    it('Can parse a number with currency symbol', function(done) {
+        Soho.Locale.set('en-US').done(function() {
+            var field = new DecimalField();
+            var value = '$1,000,000,000.00';
+            field.inputNode.value = value;
+            expect(field.getValue()).toEqual(1000000000);
 
-        value = '$9,000.50';
-        field.inputNode.value = value;
-        expect(field.getValue()).toEqual(9000.50);
+            value = '$9,000.50';
+            field.inputNode.value = value;
+            expect(field.getValue()).toEqual(9000.50);
 
-        value = '$0.50';
-        field.inputNode.value = value;
-        expect(field.getValue()).toEqual(0.50);
+            value = '$0.50';
+            field.inputNode.value = value;
+            expect(field.getValue()).toEqual(0.50);
+            done();
+        });
     })
 });
 });

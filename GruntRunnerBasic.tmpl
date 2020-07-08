@@ -123,20 +123,18 @@
 
       <% with (scripts) { %>
       var ctx = buildContext();
-      Soho.Locale.set('en-US').done(function() {
-        ctx.ready(function() {
-          define('jquery', function() {
-            return window.$;
-          });
-          require([
-            'tests/all'
-          ]);
+      ctx.ready(function() {
+        define('jquery', function() {
+          return window.$;
         });
+        require([
+          'tests/all'
+        ]);
       });
 
       require([
         '<%= boot %>',
-        '<%= reporters[0] %>',
+        '<%= [].concat(scripts.reporters).join("','") %>'
       ]);
       <% }; %>
   </script>

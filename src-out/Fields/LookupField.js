@@ -416,7 +416,7 @@ define('argos/Fields/LookupField', ['module', 'exports', 'dojo/_base/declare', '
       }
 
       if (this.dependsOn && !dependentValue) {
-        console.error(_string2.default.substitute(this.dependentErrorText, [this.getDependentLabel() || ''])); //eslint-disable-line
+        console.warn(_string2.default.substitute(this.dependentErrorText, [this.getDependentLabel() || ''])); //eslint-disable-line
         return false;
       }
 
