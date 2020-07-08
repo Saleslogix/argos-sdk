@@ -50,7 +50,7 @@ define('tests/Fields/LookupFieldTests', [
             field.destroy();
         });
 
-        it('can create navigation options', function() {
+        xit('can create navigation options', function() {
             var field, options, owner;
             owner = {
                 fields: {
