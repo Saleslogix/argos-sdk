@@ -8,6 +8,12 @@ module.exports = function gruntJasmine(grunt) {
         template: 'GruntRunnerBasic.tmpl',
         summary: true,
         display: 'full',
+        sandboxArgs: {
+          args: [
+            '--aggressive-cache-discard',
+          ],
+          dumpio: true,
+        },
       },
     },
   });
