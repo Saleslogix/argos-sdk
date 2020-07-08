@@ -16,9 +16,9 @@
       };
     </script>
   <!-- jasmine -->
-  <link rel="stylesheet" type="text/css" href="../libraries/jasmine-2.0.0/jasmine.css">
-  <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine.js"></script>
-  <script type="text/javascript" src="../libraries/jasmine-2.0.0/jasmine-html.js"></script>
+  <link rel="stylesheet" type="text/css" href="../libraries/jasmine/jasmine.css">
+  <script type="text/javascript" src="../libraries/jasmine/jasmine.js"></script>
+  <script type="text/javascript" src="../libraries/jasmine/jasmine-html.js"></script>
 
   <<!-- SData Client Library -->
   <script type="text/javascript" src="../libraries/sdata/sdata-client-dependencies-debug.js"></script>
@@ -41,6 +41,9 @@
 
   <!-- moment -->
   <script type="text/javascript" src="../libraries/moment/moment-with-locales.js"></script>
+
+  <!-- Provide an empty resource expected by l20n lib. Argos loads l20n files during bootstrap -->
+  <script type="application/l20n">{}</script>
 
   <!-- L20N.js -->
   <script type="text/javascript" src="../libraries/l20n/l20n.js"></script>
@@ -137,7 +140,7 @@
     });
     });
 
-    require(['../libraries/jasmine-2.0.0/boot.js']);
+    require(['../libraries/jasmine/boot.js']);
 
   </script>
 </body>
