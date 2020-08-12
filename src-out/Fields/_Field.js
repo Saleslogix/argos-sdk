@@ -258,6 +258,10 @@ define('argos/Fields/_Field', ['module', 'exports', 'dojo/_base/declare', 'dojo/
         return false;
       }
 
+      if (this.isHidden() || this.isDisabled()) {
+        return false;
+      }
+
       var all = Array.isArray(this.validator) ? this.validator : [this.validator];
 
       for (var i = 0; i < all.length; i++) {

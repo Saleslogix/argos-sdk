@@ -244,6 +244,10 @@ const __class = declare('argos.Fields._Field', [_WidgetBase, _Templated], /** @l
       return false;
     }
 
+    if (this.isHidden() || this.isDisabled()) {
+      return false;
+    }
+
     const all = Array.isArray(this.validator) ? this.validator : [this.validator];
 
     for (let i = 0; i < all.length; i++) {
