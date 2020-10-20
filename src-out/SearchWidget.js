@@ -89,7 +89,7 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
      * @property {Simplate}
      * @memberof argos.SearchWidget
      */
-    widgetTemplate: new Simplate(['\n    <span class="searchfield-wrapper">\n      <input type="text" title="{%= $.searchText %}" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress"  />\n      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use>\n      </svg>\n    </span>\n    ']),
+    widgetTemplate: new Simplate(['\n    <span class="searchfield-wrapper">\n      <input type="text" title="{%= $.searchText %}" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress" data-options="{collapsible: false}" />\n      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use>\n      </svg>\n    </span>\n    ']),
 
     /**
      * Text that is used when no value is in the search box - "placeholder" text.
