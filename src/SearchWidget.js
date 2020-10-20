@@ -76,7 +76,7 @@ const __class = declare('argos.SearchWidget', [_WidgetBase, _Templated], /** @le
    */
   widgetTemplate: new Simplate([`
     <span class="searchfield-wrapper">
-      <input type="text" title="{%= $.searchText %}" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress"  />
+      <input type="text" title="{%= $.searchText %}" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress" data-options="{collapsible: false}" />
       <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use>
       </svg>
