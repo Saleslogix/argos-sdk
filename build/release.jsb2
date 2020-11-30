@@ -21,6 +21,10 @@
           "path": "../libraries/pdfjs/"
         },
         {
+          "text": "FileSaver.js",
+          "path": "../libraries/FileSaver/"
+        },
+        {
           "text": "l20n.js",
           "path": "../libraries/l20n/"
         },
