@@ -16,12 +16,12 @@
       cursor: default;
 
       .icon {
-        color: $input-color-disabled-background;
+        color: $lookup-readonly-icon-color;
       }
     }
 
     &[disabled] + .trigger > .icon {
-      color: $input-disabled-color;
+      color: $lookup-disabled-color;
     }
 
     &.is-not-editable {
@@ -72,6 +72,26 @@
   }
 }
 
+.lookup-modal {
+  .toolbar-searchfield-wrapper {
+    &.has-focus {
+      &.active {
+        &.toolbar-searchfield-wrapper {
+          box-shadow: none;
+        }
+
+        .searchfield {
+          border-color: transparent transparent rgba($searchfield-border-color, 1);
+
+          &:focus {
+            border-color: transparent transparent rgba($searchfield-border-color, 1);
+          }
+        }
+      }
+    }
+  }
+}
+
 .field,
 .field-short {
   .lookup-wrapper {
@@ -109,8 +129,8 @@
 
   &.lookup-no-search {
     .toolbar {
-      margin-bottom: 5px;
-      margin-top: -40px;
+      margin-bottom: -5px !important;
+      margin-top: -15px !important;
       vertical-align: top;
     }
 
@@ -186,7 +206,7 @@
   .title {
     @include antialiased();
 
-    font-size: $theme-size-font-lg;
+    font-size: $ids-size-font-lg;
   }
 
   tr.is-clickable {
@@ -216,7 +236,6 @@
 
     }
   }
-
 }
 
 .ie11 {
@@ -288,7 +307,7 @@ html[dir='rtl'] {
   }
 
   .lookup-wrapper .lookup {
-    padding-left: 35px;
+    padding-left: 22px;
     padding-right: 10px;
     text-align: right;
     text-overflow: ellipsis;

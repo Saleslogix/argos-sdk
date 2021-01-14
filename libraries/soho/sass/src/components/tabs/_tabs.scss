@@ -1,5 +1,6 @@
 // Tabs (Vertical and Horizontal)
 //==================================================/
+
 @mixin tab-outline {
   border: 1px solid transparent;
   border-radius: 2px;
@@ -64,7 +65,7 @@
   }
 
   > .busy-indicator-container {
-    font-size: $theme-size-font-base;
+    font-size: $ids-size-font-base;
   }
 
 }
@@ -220,9 +221,20 @@
   }
 
   > .busy-indicator-container {
-    font-size: $theme-size-font-base;
+    font-size: $ids-size-font-base;
   }
 
+}
+
+// Page containers without scroll
+.page-container {
+  .tab-panel-container {
+    &.no-scroll {
+      .tab-panel {
+        padding-top: 0;
+      }
+    }
+  }
 }
 
 // More Button
@@ -245,11 +257,10 @@
   }
 }
 
-//This will force the fade edge to move in the tab list when the button is visible
-.has-more-button.tab-container.horizontal,
-.has-more-button.tab-container.header-tabs {
+.has-more-actions.has-more-button.has-add-button.tab-container.horizontal,
+.has-more-actions.has-more-button.has-add-button.tab-container.header-tabs {
   &::after {
-    right: 51px;
+    right: 132px;
   }
 }
 
@@ -293,16 +304,46 @@
     width: 40px;
   }
 
+  // More Tabs
+  &.has-more-button {
+    &::after {
+      right: 51px;
+    }
+  }
+
+  // Generic "More Actions" button
+  &.has-more-actions {
+    &::after {
+      right: 41px;
+    }
+  }
+
+  // "Add tab button"
   &.has-add-button {
     &::after {
       right: 95px;
     }
   }
 
+  // Both of the above
+  &.has-more-actions.has-more-button {
+    &::after {
+      right: 85px;
+    }
+  }
+
+  // All of the above
+  .has-more-actions.has-more-button.has-add-button {
+    &::after {
+      right: 132px;
+    }
+  }
+
   .tab-more,
-  .add-tab-button {
+  .add-tab-button,
+  .more-actions-button {
     background-color: transparent;
-    font-size: $theme-size-font-base;
+    font-size: $ids-size-font-base;
     padding: 16px;
     position: relative;
     vertical-align: top;
@@ -330,6 +371,12 @@
     }
   }
 
+  .more-actions-button {
+    display: inline-block;
+    margin-top: 1px;
+    padding: 0;
+  }
+
   .more-text {
     display: none;
   }
@@ -345,6 +392,18 @@
   &.has-add-button {
     .tab-list-container {
       width: calc(100% - 102px);
+    }
+  }
+
+  &.has-more-actions {
+    .tab-list-container {
+      width: calc(100% - 92px);
+    }
+  }
+
+  &.has-add-button.has-more-actions {
+    .tab-list-container {
+      width: calc(100% - 132px);
     }
   }
 
@@ -464,8 +523,8 @@
         @include antialiased();
 
         color: inherit;
-        font-size: $theme-size-font-base;
-        font-weight: $theme-number-font-weight-base;
+        font-size: $ids-size-font-base;
+        font-weight: $ids-number-font-weight-base;
         text-decoration: none;
 
         > * {
@@ -666,7 +725,8 @@ html[dir='rtl'] {
     left: 0;
   }
 
-  .tab-container.horizontal {
+  .tab-container.horizontal,
+  .tab-container.header-tabs {
     &::before {
       left: auto;
       right: 0;
@@ -682,6 +742,19 @@ html[dir='rtl'] {
         left: 95px;
       }
     }
+
+    &.has-more-actions {
+      &::after {
+        left: 85px;
+      }
+    }
+
+    &.has-more-actions.has-more-button.has-add-button {
+      &::after {
+        left: 132px;
+        right: auto;
+      }
+    }
   }
 
   .tab-container.horizontal,
@@ -690,10 +763,16 @@ html[dir='rtl'] {
       &:not(.last-child) {
         margin-left: 10px;
         margin-right: inherit;
+
+        &.is-error {
+          a[role='tab'] {
+            padding: 12px 5px 12px 20px;
+          }
+        }
       }
 
       .icon-error {
-        left: -10px;
+        left: 0;
         right: auto;
       }
     }
@@ -719,6 +798,35 @@ html[dir='rtl'] {
   }
 }
 
+//Firefox and with RTL fixes
+html.is-firefox {
+  .tab-container {
+    > .tab-list-container {
+      .tab {
+        .icon-error,
+        .icon-info,
+        .icon-alert {
+          top: 12px;
+        }
+      }
+    }
+  }
+
+  &[dir='rtl'] {
+    .tab-container {
+      > .tab-list-container {
+        .tab {
+          .icon-error,
+          .icon-info,
+          .icon-alert {
+            top: 14px;
+          }
+        }
+      }
+    }
+  }
+}
+
 // Special Style introduced on SOHO-5680
 .tab-container.tab-borders {
   background-color: $panel-bg-color;
@@ -730,7 +838,7 @@ html[dir='rtl'] {
   }
 
   .tab.is-selected a {
-    font-weight: $theme-number-font-weight-bold;
+    font-weight: $ids-number-font-weight-bold;
   }
 
   + .tab-panel-container {

@@ -8,8 +8,8 @@
     color: $badge-disabled-text-color;
     pointer-events: none;
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       color: $badge-disabled-text-color;
     }
 
@@ -29,8 +29,8 @@
   background-color: $badge-neutral-bg-color;
   border-radius: 15px;
   color: $badge-neutral-color;
-  font-size: $theme-size-font-sm;
-  font-weight: $theme-number-font-weight-base;
+  font-size: $ids-size-font-sm;
+  font-weight: $ids-number-font-weight-base;
   height: 22px;
   line-height: 22px;
   padding: 0 10px;
@@ -43,7 +43,7 @@
     text-decoration: none;
   }
 
-  [class*='btn'] {
+  [class^='btn'] {
     cursor: pointer;
     height: auto;
     margin-right: 0;
@@ -51,8 +51,8 @@
     min-width: 0;
   }
 
-  .dismissible-btn,
-  .linkable-btn {
+  .btn-dismissible,
+  .btn-linkable {
     color: $badge-neutral-icon-color;
 
     .icon {
@@ -88,7 +88,7 @@
       cursor: pointer;
     }
 
-    .linkable-btn {
+    .btn-linkable {
       height: 20px;
       padding-left: 5px;
       vertical-align: top;
@@ -102,7 +102,7 @@
     }
 
     &:not(.hide-focus) {
-      border-color: $theme-color-brand-primary-base;
+      border-color: $ids-color-brand-primary-base;
       box-shadow: $focus-box-shadow;
     }
 
@@ -118,7 +118,7 @@
     line-height: 20px;
     padding: 0 10px;
 
-    .dismissible-btn {
+    .btn-dismissible {
       height: 20px;
       padding-left: 5px;
       vertical-align: top;
@@ -133,7 +133,7 @@
   }
 
   &.is-focused:not(.hide-focus) {
-    border-color: $theme-color-brand-primary-base;
+    border-color: $ids-color-brand-primary-base;
     box-shadow: $focus-box-shadow;
 
     a {
@@ -150,8 +150,8 @@
     background-color: $badge-neutral-bg-color;
     color: $badge-neutral-color;
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       color: $badge-neutral-icon-color;
 
       &:hover {
@@ -178,8 +178,8 @@
     color: $badge-secondary-color;
     line-height: 20px;
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       color: $badge-secondary-icon-color;
 
       &:hover {
@@ -205,7 +205,7 @@
     &.is-linkable.is-focused,
     &.is-dismissible.is-focused {
       &:not(.hide-focus) {
-        border-color: $theme-color-brand-primary-base;
+        border-color: $ids-color-brand-primary-base;
       }
     }
 
@@ -217,8 +217,8 @@
     background-color: $badge-error-bg-color;
     color: $badge-error-color;
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       color: $badge-error-icon-color;
 
       &:hover {
@@ -243,8 +243,8 @@
     background-color: $badge-alert-bg-color;
     color: $badge-alert-color;
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       color: $badge-alert-icon-color;
 
       &:hover {
@@ -269,8 +269,8 @@
     background-color: $badge-good-bg-color;
     color: $badge-good-color;
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       color: $badge-good-icon-color;
 
       &:hover {
@@ -297,8 +297,8 @@
     background-color: $badge-info-bg-color;
     color: $badge-info-color;
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       color: $badge-info-icon-color;
 
       &:hover {
@@ -318,11 +318,6 @@
     }
 
     @include disabled-tag();
-  }
-
-  &.graphite03,
-  &.graphite02 {
-    color: $theme-color-palette-graphite-20;
   }
 }
 
@@ -368,7 +363,7 @@
     }
 
     &.current {
-      background-color: $theme-color-status-warning;
+      background-color: $ids-color-status-warning;
     }
   }
 
@@ -394,7 +389,7 @@
       content: '!';
       display: inline-block;
       font-size: 1.3em;
-      font-weight: $theme-number-font-weight-bold;
+      font-weight: $ids-number-font-weight-bold;
       height: 100%;
       left: 0;
       position: absolute;
@@ -416,7 +411,7 @@
     background-color: transparent;
 
     svg {
-      color: $theme-color-palette-slate-30;
+      color: $ids-color-palette-slate-30;
     }
   }
 }
@@ -454,11 +449,11 @@ html.theme-uplift-contrast {
 
 // Firefox behaves odd
 .is-firefox {
-  .tag.is-linkable .linkable-btn .icon {
+  .tag.is-linkable .btn-linkable .icon {
     vertical-align: middle;
   }
 
-  .tag.is-dismissible .dismissible-btn .icon {
+  .tag.is-dismissible .btn-dismissible .icon {
     vertical-align: middle;
   }
 }
@@ -473,14 +468,14 @@ html[dir='rtl'] {
   .tag,
   .badge {
     &.is-dismissible {
-      .dismissible-btn {
+      .btn-dismissible {
         .icon {
           left: -6px;
         }
       }
     }
 
-    &.is-linkable .linkable-btn {
+    &.is-linkable .btn-linkable {
       margin-left: -6px;
       padding: 0 5px;
 
@@ -495,7 +490,7 @@ html[dir='rtl'] {
       // Clock Hands
       &::after {
         border-left: 0;
-        border-right: 1px solid $theme-color-palette-white;
+        border-right: 1px solid $ids-color-palette-white;
         left: 8px;
       }
     }

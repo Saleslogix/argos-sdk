@@ -15,7 +15,7 @@
 
       color: $vertical-tab-text-color;
       display: block;
-      font-size: $theme-size-font-base;
+      font-size: $ids-size-font-base;
 
       .icon {
         color: $vertical-tab-text-color;
@@ -75,6 +75,10 @@
       margin-top: 0;
       position: relative;
     }
+
+    &.tab-panel-container {
+      position: absolute;
+    }
   }
 }
 
@@ -95,6 +99,13 @@
 
 .tab-panel-container {
   height: inherit;
+
+  &.no-scroll {
+    .tab-panel {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
 
   .tab-panel {
     @media (max-width: $breakpoint-phone-to-tablet - 1) {
@@ -137,6 +148,16 @@
       > .tab {
         a {
           padding: 10px 30px;
+        }
+
+        .icon-error,
+        .icon-info,
+        .icon-alert {
+          height: 14px;
+          left: 6px;
+          position: absolute;
+          top: calc(50% - 7px);
+          width: 18px;
         }
       }
     }
@@ -222,7 +243,7 @@
 
     &.is-selected.is-visible {
       border-color: transparent;
-      box-shadow: inset 0 0 0 1px $theme-color-palette-white;
+      box-shadow: inset 0 0 0 1px $ids-color-palette-white;
     }
   }
 

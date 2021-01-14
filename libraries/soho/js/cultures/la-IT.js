@@ -21,8 +21,12 @@ Soho.Locale.addCulture('la-IT', {
       year: 'MMMM yyyy',
       dayOfWeek: 'EEE d',
       timestamp: 'HH:mm:ss',
+      timestampMillis: 'HH:mm:ss.SSS',
       hour: 'HH:mm',
-      datetime: 'M/d/yyyy HH:mm'
+      datetime: 'dd/MM/yyyy HH:mm',
+      datetimeMillis: 'dd/MM/yyyy HH:mm:ss.SSS',
+      timezone: 'dd/MM/yyyy HH:mm zz',
+      timezoneLong: 'dd/MM/yyyy HH:mm zzzz'
     }, // Infered short + short gregorian/dateTimeFormats
     // ca-gregorian/main/dates/calendars/gregorian/days/format/short or abbreviated (2 digit)
     days: {
@@ -79,7 +83,7 @@ Soho.Locale.addCulture('la-IT', {
     Azure: { id: 'Azure', value: 'Caeruleum', comment: 'Color in our color palette' },
     BackgroundColor: { id: 'BackgroundColor', value: 'Colore sfondo', comment: 'add or edit text background color in the editor' },
     Between: { id: 'Between', value: 'Inter', comment: 'Between in icons for filtering' },
-    Blockquote: { id: 'Blockquote', value: 'Acta quote', comment: 'insert a block quote in the editor' },
+    Blockquote: { id: 'Blockquote', value: 'Acta quote', comment: 'Term for Block Quotations in editing' },
     Bold: { id: 'Bold', value: 'Audax', comment: 'Make text Bold' },
     Bookmarked: { id: 'Bookmarked', value: 'Aggiunto ai segnalibri', comment: 'Bookmark filled - Element is already bookmarked' },
     BookmarkThis: { id: 'BookmarkThis', value: 'Aggiungi ai segnalibri', comment: 'Bookmark an element' },

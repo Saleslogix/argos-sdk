@@ -94,6 +94,14 @@
 .monthview-popup.popover {
   max-width: inherit;
 
+  .monthview {
+    min-width: 330px;
+  }
+
+  .monthview .monthview-table {
+    max-width: 330px;
+  }
+
   // Week picker adjustments
   &.is-range-week {
     .monthview td .day-text {
@@ -109,6 +117,12 @@
 
   .tooltip-content {
     padding: 0;
+
+    @media only screen
+      and (max-width: $breakpoint-phone-to-tablet - 1)
+      and (-webkit-min-device-pixel-ratio: 2) {
+      padding: 7px 10px 5px;
+    }
   }
 
   .popup-footer {
@@ -204,5 +218,11 @@ html[dir='rtl'] {
 .ie-edge {
   .monthview .btn-monthyear-pane {
     margin-left: 8px;
+  }
+}
+
+@include respond-to(tabletdown) {
+  .monthview-popup.popover .monthview {
+    min-width: 310px;
   }
 }

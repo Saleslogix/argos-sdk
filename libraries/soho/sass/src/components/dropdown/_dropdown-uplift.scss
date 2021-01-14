@@ -25,7 +25,11 @@ div.multiselect {
   }
 
   &.has-tags {
-    padding: 2px 30px 3px 10px;
+    padding: 0;
+
+    .tag-content {
+      line-height: 19px;
+    }
 
     + .icon {
       height: 30px;
@@ -33,14 +37,14 @@ div.multiselect {
   }
 
   .tag-list {
-    padding: 1px 4px 4px;
+    padding: 2px 30px 4px 10px;
 
     &.empty {
       padding: 16px 0 15px;
     }
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       .icon {
         vertical-align: middle;
       }
@@ -103,8 +107,14 @@ div.multiselect {
   div.dropdown,
   div.multiselect {
     + .icon {
-      top: -1px;
+      top: 3px;
       width: 16px;
+    }
+
+    &.has-tags {
+      .tag-content {
+        line-height: 17px;
+      }
     }
   }
 }
@@ -113,7 +123,7 @@ div.multiselect {
   .trigger {
     .icon {
       left: -1px;
-      top: 5px;
+      top: 6px;
       width: 16px;
     }
   }
@@ -214,8 +224,8 @@ div.multiselect {
 .is-mac {
   div.dropdown,
   div.multiselect {
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       .icon {
         top: -2px;
       }
@@ -228,8 +238,8 @@ div.multiselect {
   div.dropdown,
   div.multiselect {
     .tag-list {
-      .dismissible-btn,
-      .linkable-btn {
+      .btn-dismissible,
+      .btn-linkable {
         .icon {
           top: -1px;
         }
@@ -243,8 +253,8 @@ div.multiselect {
   div.dropdown,
   div.multiselect {
     .tag-list {
-      .dismissible-btn,
-      .linkable-btn {
+      .btn-dismissible,
+      .btn-linkable {
         .icon {
           top: -1px;
         }
@@ -269,8 +279,8 @@ div.multiselect {
       line-height: normal;
     }
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       .icon {
         top: -1px;
       }
@@ -301,6 +311,18 @@ div.multiselect {
       }
     }
   }
+
+  &.android {
+    .field-short,
+    .form-layout-compact .field {
+      div.dropdown,
+      div.multiselect {
+        + .icon {
+          top: 2px;
+        }
+      }
+    }
+  }
 }
 
 // Icon placement isn't quite right on Firefox
@@ -322,7 +344,18 @@ html.is-firefox:not([dir='rtl']) {
     }
 
     &.has-tags {
-      padding: 1px 30px 1px 10px;
+      padding: 0;
+    }
+
+    .tag-list {
+      padding: 4px 30px 6px 10px;
+
+      &.empty {
+        &::after {
+          content: ' ';
+          display: inline-block;
+        }
+      }
     }
   }
 
@@ -377,6 +410,12 @@ html.is-firefox:not([dir='rtl']) {
 
       + .icon {
         top: 0;
+      }
+
+      &.has-tags {
+        .tag-content {
+          line-height: 17px;
+        }
       }
     }
   }

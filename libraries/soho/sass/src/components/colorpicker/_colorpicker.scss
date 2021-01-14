@@ -12,7 +12,7 @@
   &::before {
     @include css3(transform, rotate(-45deg));
 
-    border-top: 2px solid $theme-color-status-danger;
+    border-top: 2px solid $ids-color-status-danger;
     content: '';
     left: $offset;
     position: absolute;
@@ -28,23 +28,23 @@
 }
 
 .colorpicker-input-xs {
-  @extend .input-xs;
+  width: 18px !important;
 }
 
 .colorpicker-input-sm {
-  @extend .input-sm;
+  width: 93px !important;
 }
 
 .colorpicker-input-mm {
-  @extend .input-mm;
+  width: 168px !important;
 }
 
 .colorpicker-input-md {
-  @extend .input-md;
+  width: 243px !important;
 }
 
 .colorpicker-input-lg {
-  @extend .input-lg;
+  width: 343px !important;
 }
 
 .colorpicker-container {
@@ -82,17 +82,21 @@
       color: $input-color-disabled-border !important;
       cursor: default;
     }
+
+    .trigger {
+      cursor: default;
+    }
   }
 
   &.color-only {
-    width: 70px;
+    width: 75px;
 
     input {
       width: 0;
     }
 
     .trigger {
-      margin-left: -5px;
+      margin-left: 0;
     }
   }
 
@@ -125,10 +129,6 @@
     .icon:not(.icon-error) {
       color: $colorpicker-readonly-icon-color;
       cursor: default;
-
-      &:hover {
-        color: $trigger-hover-color;
-      }
     }
   }
 
@@ -142,7 +142,7 @@
     height: 34px;
     margin-left: -5px;
     vertical-align: top;
-    width: 31px;
+    width: 30px;
   }
 
   .icon:not(.icon-error) {
@@ -152,10 +152,6 @@
     position: relative;
     top: 9px;
     width: 16px;
-
-    &:hover {
-      color: $trigger-hover-color;
-    }
   }
 
   .icon-error {
@@ -184,11 +180,11 @@
     }
 
     &:hover:not(:disabled) .icon {
-      color: $theme-color-brand-primary-base;
+      color: $ids-color-brand-primary-base;
     }
 
     &:active .icon {
-      color: $theme-color-brand-primary-base;
+      color: $ids-color-brand-primary-base;
     }
 
     &.is-empty,
@@ -202,7 +198,7 @@
     max-height: 34px;
     padding: 7px 0 10px 10px;
     text-overflow: ellipsis;
-    width: 90px; //Small Size
+    width: 93px; //Small Size
 
     &::-ms-clear {
       display: none;
@@ -245,13 +241,13 @@
 
       &:focus {
         box-shadow: $focus-box-shadow;
-        outline: 1px solid $theme-color-brand-primary-base;
+        outline: 1px solid $ids-color-brand-primary-base;
       }
 
       &.is-selected {
         &::after {
           @include css3(transform, scaleX(-1) rotate(135deg));
-          // border-color: $theme-color-palette-white $theme-color-palette-white $theme-color-palette-white transparent;
+          // border-color: $ids-color-palette-white $ids-color-palette-white $ids-color-palette-white transparent;
           border-style: solid;
           border-width: 2px 2px 0 0;
           content: '';
@@ -281,7 +277,7 @@
   }
 
   .swatch {
-    background-color: $theme-color-brand-secondary-alt;
+    background-color: $ids-color-brand-secondary-alt;
     display: block;
     height: 20px;
     width: 20px;

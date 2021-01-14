@@ -69,6 +69,14 @@
     opacity: 1;
   }
 
+  &:not(.hide-underneath) {
+    &.is-visible {
+      @include css3(transform, scale(1, 1));
+
+      opacity: 1;
+    }
+  }
+
   &.is-active {
     pointer-events: auto;
   }
@@ -130,25 +138,6 @@
 
     &:last-child .checkbox-label {
       margin-bottom: 1px;
-    }
-  }
-
-  .field:last-child input:not(.spinbox):not(.colorpicker):not(.searchfield),
-  .field:last-child textarea,
-  .field:last-child .spinbox-wrapper,
-  .field:last-child .colorpicker-container {
-    margin-bottom: 10px;
-
-    + .error-message {
-      margin-top: -3px;
-    }
-  }
-
-  .field:last-child input.error {
-    margin-bottom: 0 !important;
-
-    + .error-message {
-      margin-top: 7px !important;
     }
   }
 
@@ -316,32 +305,10 @@
   }
 }
 
-// Fix tab error icons inside of modal
-.modal {
-  .tab-container {
-    &.horizontal {
-      .tab-list-container {
-        .tab:not(.last-child) {
-          &.is-error {
-            .icon-error,
-            .icon-info,
-            .icon-alert {
-              margin-left: 0;
-              margin-right: 11px;
-              margin-top: -4px;
-              position: absolute;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
 .overlay {
   @include css3(transition, all 0.2s);
 
-  background: $theme-color-palette-black;
+  background: $ids-color-palette-black;
   height: 100%;
   left: 0;
   opacity: 0;
@@ -379,8 +346,8 @@ body.modal-engaged {
     @include line-clamp(1);
 
     color: $modal-primary-color;
-    font-size: $theme-size-font-lg;
-    font-weight: $theme-number-font-weight-base;
+    font-size: $ids-size-font-lg;
+    font-weight: $ids-number-font-weight-base;
     -webkit-margin-after: 0;
     text-align: left;
 
@@ -424,7 +391,7 @@ body.modal-engaged {
     @include font-size(16);
 
     color: $modal-primary-color;
-    font-weight: $theme-number-font-weight-base;
+    font-weight: $ids-number-font-weight-base;
     -webkit-margin-after: 0;
     text-align: left;
 
@@ -445,11 +412,12 @@ body.modal-engaged {
     overflow: auto;
     padding: 5px 20px;
 
-    .field:last-child {
+    .field:not(.label-left).last-child {
       margin-bottom: 0;
 
-      .textarea-wordcount {
-        margin-bottom: 0;
+      label,
+      .label {
+        margin-top: 20px;
       }
     }
   }
@@ -474,13 +442,27 @@ body.modal-engaged {
     top: 14px;
   }
 
+  // Message specific styles
   .message {
+    @include antialiased();
+
     color: $modal-color;
-    font-size: $theme-size-font-base;
+    font-size: $ids-size-font-base;
     line-height: 20px;
+    margin-bottom: 0;
     max-width: 369px;
-    padding: 15px 0 25px;
+    padding: 0;
     text-align: left;
+
+    .modal-body-wrapper {
+      padding: 5px 20px;
+    }
+
+    ol,
+    ul {
+      list-style: initial;
+      margin: -4px 20px 0;
+    }
   }
 
   .alert-text {
@@ -527,8 +509,8 @@ body.modal-engaged {
     color: $modal-btn-color;
     cursor: pointer;
     float: left;
-    font-size: $theme-size-font-base;
-    font-weight: $theme-number-font-weight-bold;
+    font-size: $ids-size-font-base;
+    font-weight: $ids-number-font-weight-bold;
     height: 49px;
     line-height: 49px;
     margin-right: 0;
@@ -581,13 +563,6 @@ body.modal-engaged {
       background-color: transparent;
       color: $modal-btn-primary-hover-color;
     }
-  }
-}
-
-// Message specific styles
-.message {
-  .modal-body-wrapper {
-    padding: 5px 20px;
   }
 }
 

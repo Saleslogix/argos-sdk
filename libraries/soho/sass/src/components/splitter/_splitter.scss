@@ -66,12 +66,12 @@
 
   .splitter-btn {
     height: 30px;
-    left: -4px;
+    left: 2px;
     margin-top: -2px;
-    min-width: 30px;
+    min-width: 16px;
     position: absolute;
-    transform: none;
-    width: 30px;
+    transform: rotate(180deg);
+    width: 16px;
     z-index: 101;
 
     .icon {
@@ -81,9 +81,7 @@
     }
 
     &.rotate {
-      left: -6px;
-      margin-top: -5px;
-      transform: rotate(180deg);
+      transform: rotate(0deg);
     }
   }
 
@@ -117,6 +115,15 @@
 
     &.is-dragging {
       box-shadow: 2px 0 3px 0 $splitter-box-shadow-color;
+    }
+
+    .splitter-btn {
+      transform: none;
+
+      &.rotate {
+        margin-top: -5px;
+        transform: rotate(180deg);
+      }
     }
   }
 
@@ -156,14 +163,14 @@
 
 .ie {
   .splitter-container {
-    .toolbar .buttonset > [class*='btn'] {
+    .toolbar .buttonset > [class^='btn'] {
       line-height: normal;
     }
   }
 }
 
 .splitter-overlay {
-  background-color: $theme-color-palette-white;
+  background-color: $ids-color-palette-white;
   height: 100%;
   opacity: 0.1;
   position: static;

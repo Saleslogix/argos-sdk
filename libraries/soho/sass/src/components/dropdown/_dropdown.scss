@@ -9,11 +9,11 @@
   }
 
   &.alert {
-    color: $theme-color-status-warning;
+    color: $ids-color-status-warning;
   }
 
   &.alert-yellow {
-    color: $theme-color-status-caution;
+    color: $ids-color-status-caution;
   }
 
   &.neutral {
@@ -21,15 +21,15 @@
   }
 
   &.good {
-    color: $theme-color-status-success;
+    color: $ids-color-status-success;
   }
 
   &.info {
-    color: $theme-color-status-base;
+    color: $ids-color-status-base;
   }
 
   &.white {
-    color: $theme-color-palette-white;
+    color: $ids-color-palette-white;
   }
 }
 
@@ -204,7 +204,7 @@ div.multiselect {
 
   &.has-tags {
     line-height: normal;
-    padding: 0 30px 1px 10px;
+    padding: 0;
   }
 
   .tag-list {
@@ -212,7 +212,8 @@ div.multiselect {
     line-height: 26px;
     margin: 0;
     overflow: auto;
-    padding: 2px 4px 3px;
+    padding: 2px 30px 3px 10px;
+    scroll-behavior: smooth;
     text-overflow: clip;
     white-space: normal;
 
@@ -220,8 +221,8 @@ div.multiselect {
       padding: 16px 0 15px;
     }
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       .icon {
         vertical-align: baseline;
       }
@@ -235,6 +236,12 @@ div.multiselect {
       background-color: transparent;
     }
   }
+
+  &.has-scrollbar {
+    + .icon {
+      right: 18px;
+    }
+  }
 }
 
 // The List
@@ -245,7 +252,7 @@ div.multiselect {
   border: 1px solid $dropdown-menu-border-color;
   border-radius: 3px;
   box-shadow: $dropdown-box-shadow-top, $focus-box-shadow;
-  font-size: $theme-size-font-base;
+  font-size: $ids-size-font-base;
   max-height: 340px;
   min-height: 30px;
   overflow: hidden;
@@ -299,7 +306,7 @@ div.multiselect {
   ul {
     background-color: $popupmenu-bg-color;
     color: $popupmenu-color;
-    font-size: $theme-size-font-base;
+    font-size: $ids-size-font-base;
     height: auto;
     line-height: 32px;
     overflow-x: hidden;
@@ -474,7 +481,7 @@ div.multiselect {
     li {
       .dropdown-highlight {
         color: $font-color-extrahighcontrast;
-        font-weight: $theme-number-font-weight-bold;
+        font-weight: $ids-number-font-weight-bold;
         letter-spacing: -0.2;
       }
 
@@ -563,8 +570,8 @@ div.multiselect {
     @include css3(user-select, none);
 
     color: $label-color;
-    font-size: $theme-size-font-sm;
-    font-weight: $theme-number-font-weight-bold;
+    font-size: $ids-size-font-sm;
+    font-weight: $ids-number-font-weight-bold;
     line-height: 20px;
     min-height: 20px;
     padding: 6px 0 4px;
@@ -572,7 +579,7 @@ div.multiselect {
 
     &:not(:first-child) {
       border-top: 1px solid $dropdown-menu-separator-border-color;
-      margin-top: 10px;
+      margin-top: 5px;
     }
 
     &:hover {
@@ -590,7 +597,7 @@ div.multiselect {
     z-index: 1;
 
     .icon {
-      background-color: rgba($theme-color-palette-white, 0);
+      background-color: rgba($ids-color-palette-white, 0);
       color: $trigger-icon-fill-color;
       left: 1px;
       top: 8px;
@@ -727,6 +734,10 @@ input.dropdown.error:focus {
 
     &.has-tags {
       height: auto;
+
+      &.empty {
+        height: $input-size-regular-height;
+      }
     }
   }
 
@@ -755,15 +766,41 @@ input.dropdown.error:focus {
         padding-left: 20px;
       }
     }
+
+    &.has-tags {
+      padding: 0;
+
+      .tag-list {
+        padding: 2px 30px 3px 5px;
+
+        &.empty {
+          padding: 16px 0 15px;
+        }
+      }
+
+      .tag {
+        height: 20px;
+      }
+
+      .tag-content {
+        line-height: 19px;
+      }
+    }
   }
 
   div.dropdown,
   div.multiselect {
     + .icon {
-      height: 30px;
+      height: 24px;
       right: 4px;
-      top: -2px;
+      top: 1px;
       width: 16px;
+    }
+
+    &.has-tags {
+      + .icon {
+        top: 5px;
+      }
     }
 
     ~ .icon-error {
@@ -773,8 +810,12 @@ input.dropdown.error:focus {
       top: 0;
     }
 
+    &.has-scrollbar {
+      + .icon {
+        right: 18px;
+      }
+    }
   }
-
 }
 
 // Compound field icon adjustments
@@ -859,7 +900,7 @@ div.dropdown-xs,
   }
 
   ul {
-    font-size: $theme-size-font-sm;
+    font-size: $ids-size-font-sm;
     text-indent: 5px;
   }
 
@@ -990,11 +1031,11 @@ div.dropdown-xs,
     }
 
     &.has-tags {
-      padding: 1px 30px 0 10px;
+      padding: 0;
     }
 
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       .icon {
         top: 1px;
       }
@@ -1031,7 +1072,7 @@ div.dropdown-xs,
 
     &.dropdown-short {
       .dropdown-search {
-        font-size: $theme-size-font-sm;
+        font-size: $ids-size-font-sm;
         padding: 6px 21px 5px 5px;
       }
 
@@ -1048,8 +1089,8 @@ div.dropdown-xs,
 .ie {
   div.dropdown,
   div.multiselect {
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       .icon {
         top: -1px;
       }
@@ -1061,8 +1102,8 @@ div.dropdown-xs,
 .is-mac {
   div.dropdown,
   div.multiselect {
-    .dismissible-btn,
-    .linkable-btn {
+    .btn-dismissible,
+    .btn-linkable {
       .icon {
         top: 0;
       }
@@ -1086,6 +1127,18 @@ div.dropdown-xs,
   div.multiselect {
     > .listoption-icon {
       top: 11px;
+    }
+  }
+
+  .field-short,
+  .form-layout-compact .field {
+    div.dropdown,
+    div.multiselect {
+      &.has-scrollbar {
+        + .icon {
+          right: 4px;
+        }
+      }
     }
   }
 
@@ -1122,6 +1175,53 @@ div.dropdown-xs,
 
       + .icon {
         top: 4px;
+      }
+    }
+
+    .field-short,
+    .form-layout-compact .field {
+      div.dropdown,
+      div.multiselect {
+        + .icon {
+          top: 1px;
+        }
+
+        &.has-tags {
+          + .icon {
+            top: 10px;
+          }
+        }
+
+        &.has-scrollbar {
+          + .icon {
+            right: 4px;
+          }
+        }
+      }
+    }
+
+    .dropdown-list {
+      > .trigger {
+        .icon {
+          &.close {
+            top: 10px;
+          }
+
+          &.search {
+            top: 5px;
+          }
+        }
+      }
+
+      &.dropdown-short {
+        > .trigger {
+          .icon {
+            &.close {
+              height: 15px;
+              top: 5px;
+            }
+          }
+        }
       }
     }
   }
@@ -1184,7 +1284,22 @@ html[dir='rtl'] {
   div.dropdown,
   div.multiselect {
     &.has-tags {
-      padding: 5px 10px 5px 30px;
+      padding: 0;
+    }
+
+    .tag-list {
+      padding: 2px 10px 3px 30px;
+
+      &.empty {
+        padding: 16px 10px 15px 30px;
+      }
+    }
+
+    &.has-scrollbar {
+      + .icon {
+        left: 18px;
+        right: auto;
+      }
     }
   }
 
@@ -1421,6 +1536,13 @@ html[dir='rtl'] {
         .dropdown-search {
           padding: 6px 25px 5px 21px;
         }
+      }
+    }
+
+    div.dropdown,
+    div.multiselect {
+      &.has-tags {
+        padding: 0;
       }
     }
   }

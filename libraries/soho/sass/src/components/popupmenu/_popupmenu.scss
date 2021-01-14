@@ -125,8 +125,6 @@
 
     .arrow {
       border-bottom-color: $popupmenu-border-color;
-      //left: auto;
-      //right: 10px;
       top: -7px;
     }
 
@@ -289,12 +287,43 @@
 
     .icon {
       &:not(.arrow) {
-        height: 16px;
+        height: 14px;
         margin-left: -28px;
-        margin-top: 7.5px;
+        margin-top: 10px;
         pointer-events: none;
         position: absolute;
       }
+    }
+  }
+
+  // Support image classes see images/example-photos
+  .image-user-status {
+    height: 32px;
+    vertical-align: middle;
+
+    .icon {
+      height: 10px;
+      margin-left: -11px;
+      margin-top: 21px;
+      width: 10px;
+    }
+
+    + span {
+      padding: 0 4px;
+    }
+  }
+
+  .image-initials,
+  .image-round {
+    font-size: 1.2rem;
+    height: 29px;
+    line-height: 29px;
+    position: relative;
+    top: 1px;
+    width: 29px;
+
+    + span {
+      padding-left: 4px;
     }
   }
 
@@ -305,8 +334,8 @@
   .heading {
     color: $popupmenu-heading-color;
     cursor: default;
-    font-size: $theme-size-font-sm;
-    font-weight: $theme-number-font-weight-bold;
+    font-size: $ids-size-font-sm;
+    font-weight: $ids-number-font-weight-bold;
     line-height: 25px;
     padding: 0 10px;
   }
@@ -371,7 +400,7 @@
     border: thin solid transparent;
     color: $popupmenu-color;
     display: block;
-    font-size: $theme-size-font-base;
+    font-size: $ids-size-font-base;
     line-height: 32px;
     min-height: 34px;
     padding: 0 30px 0 10px;
@@ -406,12 +435,12 @@
 
   span {
     color: $font-color-highcontrast;
-    font-size: $theme-size-font-base;
+    font-size: $ids-size-font-base;
   }
 
   .shortcut-text {
     float: right;
-    margin-left: $theme-number-spacing-base * 2;
+    margin-left: $ids-number-spacing-base * 2;
     margin-right: -20px;
   }
 
@@ -419,7 +448,7 @@
   i {
     color: $font-color-extrahighcontrast;
     font-style: normal;
-    font-weight: $theme-number-font-weight-bold;
+    font-weight: $ids-number-font-weight-bold;
     letter-spacing: -0.1;
   }
 
@@ -548,6 +577,13 @@
   &.is-multiselectable {
     li {
       @include multiselectable-list-item();
+
+      &.heading,
+      &.separator {
+        &::before {
+          content: none;
+        }
+      }
     }
   }
 }
@@ -566,8 +602,8 @@
     border-radius: 0;
     color: $modal-btn-color;
     float: left;
-    font-size: $theme-size-font-base;
-    font-weight: $theme-number-font-weight-bold;
+    font-size: $ids-size-font-base;
+    font-weight: $ids-number-font-weight-bold;
     height: 45px;
     line-height: 45px;
     margin: 0;
@@ -621,7 +657,7 @@ html[dir='rtl'] {
     .shortcut-text {
       float: left;
       margin-left: -25px;
-      margin-right: $theme-number-spacing-base * 2;
+      margin-right: $ids-number-spacing-base * 2;
     }
 
     &:not(.has-icons) {
@@ -697,6 +733,24 @@ html[dir='rtl'] {
         @include rtl-multiselectable-list-item();
       }
     }
+
+    // Inline status images
+    .image-user-status .icon {
+      margin-left: 0;
+      margin-right: -7px;
+      margin-top: 19px;
+    }
+
+    .image-initials + span,
+    .popupmenu .image-round + span {
+      padding-left: 0;
+      padding-right: 4px;
+    }
+
+    .popupmenu .image-initials,
+    .popupmenu .image-round {
+      top: -2px;
+    }
   }
 
   .popup-footer {
@@ -708,6 +762,17 @@ html[dir='rtl'] {
   &.ie {
     .submenu > a > .icon.icon-dropdown {
       transform: rotate(270deg);
+    }
+  }
+}
+
+// Fixing minor issue with shortcut text on small phones
+@media (max-width: $breakpoint-slim) {
+  .popupmenu {
+    .shortcut-text {
+      font-size: 12px;
+      margin-left: $ids-number-spacing-base - 1;
+      margin-top: 1px;
     }
   }
 }

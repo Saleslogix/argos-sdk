@@ -26,6 +26,7 @@
 }
 
 .card,
+.small-widget,
 .widget {
   background-color: $cardlist-bg-color;
   border: 1px solid $cardlist-border-color;
@@ -72,6 +73,10 @@
     }
   }
 
+  &.editable-hover-border {
+    border: 1px solid $widget-editable-border-color;
+  }
+
   .small-thin-text {
     @include font-size(11);
 
@@ -86,6 +91,11 @@
     @include auto-height;
     @include auto-width;
   }
+}
+
+.small-widget {
+  margin-bottom: 24px;
+  min-height: 260px;
 }
 
 .card-header,
@@ -131,7 +141,20 @@
     }
   }
 
-  [class*='btn'] {
+  .card-title,
+  .widget-title {
+    ~ svg.icon {
+      @include colorPalettesProperty(color);
+
+      background: transparent;
+      cursor: pointer;
+      margin-left: 5px;
+      position: relative;
+      top: -7px;
+    }
+  }
+
+  [class^='btn'] {
     color: $listview-toolbar-button-text-color;
 
     span {
@@ -327,7 +350,7 @@
 .empty-actions,
 .empty-info {
   -webkit-font-smoothing: antialiased;
-  font-weight: $theme-number-font-weight-base;
+  font-weight: $ids-number-font-weight-base;
   line-height: normal;
   text-align: center;
 }
@@ -353,7 +376,7 @@
 .card-empty-info,
 .widget-empty-info,
 .empty-info {
-  font-size: $theme-size-font-base;
+  font-size: $ids-size-font-base;
   padding: 0 20px 40px;
 
   &:last-child {

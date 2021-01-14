@@ -28,6 +28,17 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
   }
 }
 
+@mixin colorPalettesProperty($prop) {
+  @each $name in $color-names {
+    $i: index($color-names, $name);
+    $color: nth($color-vars, $i);
+
+    &.#{$name} {
+      #{$prop}: $color !important;
+    }
+  }
+}
+
 // Builds out vendor-prefixed keyframe definitions
 @mixin no-animation() {
   animation: none !important;
@@ -66,7 +77,6 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
 }
 
 // Use "transition: transform ... ..." with all vendor prefixes
-// TODO: Find a way to mix this with the regular transition mixin
 @mixin transform-transition-list($transition-rule, $additional-transitions-list...) {
   @each $prefix in $prefixes {
     #{$prefix}transition: #{$prefix}transform $transition-rule, $additional-transitions-list;
@@ -197,6 +207,10 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
     @media (min-width: $breakpoint-phone-to-tablet) { @content; }
   }
 
+  @else if $media == smphabletdown {
+    @media (min-width: 0) and (max-width: $breakpoint-phablet - 1) { @content; }
+  }
+
   @else if $media == desktop {
     @media (min-width: $breakpoint-tablet-to-desktop) and (max-width: $breakpoint-desktop-to-extralarge - 1) { @content; }
   }
@@ -253,7 +267,7 @@ $prefixes: -webkit-, -moz-, -o-, -ms-, '';
 @mixin placeholder {
   color: $input-placeholder-color;
   font-size: $input-size-regular-font-size;
-  font-weight: $theme-number-font-weight-base;
+  font-weight: $ids-number-font-weight-base;
   opacity: 1;
 }
 

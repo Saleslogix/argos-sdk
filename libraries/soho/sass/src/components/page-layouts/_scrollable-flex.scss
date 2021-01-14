@@ -1,0 +1,58 @@
+//  Flexable Scroll Area - Middle is scrollable
+//================================================== //
+
+.scrollable-flex {
+  display: flex !important;
+  flex-direction: column;
+
+  > * {
+    flex-grow: 0;
+  }
+}
+
+.scrollable-flex-header,
+.scrollable-flex-grow,
+.scrollable-flex-footer {
+  flex-grow: 0;
+}
+
+.scrollable-flex-content,
+.scrollable-area,
+.scrollable-flex-shrink {
+  flex-shrink: 1;
+  height: 100%;
+  overflow-y: auto;
+
+  &.has-margins {
+    margin: 20px;
+  }
+
+  .datagrid-container {
+    height: 100%;
+
+    &.paginated {
+      height: calc(100% - 40px);
+    }
+  }
+
+  // Support for list-detail-popup-search-no-split-header
+  &.listview {
+    height: 100% !important;
+
+    + .pager-toolbar {
+      height: 100%;
+    }
+  }
+
+  .toolbar + .datagrid-container.has-toolbar {
+    height: calc(100% - 50px);
+  }
+
+  &.card .empty-message {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    vertical-align: top;
+  }
+}

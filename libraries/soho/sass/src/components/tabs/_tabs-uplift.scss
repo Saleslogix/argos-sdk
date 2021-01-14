@@ -12,9 +12,11 @@
 .tab-container.horizontal,
 .tab-container.header-tabs {
   > .tab-list-container {
+    margin-bottom: -20px;
+
     .tab {
       &.is-disabled {
-        color: $theme-color-brand-secondary-lighter !important;
+        color: $ids-color-brand-secondary-lighter !important;
       }
 
       // Adds "semi-bold" style to selected/active tabs
@@ -24,6 +26,23 @@
           letter-spacing: -0.2px;
         }
       }
+    }
+  }
+
+  .add-tab-button {
+    span[aria-hidden] {
+      @include font-size(24);
+    }
+  }
+
+  .more-actions-button {
+    margin-top: 3px;
+
+    .btn-actions {
+      height: auto;
+      min-height: 32px;
+      min-width: 32px;
+      width: auto;
     }
   }
 }
@@ -53,6 +72,18 @@
   span[aria-hidden] {
     font-size: 25px;
     top: -1px;
+  }
+}
+
+// RTL Styles
+html[dir='rtl'] {
+  .tab-container.horizontal,
+  .tab-container.header-tabs {
+    .tab {
+      .icon-error {
+        right: auto !important;
+      }
+    }
   }
 }
 

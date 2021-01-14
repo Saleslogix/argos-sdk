@@ -15,13 +15,27 @@
   }
 }
 
+.badge {
+  height: 23px;
+  line-height: 22px;
+}
+
+.theme-uplift-contrast .badge {
+  height: 23px;
+  line-height: 20px;
+}
+
+.badge {
+  line-height: 22px;
+}
+
 // Firefox behaves odd
 .is-firefox {
-  .tag.is-linkable .linkable-btn .icon {
+  .tag.is-linkable .btn-linkable .icon {
     vertical-align: baseline;
   }
 
-  .tag.is-dismissible .dismissible-btn .icon {
+  .tag.is-dismissible .btn-dismissible .icon {
     vertical-align: baseline;
   }
 }

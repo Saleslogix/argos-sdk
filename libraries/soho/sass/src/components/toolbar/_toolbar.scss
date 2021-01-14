@@ -39,7 +39,7 @@ $toolbar-buttonset-height: 40px;
     vertical-align: middle;
   }
 
-  [class*='btn'] {
+  [class^='btn'] {
     margin: 0;
   }
 
@@ -64,7 +64,7 @@ $toolbar-buttonset-height: 40px;
       }
     }
 
-    > [class*='btn'] {
+    > [class^='btn'] {
       min-width: 34px;
     }
 
@@ -130,6 +130,7 @@ $toolbar-buttonset-height: 40px;
     .title {
       left: 1px;
       position: absolute;
+      top: 2px;
       width: auto;
     }
 
@@ -197,7 +198,7 @@ $toolbar-buttonset-height: 40px;
     border-bottom: 1px solid $toolbar-standalone-border-color;
     padding: 0 1rem;
 
-    [class*='btn'] {
+    [class^='btn'] {
       &[disabled],
       &[disabled]:hover {
         color: $toolbar-standalone-disabled-color;
@@ -266,7 +267,7 @@ $toolbar-buttonset-height: 40px;
 
     .title {
       color: $contextual-toolbar-color;
-      font-size: $theme-size-font-base;
+      font-size: $ids-size-font-base;
       height: 42px;
     }
 
@@ -276,7 +277,7 @@ $toolbar-buttonset-height: 40px;
 
     // EPC: NOTE: Do NOT add different margins and heights to buttons inside of contextual toolbars.
     // Toolbar Overflow Calculation needs buttons to be "shorter" than the buttonset.
-    [class*='btn'] {
+    [class^='btn'] {
       color: $contextual-toolbar-button-color;
       min-width: 0;
       padding: 0 10px;
@@ -350,16 +351,6 @@ $toolbar-buttonset-height: 40px;
   }
 }
 
-.toolbar.do-resize {
-  .toolbar-searchfield-wrapper {
-    .searchfield {
-      @include placeholderTextColor {
-        color: $searchfield-placeholder-text-color;
-      }
-    }
-  }
-}
-
 @include respond-to(phone) {
   .toolbar {
     .btn,
@@ -374,7 +365,7 @@ $toolbar-buttonset-height: 40px;
     // Show text with icon buttons by using this class.
     // Text will still become invisible on small breakpoint (but still visible to screen readers).
     // See respond-to(tabletdown) below.
-    [class*='btn'] {
+    [class^='btn'] {
       width: auto;
 
       > .icon + span {

@@ -53,8 +53,6 @@
   }
 
   &:disabled {
-    border-color: $timepicker-disabled-border-color;
-
     + .icon {
       color: $timepicker-disabled-icon-color;
       cursor: default;
@@ -63,7 +61,7 @@
 
   &[readonly] {
     + .icon {
-      color: $trigger-icon-fill-color;
+      color: $timepicker-readonly-icon-color;
       cursor: default;
     }
   }
@@ -94,7 +92,7 @@
     .colons {
       @include rem(font-size, 1.4rem);
 
-      font-weight: $theme-number-font-weight-bold;
+      font-weight: $ids-number-font-weight-bold;
       min-width: 15px;
 
       &:empty {

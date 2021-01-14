@@ -28,8 +28,8 @@ $toolbarsearchfield-category-empty-width: 51px;
     border: 1px solid transparent;
     box-shadow: none;
     color: $searchfield-text-color;
-    font-size: $theme-size-font-sm;
-    font-weight: $theme-number-font-weight-bold;
+    font-size: $ids-size-font-sm;
+    font-weight: $ids-number-font-weight-bold;
     outline: 0;
     padding-left: 34px;
     padding-right: 0;
@@ -40,8 +40,8 @@ $toolbarsearchfield-category-empty-width: 51px;
     &::-moz-placeholder,
     &:-ms-input-placeholder {
       color: $searchfield-placeholder-text-color;
-      font-size: $theme-size-font-sm;
-      font-weight: $theme-number-font-weight-bold;
+      font-size: $ids-size-font-sm;
+      font-weight: $ids-number-font-weight-bold;
     }
   }
 
@@ -62,19 +62,19 @@ $toolbarsearchfield-category-empty-width: 51px;
     }
 
     .icon:not(.close) {
-      top: 10px;
+      top: 8px;
     }
   }
 
   &.non-collapsible {
     .searchfield {
-      padding-bottom: 7px;
-      padding-top: 11px;
+      padding-bottom: 6px !important;
+      padding-top: 4px !important;
     }
 
     .icon:not(.close) {
       height: 14px;
-      top: 12px;
+      top: 10px !important;
     }
   }
 
@@ -138,7 +138,7 @@ $toolbarsearchfield-category-empty-width: 51px;
       border: 1px solid transparent;
 
       &:not(.hide-focus) {
-        box-shadow: none;
+        box-shadow: none !important;
         color: $button-color-secondary-initial-font;
 
         &::after {
@@ -199,29 +199,29 @@ $toolbarsearchfield-category-empty-width: 51px;
     // Searchfield changes text style to match other input fields
     .searchfield {
       color: $searchfield-text-color;
-      font-size: $theme-size-font-base;
-      font-weight: $theme-number-font-weight-base;
+      font-size: $ids-size-font-base;
+      font-weight: $ids-number-font-weight-base;
       padding-right: 34px;
       text-transform: none;
 
       &::-webkit-input-placeholder {
         color: $searchfield-placeholder-text-color;
-        font-size: $theme-size-font-base;
-        font-weight: $theme-number-font-weight-base;
+        font-size: $ids-size-font-base;
+        font-weight: $ids-number-font-weight-base;
         text-transform: none;
       }
 
       &::-moz-placeholder {
         color: $searchfield-placeholder-text-color;
-        font-size: $theme-size-font-base;
-        font-weight: $theme-number-font-weight-base;
+        font-size: $ids-size-font-base;
+        font-weight: $ids-number-font-weight-base;
         text-transform: none;
       }
 
       &:-ms-input-placeholder {
         color: $searchfield-placeholder-text-color;
-        font-size: $theme-size-font-base;
-        font-weight: $theme-number-font-weight-base;
+        font-size: $ids-size-font-base;
+        font-weight: $ids-number-font-weight-base;
         text-transform: none;
       }
     }
@@ -291,6 +291,10 @@ $toolbarsearchfield-category-empty-width: 51px;
   &.has-focus {
     .searchfield {
       border-color: transparent;
+
+      &:focus {
+        border-color: rgba($input-color-focus-border, 1);
+      }
     }
 
     &.active {
@@ -298,8 +302,18 @@ $toolbarsearchfield-category-empty-width: 51px;
         top: 15px;
       }
 
-      .searchfield {
-        border-color: transparent transparent rgba($searchfield-border-color, 1);
+      &.toolbar-searchfield-wrapper {
+        box-shadow: $focus-box-shadow-input;
+
+        &.has-categories {
+          .searchfield {
+            border-bottom-color: rgba($searchfield-border-color, 1);
+
+            &:focus {
+              border-color: rgba($input-color-focus-border, 1);
+            }
+          }
+        }
       }
 
       .btn {
@@ -389,12 +403,6 @@ $toolbarsearchfield-category-empty-width: 51px;
     }
   }
 
-  &.has-go-button {
-    .searchfield {
-      width: auto !important;
-    }
-  }
-
   &:not(.active) {
     .icon.close {
       display: none;
@@ -405,20 +413,20 @@ $toolbarsearchfield-category-empty-width: 51px;
 .azure07 .active input {
   background-color: rgba(29, 95, 138, 0.5) !important;  //08
   border-bottom-color: rgba(19, 77, 113, 0.7) !important;  //09
-  color: $theme-color-palette-white;
+  color: $ids-color-palette-white;
 
   &::-webkit-input-placeholder {
-    color: $theme-color-palette-white !important;
+    color: $ids-color-palette-white !important;
     opacity: 0.7;
   }
 
   &::-moz-placeholder {
-    color: $theme-color-palette-white !important;
+    color: $ids-color-palette-white !important;
     opacity: 0.7;
   }
 
   &:-ms-input-placeholder {
-    color: $theme-color-palette-white !important;
+    color: $ids-color-palette-white !important;
     opacity: 0.7;
   }
 }
@@ -545,7 +553,7 @@ $toolbarsearchfield-category-empty-width: 51px;
       }
 
       .ripple-effect {
-        background: $theme-color-palette-graphite-20;
+        background: $ids-color-palette-slate-20;
       }
     }
 
@@ -710,28 +718,28 @@ html.is-firefox {
       border-bottom-color: rgba($searchfield-border-color, 1);
       border-radius: 0;
       color: $searchfield-text-color;
-      font-size: $theme-size-font-base;
-      font-weight: $theme-number-font-weight-base;
+      font-size: $ids-size-font-base;
+      font-weight: $ids-number-font-weight-base;
       text-transform: none;
 
       &::-webkit-input-placeholder {
         color: $searchfield-placeholder-text-color;
-        font-size: $theme-size-font-base;
-        font-weight: $theme-number-font-weight-base;
+        font-size: $ids-size-font-base;
+        font-weight: $ids-number-font-weight-base;
         text-transform: none;
       }
 
       &::-moz-placeholder {
         color: $searchfield-placeholder-text-color;
-        font-size: $theme-size-font-base;
-        font-weight: $theme-number-font-weight-base;
+        font-size: $ids-size-font-base;
+        font-weight: $ids-number-font-weight-base;
         text-transform: none;
       }
 
       &:-ms-input-placeholder {
         color: $searchfield-placeholder-text-color;
-        font-size: $theme-size-font-base;
-        font-weight: $theme-number-font-weight-base;
+        font-size: $ids-size-font-base;
+        font-weight: $ids-number-font-weight-base;
         text-transform: none;
       }
     }

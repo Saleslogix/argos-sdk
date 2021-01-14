@@ -3,13 +3,14 @@
 
 // Left-to-Right
 //================================================== //
+
 @mixin left-align-cascade-styles-header($a-padding, $icon-margin, $width, $li-padding) {
   > a {
     padding-left: $a-padding;
   }
 
   > .icon,
-  > [class*='btn'] {
+  > [class^='btn'] {
     margin-left: $icon-margin;
 
     + a {
@@ -48,6 +49,7 @@
 
 // Right-To-Left
 //================================================== //
+
 @mixin right-align-cascade-styles-header($a-padding, $icon-margin, $width, $li-padding) {
   > a {
     padding-left: 0;
@@ -55,7 +57,7 @@
   }
 
   > .icon,
-  > [class*='btn'] {
+  > [class^='btn'] {
     margin-left: auto;
     margin-right: $icon-margin;
 

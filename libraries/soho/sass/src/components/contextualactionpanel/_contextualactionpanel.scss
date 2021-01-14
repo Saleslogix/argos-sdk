@@ -77,14 +77,14 @@
     margin-bottom: 0;
 
     .title {
-      font-size: $theme-size-font-lg;
+      font-size: $ids-size-font-lg;
       height: inherit;
       margin-left: 15px;
       margin-top: 1px;
     }
 
     .separator {
-      background-color: $contextual-panel-seperator-bg-color;
+      background-color: $contextual-panel-separator-bg-color;
       margin: 5px 1px 0;
       pointer-events: none; //fixes wierd IE10 over effect
       top: 5px;
@@ -96,7 +96,7 @@
     }
 
     .buttonset {
-      button[class*='btn'] {
+      button[class^='btn'] {
         color: $contextual-panel-button-color;
 
         &:hover {
@@ -154,7 +154,7 @@
   }
 
   .buttonset {
-    [class*='btn']:last-child {
+    [class^='btn']:last-child {
       margin-right: 1px;
     }
   }
@@ -201,12 +201,12 @@ html[dir='rtl'] {
       .flex-toolbar {
         .toolbar-section {
           &.title {
-            font-size: $theme-size-font-lg;
+            font-size: $ids-size-font-lg;
             padding-left: 0;
             padding-right: 15px;
 
             h2 {
-              font-size: $theme-size-font-lg;
+              font-size: $ids-size-font-lg;
             }
           }
         }
