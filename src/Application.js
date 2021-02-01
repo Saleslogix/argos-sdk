@@ -595,16 +595,23 @@ class Application {
   }
 
   initServiceWorker() {
-    if ('serviceWorker' in navigator && typeof this.serviceWorkerPath === 'string') {
-      navigator.serviceWorker.register(this.serviceWorkerPath, this.serviceWorkerRegistrationOptions).then((registration) => {
-        console.log('Serviceworker registered with scope: ', registration.scope); // eslint-disable-line
-      }, (err) => {
-        console.error('Service worker registration failed: ', err); // eslint-disable-line
-      });
+    try {
+      if ('serviceWorker' in navigator && typeof this.serviceWorkerPath === 'string') {
+        navigator.serviceWorker.register(this.serviceWorkerPath, this.serviceWorkerRegistrationOptions).then((registration) => {
+          console.log('Serviceworker registered with scope: ', registration.scope); // eslint-disable-line
+        }, (err) => {
+          console.error('Service worker registration failed: ', err); // eslint-disable-line
+          ErrorManager.addSimpleError('Error in service worker registration', err);
+          this.showServiceWorkerError();
+        });
 
-      navigator.serviceWorker.addEventListener('message', (event) => {
-        this.onServiceWorkerMessage(event);
-      });
+        navigator.serviceWorker.addEventListener('message', (event) => {
+          this.onServiceWorkerMessage(event);
+        });
+      }
+    } catch (err) {
+      ErrorManager.addSimpleError('Error in initServiceWorker()', err);
+      this.showServiceWorkerError();
     }
   }
 
@@ -1541,6 +1548,17 @@ class Application {
       if (this.bars[n].managed) {
         this.bars[n].setMode(onLine);
       }
+    }
+  }
+
+  showServiceWorkerError() {
+    if (this.toast) {
+      this.toast.add({
+        message: resource.serviceWorkerError,
+        title: resource.serviceWorkerErrorTitle,
+      });
+    } else {
+      alert(resource.serviceWorkerError); // eslint-disable-line
     }
   }
 }
