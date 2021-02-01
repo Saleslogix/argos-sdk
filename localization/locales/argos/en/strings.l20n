@@ -295,4 +295,6 @@
   initializingText: "Initializing:"
   viewSettingsText: "View Settings"
   closeText: "Close"
+  serviceWorkerError: "There was an error installing the service worker. Please contact your site administrator."
+  serviceWorkerErrorTitle: "Error"
 >

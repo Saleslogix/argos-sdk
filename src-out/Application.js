@@ -593,16 +593,23 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       value: function initServiceWorker() {
         var _this5 = this;
 
-        if ('serviceWorker' in navigator && typeof this.serviceWorkerPath === 'string') {
-          navigator.serviceWorker.register(this.serviceWorkerPath, this.serviceWorkerRegistrationOptions).then(function (registration) {
-            console.log('Serviceworker registered with scope: ', registration.scope); // eslint-disable-line
-          }, function (err) {
-            console.error('Service worker registration failed: ', err); // eslint-disable-line
-          });
+        try {
+          if ('serviceWorker' in navigator && typeof this.serviceWorkerPath === 'string') {
+            navigator.serviceWorker.register(this.serviceWorkerPath, this.serviceWorkerRegistrationOptions).then(function (registration) {
+              console.log('Serviceworker registered with scope: ', registration.scope); // eslint-disable-line
+            }, function (err) {
+              console.error('Service worker registration failed: ', err); // eslint-disable-line
+              _ErrorManager2.default.addSimpleError('Error in service worker registration', err);
+              _this5.showServiceWorkerError();
+            });
 
-          navigator.serviceWorker.addEventListener('message', function (event) {
-            _this5.onServiceWorkerMessage(event);
-          });
+            navigator.serviceWorker.addEventListener('message', function (event) {
+              _this5.onServiceWorkerMessage(event);
+            });
+          }
+        } catch (err) {
+          _ErrorManager2.default.addSimpleError('Error in initServiceWorker()', err);
+          this.showServiceWorkerError();
         }
       }
     }, {
@@ -1438,6 +1445,18 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
           if (this.bars[n].managed) {
             this.bars[n].setMode(onLine);
           }
+        }
+      }
+    }, {
+      key: 'showServiceWorkerError',
+      value: function showServiceWorkerError() {
+        if (this.toast) {
+          this.toast.add({
+            message: resource.serviceWorkerError,
+            title: resource.serviceWorkerErrorTitle
+          });
+        } else {
+          alert(resource.serviceWorkerError); // eslint-disable-line
         }
       }
     }]);
