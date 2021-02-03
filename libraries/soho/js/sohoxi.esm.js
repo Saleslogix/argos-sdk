@@ -1,7 +1,7 @@
 /*! 
- *  IDS Enterprise Components - v4.36.0
- *  Date: 2021-01-11T15:05:53.232Z
- *  Revision: fb5535eecae9b14b30d0bab24f33c708f47b7802
+ *  IDS Enterprise Components - v4.36.2
+ *  Date: 2021-01-25T21:45:32.182Z
+ *  Revision: 057fc3b6595d40824a84fd7ddeee375c2bbf8180
  *  
  *  
  *  Apache License
@@ -343,7 +343,7 @@ if (!isIE11) {
   };
 }
 
-var version = "4.36.0";
+var version = "4.36.2";
 
 function _typeof(obj) {
   "@babel/helpers - typeof";
@@ -747,7 +747,7 @@ DOM.hasAnyClass = function hasAnyClass(element) {
 DOM.hasClass = function hasClass(elem, className) {
   var r = false;
 
-  if (!(elem === null || elem === void 0 ? void 0 : elem == null ? void 0 : elem.getAttribute)) {
+  if (!(elem !== null && elem !== void 0 && (elem == null ? void 0 : elem.getAttribute))) {
     return r;
   }
 
@@ -2590,12 +2590,13 @@ DOM.convertToHTMLElement = function convertToHTMLElement(item) {
 DOM.focusableElems = function focusableElems(el) {
   var additionalSelectors = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   var ignoreSelectors = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-  var focusableElemSelector = ['button', '[href]', 'input', 'select', 'textarea', '[focusable]:not([focusable="false"])', '[tabindex]:not([tabindex="-1"])', '[contenteditable]', 'iframe'].concat(additionalSelectors).filter(function (item) {
+  var focusableElemSelector = ['button:not([disabled]):not([tabindex="-1"])', '[href]:not([disabled]):not([tabindex="-1"])', 'input:not([disabled]):not([tabindex="-1"])', 'textarea:not([disabled]):not([tabindex="-1"])', '[focusable]:not([focusable="false"])', '[tabindex]:not([tabindex="-1"])', '[contenteditable]', 'iframe'].concat(additionalSelectors).filter(function (item) {
     return ignoreSelectors.indexOf(item) === -1;
   });
-  var elems = el.querySelectorAll(focusableElemSelector.join(', '));
-  var arrElems = utils.getArrayFromList(elems);
-  return arrElems.filter(function (elem) {
+
+  var elems = _toConsumableArray(el.querySelectorAll(focusableElemSelector.join(', ')));
+
+  return elems.filter(function (elem) {
     if (elem.tagName.toLowerCase() === 'use') {
       return false;
     }
@@ -3574,8 +3575,12 @@ numberUtils.toFixed = function toFixed(number) {
     firstPart = (parseInt(firstPart, 10) + 1).toString();
   }
 
-  if (lastPart) {
+  if (lastPart && lastPart.substr(0, 1) !== '0') {
     parsedNum = firstPart + parsedNum;
+  }
+
+  if (lastPart && lastPart.substr(0, 1) === '0') {
+    parsedNum = "".concat(firstPart, "0").concat(parsedNum);
   }
 
   return parsedNum;
@@ -4552,7 +4557,7 @@ var Locale = {
           thousands: (data === null || data === void 0 ? void 0 : (_data$numbers2 = data == null ? void 0 : data.numbers) === null || _data$numbers2 === void 0 ? void 0 : _data$numbers2 == null ? void 0 : _data$numbers2.group) || ',',
           grouping: (data === null || data === void 0 ? void 0 : (_data$numbers3 = data == null ? void 0 : data.numbers) === null || _data$numbers3 === void 0 ? void 0 : _data$numbers3 == null ? void 0 : _data$numbers3.groupSizes) || [3],
           percent: (data === null || data === void 0 ? void 0 : (_data$numbers4 = data == null ? void 0 : data.numbers) === null || _data$numbers4 === void 0 ? void 0 : _data$numbers4 == null ? void 0 : _data$numbers4.percentSign) || '%',
-          currency: !(data === null || data === void 0 ? void 0 : data == null ? void 0 : data.currencySign) ? ['$', ''] : data.currencyFormat.split('¤')[0] === '' ? [data.currencySign, ''] : ['', data.currencySign],
+          currency: !(data !== null && data !== void 0 && (data == null ? void 0 : data.currencySign)) ? ['$', ''] : data.currencyFormat.split('¤')[0] === '' ? [data.currencySign, ''] : ['', data.currencySign],
           minus: (data === null || data === void 0 ? void 0 : (_data$numbers5 = data == null ? void 0 : data.numbers) === null || _data$numbers5 === void 0 ? void 0 : _data$numbers5 == null ? void 0 : _data$numbers5.minusSign) || '-'
         });
       }
@@ -15531,7 +15536,7 @@ masks.adjustRangeNumber = function (rawValue, opts, inputApi) {
   if (inputApi.settings.process === 'rangeNumber') {
     var _inputApi$settings, _inputApi$settings$pa, _opts$previousMaskRes, _opts$selection, _opts$selection2, _opts$selection3, _opts$selection4;
 
-    var delimeter = inputApi && ((_inputApi$settings = inputApi.settings) === null || _inputApi$settings === void 0 ? void 0 : (_inputApi$settings$pa = _inputApi$settings == null ? void 0 : _inputApi$settings.patternOptions) === null || _inputApi$settings$pa === void 0 ? void 0 : _inputApi$settings$pa == null ? void 0 : _inputApi$settings$pa.delimeter) ? inputApi.settings.patternOptions.delimeter : '-';
+    var delimeter = inputApi && (_inputApi$settings = inputApi.settings) !== null && _inputApi$settings !== void 0 && (_inputApi$settings$pa = _inputApi$settings == null ? void 0 : _inputApi$settings.patternOptions) !== null && _inputApi$settings$pa !== void 0 && (_inputApi$settings$pa == null ? void 0 : _inputApi$settings$pa.delimeter) ? inputApi.settings.patternOptions.delimeter : '-';
     var isLastcharDelimeter = opts && ((_opts$previousMaskRes = opts.previousMaskResult) === null || _opts$previousMaskRes === void 0 ? void 0 : _opts$previousMaskRes == null ? void 0 : _opts$previousMaskRes.substr(-1)) === delimeter;
 
     if (opts && ((_opts$selection = opts.selection) === null || _opts$selection === void 0 ? void 0 : _opts$selection == null ? void 0 : _opts$selection.start) === 1 && ((_opts$selection2 = opts.selection) === null || _opts$selection2 === void 0 ? void 0 : _opts$selection2 == null ? void 0 : _opts$selection2.end) === 1 && rawValue !== "(") {
@@ -26340,7 +26345,7 @@ ApplicationMenu.prototype = {
           this.searchfield = this.searchfield.children('.searchfield');
         }
       } else {
-        this.searchfield = $("".concat('<div class="searchfield-wrapper">' + '<label for="application-menu-searchfield">').concat(Locale.translate('Search'), "</label>") + '<input id="application-menu-searchfield" class="searchfield" /></div>').prependTo(this.element);
+        this.searchfield = $('<input id="application-menu-searchfield" class="searchfield" placeholder="Search" />').prependTo(this.element);
       }
 
       this.element.addClass('has-searchfield');
@@ -26665,7 +26670,7 @@ ApplicationMenu.prototype = {
       });
 
       if (trig.parents('.header').length > 0 || trig.parents('.masthead').length > 0) {
-        trig.find('.icon.app-header').removeClass('go-back').addClass('close');
+        trig.find('.icon.app-header').removeClass('go-back');
         trig.trigger('icon-change');
       }
     }); // Animate the application menu open.
@@ -26766,7 +26771,7 @@ ApplicationMenu.prototype = {
 
       if (trig.parents('.header').length > 0 || trig.parents('.masthead').length > 0) {
         trig.find('.icon.app-header').removeClass('close');
-        trig.trigger('icon-change');
+        trig.find('.icon.app-header');
       }
     });
 
@@ -28084,7 +28089,7 @@ Breadcrumb.prototype = {
     } // If markup needs to change, rebind events
 
 
-    if ((_html$childNodes = html.childNodes) === null || _html$childNodes === void 0 ? void 0 : _html$childNodes == null ? void 0 : _html$childNodes.length) {
+    if ((_html$childNodes = html.childNodes) !== null && _html$childNodes !== void 0 && (_html$childNodes == null ? void 0 : _html$childNodes.length)) {
       this.list.appendChild(html);
     } // Add ARIA to the list container
 
@@ -31524,7 +31529,7 @@ EmptyMessage.prototype = {
     var opts = this.settings;
     var isHeightSmall = opts.height === 'small';
 
-    if (opts === null || opts === void 0 ? void 0 : (_opts$button = opts == null ? void 0 : opts.button) === null || _opts$button === void 0 ? void 0 : _opts$button == null ? void 0 : _opts$button.isPrimary) {
+    if (opts !== null && opts !== void 0 && (_opts$button = opts == null ? void 0 : opts.button) !== null && _opts$button !== void 0 && (_opts$button == null ? void 0 : _opts$button.isPrimary)) {
       this.settings.color = 'azure';
     }
 
@@ -31924,7 +31929,7 @@ Line.prototype = {
     if (isViewSmall) {
       var _s$xAxis3;
 
-      if ((_s$xAxis3 = s.xAxis) === null || _s$xAxis3 === void 0 ? void 0 : _s$xAxis3 == null ? void 0 : _s$xAxis3.numTicksOnSmallView) {
+      if ((_s$xAxis3 = s.xAxis) !== null && _s$xAxis3 !== void 0 && (_s$xAxis3 == null ? void 0 : _s$xAxis3.numTicksOnSmallView)) {
         var _s$xAxis4;
 
         numTicks = (_s$xAxis4 = s.xAxis) === null || _s$xAxis4 === void 0 ? void 0 : _s$xAxis4 == null ? void 0 : _s$xAxis4.numTicksOnSmallView;
@@ -31946,13 +31951,13 @@ Line.prototype = {
     });
     var yAxis = d3.axisLeft(yScale).ticks(8).tickSize(-(width + 20)).tickPadding(self.isRTL ? -18 : 20);
 
-    if ((_s$yAxis = s.yAxis) === null || _s$yAxis === void 0 ? void 0 : _s$yAxis == null ? void 0 : _s$yAxis.formatter) {
+    if ((_s$yAxis = s.yAxis) !== null && _s$yAxis !== void 0 && (_s$yAxis == null ? void 0 : _s$yAxis.formatter)) {
       yAxis.tickFormat(function (d, k) {
         return typeof s.yAxis.formatter === 'function' ? s.yAxis.formatter(d, k) : d;
       });
     }
 
-    if ((_s$yAxis2 = s.yAxis) === null || _s$yAxis2 === void 0 ? void 0 : _s$yAxis2 == null ? void 0 : _s$yAxis2.ticks) {
+    if ((_s$yAxis2 = s.yAxis) !== null && _s$yAxis2 !== void 0 && (_s$yAxis2 == null ? void 0 : _s$yAxis2.ticks)) {
       yAxis.ticks(s.yAxis.ticks.number, s.yAxis.ticks.format);
     } // Append The Axis Labels
 
@@ -33526,7 +33531,7 @@ Column.prototype = {
         legendSeries = legendSeries.map(function (d) {
           var _d$data;
 
-          if (d.attributes && !((_d$data = d.data) === null || _d$data === void 0 ? void 0 : _d$data == null ? void 0 : _d$data.attributes)) {
+          if (d.attributes && !((_d$data = d.data) !== null && _d$data !== void 0 && (_d$data == null ? void 0 : _d$data.attributes))) {
             if (d.data) {
               d.data.attributes = d.attributes;
             } else {
@@ -33725,7 +33730,7 @@ Column.prototype = {
           setSelectedBar(this);
           isStacked = Array.isArray(d);
 
-          if (isStacked || (d === null || d === void 0 ? void 0 : d == null ? void 0 : d.data) && Array.isArray(d === null || d === void 0 ? void 0 : d == null ? void 0 : d.data)) {
+          if (isStacked || d !== null && d !== void 0 && (d == null ? void 0 : d.data) && Array.isArray(d === null || d === void 0 ? void 0 : d == null ? void 0 : d.data)) {
             sel.itemsInGroup = (isStacked ? d : d.data).length;
 
             if (selected > 0) {
@@ -34685,7 +34690,7 @@ Bar.prototype = {
       legendSeries = legendSeries.map(function (d) {
         var _d$data;
 
-        if (d.attributes && !((_d$data = d.data) === null || _d$data === void 0 ? void 0 : _d$data == null ? void 0 : _d$data.attributes)) {
+        if (d.attributes && !((_d$data = d.data) !== null && _d$data !== void 0 && (_d$data == null ? void 0 : _d$data.attributes))) {
           if (d.data) {
             d.data.attributes = d.attributes;
           } else {
@@ -38253,6 +38258,7 @@ var reloadSourceStyles = ['none', 'open', 'typeahead'];
 * @param {string} [settings.allTextString]  Custom text string for `All` text header use in MultiSelect.
 * @param {string} [settings.selectedTextString]  Custom text string for `Selected` text header use in MultiSelect.
 * @param {boolean} [settings.selectAllFilterOnly = true] if true, when using the optional "Select All" checkbox, the Multiselect will only select items that are in the current filter.  If false, or if there is no filter present, all items will be selected.
+* @param {string|array} [settings.attributes = null] Add extra attributes like id's to the chart elements. For example `attributes: { name: 'id', value: 'my-unique-id' }`
 */
 
 var DROPDOWN_DEFAULTS = {
@@ -38282,7 +38288,8 @@ var DROPDOWN_DEFAULTS = {
   tagListMaxHeight: 120,
   allTextString: null,
   selectedTextString: null,
-  selectAllFilterOnly: true
+  selectAllFilterOnly: true,
+  attributes: null
 };
 
 function Dropdown(element, settings) {
@@ -38470,8 +38477,13 @@ Dropdown.prototype = {
     this.pseudoElem.attr(attributesToCopy.obj).attr({
       role: 'button',
       'aria-haspopup': 'listbox'
-    }); // Pass disabled/readonly from the original element, if applicable
+    });
+
+    if (this.settings.attributes) {
+      utils.addAttributes(this.pseudoElem, this, this.settings.attributes, 'dropdown', true);
+    } // Pass disabled/readonly from the original element, if applicable
     // "disabled" is a stronger setting than "readonly" - should take precedent.
+
 
     function handleStates(self) {
       var disabled = self.element.prop('disabled');
@@ -40095,19 +40107,20 @@ Dropdown.prototype = {
       this.list[0].classList.add('dropdown-short');
     }
 
-    this.pseudoElem.attr('aria-expanded', 'true').addClass('is-open'); // Add test automation ids
-
-    utils.addAttributes(this.list.find('label'), this, this.settings.attributes, 'label');
-    utils.addAttributes(this.list.find('input'), this, this.settings.attributes, 'input');
-    this.list.find('label').attr('for', this.list.find('input').attr('id'));
-    utils.addAttributes(this.list.find('.trigger'), this, this.settings.attributes, 'trigger');
-    utils.addAttributes(this.list.find('ul'), this, this.settings.attributes, 'listbox');
-    var options = this.list.find('.dropdown-option a');
+    this.pseudoElem.attr('aria-expanded', 'true').addClass('is-open');
 
     if (self.settings.attributes) {
+      // Add test automation ids
+      utils.addAttributes(this.list.find('input'), this, this.settings.attributes, 'search', true);
+      this.list.find('label').attr('for', this.list.find('input').attr('id'));
+      utils.addAttributes(this.list.find('label'), this, this.settings.attributes, 'search-label');
+      utils.addAttributes(this.list.find('.trigger svg'), this, this.settings.attributes, 'trigger', true);
+      utils.addAttributes(this.list.find('ul'), this, this.settings.attributes, 'listbox', true);
+      utils.addAttributes(this.list, this, this.settings.attributes, 'list');
+      var options = this.list.find('.dropdown-option a');
       options.each(function (i) {
         var opt = $(this);
-        utils.addAttributes(opt, self, self.settings.attributes, "option-".concat(i));
+        utils.addAttributes(opt, self, self.settings.attributes, "option-".concat(i), true);
       });
     }
 
@@ -48034,8 +48047,11 @@ Calendar.prototype = {
         locale: this.locale.name,
         language: this.language
       }) : eventType.label, "</label><br/>");
-      this.eventTypeContainer.insertAdjacentHTML('beforeend', eventTypeMarkup);
+      this.eventTypeContainer.insertAdjacentHTML('beforeend', eventTypeMarkup); // Add attributes to the checkbox, copy the ID to its label's [for] attribute.
+
+      var checkboxEl = $(this.eventTypeContainer).find("#".concat(eventType.id));
       utils.addAttributes($(this.eventTypeContainer).find("#".concat(eventType.id)), this, this.settings.attributes, "legend-".concat(eventType.id), true);
+      checkboxEl.next('label').attr('for', checkboxEl[0].id);
     }
 
     return this;
@@ -48435,7 +48451,7 @@ Calendar.prototype = {
       var input = checkboxes[i];
 
       if (!input.checked) {
-        types.push(input.getAttribute('id'));
+        types.push(input.getAttribute('name'));
       }
     }
 
@@ -50549,7 +50565,7 @@ ContextualActionPanel.prototype = {
     var modalContent = this.settings.content;
     this.id = ((_this$settings = this.settings) === null || _this$settings === void 0 ? void 0 : (_this$settings$modalS = _this$settings == null ? void 0 : _this$settings.modalSettings) === null || _this$settings$modalS === void 0 ? void 0 : _this$settings$modalS == null ? void 0 : _this$settings$modalS.id) || (modalContent === null || modalContent === void 0 ? void 0 : modalContent == null ? void 0 : modalContent.attr('id')) || utils.uniqueId(this.element, 'contextual-action-modal');
 
-    if (!((_this$settings2 = this.settings) === null || _this$settings2 === void 0 ? void 0 : (_this$settings2$modal = _this$settings2 == null ? void 0 : _this$settings2.modalSettings) === null || _this$settings2$modal === void 0 ? void 0 : _this$settings2$modal == null ? void 0 : _this$settings2$modal.id)) {
+    if (!((_this$settings2 = this.settings) !== null && _this$settings2 !== void 0 && (_this$settings2$modal = _this$settings2 == null ? void 0 : _this$settings2.modalSettings) !== null && _this$settings2$modal !== void 0 && (_this$settings2$modal == null ? void 0 : _this$settings2$modal.id))) {
       this.settings.modalSettings.id = this.id;
     } // Build the Content if it's not present
 
@@ -50953,7 +50969,7 @@ $.fn.contextualactionpanel = function (settings) {
 
     var id = settings === null || settings === void 0 ? void 0 : (_settings$modalSettin = settings == null ? void 0 : settings.modalSettings) === null || _settings$modalSettin === void 0 ? void 0 : _settings$modalSettin == null ? void 0 : _settings$modalSettin.id;
 
-    if (!id && (settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.content) && (settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.content) instanceof jQuery) {
+    if (!id && settings !== null && settings !== void 0 && (settings == null ? void 0 : settings.content) && (settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.content) instanceof jQuery) {
       var _settings$content;
 
       id = settings === null || settings === void 0 ? void 0 : (_settings$content = settings == null ? void 0 : settings.content) === null || _settings$content === void 0 ? void 0 : _settings$content == null ? void 0 : _settings$content.attr('id');
@@ -57470,7 +57486,7 @@ Toolbar.prototype = {
       });
     }
 
-    if (!((_moreMenuAttrs = moreMenuAttrs) === null || _moreMenuAttrs === void 0 ? void 0 : _moreMenuAttrs == null ? void 0 : _moreMenuAttrs.length)) {
+    if (!((_moreMenuAttrs = moreMenuAttrs) !== null && _moreMenuAttrs !== void 0 && (_moreMenuAttrs == null ? void 0 : _moreMenuAttrs.length))) {
       moreMenuAttrs = null;
     } // Setup an Event Listener that will refresh the contents of the More Actions
     // Menu's items each time the menu is opened.
@@ -57677,7 +57693,7 @@ Toolbar.prototype = {
         });
       }
 
-      if (!((_menuBtnAttrs = menuBtnAttrs) === null || _menuBtnAttrs === void 0 ? void 0 : _menuBtnAttrs == null ? void 0 : _menuBtnAttrs.length)) {
+      if (!((_menuBtnAttrs = menuBtnAttrs) !== null && _menuBtnAttrs !== void 0 && (_menuBtnAttrs == null ? void 0 : _menuBtnAttrs.length))) {
         menuBtnAttrs = null;
       }
 
@@ -58944,7 +58960,7 @@ var EDITOR_DEFAULTS = {
 function Editor(element, settings) {
   this.settings = utils.mergeSettings(element, settings, EDITOR_DEFAULTS);
 
-  if (settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.buttons) {
+  if (settings !== null && settings !== void 0 && (settings == null ? void 0 : settings.buttons)) {
     this.settings.buttons = settings.buttons;
   }
 
@@ -59435,13 +59451,13 @@ Editor.prototype = {
 
     var isUplift = theme.currentTheme.id && theme.currentTheme.id.indexOf('uplift') > -1;
 
-    if ((_this$settings = this.settings) === null || _this$settings === void 0 ? void 0 : (_this$settings$rows = _this$settings == null ? void 0 : _this$settings.rows) === null || _this$settings$rows === void 0 ? void 0 : _this$settings$rows == null ? void 0 : _this$settings$rows.editor) {
+    if ((_this$settings = this.settings) !== null && _this$settings !== void 0 && (_this$settings$rows = _this$settings == null ? void 0 : _this$settings.rows) !== null && _this$settings$rows !== void 0 && (_this$settings$rows == null ? void 0 : _this$settings$rows.editor)) {
       var _this$settings2, _this$settings2$rows;
 
       this.element.height(((_this$settings2 = this.settings) === null || _this$settings2 === void 0 ? void 0 : (_this$settings2$rows = _this$settings2 == null ? void 0 : _this$settings2.rows) === null || _this$settings2$rows === void 0 ? void 0 : _this$settings2$rows == null ? void 0 : _this$settings2$rows.editor) * (isUplift ? 26 : 22.2));
     }
 
-    if ((_this$settings3 = this.settings) === null || _this$settings3 === void 0 ? void 0 : (_this$settings3$rows = _this$settings3 == null ? void 0 : _this$settings3.rows) === null || _this$settings3$rows === void 0 ? void 0 : _this$settings3$rows == null ? void 0 : _this$settings3$rows.source) {
+    if ((_this$settings3 = this.settings) !== null && _this$settings3 !== void 0 && (_this$settings3$rows = _this$settings3 == null ? void 0 : _this$settings3.rows) !== null && _this$settings3$rows !== void 0 && (_this$settings3$rows == null ? void 0 : _this$settings3$rows.source)) {
       var _this$settings4, _this$settings4$rows;
 
       this.element.parent().find('.editor-source').height(((_this$settings4 = this.settings) === null || _this$settings4 === void 0 ? void 0 : (_this$settings4$rows = _this$settings4 == null ? void 0 : _this$settings4.rows) === null || _this$settings4$rows === void 0 ? void 0 : _this$settings4$rows == null ? void 0 : _this$settings4$rows.source) * (isUplift ? 26 : 26) + 15);
@@ -64309,8 +64325,8 @@ FileUpload.prototype = {
     var elemClass = !hasInlineLabel ? elem.attr('class') : elem.find('input').attr('class');
     elemClass = elemClass ? " ".concat(elemClass) : '';
     var instructions = Locale.translate('FileUpload');
-    var label = $("<label for=\"".concat(id, "-filename\">").concat(elem.text(), " <span class=\"audible\">").concat(instructions, "</span></label>"));
-    var shadowField = $("<input readonly id=\"".concat(id, "-filename\" class=\"fileupload-background-transparent").concat(elemClass, "\" type=\"text\">"));
+    this.shadowLabel = $("<label for=\"".concat(id, "-filename\">").concat(elem.text(), " <span class=\"audible\">").concat(instructions, "</span></label>"));
+    this.shadowField = $("<input readonly id=\"".concat(id, "-filename\" class=\"fileupload-background-transparent").concat(elemClass, "\" type=\"text\">"));
     var svg = "<span class=\"trigger\">".concat($.createIcon('folder'), "</span>");
     var svgClose = "<span class=\"trigger-close\" tabindex=\"-1\">".concat($.createIcon('close'), "</span>");
 
@@ -64321,22 +64337,25 @@ FileUpload.prototype = {
         orgLabel = elem.parent().prev('label');
       }
 
-      label.html("".concat(orgLabel.text(), " <span class=\"audible\">").concat(instructions, "</span>"));
+      this.shadowLabel.html("".concat(orgLabel.text(), " <span class=\"audible\">").concat(instructions, "</span>"));
       orgLabel.addClass('audible').add(this.fileInput).attr('tabindex', '-1').attr('aria-hidden', 'true');
     }
 
-    elem.before(label, shadowField);
-    this.fileInput.after(svg, svgClose); // if there is a value attribute, then this will be used as the current value since unable to set files[0].name
+    if (elem.parent().find('input[type="text"]').length === 0) {
+      elem.before(this.shadowLabel, this.shadowField);
+      this.fileInput.after(svg, svgClose);
+    } // if there is a value attribute, then this will be used as the current value since unable to set files[0].name
     // move it to the text input and remove it off the file input
+
 
     var fileInputValue = this.fileInput.attr('value');
 
     if (fileInputValue && fileInputValue.length > 0) {
-      shadowField.val(fileInputValue);
+      this.shadowField.val(fileInputValue);
       this.fileInput.attr('value', '');
     }
 
-    this.textInput = shadowField;
+    this.textInput = this.shadowField;
     this.svg = elem.parent().find('.trigger');
     this.svgClose = elem.parent().find('.trigger-close');
     /*
@@ -64381,7 +64400,7 @@ FileUpload.prototype = {
     }
 
     if (elem.hasClass('required')) {
-      label.addClass('required');
+      this.shadowLabel.addClass('required');
       elem.removeClass('required');
     }
 
@@ -64407,7 +64426,7 @@ FileUpload.prototype = {
       } else if (!self.clearing) {
         self.clearUploadFile();
       }
-    }); // Fix - Not to buble events when clicked on trigger/close icons
+    }); // Fix - Not to bubble events when clicked on trigger/close icons
 
     this.fileInput.on('click.fileupload', function (e) {
       var handleEventData = _this.fileInput.data("handleEvent".concat([e.type || '']));
@@ -64417,19 +64436,16 @@ FileUpload.prototype = {
 
         e.preventDefault();
       }
-    }); // Fix: not sure why, but some browser(ie. safari) need to rerender,
-    // some rules were not applying from css file
+    }); // Support Drag and Drop
 
-    self.fileInput.css({
-      position: 'static',
-      left: 0
+    this.textInput.on('dragenter.fileupload', function () {
+      _this.fileInput.css('z-index', '1');
     });
-    setTimeout(function () {
-      self.fileInput.css({
-        position: 'fixed',
-        left: '-10000px'
-      });
-    }, 0); // Add test automation ids
+    this.textInput.on('dragleave.fileupload, dragend.fileupload, drop.fileupload', function () {
+      setTimeout(function () {
+        _this.fileInput.css('z-index', '-1');
+      }, 1);
+    }); // Add test automation ids
 
     utils.addAttributes(elem, this, this.settings.attributes);
     utils.addAttributes(this.svg, this, this.settings.attributes, 'btn-trigger');
@@ -64450,7 +64466,8 @@ FileUpload.prototype = {
   unbind: function unbind() {
     this.svg.add(this.svgClose).off('click.fileupload');
     this.fileInput.off('change.fileupload');
-    this.textInput.off('keydown.fileupload');
+    this.fileInput.prev('label');
+    this.textInput.off();
     this.element.closest('.field-fileupload').removeClass('field-fileupload').find('>label:first, >[type="text"]:first, .trigger, .trigger-close, .icon-dirty, .msg-dirty').remove();
     return this;
   },
@@ -64474,7 +64491,8 @@ FileUpload.prototype = {
   * @returns {void}
   */
   destroy: function destroy() {
-    this.unbind();
+    this.shadowField.remove();
+    this.shadowLabel.remove();
     $.removeData(this.element[0], COMPONENT_NAME$Q);
   },
 
@@ -73047,9 +73065,16 @@ Rating.prototype = {
     var inputs = $('input', this.element);
 
     var _loop = function _loop(i, l) {
-      $(inputs[i]).on("change.".concat(COMPONENT_NAME$$), function () {
-        if (!_this.element.hasClass('is-readonly')) {
-          _this.val(i + 1);
+      var thisInput = $(inputs[i]);
+      var nextInput = $(inputs[i + 1]);
+
+      var isNotEmpty = function isNotEmpty(el) {
+        return el.is('.is-filled') || el.is('.is-half');
+      };
+
+      thisInput.on("click.".concat(COMPONENT_NAME$$), function () {
+        if (!_this.element.is('.is-readonly')) {
+          _this.val(isNotEmpty(thisInput) && !isNotEmpty(nextInput) ? i : i + 1);
         }
       });
     };
@@ -73149,7 +73174,7 @@ Rating.prototype = {
    * @returns {object} The api
    */
   unbind: function unbind() {
-    this.element.find('input').off("change.".concat(COMPONENT_NAME$$));
+    this.element.find('input').off("click.".concat(COMPONENT_NAME$$));
     return this;
   },
 
@@ -78149,7 +78174,7 @@ Tabs.prototype = {
     } // Add extra attributes to the more button, if applicable
 
 
-    if (((_this$moreButton = this.moreButton) === null || _this$moreButton === void 0 ? void 0 : _this$moreButton == null ? void 0 : _this$moreButton.length) && this.settings.attributes) {
+    if ((_this$moreButton = this.moreButton) !== null && _this$moreButton !== void 0 && (_this$moreButton == null ? void 0 : _this$moreButton.length) && this.settings.attributes) {
       utils.addAttributes(this.moreButton, this, this.settings.attributes, 'btn-more');
     } // Add the application menu Module Tab, if applicable
 
@@ -78199,7 +78224,7 @@ Tabs.prototype = {
     } // Add extra attributes to the add button, if applicable
 
 
-    if (((_this$addTabButton = this.addTabButton) === null || _this$addTabButton === void 0 ? void 0 : _this$addTabButton == null ? void 0 : _this$addTabButton.length) && this.settings.attributes) {
+    if ((_this$addTabButton = this.addTabButton) !== null && _this$addTabButton !== void 0 && (_this$addTabButton == null ? void 0 : _this$addTabButton.length) && this.settings.attributes) {
       utils.addAttributes(this.addTabButton, this, this.settings.attributes, 'btn-add');
     } // Find a More Actions button, if applicable
 
@@ -78435,7 +78460,7 @@ Tabs.prototype = {
       });
     }
 
-    if ((_this$moreActionsBtn = this.moreActionsBtn) === null || _this$moreActionsBtn === void 0 ? void 0 : _this$moreActionsBtn == null ? void 0 : _this$moreActionsBtn.length) {
+    if ((_this$moreActionsBtn = this.moreActionsBtn) !== null && _this$moreActionsBtn !== void 0 && (_this$moreActionsBtn == null ? void 0 : _this$moreActionsBtn.length)) {
       this.moreActionsBtn.on('keydown.tabs', function (e) {
         self.handleMoreActionsButtonKeydown(e);
       });
@@ -84293,7 +84318,7 @@ Tree.prototype = {
         return item;
       }
 
-      if (item.children || ((_item$node = item.node) === null || _item$node === void 0 ? void 0 : (_item$node$data = _item$node == null ? void 0 : _item$node.data('jsonData')) === null || _item$node$data === void 0 ? void 0 : _item$node$data == null ? void 0 : _item$node$data.children)) {
+      if (item.children || (_item$node = item.node) !== null && _item$node !== void 0 && (_item$node$data = _item$node == null ? void 0 : _item$node.data('jsonData')) !== null && _item$node$data !== void 0 && (_item$node$data == null ? void 0 : _item$node$data.children)) {
         var _item$node2, _item$node2$data;
 
         var subresult = self.findById(id, item.children || ((_item$node2 = item.node) === null || _item$node2 === void 0 ? void 0 : (_item$node2$data = _item$node2 == null ? void 0 : _item$node2.data('jsonData')) === null || _item$node2$data === void 0 ? void 0 : _item$node2$data == null ? void 0 : _item$node2$data.children));
@@ -84941,7 +84966,7 @@ Tree.prototype = {
     if (nodeData.children || isChildrenNull) {
       var _nodeData$children;
 
-      if ((_nodeData$children = nodeData.children) === null || _nodeData$children === void 0 ? void 0 : _nodeData$children == null ? void 0 : _nodeData$children.length) {
+      if ((_nodeData$children = nodeData.children) !== null && _nodeData$children !== void 0 && (_nodeData$children == null ? void 0 : _nodeData$children.length)) {
         this.addChildNodes(nodeData, parent);
       } else {
         this.removeChildren(nodeData, parent);
@@ -85011,7 +85036,7 @@ Tree.prototype = {
 
 
     function returnFocus(popupmenuApi, args) {
-      if (typeof $(':focus')[0] === 'undefined' && (args === null || args === void 0 ? void 0 : args == null ? void 0 : args.triggerElement)) {
+      if (typeof $(':focus')[0] === 'undefined' && args !== null && args !== void 0 && (args == null ? void 0 : args.triggerElement)) {
         args.triggerElement.focus();
       }
     }
@@ -85164,7 +85189,7 @@ Tree.prototype = {
               return DOM.removeClass(node, 'is-over');
             });
 
-            if (!clone || !((_self$sortable = self.sortable) === null || _self$sortable === void 0 ? void 0 : _self$sortable == null ? void 0 : _self$sortable.overDirection)) {
+            if (!clone || !((_self$sortable = self.sortable) !== null && _self$sortable !== void 0 && (_self$sortable == null ? void 0 : _self$sortable.overDirection))) {
               return;
             }
 
@@ -86948,7 +86973,7 @@ var formatters = {
 
     var ranges = formatters.ClassRange(row, cell, value, col);
 
-    if (col === null || col === void 0 ? void 0 : (_col$editorOptions = col == null ? void 0 : col.editorOptions) === null || _col$editorOptions === void 0 ? void 0 : _col$editorOptions == null ? void 0 : _col$editorOptions.clickable) {
+    if (col !== null && col !== void 0 && (_col$editorOptions = col == null ? void 0 : col.editorOptions) !== null && _col$editorOptions !== void 0 && (_col$editorOptions == null ? void 0 : _col$editorOptions.clickable)) {
       return "<span class=\"tag is-linkable hide-focus ".concat(ranges.classes, "\"><a class=\"tag-content\" href=\"#\">#").concat(value, "</a><button class=\"btn-linkable\" focusable=\"false\" tabindex=\"-1\">\n        <svg class=\"icon\" focusable=\"false\" aria-hidden=\"true\" role=\"presentation\"><use href=\"#icon-caret-right\"></use></svg>\n      </button></span>");
     }
 
@@ -87879,12 +87904,12 @@ function addSuffixToAttributes() {
   var suffix = arguments.length > 2 ? arguments[2] : undefined;
   var attrs = [];
 
-  if (!(parentAttrs === null || parentAttrs === void 0 ? void 0 : parentAttrs == null ? void 0 : parentAttrs.length) && !(childAttrs === null || childAttrs === void 0 ? void 0 : childAttrs == null ? void 0 : childAttrs.length)) {
+  if (!(parentAttrs !== null && parentAttrs !== void 0 && (parentAttrs == null ? void 0 : parentAttrs.length)) && !(childAttrs !== null && childAttrs !== void 0 && (childAttrs == null ? void 0 : childAttrs.length))) {
     return attrs;
   } // If no child attributes exist, just pass the parents on with the prefix
 
 
-  if (!(childAttrs === null || childAttrs === void 0 ? void 0 : childAttrs == null ? void 0 : childAttrs.length)) {
+  if (!(childAttrs !== null && childAttrs !== void 0 && (childAttrs == null ? void 0 : childAttrs.length))) {
     attrs = parentAttrs.map(function (obj) {
       return {
         name: obj.name,
@@ -88319,7 +88344,7 @@ Lookup.prototype = {
         return self.settings.title;
       }
 
-      if ((_self$settings = self.settings) === null || _self$settings === void 0 ? void 0 : (_self$settings$option = _self$settings == null ? void 0 : _self$settings.options) === null || _self$settings$option === void 0 ? void 0 : (_self$settings$option2 = _self$settings$option == null ? void 0 : _self$settings$option.toolbar) === null || _self$settings$option2 === void 0 ? void 0 : _self$settings$option2 == null ? void 0 : _self$settings$option2.title) {
+      if ((_self$settings = self.settings) !== null && _self$settings !== void 0 && (_self$settings$option = _self$settings == null ? void 0 : _self$settings.options) !== null && _self$settings$option !== void 0 && (_self$settings$option2 = _self$settings$option == null ? void 0 : _self$settings$option.toolbar) !== null && _self$settings$option2 !== void 0 && (_self$settings$option2 == null ? void 0 : _self$settings$option2.title)) {
         var _self$settings2, _self$settings2$optio, _self$settings2$optio2;
 
         return (_self$settings2 = self.settings) === null || _self$settings2 === void 0 ? void 0 : (_self$settings2$optio = _self$settings2 == null ? void 0 : _self$settings2.options) === null || _self$settings2$optio === void 0 ? void 0 : (_self$settings2$optio2 = _self$settings2$optio == null ? void 0 : _self$settings2$optio.toolbar) === null || _self$settings2$optio2 === void 0 ? void 0 : _self$settings2$optio2 == null ? void 0 : _self$settings2$optio2.title;
@@ -91037,7 +91062,7 @@ Datagrid.prototype = {
     this.renderPager(pagerInfo, true);
     this.displayCounts(); // Highlight search results
 
-    if (this.settings.paging && this.settings.source && ((_pagerInfo = pagerInfo) === null || _pagerInfo === void 0 ? void 0 : _pagerInfo == null ? void 0 : _pagerInfo.filterExpr) && ((_pagerInfo$filterExpr = pagerInfo.filterExpr[0]) === null || _pagerInfo$filterExpr === void 0 ? void 0 : _pagerInfo$filterExpr == null ? void 0 : _pagerInfo$filterExpr.column) === 'all') {
+    if (this.settings.paging && this.settings.source && (_pagerInfo = pagerInfo) !== null && _pagerInfo !== void 0 && (_pagerInfo == null ? void 0 : _pagerInfo.filterExpr) && ((_pagerInfo$filterExpr = pagerInfo.filterExpr[0]) === null || _pagerInfo$filterExpr === void 0 ? void 0 : _pagerInfo$filterExpr == null ? void 0 : _pagerInfo$filterExpr.column) === 'all') {
       this.highlightSearchRows(pagerInfo.filterExpr[0].value);
     }
   },
@@ -92677,7 +92702,7 @@ Datagrid.prototype = {
 
           var node = nodeData[i];
 
-          if (node._isFilteredOut && !found && ((_node$children = node.children) === null || _node$children === void 0 ? void 0 : _node$children == null ? void 0 : _node$children.length)) {
+          if (node._isFilteredOut && !found && (_node$children = node.children) !== null && _node$children !== void 0 && (_node$children == null ? void 0 : _node$children.length)) {
             node._isFilteredOut = !setParents(node.children);
           }
 
@@ -93732,7 +93757,7 @@ Datagrid.prototype = {
 
         tableHtml += rowHtml.center;
 
-        if (s.treeGrid && ((_this$filterExpr = this.filterExpr) === null || _this$filterExpr === void 0 ? void 0 : _this$filterExpr == null ? void 0 : _this$filterExpr.length)) {
+        if (s.treeGrid && (_this$filterExpr = this.filterExpr) !== null && _this$filterExpr !== void 0 && (_this$filterExpr == null ? void 0 : _this$filterExpr.length)) {
           if ($("<table>".concat(rowHtml.center, "</table>")).find('tr:first').is('.is-hidden')) {
             this.filteredCount++;
           }
@@ -94246,7 +94271,7 @@ Datagrid.prototype = {
 
         var nodeData = self.settings.treeDepth[dataRowIdx];
 
-        if (nodeData && nodeData.depth > 1 && ((_nodeData$parents = nodeData.parents) === null || _nodeData$parents === void 0 ? void 0 : _nodeData$parents == null ? void 0 : _nodeData$parents.length)) {
+        if (nodeData && nodeData.depth > 1 && (_nodeData$parents = nodeData.parents) !== null && _nodeData$parents !== void 0 && (_nodeData$parents == null ? void 0 : _nodeData$parents.length)) {
           for (var i = 0, l = nodeData.parents.length; i < l; i++) {
             var parentIdx = nodeData.parents[i];
             var parent = self.settings.treeDepth[parentIdx];
@@ -95700,7 +95725,7 @@ Datagrid.prototype = {
 
     var idx = this.columnIdxById(id);
 
-    if (idx === -1 || ((_this$settings$column = this.settings.columns[idx]) === null || _this$settings$column === void 0 ? void 0 : _this$settings$column == null ? void 0 : _this$settings$column.hidden)) {
+    if (idx === -1 || (_this$settings$column = this.settings.columns[idx]) !== null && _this$settings$column !== void 0 && (_this$settings$column == null ? void 0 : _this$settings$column.hidden)) {
       return;
     }
 
@@ -96238,7 +96263,7 @@ Datagrid.prototype = {
       count = self.settings.dataset.length;
     }
 
-    if (totals === undefined && this.settings.source && ((_this$pagerAPI = this.pagerAPI) === null || _this$pagerAPI === void 0 ? void 0 : (_this$pagerAPI$state = _this$pagerAPI == null ? void 0 : _this$pagerAPI.state) === null || _this$pagerAPI$state === void 0 ? void 0 : _this$pagerAPI$state == null ? void 0 : _this$pagerAPI$state.total)) {
+    if (totals === undefined && this.settings.source && (_this$pagerAPI = this.pagerAPI) !== null && _this$pagerAPI !== void 0 && (_this$pagerAPI$state = _this$pagerAPI == null ? void 0 : _this$pagerAPI.state) !== null && _this$pagerAPI$state !== void 0 && (_this$pagerAPI$state == null ? void 0 : _this$pagerAPI$state.total)) {
       var _this$pagerAPI2, _this$pagerAPI2$state;
 
       count = (_this$pagerAPI2 = this.pagerAPI) === null || _this$pagerAPI2 === void 0 ? void 0 : (_this$pagerAPI2$state = _this$pagerAPI2 == null ? void 0 : _this$pagerAPI2.state) === null || _this$pagerAPI2$state === void 0 ? void 0 : _this$pagerAPI2$state == null ? void 0 : _this$pagerAPI2$state.total;
@@ -96957,7 +96982,7 @@ Datagrid.prototype = {
     var toolbar = this.element.parent().find('.toolbar:not(.contextual-toolbar)');
     var actions = toolbar.find('.btn-actions').data('popupmenu');
 
-    if (!(actions === null || actions === void 0 ? void 0 : actions == null ? void 0 : actions.wrapper)) {
+    if (!(actions !== null && actions !== void 0 && (actions == null ? void 0 : actions.wrapper))) {
       return;
     }
 
@@ -99708,7 +99733,7 @@ Datagrid.prototype = {
 
     this.editor.focus(); // Make sure the first keydown gets captured and trigger the dropdown
 
-    if (((_this$editor = this.editor) === null || _this$editor === void 0 ? void 0 : _this$editor == null ? void 0 : _this$editor.input.is('.dropdown')) && event.keyCode && ![9, 13, 32, 37, 38, 39, 40].includes(event.keyCode)) {
+    if ((_this$editor = this.editor) !== null && _this$editor !== void 0 && (_this$editor == null ? void 0 : _this$editor.input.is('.dropdown')) && event.keyCode && ![9, 13, 32, 37, 38, 39, 40].includes(event.keyCode)) {
       var dropdownApi = this.editor.input.data('dropdown');
       dropdownApi.handleAutoComplete(event);
     }
@@ -101938,7 +101963,7 @@ Datagrid.prototype = {
 
     var s = this.settings;
 
-    if (s.source && s.paging && s.allowSelectAcrossPages && ((_s$columnIds = s.columnIds) === null || _s$columnIds === void 0 ? void 0 : _s$columnIds == null ? void 0 : _s$columnIds.length)) {
+    if (s.source && s.paging && s.allowSelectAcrossPages && (_s$columnIds = s.columnIds) !== null && _s$columnIds !== void 0 && (_s$columnIds == null ? void 0 : _s$columnIds.length)) {
       return;
     }
 
@@ -105623,7 +105648,7 @@ var PLUGIN_MAPPINGS = [// Inline text translations by Locale, via the `data-tran
 ['datepicker'], // Time Picker
 ['timepicker'], // Tag
 ['tag'], // Busy Indicator
-['busyindicator', '.busy, .busy-xs, .busy-sm'], ['header'], ['fileupload', 'input.fileupload:not(.fileupload-background-transparent)'], ['fileuploadadvanced', '.fileupload-advanced'], ['fieldfilter', '.field-filter'], ['fieldoptions', '.field-options'], ['about'], ['contextualactionpanel', '.contextual-action-panel-trigger'], ['expandablearea', '.expandable-area'], ['signin'], ['homepage'], ['lookup', '.lookup:not([data-init])'], ['wizard'], ['popdown', '[data-popdown]'], ['stepchart', '.step-chart'], ['calendar', '.calendar'], ['calendartoolbar', '.calendar-toolbar'], ['monthview', '.monthview'], ['weekview', '.week-view'], ['listview'], // Track Dirty
+['busyindicator', '.busy, .busy-xs, .busy-sm'], ['header'], ['fileupload', 'input.fileupload:not(.fileupload-background-transparent):not([type="text"])'], ['fileuploadadvanced', '.fileupload-advanced'], ['fieldfilter', '.field-filter'], ['fieldoptions', '.field-options'], ['about'], ['contextualactionpanel', '.contextual-action-panel-trigger'], ['expandablearea', '.expandable-area'], ['signin'], ['homepage'], ['lookup', '.lookup:not([data-init])'], ['wizard'], ['popdown', '[data-popdown]'], ['stepchart', '.step-chart'], ['calendar', '.calendar'], ['calendartoolbar', '.calendar-toolbar'], ['monthview', '.monthview'], ['weekview', '.week-view'], ['listview'], // Track Dirty
 ['trackdirty', '[data-trackdirty="true"]'], // Context Menus - Popupmenu Components with no trigger buttons
 ['popupmenu', '[data-popupmenu]:not(.btn-actions, .btn-filter, .btn-menu)', function (rootElem, pluginName, selector) {
   matchedItems(rootElem, selector).each(function (i, item) {

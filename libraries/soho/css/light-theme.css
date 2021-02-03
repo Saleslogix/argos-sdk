@@ -1,8 +1,8 @@
 @charset "UTF-8";
 /*! 
- *  IDS Enterprise Components - v4.36.0
- *  Date: 2021-01-11T15:05:52.609Z
- *  Revision: fb5535eecae9b14b30d0bab24f33c708f47b7802
+ *  IDS Enterprise Components - v4.36.2
+ *  Date: 2021-01-25T21:45:31.608Z
+ *  Revision: 057fc3b6595d40824a84fd7ddeee375c2bbf8180
  *  
  *  
  *  Apache License
@@ -13030,8 +13030,10 @@ fieldset .row .columns,
 
 .field-fileupload label.fileupload input[type='file'],
 .field-fileupload input.fileupload[type='file'] {
-  left: -10000px;
-  position: fixed; }
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  z-index: -1; }
   .field-fileupload label.fileupload input[type='file']:disabled + span:not(.audible) svg,
   .field-fileupload label.fileupload input[type='file']:disabled + label.fileupload svg,
   .field-fileupload input.fileupload[type='file']:disabled + span:not(.audible) svg,
