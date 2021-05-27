@@ -1,6 +1,6 @@
-// PouchDB 7.1.1
+// PouchDB 7.2.1
 // 
-// (c) 2012-2019 Dale Harvey and the PouchDB team
+// (c) 2012-2020 Dale Harvey and the PouchDB team
 // PouchDB may be freely distributed under the Apache license, version 2.0.
 // For all details and documentation:
 // http://pouchdb.com
@@ -626,24 +626,28 @@ function immediate(task) {
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    ctor.prototype = Object.create(superCtor.prototype, {
-      constructor: {
-        value: ctor,
-        enumerable: false,
-        writable: true,
-        configurable: true
-      }
-    });
+    if (superCtor) {
+      ctor.super_ = superCtor
+      ctor.prototype = Object.create(superCtor.prototype, {
+        constructor: {
+          value: ctor,
+          enumerable: false,
+          writable: true,
+          configurable: true
+        }
+      })
+    }
   };
 } else {
   // old school shim for old browsers
   module.exports = function inherits(ctor, superCtor) {
-    ctor.super_ = superCtor
-    var TempCtor = function () {}
-    TempCtor.prototype = superCtor.prototype
-    ctor.prototype = new TempCtor()
-    ctor.prototype.constructor = ctor
+    if (superCtor) {
+      ctor.super_ = superCtor
+      var TempCtor = function () {}
+      TempCtor.prototype = superCtor.prototype
+      ctor.prototype = new TempCtor()
+      ctor.prototype.constructor = ctor
+    }
   }
 }
 
@@ -1609,14 +1613,15 @@ for (var i = 0; i < 256; ++i) {
 function bytesToUuid(buf, offset) {
   var i = offset || 0;
   var bth = byteToHex;
-  return bth[buf[i++]] + bth[buf[i++]] +
-          bth[buf[i++]] + bth[buf[i++]] + '-' +
-          bth[buf[i++]] + bth[buf[i++]] + '-' +
-          bth[buf[i++]] + bth[buf[i++]] + '-' +
-          bth[buf[i++]] + bth[buf[i++]] + '-' +
-          bth[buf[i++]] + bth[buf[i++]] +
-          bth[buf[i++]] + bth[buf[i++]] +
-          bth[buf[i++]] + bth[buf[i++]];
+  // join used to fix memory issue caused by concatenation: https://bugs.chromium.org/p/v8/issues/detail?id=3175#c4
+  return ([bth[buf[i++]], bth[buf[i++]], 
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]], '-',
+	bth[buf[i++]], bth[buf[i++]],
+	bth[buf[i++]], bth[buf[i++]],
+	bth[buf[i++]], bth[buf[i++]]]).join('');
 }
 
 module.exports = bytesToUuid;
@@ -1627,9 +1632,11 @@ module.exports = bytesToUuid;
 // and inconsistent support for the `crypto` API.  We do the best we can via
 // feature-detection
 
-// getRandomValues needs to be invoked in a context where "this" is a Crypto implementation.
-var getRandomValues = (typeof(crypto) != 'undefined' && crypto.getRandomValues.bind(crypto)) ||
-                      (typeof(msCrypto) != 'undefined' && msCrypto.getRandomValues.bind(msCrypto));
+// getRandomValues needs to be invoked in a context where "this" is a Crypto
+// implementation. Also, find the complete implementation of crypto on IE11.
+var getRandomValues = (typeof(crypto) != 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto)) ||
+                      (typeof(msCrypto) != 'undefined' && typeof window.msCrypto.getRandomValues == 'function' && msCrypto.getRandomValues.bind(msCrypto));
+
 if (getRandomValues) {
   // WHATWG crypto RNG - http://wiki.whatwg.org/wiki/Crypto
   var rnds8 = new Uint8Array(16); // eslint-disable-line no-undef
@@ -4968,7 +4975,7 @@ PouchDB.fetch = function (url, opts) {
 };
 
 // managed automatically by set-version.js
-var version = "7.1.1";
+var version = "7.2.1";
 
 // this would just be "return doc[field]", but fields
 // can be "deep" due to dot notation
@@ -6101,7 +6108,7 @@ var dataWords = toObject([
 ]);
 
 function parseRevisionInfo(rev$$1) {
-  if (!/^\d+-./.test(rev$$1)) {
+  if (!/^\d+-/.test(rev$$1)) {
     return createError(INVALID_REV);
   }
   var idx = rev$$1.indexOf('-');
@@ -8464,8 +8471,15 @@ function init(api, opts, callback) {
     txn.onabort = idbError(callback);
   };
 
-  req.onerror = function () {
-    var msg = 'Failed to open indexedDB, are you in private browsing mode?';
+  req.onerror = function (e) {
+    var msg = e.target.error && e.target.error.message;
+
+    if (!msg) {
+      msg = 'Failed to open indexedDB, are you in private browsing mode?';
+    } else if (msg.indexOf("stored database is a higher version") !== -1) {
+      msg = new Error('This DB was created with the newer "indexeddb" adapter, but you are trying to open it with the older "idb" adapter');
+    }
+
     guardedConsole('error', msg);
     callback(createError(IDB_ERROR, msg));
   };
@@ -9017,7 +9031,7 @@ function HttpPouch(opts, callback) {
         var path = encodeDocId(doc._id) + '/' + encodeAttachmentId(filename) +
             '?rev=' + doc._rev;
         return ourFetch(genDBUrl(host, path)).then(function (response) {
-          if (typeof process !== 'undefined' && !process.browser) {
+          if ('buffer' in response) {
             return response.buffer();
           } else {
             /* istanbul ignore next */
@@ -9025,8 +9039,8 @@ function HttpPouch(opts, callback) {
           }
         }).then(function (blob) {
           if (opts.binary) {
-            // TODO: Can we remove this?
-            if (typeof process !== 'undefined' && !process.browser) {
+            var typeFieldDescriptor = Object.getOwnPropertyDescriptor(blob.__proto__, 'type');
+            if (!typeFieldDescriptor || typeFieldDescriptor.set) {
               blob.type = att.content_type;
             }
             return blob;
@@ -9130,7 +9144,7 @@ function HttpPouch(opts, callback) {
       if (!response.ok) {
         throw response;
       } else {
-        if (typeof process !== 'undefined' && !process.browser) {
+        if (typeof process !== 'undefined' && !process.browser && typeof response.buffer === 'function') {
           return response.buffer();
         } else {
           /* istanbul ignore next */
@@ -9386,7 +9400,7 @@ function HttpPouch(opts, callback) {
     if (opts.descending) {
       params.descending = true;
     }
-    
+
     /* istanbul ignore if */
     if (opts.update_seq) {
       params.update_seq = true;
