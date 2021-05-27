@@ -1,0 +1,41 @@
+// Uplift Badges
+//================================================== //
+
+.tag,
+.badge {
+  font-size: 14px;
+
+  a {
+    font-size: 14px;
+    line-height: 20px;
+
+    &.round {
+      width: 30px;
+    }
+  }
+}
+
+.badge {
+  height: 23px;
+  line-height: 22px;
+}
+
+.theme-new-contrast .badge {
+  height: 23px;
+  line-height: 20px;
+}
+
+.badge {
+  line-height: 22px;
+}
+
+// Firefox behaves odd
+.is-firefox {
+  .tag.is-linkable .btn-linkable .icon {
+    vertical-align: baseline;
+  }
+
+  .tag.is-dismissible .btn-dismissible .icon {
+    vertical-align: baseline;
+  }
+}

@@ -131,6 +131,10 @@ div.multiselect {
     }
   }
 
+  span {
+    background-color: inherit;
+  }
+
   &:empty {
     min-height: 34px;
   }
@@ -257,6 +261,7 @@ div.multiselect {
   min-height: 30px;
   overflow: hidden;
   -webkit-overflow-scrolling: touch;
+  pointer-events: all;
   position: absolute;
   white-space: nowrap;
   width: auto;
@@ -264,6 +269,12 @@ div.multiselect {
 
   @media screen and (max-height: 270px) {
     background-color: inherit;
+  }
+
+  // Virtual Scroll Support
+  .virtual-scroll-container {
+    background-color: $ids-color-palette-white;
+    min-height: 100%;
   }
 
   &.text-align-reverse {
@@ -625,6 +636,30 @@ div.multiselect {
       margin-left: 14px;
     }
   }
+
+  &.text-align-reverse {
+    li {
+      padding: 0 10px;
+    }
+
+    &.dropdown-list {
+      > .trigger {
+        width: auto;
+      }
+    }
+
+    input.dropdown-search {
+      &.text-align-reverse {
+        padding-right: 16px !important;
+      }
+    }
+
+    &.search-mode {
+      input.dropdown-search {
+        padding-right: 19px !important;
+      }
+    }
+  }
 }
 
 .dropdown-search {
@@ -658,6 +693,13 @@ div.multiselect {
     border-bottom: 1px solid $dropdown-menu-separator-color;
     box-shadow: none;
     outline: none;
+  }
+}
+
+// Virtual Scrolling
+.ids-virtual-scroll-viewport {
+  ul {
+    overflow: hidden;
   }
 }
 
@@ -1105,7 +1147,7 @@ div.dropdown-xs,
     .btn-dismissible,
     .btn-linkable {
       .icon {
-        top: 0;
+        top: -1px;
       }
     }
   }

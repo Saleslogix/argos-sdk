@@ -79,7 +79,6 @@
 
       .current,
       &.current {
-        color: $breadcrumb-color;
         font-size: $ids-size-font-sm;
         font-weight: $ids-number-font-weight-bold;
 
@@ -238,7 +237,7 @@
       color: $breadcrumb-color;
     }
 
-    &:hover:not([disabled]):not(.is-disabled) {
+    &:hover {
       color: $breadcrumb-hover-color;
     }
 
@@ -306,8 +305,7 @@
 }
 
 // Breadcrumb on a toolbar (see grid example)
-.toolbar,
-.flex-toolbar {
+.toolbar {
   .breadcrumb-list,
   ol {
     min-height: 0;

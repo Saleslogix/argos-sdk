@@ -1,0 +1,756 @@
+// Datagrid New Styles
+//================================================== //
+
+// NOTE: see `src/core/_required.scss` for other datagrid dependencies
+@import '../badges/badges-new';
+@import '../button/button-new';
+@import '../dropdown/dropdown-new';
+@import '../input/input-new';
+@import '../listview/listview-new';
+@import '../modal/modal-new';
+@import '../popupmenu/popupmenu-new';
+@import '../searchfield/searchfield-new';
+@import '../tag/tag-new';
+@import '../toolbar/toolbar-new';
+@import '../tooltip/tooltip-new';
+
+.datagrid-header {
+  // Fix the size of the drag icon
+  &.medium-rowheight {
+    .datagrid-column-wrapper,
+    th {
+      .handle,
+      .is-draggable-target {
+        font-size: 2.3rem;
+      }
+    }
+  }
+
+  // Adjust some icons
+  .datagrid-filter-wrapper {
+    .dropdown + .trigger {
+      .icon {
+        right: 5px;
+        top: 1px;
+      }
+    }
+
+    .datepicker,
+    .timepicker {
+      + .trigger {
+        .icon {
+          right: 2px;
+          top: 3px;
+        }
+      }
+    }
+
+    .lookup-wrapper {
+      .trigger {
+        .icon {
+          height: 14px;
+          right: 0;
+          top: -3px;
+          width: 14px;
+        }
+      }
+    }
+
+    .searchfield-wrapper.has-close-icon-button .icon {
+      right: 14px;
+      top: 6px;
+    }
+  }
+
+  th .datagrid-header-text.required::after {
+    font-size: 1.8rem;
+  }
+}
+
+// Adjust header text
+.datagrid-header-text {
+  font-size: $ids-size-font-xs !important;
+}
+
+.datagrid-checkbox-wrapper {
+  margin-top: -15px;
+}
+
+// Adjust Filter Text
+.datagrid-header .datagrid-filter-wrapper .dropdown {
+  padding: 1px 0 0 5px;
+}
+
+// Adjust some trigger cells
+.datagrid-trigger-cell {
+  .icon-calendar {
+    top: 0;
+  }
+
+  .btn-icon > .icon {
+    top: 0;
+  }
+
+  // Date Picker
+  .datepicker {
+    + .trigger {
+      margin-top: 11px;
+    }
+  }
+}
+
+// Main Grid
+.datagrid {
+  > tbody > tr .icon.plus-minus::before,
+  > tbody > tr .icon.plus-minus::after {
+    color: $font-color-highcontrast;
+  }
+
+  td.is-editing {
+    .lookup-wrapper {
+      padding-top: 5px;
+    }
+
+    input.lookup {
+      + .trigger {
+        margin-left: -32px;
+        margin-top: 8px;
+      }
+    }
+
+    .datepicker {
+      margin-top: 6px;
+
+      ~ .icon {
+        top: calc(50% - 18px);
+      }
+
+      + .trigger {
+        margin-top: 11px;
+      }
+    }
+
+    input.timepicker {
+      ~ .trigger {
+        margin-left: -7px;
+        margin-top: 14px;
+      }
+    }
+  }
+
+  &.extra-small-rowheight {
+    td.is-editing {
+      input.timepicker {
+        + .trigger {
+          margin-left: -1px;
+          margin-top: 2px;
+
+          > .icon {
+            top: -2px;
+          }
+        }
+      }
+    }
+  }
+
+  // Short Row Height
+  &.small-rowheight {
+    tbody {
+      tr {
+        td {
+          &.datagrid-trigger-cell {
+            .icon.icon-calendar {
+              left: -2px;
+              top: 1px;
+            }
+          }
+
+          &.is-editing {
+            .datepicker {
+              + .trigger {
+                > .icon {
+                  top: -3px;
+                }
+              }
+            }
+          }
+
+          // Adjust Tags
+          span {
+            line-height: 22px;
+          }
+
+          // Adjust Row Buttons
+          .row-btn {
+            min-height: 25px;
+          }
+        }
+      }
+    }
+
+    td.is-editing {
+      .datepicker {
+        + .trigger {
+          margin-left: 1px;
+          margin-top: -1px;
+        }
+      }
+
+      input.timepicker {
+        + .trigger {
+          margin-left: -2px;
+          margin-top: -1px;
+
+          > .icon {
+            top: -2px;
+          }
+        }
+      }
+    }
+  }
+
+  &.medium-rowheight {
+    .datagrid-trigger-cell {
+      .icon.icon-calendar {
+        left: 5px;
+        top: 1px;
+      }
+    }
+
+    td.is-editing {
+      .datepicker {
+        + .trigger {
+          margin-left: 15px;
+          margin-top: 0;
+        }
+      }
+
+      input.timepicker {
+        + .trigger {
+          margin-left: 13px;
+          margin-top: 3px;
+        }
+      }
+    }
+
+    // fix focus gets cutoff on medium row height
+    .datagrid-rowgroup-header {
+      .datagrid-expand-btn {
+        margin-bottom: 2px;
+        margin-top: 2px;
+      }
+    }
+  }
+}
+
+// Fix Editor Alignment
+.datagrid.medium-rowheight {
+  tbody tr {
+    line-height: 26px;
+  }
+
+  > tbody > tr .datagrid-cell-wrapper {
+    padding: 7px 16px 4px !important;
+
+    .datagrid-checkbox-wrapper {
+      margin-top: -14px;
+    }
+  }
+
+  tbody tr td.is-editing {
+    input {
+      height: 22px !important;
+      margin-left: 0;
+      margin-top: 1px;
+    }
+
+    input.lookup {
+      + .trigger {
+        margin-left: -13px;
+        margin-top: 1px;
+      }
+    }
+
+    .lookup-wrapper {
+      padding: 0;
+    }
+
+    .datepicker {
+      margin-top: -1px;
+      padding-left: 1px;
+      padding-top: 0;
+    }
+
+    .datepicker ~ .icon {
+      margin-left: 11px;
+      top: calc(50% - 19px) !important;
+    }
+  }
+
+  .datagrid-trigger-cell .icon.icon-search-list {
+    top: 4px;
+  }
+}
+
+// Fix Editor Alignment
+.datagrid.small-rowheight {
+  .icon-search-list {
+    left: -1px !important;
+    top: 4px !important;
+  }
+
+  .datagrid-cell-wrapper {
+    padding: 2px 8px 0;
+
+    .datagrid-checkbox-wrapper {
+      margin-top: -14px;
+    }
+  }
+
+  tbody tr td.is-editing {
+    .lookup-wrapper {
+      padding-left: 10px;
+      padding-top: 0;
+    }
+
+    input.lookup {
+      margin-left: -4px;
+      margin-top: 2px;
+      padding-right: 5px;
+    }
+
+    input {
+      height: 26px;
+    }
+
+    input.lookup {
+      + .trigger {
+        margin-left: -21px;
+        margin-top: 0;
+
+        > .icon {
+          top: -2px;
+        }
+      }
+    }
+
+    .datepicker + .icon {
+      top: -4px;
+    }
+  }
+}
+
+// Fix Editor Alignment
+.datagrid.extra-small-rowheight {
+  tbody tr td {
+    .icon-search-list {
+      left: -3px;
+      top: 4px;
+    }
+
+    &.is-editing {
+      input.lookup {
+        + .trigger {
+          margin-left: -21px;
+          margin-top: 1px;
+        }
+      }
+    }
+  }
+}
+
+.datagrid-trigger-cell.is-editing .datagrid-cell-wrapper {
+  padding: 0 !important;
+}
+
+// Fix header alignment
+.datagrid-container {
+  th.text-ellipsis .datagrid-header-text {
+    margin: 7px 0 0 !important;
+  }
+
+  &.small-rowheight th.text-ellipsis .datagrid-header-text,
+  &.extra-small-rowheight th.text-ellipsis .datagrid-header-text {
+    margin: 3px 0 0 !important;
+  }
+
+  &.medium-rowheight th.text-ellipsis .datagrid-header-text {
+    margin: 5px 0 0 !important;
+  }
+}
+
+.datagrid.small-rowheight tbody tr td.datagrid-trigger-cell .trigger {
+  top: 4px;
+}
+
+.datagrid.small-rowheight tbody tr td .hyperlink {
+  margin-top: -4px;
+}
+
+// Small mode adjustments
+.datagrid-container.small-rowheight {
+  .datagrid-header .datagrid-filter-wrapper {
+    .datepicker,
+    .timepicker {
+      + .trigger {
+        right: 2px;
+      }
+    }
+
+    .lookup-wrapper {
+      .trigger {
+        margin-left: -22px;
+        margin-top: 2px;
+      }
+    }
+  }
+}
+
+// Adjust handle for resize on lists
+.is-gridlist.has-draggable-columns th .handle {
+  font-size: 23px;
+  top: -3px;
+}
+
+// Firefox
+.is-firefox {
+  // Adjust icon for firefox
+  .datagrid-header .datagrid-filter-wrapper .timepicker + .trigger {
+    top: -2px;
+  }
+
+  // Main Grid for firefox
+  .datagrid {
+    td {
+      &.is-editing {
+        .datepicker {
+          ~ .icon {
+            top: calc(50% - 17px);
+          }
+        }
+      }
+    }
+
+    // Medium Row Height for firefox
+    &.medium-rowheight {
+      tbody tr {
+        td {
+          &.is-editing {
+            .datepicker {
+              margin-top: 0;
+
+              ~ .icon {
+                top: calc(50% - 17px);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .modal.datagrid-columns-dialog {
+    .searchfield-wrapper {
+      height: auto;
+    }
+  }
+}
+
+// Adjustments for uplift mode
+.datagrid.extra-small-rowheight {
+  tbody tr td.is-editing input {
+    height: 24px;
+  }
+
+  tbody tr td.is-editing .dropdown {
+    padding: 6px 22px 0 5px;
+  }
+
+  tbody tr td.is-editing .dropdown + .icon {
+    height: 16px;
+    right: 4px;
+    top: 6px;
+    width: 16px;
+  }
+
+  .datagrid-cell-wrapper {
+    min-height: 29px;
+  }
+
+  tbody tr td.is-editing .datepicker {
+    height: 27px;
+  }
+
+  div.dropdown + .icon,
+  div.multiselect + .icon {
+    height: 16px;
+    right: 4px;
+    top: 7px !important;
+    width: 14px;
+  }
+
+  tbody tr td.is-editing .datepicker + .icon {
+    top: -4px !important;
+  }
+
+  tbody tr td.datagrid-trigger-cell .dropdown-trigger + .icon {
+    top: 4px !important;
+  }
+
+  tbody tr td .datagrid-checkbox-wrapper {
+    margin-top: -13px;
+  }
+}
+
+.datagrid-container.extra-small-rowheight {
+  &.has-filterable-columns .is-filterable .datagrid-filter-wrapper .btn-filter {
+    left: 6px;
+    padding-top: 4px;
+  }
+
+  .datagrid-header .datagrid-filter-wrapper .dropdown + .icon {
+    top: -2px !important;
+  }
+
+  .datagrid-header .datagrid-filter-wrapper .timepicker + .icon {
+    right: 4px;
+    top: -5px;
+  }
+}
+
+.datagrid-container.medium-rowheight {
+  &.has-filterable-columns .is-filterable .datagrid-column-wrapper.l-right-text {
+    top: -3px;
+  }
+}
+
+.datagrid-dropdown-list.extra-small-rowheight .trigger .icon {
+  left: 5px !important;
+  top: 7px;
+}
+
+.datagrid-dropdown-list.small-rowheight .trigger .icon {
+  top: 8px;
+}
+
+// Timepicker
+.datagrid td.is-editing input.timepicker {
+  margin-top: 5px;
+  padding: 0 0 0 15px;
+
+  ~ .icon {
+    left: auto;
+    margin-left: -4px;
+  }
+}
+
+.datagrid.medium-rowheight td.is-editing input.timepicker {
+  margin-top: -1px !important;
+  padding: 0 !important;
+
+  ~ .icon {
+    margin-left: 16px !important;
+    top: calc(50% - 18px) !important;
+  }
+}
+
+// EmptyMessage
+.datagrid-container.has-empty-message.is-empty {
+  .empty-title {
+    font-size: 1.8rem !important;
+  }
+
+  &.empty-message-height-small {
+    .empty-message {
+      top: calc(50% + 33px) !important;
+    }
+
+    &.medium-rowheight .empty-message {
+      top: calc(50% + 31px) !important;
+    }
+
+    &.small-rowheight .empty-message {
+      top: calc(50% + 28px) !important;
+    }
+
+    &.extra-small-rowheight .empty-message {
+      top: calc(50% + 26px) !important;
+    }
+  }
+}
+
+.datagrid-container.extra-small-rowheight.has-filterable-columns .is-filterable .datagrid-filter-wrapper {
+  .lookup-wrapper .trigger {
+    margin-top: 1px;
+  }
+
+  .has-close-icon-button .icon {
+    right: 21px;
+    top: 5px;
+  }
+}
+
+.datagrid-container.small-rowheight.has-filterable-columns .is-filterable .datagrid-filter-wrapper .has-close-icon-button .icon {
+  right: 23px;
+  top: 6px;
+}
+
+// Process Indivator Formatter
+.datagrid > tbody > tr .process-indicator {
+  top: 8px;
+
+  &.responsive .lines .indicator.current {
+    left: -1px;
+    top: 0;
+  }
+}
+
+.datagrid.extra-small-rowheight .process-indicator {
+  top: 0 !important;
+}
+
+.datagrid.small-rowheight .process-indicator {
+  top: 1px !important;
+}
+
+.datagrid.medium-rowheight .process-indicator {
+  top: 1px !important;
+}
+
+// Adjust the lookup X
+.is-safari {
+  .datagrid-header .datagrid-filter-wrapper .lookup-wrapper .searchfield-wrapper.has-close-icon-button .icon {
+    top: 1px;
+  }
+}
+
+html[dir='rtl'] {
+  .datagrid {
+    td.is-editing {
+      input.lookup {
+        + .trigger {
+          margin-left: 6px;
+          margin-top: 7px;
+
+          > .icon {
+            left: -1px;
+          }
+        }
+      }
+
+      input.timepicker {
+        + .trigger {
+          margin-left: 7px;
+          margin-top: 13px;
+
+          > .icon {
+            top: 0;
+          }
+        }
+      }
+    }
+  }
+
+  // Small mode adjustments
+  .datagrid-container {
+    &.small-rowheight {
+      .datagrid-header .datagrid-filter-wrapper {
+        .datepicker,
+        .timepicker {
+          + .trigger {
+            left: 16px;
+            right: auto;
+          }
+        }
+      }
+
+      td.is-editing {
+        input.lookup {
+          + .trigger {
+            margin-left: 6px;
+            margin-top: -1px;
+
+            > .icon {
+              left: -1px;
+              top: 0;
+            }
+          }
+        }
+
+        input.timepicker {
+          + .trigger {
+            margin-left: 5px;
+            margin-top: -2px;
+          }
+        }
+      }
+    }
+
+    &.extra-small-rowheight {
+      td.is-editing {
+        .datepicker {
+          + .trigger {
+            margin-top: 3px;
+          }
+        }
+
+        input.timepicker {
+          + .trigger {
+            margin-left: 5px;
+          }
+        }
+      }
+    }
+
+    &.small-rowheight,
+    &.extra-small-rowheight {
+      .datagrid-header .datagrid-filter-wrapper {
+        .lookup-wrapper {
+          .trigger {
+            left: 0;
+            margin-left: 2px;
+            margin-right: auto;
+            margin-top: 2px;
+          }
+        }
+      }
+    }
+
+    &.medium-rowheight {
+      .datagrid-trigger-cell {
+        .icon.icon-calendar {
+          left: auto;
+          right: 7px;
+        }
+      }
+
+      td.is-editing {
+        .datepicker {
+          ~ .trigger {
+            margin-left: auto;
+            margin-right: 17px;
+          }
+        }
+
+        input.lookup {
+          padding: 0;
+
+          + .trigger {
+            margin-left: -6px;
+            margin-top: 0;
+
+            > .icon {
+              left: -1px;
+            }
+          }
+        }
+
+        input.timepicker {
+          + .trigger {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+}

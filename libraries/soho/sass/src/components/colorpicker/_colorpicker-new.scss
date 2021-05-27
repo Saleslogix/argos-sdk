@@ -1,0 +1,55 @@
+// Color Picker (Uplift)
+//================================================== //
+
+@import '../icons/icons-new';
+@import '../input/input-new';
+@import '../popupmenu/popupmenu-new';
+
+.colorpicker-container {
+  .colorpicker {
+    padding: 10px 2px 10px 10px;
+  }
+
+  &.color-only .trigger {
+    margin-left: -4px;
+  }
+}
+
+.colorpicker-container .trigger {
+  margin-left: -9px;
+  margin-top: -2px;
+
+  .icon {
+    left: 8px;
+  }
+
+  .colorpicker {
+    width: 126px;
+  }
+}
+
+.field-short,
+.form-layout-compact {
+  .colorpicker-container .trigger {
+    margin-top: 1px;
+  }
+}
+
+html[dir='rtl'] {
+  .colorpicker-container {
+    .colorpicker {
+      padding: 11px 10px 8px 0;
+    }
+
+    .trigger .icon {
+      left: -3px;
+      top: 10px;
+    }
+  }
+}
+
+.modal-body {
+  .colorpicker-container .trigger {
+    margin-top: 1px;
+  }
+}

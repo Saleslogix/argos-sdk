@@ -48,9 +48,9 @@
 
   .icon {
     &.app-header {
-      left: -6px;
+      left: -5px;
       position: relative;
-      top: -7px;
+      top: -8px;
 
       span:not(.audible) {
         background-color: $module-tabs-inactive-text-color;
@@ -71,6 +71,12 @@
     height: 34px;
     overflow: hidden;
     width: calc(100% - 1px); // 1px for the vertical centerer
+
+    &.has-arrange-placeholder {
+      .tab:hover {
+        background-color: $module-tabs-bg-color;
+      }
+    }
   }
 
   &.has-toolbar {
@@ -146,14 +152,26 @@
       }
     }
 
-    &.is-selected {
-      background-color: $module-tabs-active-bg-color;
-      color: $module-tabs-active-text-color;
+    &.arrange-dragging.is-touch {
+      background-color: $module-tabs-bg-color;
     }
 
     &:hover {
       background-color: $module-tabs-hover-bg-color;
       color: $module-tabs-hover-text-color;
+
+      &.arrange-dragging.is-touch {
+        background-color: $module-tabs-hover-bg-color;
+      }
+    }
+
+    &.is-selected {
+      background-color: $module-tabs-active-bg-color;
+      color: $module-tabs-active-text-color;
+
+      &.arrange-dragging.is-touch {
+        background-color: $module-tabs-active-bg-color;
+      }
     }
 
     // Individual Tab Disable
@@ -806,6 +824,24 @@ html[dir='rtl'] {
           }
         }
       }
+    }
+  }
+}
+
+/**
+ * targets toolbar searchfield close button inside of
+ * a tab container, with variant wrapped in button
+ */
+.tab-container > .toolbar > .buttonset {
+  > .searchfield-wrapper.toolbar-searchfield-wrapper > .btn-icon.close {
+    height: auto;
+    margin-top: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+
+    svg.icon.close {
+      top: 0;
     }
   }
 }

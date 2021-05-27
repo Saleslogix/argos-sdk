@@ -41,8 +41,7 @@
 
     &.close {
       outline: none;
-      right: 5px;
-      top: 10px;
+      right: 8px;
     }
 
     &.icon-error {
@@ -95,6 +94,10 @@
     white-space: nowrap;
     width: 100%;
 
+    > button.close {
+      top: 5px;
+    }
+
     > .searchfield {
       background-color: $searchfield-context-bg;
       border-bottom: 1px solid $searchfield-context-border-color;
@@ -125,7 +128,8 @@
       }
 
       &.close {
-        right: 6px;
+        padding: 1px 3px;
+        right: 8px;
       }
     }
 
@@ -316,6 +320,24 @@
         &:focus {
           box-shadow: none;
         }
+      }
+    }
+
+    button.close:not(.is-empty) {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+
+      @media (min-width: $breakpoint-phone-to-tablet) {
+        right: 45px;
+      }
+
+      svg.close {
+        left: 0;
+        top: 8px !important;
       }
     }
   }
@@ -516,6 +538,74 @@ html[dir='rtl'] {
       .btn {
         height: 35px;
       }
+    }
+  }
+}
+
+/*
+  target phone-size case when the menu first hides on resize
+  when resizing (must have dev tools off to trigger this for
+  some reason)
+*/
+.buttonset {
+  > .searchfield-wrapper.toolbar-searchfield-wrapper:not(.is-open):nth-last-child(2):first-child {
+    > .icon.close {
+      transform: translateY(0%);
+    }
+  }
+}
+
+/**
+ * targets toolbar searchfield inside of a tab container,
+ * with variant that does not have a button
+ */
+.tab-container.module-tabs > .toolbar > .buttonset {
+  > .searchfield-wrapper.toolbar-searchfield-wrapper > svg.icon.close {
+    transform: translateY(0%);
+  }
+}
+
+/**
+ * targets toolbar searchfield close button inside of
+ * a tab container, with variant wrapped in button
+ */
+.tab-container > .toolbar > .buttonset {
+  > .searchfield-wrapper.toolbar-searchfield-wrapper > .btn-icon.close {
+    top: 0;
+  }
+}
+
+/**
+ * align large searchfield search icon
+ */
+.header > .full-searchfield-container .searchfield-wrapper {
+  & > svg.icon:nth-child(1) {
+    height: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+/**
+ * need explicit theme-classic on these base
+ * close button rules just because it's a bit hairy
+ * at this point to un-target other rules
+ */
+html[class*='theme-classic-'] {
+  .btn-icon.close {
+    top: 50%;
+    transform: translateY(-50%);
+
+    & > svg.close.icon {
+      position: relative;
+      right: unset;
+      top: -1px;
+    }
+  }
+
+  .application-menu.has-searchfield {
+    .searchfield-wrapper.has-close-icon-button > .btn-icon.close > svg.close.icon {
+      top: 0;
     }
   }
 }

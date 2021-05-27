@@ -1,0 +1,117 @@
+// Uplift Lookup
+//================================================== //
+.lookup-wrapper {
+  .trigger {
+    margin-top: 7px;
+
+    .icon {
+      right: 0;
+      top: 0;
+    }
+  }
+
+  .searchfield-wrapper {
+    > .icon.close {
+      right: 35px;
+      top: 19px;
+    }
+  }
+
+  .has-custom-icon .icon {
+    height: 16px;
+    right: -8px;
+    width: 16px;
+  }
+}
+
+.field-short,
+.form-layout-compact .field {
+  .lookup-wrapper {
+    .trigger {
+      margin-top: 4px;
+
+      .icon {
+        right: 0;
+        top: -2px;
+      }
+    }
+  }
+}
+
+html.is-firefox {
+  .lookup-wrapper {
+    .trigger {
+      .icon {
+        top: 0;
+      }
+    }
+  }
+}
+
+html[dir='rtl'] {
+  .lookup-wrapper {
+    .trigger {
+      margin-right: -32px;
+      margin-top: 8px;
+
+      .icon {
+        left: auto;
+      }
+    }
+
+    .searchfield-wrapper {
+      > .icon.close {
+        left: 35px;
+      }
+    }
+  }
+
+  .field-short,
+  .form-layout-compact .field {
+    .lookup-wrapper {
+      .trigger {
+        margin-right: -25px;
+        margin-top: 4px;
+
+        .icon {
+          right: 0;
+          top: -2px;
+        }
+      }
+    }
+  }
+}
+
+.modal-content {
+  .toolbar {
+    .buttonset {
+      .searchfield-wrapper {
+        &:not(.has-text) {
+          button.close {
+            display: none;
+          }
+        }
+
+        .btn-icon {
+          svg.close.icon {
+            border: 1px solid transparent;
+          }
+
+          &:focus {
+            .close.icon {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+html[dir='rtl'] .modal-content .toolbar .buttonset .searchfield-wrapper .btn-icon.close {
+  top: 4px;
+
+  svg.icon.close {
+    left: -4px;
+  }
+}

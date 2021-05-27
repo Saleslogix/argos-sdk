@@ -1,0 +1,67 @@
+// Uplift Input
+//================================================== //
+
+.field {
+  .btn-actions {
+    .icon {
+      height: 18px;
+      width: 18px;
+    }
+  }
+}
+
+label.required:not(.inline) .required-asterisk,
+.label.required:not(.inline) .required-asterisk,
+label.required:not(.inline):not(.accessible):not(.checkbox-label)::after,
+.label.required:not(.inline):not(.accessible):not(.checkbox-label)::after,
+label.required .label-text:not(.accessible):not(.checkbox-label)::after,
+.label.required .label-text:not(.accessible):not(.checkbox-label)::after {
+  font-size: $ids-size-font-md !important;
+  top: 3px !important;
+}
+
+span.required::after {
+  font-size: $ids-size-font-md;
+}
+
+.field-info {
+  .icon {
+    margin-top: -3px;
+  }
+
+  + .error-message {
+    margin-top: 0;
+  }
+}
+
+.error-message {
+  .icon {
+    height: 15px;
+    width: 15px;
+  }
+
+  .message-text {
+    padding-left: 21px;
+  }
+}
+
+.is-firefox {
+  .field-short,
+  .form-layout-compact .field {
+    input:not(.spinbox) {
+      padding-top: 0;
+    }
+  }
+}
+
+button.close {
+  top: 7px;
+  width: 14px;
+
+  .icon {
+    height: 14px;
+    right: initial;
+    top: -2px;
+    width: 14px;
+  }
+}

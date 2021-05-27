@@ -1,0 +1,103 @@
+// Uplift Button
+//================================================== //
+
+// Reset standard button alignments.
+[class^='btn'] {
+  height: auto;
+  line-height: normal;
+  min-height: 34px;
+
+  > * {
+    vertical-align: baseline;
+  }
+
+  > .icon {
+    margin-top: -1px;
+    vertical-align: middle;
+  }
+}
+
+// Icon/Actions button icons should be better-centered against the focus state.
+.btn-actions,
+.btn-icon,
+.btn-close {
+  > .icon {
+    position: relative;
+    top: -1px;
+  }
+}
+
+// Resize the "x" in the close button back to Soho-style sizes
+.btn-close {
+  > .icon {
+    width: 14px;
+  }
+}
+
+// IE11's `middle`, `sub`, and `text-bottom` alignments don't jive
+// well with our iconography.
+.ie11 {
+  [class^='btn'] {
+    > .icon {
+      vertical-align: -20%;
+    }
+  }
+}
+
+// Safari's and Firefox's `middle` alignment doesn't jive
+// well with our iconography
+.is-safari,
+.is-firefox {
+  [class^='btn'] {
+    > .icon {
+      margin-top: -2px;
+    }
+  }
+}
+
+.field-short [class^='btn']:not(.btn-editor):not(.btn-icon),
+.form-layout-compact .field [class^='btn']:not(.btn-editor):not(.btn-icon) {
+  min-height: $button-size-compact-height;
+
+  > .icon + span:not(.audible):not(:empty) {
+    padding: 0;
+  }
+
+  > .icon {
+    top: 0;
+    vertical-align: sub;
+
+    &:not(.icon-dropdown) {
+      height: 16px;
+      position: relative;
+      vertical-align: sub;
+
+      + span:not(.audible) {
+        position: relative;
+      }
+    }
+  }
+}
+
+.form-layout-compact .field {
+  .tag {
+    .btn-dismissible {
+      align-items: center;
+      display: flex;
+      height: inherit !important;
+      line-height: inherit;
+      margin-bottom: 0;
+      min-height: inherit !important;
+
+      > .icon {
+        &:not(.icon-dropdown) {
+          top: 0;
+        }
+      }
+    }
+  }
+}
+
+.btn-icon .icon.app-header {
+  top: 2px;
+}

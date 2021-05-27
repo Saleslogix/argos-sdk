@@ -1,0 +1,69 @@
+// Uplift Datepicker
+//================================================== //
+
+.datepicker {
+  + .trigger,
+  + .tooltip-description + .trigger {
+    margin-left: -32px;
+    margin-top: 7px;
+
+    .icon {
+      top: -2px;
+    }
+  }
+}
+
+.field-short,
+.form-layout-compact .field {
+  .datepicker {
+    + .trigger,
+    + .tooltip-description + .trigger {
+      margin-top: 4px;
+
+      .icon {
+        top: -3px;
+      }
+    }
+  }
+}
+
+.calendar-toolbar .toolbar-section .btn-monthyear-pane {
+  font-size: 2rem !important;
+  top: -1px;
+}
+
+// Short fields - firefox
+.is-firefox {
+  .field-short,
+  .form-layout-compact .field {
+    .datepicker {
+      + .trigger,
+      + .tooltip-description + .trigger {
+        margin-top: 8px;
+      }
+    }
+  }
+}
+
+html[dir='rtl'] {
+  .datepicker {
+    + .trigger,
+    + .tooltip-description + .trigger {
+      margin-left: auto;
+      margin-right: -30px;
+      margin-top: 9px;
+    }
+  }
+
+  .field-short,
+  .form-layout-compact .field {
+    .datepicker {
+      + .trigger,
+      + .tooltip-description + .trigger {
+        margin-left: auto;
+        margin-right: -23px;
+        margin-top: 5px;
+      }
+    }
+  }
+}

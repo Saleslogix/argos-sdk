@@ -42,6 +42,17 @@
   font-size: 0;
   position: relative;
 
+  &.has-placeholder {
+    .tab.draggable {
+      top: -12px;
+
+      &.arrange-placeholder {
+        height: 32px !important;
+        top: 0;
+      }
+    }
+  }
+
   &.has-add-button {
     .add-tab-button {
       visibility: visible;
@@ -426,7 +437,10 @@
       &:not(.last-child) {
         margin-right: 10px;
 
-        &.is-error {
+        &.is-error,
+        &.is-info,
+        &.is-success,
+        &.is-alert {
           a[role='tab'] {
             padding: 12px 20px 12px 5px;
           }
@@ -481,6 +495,7 @@
             padding-right: 0;
             right: -1px;
             top: 1px;
+            z-index: 10;
           }
 
           &.icon-error {
@@ -543,7 +558,8 @@
 
       .icon-error,
       .icon-info,
-      .icon-alert {
+      .icon-alert,
+      .icon-success {
         color: $error-icon-fill;
         height: 14px;
         position: absolute;
@@ -707,6 +723,20 @@
   }
 }
 
+// On Safari (specifically targeting iPad/iPhone) make the anchors pass through
+// to enable easier tapping of dismissible icons (See infor-design/enterprise#4763)
+.ios {
+  .tab {
+    > a {
+      pointer-events: none;
+    }
+
+    > .icon {
+      pointer-events: initial;
+    }
+  }
+}
+
 @import './tabs-horizontal';
 @import '../tabs-vertical/tabs-vertical';
 @import '../tabs-header/tabs-header';
@@ -725,13 +755,15 @@ html[dir='rtl'] {
     left: 0;
   }
 
-  .tab-container.horizontal,
-  .tab-container.header-tabs {
+  .tab-container.horizontal {
     &::before {
       left: auto;
       right: 0;
     }
+  }
 
+  .tab-container.horizontal,
+  .tab-container.header-tabs {
     &::after {
       left: 51px;
       right: auto;
@@ -783,6 +815,22 @@ html[dir='rtl'] {
       &::before {
         left: auto;
         right: 0;
+      }
+    }
+
+    .tab-list-container {
+      margin-right: 1px;
+
+      .tab {
+        &.dismissible {
+          padding-left: 10px;
+          padding-right: auto;
+        }
+
+        &:not(.last-child) {
+          margin-left: 10px;
+          margin-right: auto;
+        }
       }
     }
 

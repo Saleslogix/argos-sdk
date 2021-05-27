@@ -1,7 +1,7 @@
 /*! 
- *  IDS Enterprise Components - v4.36.2
- *  Date: 2021-01-25T21:45:32.182Z
- *  Revision: 057fc3b6595d40824a84fd7ddeee375c2bbf8180
+ *  IDS Enterprise Components - v4.51.1
+ *  Date: 2021-05-11T14:48:27.168Z
+ *  Revision: 0e53af7dca3ffbc818fd18fdca278fad83aeeb77
  *  
  *  
  *  Apache License
@@ -343,7 +343,203 @@ if (!isIE11) {
   };
 }
 
-var version = "4.36.2";
+var name = "ids-enterprise";
+var slug = "ids-enterprise";
+var version = "4.51.1";
+var description = "Infor Design System (IDS) Enterprise Components for the web";
+var repository = {
+	type: "git",
+	url: "git+https://github.com/infor-design/enterprise.git"
+};
+var keywords = [
+	"infor design system",
+	"infor design system enterprise"
+];
+var author = "Infor Design";
+var license = "Apache-2.0";
+var bugs = {
+	url: "https://github.com/infor-design/enterprise/issues"
+};
+var homepage = "https://github.com/infor-design/enterprise";
+var main = "dist/js/sohoxi.js";
+var jspm = {
+	main: "dist/js/sohoxi.js"
+};
+var files = [
+	"dist"
+];
+var scripts = {
+	start: "npm run clean && npm run build && npm run quickstart",
+	quickstart: "npx grunt demo && node app/server.js",
+	"quickstart:livereload": "npx grunt demo && node app/server.js --livereload",
+	build: "npm run clean:dist && node ./scripts/build",
+	"build:full": "npm run clean && npm run build -- --types=iife,es && npm run minify && npm run build:verify",
+	"build:icons": "node ./scripts/build-icons.js",
+	"build:colors": "node ./scripts/build-colors.js",
+	"build:release": "npm run clean && npm run build -- --types=iife,es && npm run minify && npm run zip-dist && npm run build:verify",
+	"build:verify": "node ./scripts/verify.js",
+	"build:js": "node ./scripts/build --disable-css",
+	"build:css": "node ./scripts/build --disable-js",
+	clean: "npm run clean:dist && npm run clean:docs && npm run clean:app",
+	"clean:app": "rimraf app/dist",
+	"clean:docs": "rimraf app/docs/*.html && rimraf app/docs/components/*.html && rimraf docs/ids-website/dist*",
+	"clean:dist": "rimraf temp && rimraf dist",
+	stop: "./scripts/stop.sh",
+	"watch:js": "nodemon --watch \"src/\" -e js --ignore dist/ --ignore app/ -x \"npm run build:js\" --on-change-only",
+	"watch:scss": "nodemon --watch \"src/\" -e scss --ignore dist/ --ignore app/ -x \"npm run build:css\" --on-change-only",
+	watch: "npm run watch:js & npm run watch:scss",
+	"stylelint:demo": "npx stylelint app/src/**/*.scss --config src/.stylelintrc",
+	"stylelint:src": "npx stylelint src/**/*.scss --config src/.stylelintrc",
+	stylelint: "npm run stylelint:demo && npm run stylelint:src",
+	mdlint: "npm run mdlint:docs && npm run mdlint:src",
+	"mdlint:docs": "npx markdownlint docs/ && npx markdownlint README.md",
+	"mdlint:src": "npx markdownlint src --config=src/.markdownlintrc",
+	eslint: "npm run build:icons && npm run build:colors && npx eslint src test app",
+	"eslint:log": "npm run build:icons && npm run build:colors && npx eslint -o eslint.log src test app",
+	"eslint:error-only": "npm run build:icons && npm run build:colors && npx eslint --quiet src test app",
+	"lint:ci": "npm run eslint:error-only && npm run mdlint && npm run stylelint",
+	minify: "node ./scripts/minify.js",
+	"functional:local": "npx karma start test/karma.conf.js",
+	"functional:ci": "npx karma start test/karma.conf.js --single-run",
+	"e2e:ci": "npm run webdriver:update && npx protractor-flake --max-attempts=1 -- test/protractor.ci.conf.js",
+	"e2e:group0:ci": "env GROUP='group0' npm run e2e:ci",
+	"e2e:group1:ci": "env GROUP='group1' npm run e2e:ci",
+	"e2e:group2:ci": "env GROUP='group2' npm run e2e:ci",
+	"e2e:group3:ci": "env GROUP='group3' npm run e2e:ci",
+	"e2e:ci:debug": "npm run webdriver:update && npx protractor test/protractor.ci.debug.conf.js",
+	"e2e:local:bs": "npm run webdriver:update && npx protractor test/protractor.local.bs.conf.js",
+	"e2e:local:debug": "npm run webdriver:update && npx protractor test/protractor.local.debug.conf.js",
+	"webdriver:clean": "npx webdriver-manager clean",
+	"webdriver:update": "npx webdriver-manager update --standalone false --quiet --gecko=false",
+	"zip-dist": "npx grunt zip-dist",
+	documentation: "node ./scripts/deploy-documentation.js",
+	"release:dev": "node scripts/publish-nightly-manual",
+	"release:alpha": "release-it --preRelease=alpha --npm.tag=alpha --no-github.release",
+	"release:beta": "release-it --preRelease=beta --npm.tag=beta --no-github.release",
+	"release:rc": "release-it --preRelease=rc --npm.tag=rc --no-github.release",
+	"release:final": "release-it",
+	test: "npm run mdlint && npm run eslint && npm run stylelint && npm run functional:ci && npm run e2e:ci",
+	"node-version-check": "npx check-node-version --node 12",
+	"node-updates-check": "npx ncu"
+};
+var dependencies = {
+	d3: "^5.16.0",
+	jquery: "^3.6.0",
+	"promise-polyfill": "^8.2.0"
+};
+var devDependencies = {
+	"@babel/core": "^7.13.14",
+	"@babel/plugin-external-helpers": "^7.12.13",
+	"@babel/preset-env": "^7.13.12",
+	"@rollup/plugin-babel": "^5.3.0",
+	"@rollup/plugin-json": "^4.1.0",
+	"@rollup/plugin-node-resolve": "^11.2.1",
+	archiver: "^5.3.0",
+	"axe-core": "^4.1.3",
+	"axe-webdriverjs": "^2.3.0",
+	"babel-eslint": "^10.1.0",
+	"babel-loader": "^8.2.2",
+	"babel-plugin-transform-default-named-imports": "^1.0.9",
+	"babel-plugin-transform-optional-chaining": "^7.0.0-beta.3",
+	"browser-detect": "^0.2.28",
+	"browserstack-local": "^1.4.8",
+	chalk: "^4.1.0",
+	"check-node-version": "^4.1.0",
+	cssmin: "^0.4.3",
+	csurf: "^1.11.0",
+	del: "^6.0.0",
+	documentation: "^13.2.0",
+	eslint: "^7.23.0",
+	"eslint-config-airbnb-base": "^14.2.1",
+	"eslint-plugin-babel": "^5.3.1",
+	"eslint-plugin-compat": "3.9.0",
+	"eslint-plugin-import": "^2.22.1",
+	"eslint-plugin-jasmine": "^4.1.2",
+	"eslint-plugin-jasmine-jquery": "^1.0.0",
+	express: "^4.17.1",
+	"express-csp": "^0.1.3",
+	"express-session": "^1.17.1",
+	extend: "^3.0.2",
+	"front-matter": "^4.0.2",
+	grunt: "^1.3.0",
+	"grunt-bump": "^0.8.0",
+	"grunt-cli": "^1.4.1",
+	"grunt-contrib-compress": "^1.6.0",
+	"grunt-contrib-copy": "^1.0.0",
+	"grunt-contrib-cssmin": "^3.0.0",
+	"grunt-exec": "^3.0.0",
+	handlebars: "^4.7.7",
+	"handlebars-registrar": "^1.5.2",
+	"html-loader": "^1.1.0",
+	"ids-css": "^1.5.0",
+	"ids-identity": "4.5.0",
+	"jasmine-core": "^3.7.1",
+	"jasmine-jquery": "^2.1.1",
+	"jasmine-spec-reporter": "^5.0.2",
+	"js-yaml": "^3.13.1",
+	karma: "5.0.9",
+	"karma-browserstack-launcher": "^1.6.0",
+	"karma-chrome-launcher": "^3.1.0",
+	"karma-jasmine": "^3.1.1",
+	"karma-mocha-reporter": "^2.2.5",
+	"karma-sourcemap-loader": "^0.3.8",
+	"karma-webpack": "4.0.2",
+	"load-grunt-tasks": "^5.1.0",
+	"markdownlint-cli": "^0.27.1",
+	marked: "^1.1.0",
+	mmm: "^0.2.2",
+	moment: "^2.29.1",
+	"node-sass": "^5.0.0",
+	"node-sass-once-importer": "^5.3.2",
+	nodemon: "^2.0.7",
+	"npm-check-updates": "^11.3.0",
+	postcss: "^8.2.9",
+	protractor: "^7.0.0",
+	"protractor-flake": "^4.0.0",
+	"protractor-image-comparison": "^3.9.0",
+	"pygmentize-bundled": "^2.3.0",
+	r2: "^2.0.1",
+	"release-it": "^13.6.1",
+	rimraf: "^3.0.2",
+	rollup: "^2.44.0",
+	"rollup-plugin-analyzer": "^4.0.0",
+	"rollup-plugin-license": "^2.3.0",
+	slash: "^3.0.0",
+	stylelint: "^13.12.0",
+	"stylelint-order": "^4.1.0",
+	terser: "^4.7.0",
+	"webdriver-manager": "^12.1.8",
+	webpack: "^4.43.0",
+	yargs: "^16.2.0"
+};
+var browserslist = [
+	"last 2 versions",
+	"not ie 10"
+];
+var optionalDependencies = {
+	fsevents: "*"
+};
+var packageJson = {
+	name: name,
+	slug: slug,
+	version: version,
+	description: description,
+	repository: repository,
+	keywords: keywords,
+	author: author,
+	license: license,
+	bugs: bugs,
+	homepage: homepage,
+	main: main,
+	jspm: jspm,
+	files: files,
+	scripts: scripts,
+	"chrome-version": "87",
+	dependencies: dependencies,
+	devDependencies: devDependencies,
+	browserslist: browserslist,
+	optionalDependencies: optionalDependencies
+};
 
 function _typeof(obj) {
   "@babel/helpers - typeof";
@@ -425,7 +621,7 @@ function _isNativeReflectConstruct() {
   if (typeof Proxy === "function") return true;
 
   try {
-    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {}));
     return true;
   } catch (e) {
     return false;
@@ -517,21 +713,21 @@ xssUtils.stripTags = function (html, allowed) {
     return html;
   }
 
-  var whitelist = ("".concat(allowed || '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
+  var allowList = ("".concat(allowed || '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []).join(''); // making sure the allowed arg is a string containing only tags in lowercase (<a><b><c>)
 
   var tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
   var commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
   var returnHTML = '';
   returnHTML = html.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
-    return whitelist.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+    return allowList.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
   }); //eslint-disable-line
 
   returnHTML = returnHTML.replace(tags, function ($0, $1) {
-    return whitelist.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+    return allowList.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
   }); //eslint-disable-line
 
   returnHTML = returnHTML.replace(tags, function ($0, $1) {
-    return whitelist.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+    return allowList.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
   }); //eslint-disable-line
 
   return returnHTML;
@@ -1306,7 +1502,7 @@ $.fn[debouncedResizeName] = function (fn) {
   return this.trigger(debouncedResizeName);
 };
 
-var UTIL_NAME = 'environment';
+var UTIL_NAME$1 = 'environment';
 /**
  * @class {Environment}
  */
@@ -1332,7 +1528,7 @@ var Environment = {
    * Builds run-time environment settings
    */
   set: function set() {
-    $('html').attr('data-sohoxi-version', version); // Set the viewport meta tag to limit scaling
+    $('html').attr('data-sohoxi-version', packageJson.version); // Set the viewport meta tag to limit scaling
 
     this.viewport = document.querySelector('meta[name=viewport]');
 
@@ -1363,7 +1559,7 @@ var Environment = {
       return false;
     };
 
-    if (navigator.platform.substr(0, 2) === 'iP') {
+    if (navigator.platform.substr(0, 2) === 'iP' || Environment.browser.isIPad()) {
       var lte9 = /constructor/i.test(window.HTMLElement);
       var idb = !!window.indexedDB;
 
@@ -1396,7 +1592,7 @@ var Environment = {
     } // Class-based detection for IE
 
 
-    if (ua.match(/Edge\//)) {
+    if (ua.match(/Edg\//)) {
       cssClasses += 'ie ie-edge ';
       this.browser.name = 'edge';
       this.browser.version = navigator.appVersion.indexOf('Edge/18') > -1 ? '18' : '17';
@@ -1428,7 +1624,7 @@ var Environment = {
     // /iPhone|iPod|iPad|Silk|Android|BlackBerry|Opera Mini|IEMobile/
 
 
-    if (/iPhone|iPod|iPad/.test(ua)) {
+    if (/iPhone|iPod|iPad/.test(ua) || Environment.browser.isIPad()) {
       cssClasses += 'ios ';
       this.os.name = 'ios';
       var iDevices = ['iPod', 'iPad', 'iPhone'];
@@ -1457,7 +1653,7 @@ var Environment = {
     var nAppVer = navigator.appVersion;
     var nUAgent = navigator.userAgent;
     var browser = navigator.appName;
-    var version = " ".concat(parseFloat(navigator.appVersion));
+    var appVersion = " ".concat(parseFloat(navigator.appVersion));
     var majorVersion = parseInt(navigator.appVersion, 10);
     var nameOffset;
     var verOffset;
@@ -1467,30 +1663,30 @@ var Environment = {
     if ((verOffset = nUAgent.indexOf('Opera')) !== -1) {
       //eslint-disable-line
       browser = 'Opera';
-      version = nUAgent.substring(verOffset + 6);
+      appVersion = nUAgent.substring(verOffset + 6);
 
       if ((verOffset = nUAgent.indexOf('Version')) !== -1) {
         //eslint-disable-line
-        version = nUAgent.substring(verOffset + 8);
+        appVersion = nUAgent.substring(verOffset + 8);
       }
     }
 
     if ((verOffset = nUAgent.indexOf('OPR')) !== -1) {
       //eslint-disable-line
       browser = 'Opera';
-      version = nUAgent.substring(verOffset + 4);
-    } else if ((verOffset = nUAgent.indexOf('Edge')) !== -1) {
+      appVersion = nUAgent.substring(verOffset + 4);
+    } else if ((verOffset = nUAgent.indexOf('Edg')) !== -1) {
       //eslint-disable-line
       browser = 'Microsoft Edge';
-      version = nUAgent.substring(verOffset + 5);
+      appVersion = nUAgent.substring(verOffset + 4);
     } else if ((verOffset = nUAgent.indexOf('MSIE')) !== -1) {
       //eslint-disable-line
       browser = 'Microsoft Internet Explorer';
-      version = nUAgent.substring(verOffset + 5);
+      appVersion = nUAgent.substring(verOffset + 5);
     } else if ((verOffset = nUAgent.indexOf('Chrome')) !== -1) {
       //eslint-disable-line
       browser = 'Chrome';
-      version = nUAgent.substring(verOffset + 7);
+      appVersion = nUAgent.substring(verOffset + 7);
 
       if (nUAgent.indexOf('Edg') > -1) {
         browserVersionName = 'Microsoft Edge';
@@ -1498,30 +1694,30 @@ var Environment = {
     } else if ((verOffset = nUAgent.indexOf('Safari')) !== -1) {
       //eslint-disable-line
       browser = 'Safari';
-      version = nUAgent.substring(verOffset + 7);
+      appVersion = nUAgent.substring(verOffset + 7);
 
       if ((verOffset = nUAgent.indexOf('Version')) !== -1) {
         //eslint-disable-line
-        version = nUAgent.substring(verOffset + 8);
+        appVersion = nUAgent.substring(verOffset + 8);
       }
     } else if (this.browser.isWKWebView()) {
       //eslint-disable-line
       browser = "WKWebView"; //eslint-disable-line
 
-      version = '';
+      appVersion = '';
       majorVersion = '';
     } else if ((verOffset = nUAgent.indexOf('Firefox')) !== -1) {
       //eslint-disable-line
       browser = 'Firefox';
-      version = nUAgent.substring(verOffset + 8);
+      appVersion = nUAgent.substring(verOffset + 8);
     } else if (nUAgent.indexOf('Trident/') !== -1) {
       //eslint-disable-line
       browser = 'Microsoft Internet Explorer';
-      version = nUAgent.substring(nUAgent.indexOf('rv:') + 3);
+      appVersion = nUAgent.substring(nUAgent.indexOf('rv:') + 3);
     } else if ((nameOffset = nUAgent.lastIndexOf(' ') + 1) < (verOffset = nUAgent.lastIndexOf('/'))) {
       //eslint-disable-line
       browser = nUAgent.substring(nameOffset, verOffset);
-      version = nUAgent.substring(verOffset + 1);
+      appVersion = nUAgent.substring(verOffset + 1);
 
       if (browser.toLowerCase() === browser.toUpperCase()) {
         browser = navigator.appName;
@@ -1529,16 +1725,16 @@ var Environment = {
     } // Trim the version string
 
 
-    if ((ix = version.indexOf(';')) !== -1) version = version.substring(0, ix); //eslint-disable-line
+    if ((ix = appVersion.indexOf(';')) !== -1) appVersion = appVersion.substring(0, ix); //eslint-disable-line
 
-    if ((ix = version.indexOf(' ')) !== -1) version = version.substring(0, ix); //eslint-disable-line
+    if ((ix = appVersion.indexOf(' ')) !== -1) appVersion = appVersion.substring(0, ix); //eslint-disable-line
 
-    if ((ix = version.indexOf(')')) !== -1) version = version.substring(0, ix); //eslint-disable-line
+    if ((ix = appVersion.indexOf(')')) !== -1) appVersion = appVersion.substring(0, ix); //eslint-disable-line
 
-    majorVersion = " ".concat(parseInt(version, 10));
+    majorVersion = " ".concat(parseInt(appVersion, 10));
 
     if (isNaN(majorVersion)) {
-      version = " ".concat(parseFloat(navigator.appVersion));
+      appVersion = " ".concat(parseFloat(navigator.appVersion));
       majorVersion = parseInt(navigator.appVersion, 10);
     } // mobile version
 
@@ -1619,11 +1815,17 @@ var Environment = {
         break;
     }
 
+    if (Environment.browser.isIPad()) {
+      var osVersionStr = nUAgent.substr(nUAgent.indexOf('Version'), nUAgent.substr(nUAgent.indexOf('Version')).indexOf(' '));
+      osVersion = osVersionStr.replace('Version/', '');
+      os = 'IOS';
+    }
+
     this.devicespecs = {
       currentBrowser: browser,
-      browserVersion: version.trim(),
+      browserVersion: appVersion.trim(),
       browserMajorVersion: majorVersion,
-      isMobile: mobile,
+      isMobile: mobile || Environment.browser.isIPad(),
       os: os,
       currentOSVersion: osVersion,
       browserVersionName: browserVersionName
@@ -1650,8 +1852,8 @@ var Environment = {
    * @returns {void}
    */
   removeGlobalEvents: function removeGlobalEvents() {
-    $(window).off("scroll.".concat(UTIL_NAME));
-    $('body').off(["focusin.".concat(UTIL_NAME), "focusout.".concat(UTIL_NAME)].join(' '));
+    $(window).off("scroll.".concat(UTIL_NAME$1));
+    $('body').off(["focusin.".concat(UTIL_NAME$1), "focusout.".concat(UTIL_NAME$1)].join(' '));
   }
 };
 /**
@@ -1684,6 +1886,10 @@ Environment.browser.isSafari = function () {
 
 Environment.browser.isIE10 = function () {
   return Environment.browser.name === 'ie' && Environment.browser.version === '10';
+};
+
+Environment.browser.isIPad = function () {
+  return !!(navigator.userAgent.match(/(iPad)/) || navigator.platform === 'MacIntel' && typeof navigator.standalone !== 'undefined');
 };
 /**
  * Automatically set up the environment by virtue of including this script
@@ -2387,11 +2593,12 @@ $.copyToClipboard = function (text) {
 };
 /**
  * Clearable (Shows an X to clear)
- * @private
+ * @param  {object} options clearable
+ * @param  {boolean} options.tabbale If true the x will be tabbable
  */
 
 
-$.fn.clearable = function () {
+$.fn.clearable = function (options) {
   var self = this;
   this.element = $(this);
   var COMPONENT_NAME = 'clearable'; // Create an X icon button styles in icons.scss
@@ -2403,6 +2610,13 @@ $.fn.clearable = function () {
       classes: 'close is-empty',
       icon: 'close'
     }).icon();
+  }
+
+  if (options !== null && options !== void 0 && (options == null ? void 0 : options.tabbable)) {
+    this.xButton = $('<button type="button" class="btn-icon hide-focus close"></button>').append($.createIconElement({
+      classes: 'close',
+      icon: 'close'
+    }).icon());
   } // Clears the contents of the base element
 
 
@@ -2436,10 +2650,15 @@ $.fn.clearable = function () {
 
 
   this.xButton.insertAfter(self.element);
-  this.xButton[0].tabIndex = 0;
+  this.xButton[0].tabIndex = options !== null && options !== void 0 && (options == null ? void 0 : options.tabbable) ? 0 : -1;
   this.xButton[0].setAttribute('focusable', true); // Handle Events
 
   this.xButton.off(["click.".concat(COMPONENT_NAME), "keydown.".concat(COMPONENT_NAME)].join(' ')).on('click.clearable', this.clear).on('keydown.clearable', this.handleKeydown);
+
+  if (options !== null && options !== void 0 && (options == null ? void 0 : options.tabbable)) {
+    this.xButton.hideFocus();
+  }
+
   var elemEvents = ["blur.".concat(COMPONENT_NAME), "change.".concat(COMPONENT_NAME), "keyup.".concat(COMPONENT_NAME)].join(' ');
   this.element.off(elemEvents).on(elemEvents, function () {
     self.checkContents();
@@ -2590,7 +2809,7 @@ DOM.convertToHTMLElement = function convertToHTMLElement(item) {
 DOM.focusableElems = function focusableElems(el) {
   var additionalSelectors = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   var ignoreSelectors = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : [];
-  var focusableElemSelector = ['button:not([disabled]):not([tabindex="-1"])', '[href]:not([disabled]):not([tabindex="-1"])', 'input:not([disabled]):not([tabindex="-1"])', 'textarea:not([disabled]):not([tabindex="-1"])', '[focusable]:not([focusable="false"])', '[tabindex]:not([tabindex="-1"])', '[contenteditable]', 'iframe'].concat(additionalSelectors).filter(function (item) {
+  var focusableElemSelector = ['button:not([disabled]):not([tabindex="-1"])', '[href]:not([disabled]):not([tabindex="-1"])', 'input:not([disabled]):not([tabindex="-1"])', 'div.dropdown:not(.is-disabled):not([tabindex="-1"])', 'div.multiselect:not(.is-disabled):not([tabindex="-1"])', 'textarea:not([disabled]):not([tabindex="-1"])', '[focusable]:not([focusable="false"])', '[tabindex]:not([tabindex="-1"])', '[contenteditable]', 'iframe'].concat(additionalSelectors).filter(function (item) {
     return ignoreSelectors.indexOf(item) === -1;
   });
 
@@ -3344,6 +3563,31 @@ utils.stringAttributes = function addAttributes(api, setting, suffix) {
   var value = typeof setting.value === 'function' ? setting.value(api) : setting.value;
   attributes += " ".concat(setting.name, "=\"").concat(value + (suffix ? "-".concat(suffix.toLowerCase()) : ''), "\"");
   return attributes;
+};
+/**
+ * Using an array of attribute settings objects, determines if an attribute setting with a specified
+ * name exists in that group of settings.  This can be used to get the final value of an attribute before
+ * it's rendered into the DOM.
+ * @param {object} api the object base API
+ * @param {string} thisName the name of the setting to search for
+ * @param {object|Array} setting the attribute settings
+ * @returns {string|undefined} the value contained by the setting
+ */
+
+
+utils.getAttribute = function getAttribute(api, thisName, setting) {
+  var value;
+
+  if (typeof thisName !== 'string' || !thisName.length || !Array.isArray(setting)) {
+    return value;
+  }
+
+  setting.forEach(function (item) {
+    if (!value && item.name === thisName) {
+      value = typeof item.value === 'function' ? item.value(api) : item.value;
+    }
+  });
+  return value;
 };
 
 var objectUtils = {};
@@ -4730,8 +4974,10 @@ var Locale = {
       var longName = this.getTimeZone(timezoneDate, 'long');
       ret = ret.replace('zzzz', longName);
       ret = ret.replace('zz', shortName);
-    }
+    } // Replace Left to Right Mark
 
+
+    ret = ret.replace(/&lrm;|\u200E/gi, ' ');
     return ret.trim();
   },
 
@@ -5035,6 +5281,9 @@ var Locale = {
     var isUTC = dateString.toLowerCase().indexOf('z') > -1;
     var i;
     var l;
+    var ampmHasDot = !!thisLocaleCalendar.dayPeriods.filter(function (x) {
+      return x.indexOf('.') > -1;
+    }).length && dateFormat.indexOf('a') > -1 && dateFormat.indexOf('ah') < 0 && dateFormat.indexOf('H') < 0;
     var hasDot = (dateFormat.match(/M/g) || []).length === 3 && thisLocaleCalendar && thisLocaleCalendar.months && thisLocaleCalendar.months.abbreviated && thisLocaleCalendar.months.abbreviated.filter(function (v) {
       return /\./.test(v);
     }).length;
@@ -5049,7 +5298,8 @@ var Locale = {
 
       var regex = hasDot ? /[T\s:-]/g : /[T\s:.-]/g;
       dateFormat = dateFormat.replace(regex, '/').replace(/z/i, '');
-      dateString = dateString.replace(regex, '/').replace(/z/i, '');
+      dateFormat = ampmHasDot ? dateFormat.replace('//', '/') : dateFormat;
+      dateString = dateString.replace(ampmHasDot ? /[T\s:-]/g : regex, '/').replace(/z/i, '');
     } // Remove spanish de
 
 
@@ -5154,11 +5404,16 @@ var Locale = {
 
 
     var month = this.getDatePart(formatParts, dateStringParts, 'M', 'MM', 'MMM', 'MMMM');
-    var year = this.getDatePart(formatParts, dateStringParts, 'yy', 'yyyy');
+    var year = this.getDatePart(formatParts, dateStringParts, 'y', 'yy', 'yyyy');
     var hasDays = false;
     var hasAmFirst = false;
-    var amSetting = thisLocaleCalendar.dayPeriods[0].replace(/\./g, '');
-    var pmSetting = thisLocaleCalendar.dayPeriods[1].replace(/\./g, '');
+    var amSetting = thisLocaleCalendar.dayPeriods[0];
+    var pmSetting = thisLocaleCalendar.dayPeriods[1];
+
+    if (!ampmHasDot) {
+      amSetting = amSetting.replace(/\./g, '');
+      pmSetting = pmSetting.replace(/\./g, '');
+    }
 
     for (i = 0, l = dateStringParts.length; i < l; i++) {
       var pattern = "".concat(formatParts[i]);
@@ -5234,6 +5489,7 @@ var Locale = {
           dateObj.year = this.twoToFourDigitYear(value);
           break;
 
+        case 'y':
         case 'yyyy':
           dateObj.year = value.length === 2 ? this.twoToFourDigitYear(value) : value;
           break;
@@ -5733,10 +5989,10 @@ var Locale = {
       numString = numString.toString();
     }
 
-    var group = numSettings ? numSettings.group : ',';
-    var decimal = numSettings ? numSettings.decimal : '.';
-    var percentSign = numSettings ? numSettings.percentSign : '%';
-    var currencySign = localeData.currencySign || '$';
+    var group = options && options.group ? options.group : numSettings ? numSettings.group : ',';
+    var decimal = options && options.decimal ? options.decimal : numSettings ? numSettings.decimal : '.';
+    var percentSign = options && options.percentSign ? options.percentSign : numSettings ? numSettings.percentSign : '%';
+    var currencySign = options && options.currencySign ? options.currencySign : localeData.currencySign || '$';
     var exp = group === ' ' ? new RegExp(/\s/g) : new RegExp("\\".concat(group), 'g');
     numString = numString.replace(exp, '');
     numString = numString.replace(decimal, '.');
@@ -6311,10 +6567,10 @@ var RENDERLOOP_DEFAULTS = {
   noAutoStart: false
 }; // Only start the renderloop if it's not disabled by a Global config setting.
 
-var instanceSettings = {};
+var instanceSettings$1 = {};
 
 if (_typeof(window.SohoConfig) === 'object' && _typeof(window.SohoConfig.renderLoop) === 'object') {
-  instanceSettings = utils.extend({}, RENDERLOOP_DEFAULTS, window.SohoConfig.renderLoop);
+  instanceSettings$1 = utils.extend({}, RENDERLOOP_DEFAULTS, window.SohoConfig.renderLoop);
 }
 /**
  * Gets an accurate timestamp from
@@ -6719,9 +6975,9 @@ RenderLoop.prototype = {
   }
 }; // Setup a single instance of RenderLoop for export.
 
-var renderLoop = new RenderLoop(instanceSettings);
+var renderLoop = new RenderLoop(instanceSettings$1);
 
-var UTIL_NAME$1 = 'keyboard';
+var UTIL_NAME = 'keyboard';
 
 function Keyboard() {
   this.pressedKeys = new Map();
@@ -6736,11 +6992,11 @@ Keyboard.prototype = {
   init: function init() {
     var _this = this;
 
-    $(document).on("keydown.".concat(UTIL_NAME$1), function (e) {
+    $(document).on("keydown.".concat(UTIL_NAME), function (e) {
       _this.press(e.key);
 
       _this.announceKeys();
-    }).on("keyup.".concat(UTIL_NAME$1), function (e) {
+    }).on("keyup.".concat(UTIL_NAME), function (e) {
       _this.unpress(e.key);
 
       _this.announceKeys();
@@ -7223,8 +7479,8 @@ ModalManager.prototype = {
 
 var modalManager = new ModalManager();
 
-var color = {
-	themeName: "theme-soho",
+var color$5 = {
+	themeName: "theme-classic",
 	palette: {
 		amber: {
 			"10": {
@@ -7659,9 +7915,12 @@ var color = {
 		}
 	}
 };
+var _$__theme_classic_colors_json = {
+	color: color$5
+};
 
-var color$1 = {
-	themeName: "theme-soho-dark",
+var color$4 = {
+	themeName: "theme-classic-dark",
 	palette: {
 		amber: {
 			"10": {
@@ -8096,9 +8355,12 @@ var color$1 = {
 		}
 	}
 };
+var _$__theme_classic_dark_colors_json = {
+	color: color$4
+};
 
-var color$2 = {
-	themeName: "theme-soho-contrast",
+var color$3 = {
+	themeName: "theme-classic-contrast",
 	palette: {
 		amber: {
 			"10": {
@@ -8533,9 +8795,12 @@ var color$2 = {
 		}
 	}
 };
+var _$__theme_classic_contrast_colors_json = {
+	color: color$3
+};
 
-var color$3 = {
-	themeName: "theme-uplift",
+var color$2 = {
+	themeName: "theme-new",
 	palette: {
 		amber: {
 			"10": {
@@ -8970,9 +9235,12 @@ var color$3 = {
 		}
 	}
 };
+var _$__theme_new_colors_json = {
+	color: color$2
+};
 
-var color$4 = {
-	themeName: "theme-uplift-dark",
+var color$1 = {
+	themeName: "theme-new-dark",
 	palette: {
 		amber: {
 			"10": {
@@ -9407,9 +9675,12 @@ var color$4 = {
 		}
 	}
 };
+var _$__theme_new_dark_colors_json = {
+	color: color$1
+};
 
-var color$5 = {
-	themeName: "theme-uplift-contrast",
+var color = {
+	themeName: "theme-new-contrast",
 	palette: {
 		amber: {
 			"10": {
@@ -9844,7 +10115,22 @@ var color$5 = {
 		}
 	}
 };
+var _$__theme_new_contrast_colors_json = {
+	color: color
+};
 
+var _$__theme_classic_col = _$__theme_classic_colors_json,
+    classicLightColors = _$__theme_classic_col.color;
+var _$__theme_classic_dar = _$__theme_classic_dark_colors_json,
+    classicDarkColors = _$__theme_classic_dar.color;
+var _$__theme_classic_con = _$__theme_classic_contrast_colors_json,
+    classicContrastColors = _$__theme_classic_con.color;
+var _$__theme_new_colors_ = _$__theme_new_colors_json,
+    newLightColors = _$__theme_new_colors_.color;
+var _$__theme_new_dark_co = _$__theme_new_dark_colors_json,
+    newDarkColors = _$__theme_new_dark_co.color;
+var _$__theme_new_contras = _$__theme_new_contrast_colors_json,
+    newContrastColors = _$__theme_new_contras.color;
 /**
 * The Theme Component is a lightweight wrapper for theme information, which contains the colors
 * that are used on the theme.
@@ -9858,9 +10144,8 @@ var theme = {
    * @property {string} [currentTheme.name]
    */
   currentTheme: {
-    id: 'theme-soho-light',
-    name: Locale.translate('SohoLightTheme'),
-    legacyId: 'light'
+    id: 'theme-new-light',
+    name: Locale.translate('NewLightTheme')
   },
 
   /**
@@ -9868,26 +10153,23 @@ var theme = {
    * @returns {object[]} An array of color objects
    */
   allColors: [{
-    id: 'theme-soho-light',
-    colors: color,
-    legacyId: 'light'
+    id: 'theme-classic-light',
+    colors: classicLightColors
   }, {
-    id: 'theme-soho-dark',
-    colors: color$1,
-    legacyId: 'dark'
+    id: 'theme-classic-dark',
+    colors: classicDarkColors
   }, {
-    id: 'theme-soho-contrast',
-    colors: color$2,
-    legacyId: 'high-contrast'
+    id: 'theme-classic-contrast',
+    colors: classicContrastColors
   }, {
-    id: 'theme-uplift-light',
-    colors: color$3
+    id: 'theme-new-light',
+    colors: newLightColors
   }, {
-    id: 'theme-uplift-dark',
-    colors: color$4
+    id: 'theme-new-dark',
+    colors: newDarkColors
   }, {
-    id: 'theme-uplift-contrast',
-    colors: color$5
+    id: 'theme-new-contrast',
+    colors: newContrastColors
   }],
 
   /**
@@ -9896,44 +10178,41 @@ var theme = {
    */
   themes: function themes() {
     return [{
-      id: 'theme-soho-light',
-      name: Locale.translate('SohoLightTheme'),
-      themeId: 'theme-soho',
-      variantId: 'light',
-      variantName: Locale.translate('Light'),
-      legacyId: 'light'
+      id: 'theme-classic-light',
+      name: Locale.translate('ClassicLightTheme'),
+      themeId: 'theme-classic',
+      modeId: 'light',
+      modeName: Locale.translate('Light')
     }, {
-      id: 'theme-soho-dark',
-      name: Locale.translate('SohoDarkTheme'),
-      themeId: 'theme-soho',
-      variantId: 'dark',
-      variantName: Locale.translate('Dark'),
-      legacyId: 'dark'
+      id: 'theme-classic-dark',
+      name: Locale.translate('ClassicDarkTheme'),
+      themeId: 'theme-classic',
+      modeId: 'dark',
+      modeName: Locale.translate('Dark')
     }, {
-      id: 'theme-soho-contrast',
-      name: Locale.translate('SohoHighContrastTheme'),
-      themeId: 'theme-soho',
-      variantId: 'contrast',
-      variantName: Locale.translate('Contrast'),
-      legacyId: 'high-contrast'
+      id: 'theme-classic-contrast',
+      name: Locale.translate('ClassicHighContrastTheme'),
+      themeId: 'theme-classic',
+      modeId: 'contrast',
+      modeName: Locale.translate('Contrast')
     }, {
-      id: 'theme-uplift-light',
-      name: Locale.translate('UpliftLightTheme'),
-      themeId: 'theme-uplift',
-      variantId: 'light',
-      variantName: Locale.translate('Light')
+      id: 'theme-new-light',
+      name: Locale.translate('NewLightTheme'),
+      themeId: 'theme-new',
+      modeId: 'light',
+      modeName: Locale.translate('Light')
     }, {
-      id: 'theme-uplift-dark',
-      name: Locale.translate('UpliftDarkTheme'),
-      themeId: 'theme-uplift',
-      variantId: 'dark',
-      variantName: Locale.translate('Dark')
+      id: 'theme-new-dark',
+      name: Locale.translate('NewDarkTheme'),
+      themeId: 'theme-new',
+      modeId: 'dark',
+      modeName: Locale.translate('Dark')
     }, {
-      id: 'theme-uplift-contrast',
-      name: Locale.translate('UpliftHighContrastTheme'),
-      themeId: 'theme-uplift',
-      variantId: 'contrast',
-      variantName: Locale.translate('Contrast')
+      id: 'theme-new-contrast',
+      name: Locale.translate('NewHighContrastTheme'),
+      themeId: 'theme-new',
+      modeId: 'contrast',
+      modeName: Locale.translate('Contrast')
     }];
   },
 
@@ -10034,9 +10313,10 @@ var theme = {
    * @returns {[type]} [description]
    */
   setTheme: function setTheme(themeId) {
+    themeId = themeId.replace('soho', 'classic').replace('uplift', 'new');
     var result = this.themes().filter(function (themeObj) {
-      return themeObj.id === themeId || themeObj.legacyId && themeObj.legacyId === themeId;
-    }); //eslint-disable-line
+      return themeObj.id === themeId;
+    });
 
     if (result.length === 0) {
       return '';
@@ -10047,10 +10327,17 @@ var theme = {
   },
 
   /**
-   * @returns {boolean} whether or not the current theme is an Uplift variant
+   * @returns {boolean} whether or not the current theme is an Uplift mode
    */
   get uplift() {
-    return this.currentTheme.id.indexOf('-uplift-') > -1;
+    return this.currentTheme.id.indexOf('-uplift-') > -1 || this.currentTheme.id.indexOf('-new-') > -1;
+  },
+
+  /**
+   * @returns {boolean} whether or not the current theme is the new/uplift theme
+   */
+  get new() {
+    return this.currentTheme.id.indexOf('-uplift-') > -1 || this.currentTheme.id.indexOf('-new-') > -1;
   }
 
 };
@@ -10058,10 +10345,10 @@ var theme = {
 function personalizeStyles(colors) {
   var baseColorObj = colorUtils.hexToRgb(colors.base);
   var hyperlinkColorObj = colorUtils.hexToRgb(colors.hyperlinkText);
-  return "\n\n.is-personalizable ::selection {\n  background: ".concat(colors.selection, " !important\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane),\n.btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane).is-personalizable {\n  background-color: ").concat(colors.base, " !important;\n  border-color: ").concat(colors.base, " !important;\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):disabled,\n.btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane).is-personalizable:disabled {\n  background-color: ").concat(colors.baseDisabled, " !important;\n  border-color: ").concat(colors.baseDisabled, " !important;\n}\n\n.is-personalizable .btn-link:not(:disabled),\n.btn-link.is-personalizable:not(:disabled) {\n  color: ").concat(colors.light, " !important;\n}\n\n.is-personalizable .btn-link:not(:disabled) .icon,\n.btn-link.is-personalizable:not(:disabled) .icon {\n  color: ").concat(colors.light, " !important;\n}\n\n.is-personalizable button.is-pressed,\nbutton.is-personalizable.is-pressed {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable button.is-pressed .icon,\nbutton.is-personalizable.is-pressed .icon {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled),\n.btn-primary.is-personalizable:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled) {\n  background-color: ").concat(colors.darker, " !important;\n  border-color: ").concat(colors.darker, " !important;\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled),\n.btn-primary.is-personalizable:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled) {\n  background-color: ").concat(colors.darker, " !important;\n  border-color: ").concat(colors.darker, " !important;\n}\n\n.is-personalizable button:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):focus:not(.hide-focus),\nbutton.is-personalizable button:focus:not(.hide-focus),\n.is-personalizable a.btn:focus:not(.hide-focus),\na.btn.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-menu:focus:not(.hide-focus),\na.btn-menu.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-icon:focus:not(.hide-focus),\na.btn-icon.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-tertiary:focus:not(.hide-focus),\na.btn-tertiary.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-close:focus:not(.hide-focus),\na.btn-close.is-personalizable:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.base, ",\n    0 0 4px 2px rgba(").concat(baseColorObj.r, ", ").concat(baseColorObj.g, ", ").concat(baseColorObj.b, ", 0.3);\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):focus:not(.hide-focus),\n.btn-primary.is-personalizable button:focus:not(.hide-focus),\n.is-personalizable .btn-secondary:focus:not(.hide-focus),\n.btn-secondary.is-personalizable button:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px ").concat(colors.theme.bg, ",\n    0 0 0 3px ").concat(colors.base, ",\n    0 0 4px 2px rgba(").concat(baseColorObj.r, ", ").concat(baseColorObj.g, ", ").concat(baseColorObj.b, ", 0.3);\n}\n\n.is-personalizable .btn-menu:not(.btn-primary):not(.btn-secondary).is-open,\n.btn-menu:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open,\n.is-personalizable .btn-actions:not(.btn-primary):not(.btn-secondary).is-open,\n.btn-actions:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable .btn-menu:not(.btn-primary):not(.btn-secondary).is-open .icon,\n.btn-menu:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open .icon,\n.is-personalizable .btn-actions:not(.btn-primary):not(.btn-secondary).is-open .icon,\n.btn-actions:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open .icon {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable .hyperlink:not(.today),\n.hyperlink:not(.today).is-personalizable {\n  color: ").concat(colors.hyperlinkText, "\n}\n.is-personalizable .hyperlink:not(.today):hover,\n.hyperlink:not(.today).is-personalizable:hover {\n  color: ").concat(colors.hyperlinkTextHover, ";\n}\n.is-personalizable .hyperlink:not(.today):focus:not(.hide-focus),\n.hyperlink:not(.today).is-personalizable:focus:not(.hide-focus) {\n  border-color: ").concat(colors.hyperlinkText, ";\n  box-shadow: 0 0 4px 3px rgba(").concat(hyperlinkColorObj.r, ", ").concat(hyperlinkColorObj.g, ", ").concat(hyperlinkColorObj.b, ", 0.3);\n}\n\n.is-personalizable button:not(.btn-monthyear-pane):not(.btn-editor) svg.ripple-effect,\nbutton:not(.btn-monthyear-pane):not(.btn-editor).is-personalizable svg.ripple-effect,\n.is-personalizable a svg.ripple-effect,\na.is-personalizable svg.ripple-effect {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.is-personalizable .btn-primary svg.ripple-effect,\n.btn-primary.is-personalizable svg.ripple-effect,\n.is-personalizable .btn-secondary svg.ripple-effect,\n.btn-secondary.is-personalizable svg.ripple-effect {\n  background-color: ").concat(colors.contrast, " !important;\n  border-color: ").concat(colors.contrast, " !important;\n}\n\n.tab-container.module-tabs.is-personalizable {\n  border-top: 1px solid ").concat(colors.darkest, " !important;\n  border-bottom: 1px solid ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .tab:not(:first-child) {\n  border-left: 1px solid ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.tab-container.vertical.is-personalizable > .tab-list-container > .tab-list > .tab.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.tab-container.vertical.is-personalizable .tab-focus-indicator.is-visible {\n  border-color: ").concat(colors.base, " !important;\n  box-shadow: 0 0 4px 3px rgba(").concat(baseColorObj.r, ", ").concat(baseColorObj.g, ", ").concat(baseColorObj.b, ", 0.3);\n}\n\n.accordion.panel .accordion-header.is-selected {\n  background-color: ").concat(colors.lighter, " !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.builder-header.is-personalizable{\n  background-color: ").concat(colors.lighter, ";\n}\n\n.header.is-personalizable {\n  background-color: ").concat(colors.base, ";\n}\n\n.header.is-personalizable .title {\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable h1 {\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable button svg.ripple-effect {\n  background-color: ").concat(colors.contrast, " !important;\n}\n\n.header.is-personalizable button:not(:disabled),\n.header.is-personalizable button:not(:disabled) .icon,\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable .header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable button:not(:disabled):hover,\n.header.is-personalizable button:not(:disabled):hover .icon,\n.header.is-personalizable button:not(:disabled):hover .app-header.icon > span,\n.header.is-personalizable .toolbar [class^='btn']:hover:not([disabled]) {\n  color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\n.header.is-personalizable .go-button.is-personalizable {\n  background-color: ").concat(colors.lightest, ";\n  border-color:").concat(colors.lightest, ";\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab.is-selected:not(.is-disabled) {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled),\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)  {\n  color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\nhtml[class*=\"theme-uplift-\"] .header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\nhtml[class*=\"theme-uplift-\"] .is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  opacity: 1;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)::before {\n  background-color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .animated-bar {\n  background-color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .tab-list-container .tab.is-selected:not(.is-disabled):hover::before {\n  background-color: ").concat(colors.contrast, " !important;\n}\n\n.subheader.is-personalizable .go-button.is-personalizable {\n  background-color: ").concat(colors.dark, ";\n  border-color: ").concat(colors.dark, ";\n  color: ").concat(colors.contrast, ";\n}\n\n.is-personalizable .breadcrumb .hyperlink,\n.breadcrumb.is-personalizable .hyperlink {\n  color: ").concat(colors.theme.text, ";\n}\n.is-personalizable .breadcrumb .hyperlink:hover,\n.breadcrumb.is-personalizable .hyperlink:hover {\n  color: ").concat(colors.theme.text, ";\n}\n.is-personalizable .breadcrumb .hyperlink:focus:not(.hide-focus),\n.breadcrumb.is-personalizable .hyperlink:focus:not(.hide-focus) {\n  box-shadow: none;\n}\n.is-personalizable .breadcrumb .hyperlink[disabled],\n.breadcrumb.is-personalizable .hyperlink[disabled],\n.is-personalizable .breadcrumb .hyperlink[disabled]:hover,\n.breadcrumb.is-personalizable .hyperlink[disabled]:hover {\n  color: ").concat(colors.theme.disabledText, ";\n}\n\n.is-personalizable .scrollable-flex-header .breadcrumb:not(.alternate),\n.scrollable-flex-header.is-personalizable .breadcrumb:not(.alternate) {\n  background-color: ").concat(colors.base, ";\n}\n.is-personalizable .scrollable-flex-header .breadcrumb.truncated:not(.alternate) .breadcrumb-list::before,\n.scrollable-flex-header.is-personalizable .breadcrumb.truncated:not(.alternate) .breadcrumb-list::before {\n  background-image: linear-gradient(to right, ").concat(colors.base, ", ").concat(colorUtils.hexToRgba(colors.base, 0), ");\n}\nhtml[dir='rtl'] .is-personalizable .scrollable-flex-header .breadcrumb.truncated:not(.alternate) .breadcrumb-list::before,\nhtml[dir='rtl'] .scrollable-flex-header.is-personalizable .breadcrumb.truncated:not(.alternate) .breadcrumb-list::before {\n  background-image: linear-gradient(to right, ").concat(colorUtils.hexToRgba(colors.base, 0), ", ").concat(colors.base, ");\n}\n.is-personalizable .scrollable-flex-header .breadcrumb:not(.alternate) .hyperlink,\n.scrollable-flex-header.is-personalizable .breadcrumb:not(.alternate) .hyperlink {\n  color: ").concat(colors.contrast, ";\n}\n.is-personalizable .scrollable-flex-header .breadcrumb:not(.alternate) .hyperlink:hover,\n.scrollable-flex-header.is-personalizable .breadcrumb:not(.alternate) .hyperlink:hover  {\n  color: ").concat(colors.contrast, ";\n}\n\n.is-personalizable .scrollable-flex-header .breadcrumb:not(.alternate) .btn-actions.is-open .icon,\n.scrollable-flex-header.is-personalizable .breadcrumb:not(.alternate) .btn-actions.is-open .icon {\n  color: ").concat(colors.contrast, ";\n}\n.is-personalizable .scrollable-flex-header .breadcrumb:not(.alternate) .btn-actions:focus:not(.hide-focus),\n.scrollable-flex-header.is-personalizable .breadcrumb:not(.alternate) .btn-actions:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent, 0 0 0 1px ").concat(colors.contrast, ", 0 0 1px 2px ").concat(colorUtils.hexToRgba(colors.contrast, 0.3), " !important;\n}\n\n.module-tabs.is-personalizable .tab-more {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more:hover {\n  background-color: ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-open {\n  background-color: ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield {\n  background-color: ").concat(colors.hover, " !important;\n  border-bottom-color: ").concat(colors.hover, " !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield-category-button {\n  background-color: ").concat(colors.hover, " !important;\n  border-bottom-color: ").concat(colors.hover, " !important;\n}\n\n.subheader.is-personalizable {\n  background-color: ").concat(colors.lighter, " !important;\n}\n\n.builder .sidebar .header {\n  border-right: 1px solid ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab:hover {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.has-toolbar.is-personalizable .tab-list-container + .toolbar {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable [class^=\"btn\"] {\n  background-color: transparent !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled {\n  background-color: ").concat(colors.darker, " !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled > svg {\n  fill: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button:hover {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > .searchfield {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > svg {\n  fill: ").concat(colors.contrast, " !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::before,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::before {\n  background-image: linear-gradient(to right, ").concat(colors.dark, " , ").concat(colorUtils.hexToRgba(colors.dark, 0), ") !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::after,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::after {\n  background-image: linear-gradient(to right, ").concat(colorUtils.hexToRgba(colors.dark, 0), ", ").concat(colors.dark, ") !important;\n}\n\n.hero-widget.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .hero-bottom {\n  background-color: ").concat(colors.base, ";\n}\n\n.hero-widget.is-personalizable .hero-footer .hero-footer-nav li::before {\n  color: ").concat(colors.light, ";\n}\n\n.hero-widget.is-personalizable .chart-container .arc {\n  stroke: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .chart-container .bar {\n  stroke: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .chart-container.line-chart .dot {\n  stroke: ").concat(colors.lighter, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button .icon,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button span,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .hyperlink {\n  color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button:not(:disabled):hover .icon,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button:not(:disabled):hover span,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .hyperlink:hover {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel {\n  background-color: ").concat(colors.lighter, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .name-xl,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .name,\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion-heading {\n  color: ").concat(colors.contrast, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel .accordion-header {\n  background-color: ").concat(colors.lighter, " !important;\n  border: 1px solid transparent !important;\n  color: ").concat(colors.contrast, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel .accordion-header .icon {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .btn-icon:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.lighter, ",\n    0 0 2px 1px ").concat(colors.lighter, ";\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover {\n  border-bottom-color: ").concat(colors.dark, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected .icon {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-focused:not(.hide-focus) {\n  border: 1px solid ").concat(colors.contrast, " !important;\n  box-shadow: none !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: ").concat(colors.lighter, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  border: 1px solid ").concat(colors.lighter, ";\n}\n\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before,\n.application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ").concat(colors.contrast, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button:focus:not(.hide-focus),\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .hyperlink:focus:not(.hide-focus)::after {\n  border-color: ").concat(colors.contrast, " !important;\n  box-shadow: none !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu .application-menu-header button:hover,\nhtml[class*=\"theme-uplift-\"] .application-menu .application-menu-footer button:hover {\n  background-color: ").concat(colors.base, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .searchfield-wrapper .searchfield {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .accordion-header.has-filtered-children > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.has-filtered-children.is-focused {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield::placeholder {\n  color: ").concat(colors.contrast, ";\n  opacity: .5;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .icon {\n  color: ").concat(colors.contrast, ";\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper.active .icon {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header {\n  background-color: ").concat(colors.base, " !important;\n  border-top-color: transparent;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header:hover {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion-heading {\n  border-top-color: ").concat(colors.darkest, ";\n}\n\n.application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ").concat(colors.base, ";\n  border-bottom: none !important;\n}\n\nhtml[dir='rtl'] .application-menu.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n  border-left: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable button svg.ripple-effect {\n  background-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n  border-right: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .application-menu-header {\n  background-color: ").concat(colors.lighter, ";\n  border-bottom-color: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .application-menu-footer {\n  background-color: ").concat(colors.lighter, ";\n  border-top-color: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ").concat(colors.dark, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header {\n  background-color: transparent !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header:hover {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header.is-selected {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before {\n  background-color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: transparent !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded {\n  background-color: ").concat(colors.dark, " !important;\n  color: ").concat(colors.subtext, " !important;\n}\n\nhtml[class*=\"theme-uplift\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-focused:not(.hide-focus):not(.is-expanded) {\n  border-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-uplift\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-focused.is-expanded {\n  border-color: transparent !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-selected::before {\n  background-color: ").concat(colors.darker, " !important;\n  border-color: ").concat(colors.darker, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-focused::before {\n  border-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded + .accordion-pane {\n  background-color: ").concat(colors.dark, " !important;\n}\n\nhtml[class*=\"theme-uplift-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded:hover::before {\n  border-color: ").concat(colors.darkest, " !important;\n  background-color: ").concat(colors.darkest, " !important;\n}\n\n.is-personalizable .personalize-header,\n.is-personalizable.tab-container {\n  background-color: ").concat(colors.dark, " !important;\n}\n\n.is-personalizable .personalize-subheader {\n  background-color: ").concat(colors.lighter, " !important;\n}\n\n.is-personalizable .personalize-text {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.is-personalizable .personalize-actionable,\n.is-personalizable .personalize-actionable svg {\n  color: ").concat(colors.contrast, ";\n  opacity: .8;\n}\n\n.is-personalizable .personalize-actionable:hover:not([disabled]),\n.is-personalizable .personalize-actionable:hover:not([disabled]) svg {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\n.is-personalizable .personalize-actionable.is-focused:not(.hide-focus),\n.is-personalizable .personalize-actionable:focus:not(.hide-focus) {\n  border-color: ").concat(colors.contrast, ";\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-actionable.hyperlink:focus:not(.hide-focus)::after {\n  border-color: ").concat(colors.contrast, ";\n  opacity: 1;\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-vertical-border {\n  border-color: ").concat(colors.light, ";\n}\n\n.is-personalizable .personalize-horizontal-bottom-border {\n  border-bottom: 1px solid ").concat(colors.darkest, ";\n}\n\n.is-personalizable .personalize-horizontal-top-border {\n  border-top: 1px solid: ").concat(colors.darkest, ";\n}\n\n.is-personalizable .personalize-chart-targeted .total.bar {\n  background-color: rgba(255, 255, 255, .8);\n}\n\n.is-personalizable .personalize-chart-targeted .chart-percent-text,\n.is-personalizable .personalize-chart-targeted .label {\n  color: ").concat(colors.text, ";\n}\n\n.is-personalizable .info-message,\n.is-personalizable .info-message .icon,\n.is-personalizable .info-message p {\n  color: ").concat(colors.text, " !important;\n}\n\n.is-personalizable .personalize-actionable-disabled,\n.is-personalizable .personalize-actionable-disabled:hover {\n  opacity: .4 !important;\n  cursor: default;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .arc,\n.hero-widget.is-personalizable .hero-header .chart-container .bar,\n.hero-widget.is-personalizable .hero-header .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-content .chart-container .arc,\n.hero-widget.is-personalizable .hero-content .chart-container .bar,\n.hero-widget.is-personalizable .hero-content .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-footer .chart-container .arc,\n.hero-widget.is-personalizable .hero-footer .chart-container .bar,\n.hero-widget.is-personalizable .hero-footer .chart-container.line-chart .dot {\n    stroke: ").concat(colors.lighter, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container text,\n.hero-widget.is-personalizable .hero-content .chart-container text,\n.hero-widget.is-personalizable .hero-footer .chart-container text {\n    fill: ").concat(colors.text, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-content .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-footer .chart-container .chart-legend-item-text {\n  color: ").concat(colors.text, ";\n  fill: ").concat(colors.text, ";\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .axis path, .chart-container .axis line,\n.hero-widget.is-personalizable .hero-header .chart-container .axis .tick0 line {\n  stroke: ").concat(colors.subtext, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .title,\n.hero-widget.is-personalizable .hero-content .title,\n.hero-widget.is-personalizable .hero-footer .title {\n  color: ").concat(colors.subtext, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-content .btn-tertiary,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-header .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon\n {\n  color: ").concat(colors.subtext, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon\n {\n  color: ").concat(colors.text, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.subtext, ",\n    0 0 2px 1px ").concat(colors.subtext, ";\n}\n\n.header.is-personalizable .toolbar [class^='btn']:focus:not(.hide-focus),\n.header.is-personalizable .flex-toolbar [class^='btn']:focus:not(.hide-focus),\n.subheader.is-personalizable .toolbar [class^='btn']:focus:not(.hide-focus),\n.subheader.is-personalizable .flex-toolbar [class^='btn']:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.subtext, ",\n    0 0 2px 1px ").concat(colors.subtext, ";\n}\n\n/*\n.tooltip.is-personalizable {\n  background-color: ").concat(colors.darkest, ";\n  border-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable .chart-swatch .swatch-row div {\n  border-bottom-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable,\n.tooltip.is-personalizable p,\n.tooltip.is-personalizable .chart-swatch .swatch-row span,\n.tooltip.is-personalizable .chart-swatch .swatch-row b {\n  color: ").concat(colors.tooltipText, ";\n}\n.tooltip.is-personalizable.top .arrow::after {\n  border-top-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.right .arrow::after {\n  border-right-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.bottom .arrow::after {\n  border-bottom-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.left .arrow::after {\n  border-left-color: ").concat(colors.darkest, ";\n}\n*/\n    ");
+  return "\n\n.is-personalizable ::selection {\n  background: ".concat(colors.selection, " !important\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane),\n.btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane).is-personalizable {\n  background-color: ").concat(colors.base, " !important;\n  border-color: ").concat(colors.base, " !important;\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):disabled,\n.btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane).is-personalizable:disabled {\n  background-color: ").concat(colors.baseDisabled, " !important;\n  border-color: ").concat(colors.baseDisabled, " !important;\n}\n\n.is-personalizable .btn-link:not(:disabled),\n.btn-link.is-personalizable:not(:disabled) {\n  color: ").concat(colors.light, " !important;\n}\n\n.is-personalizable .btn-link:not(:disabled) .icon,\n.btn-link.is-personalizable:not(:disabled) .icon {\n  color: ").concat(colors.light, " !important;\n}\n\n.is-personalizable button.is-pressed,\nbutton.is-personalizable.is-pressed {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable button.is-pressed .icon,\nbutton.is-personalizable.is-pressed .icon {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled),\n.btn-primary.is-personalizable:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled) {\n  background-color: ").concat(colors.darker, " !important;\n  border-color: ").concat(colors.darker, " !important;\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled),\n.btn-primary.is-personalizable:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):hover:not(:disabled) {\n  background-color: ").concat(colors.darker, " !important;\n  border-color: ").concat(colors.darker, " !important;\n}\n\n.is-personalizable button:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):focus:not(.hide-focus),\nbutton.is-personalizable button:focus:not(.hide-focus),\n.is-personalizable a.btn:focus:not(.hide-focus),\na.btn.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-menu:focus:not(.hide-focus),\na.btn-menu.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-icon:focus:not(.hide-focus),\na.btn-icon.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-tertiary:focus:not(.hide-focus),\na.btn-tertiary.is-personalizable:focus:not(.hide-focus),\n.is-personalizable a.btn-close:focus:not(.hide-focus),\na.btn-close.is-personalizable:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.base, ",\n    0 0 4px 2px rgba(").concat(baseColorObj.r, ", ").concat(baseColorObj.g, ", ").concat(baseColorObj.b, ", 0.3);\n}\n\n.is-personalizable .btn-primary:not(.is-select):not(.is-select-month-pane):not(.is-cancel):not(.is-cancel-month-pane):focus:not(.hide-focus),\n.btn-primary.is-personalizable button:focus:not(.hide-focus),\n.is-personalizable .btn-secondary:focus:not(.hide-focus),\n.btn-secondary.is-personalizable button:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px ").concat(colors.theme.bg, ",\n    0 0 0 3px ").concat(colors.base, ",\n    0 0 4px 2px rgba(").concat(baseColorObj.r, ", ").concat(baseColorObj.g, ", ").concat(baseColorObj.b, ", 0.3);\n}\n\n.is-personalizable .btn-menu:not(.btn-primary):not(.btn-secondary).is-open,\n.btn-menu:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open,\n.is-personalizable .btn-actions:not(.btn-primary):not(.btn-secondary).is-open,\n.btn-actions:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable .btn-menu:not(.btn-primary):not(.btn-secondary).is-open .icon,\n.btn-menu:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open .icon,\n.is-personalizable .btn-actions:not(.btn-primary):not(.btn-secondary).is-open .icon,\n.btn-actions:not(.btn-primary):not(.btn-secondary).is-personalizable.is-open .icon {\n  color: ").concat(colors.base, ";\n}\n\n.is-personalizable .hyperlink:not(.today),\n.hyperlink:not(.today).is-personalizable {\n  color: ").concat(colors.hyperlinkText, "\n}\n.is-personalizable .hyperlink:not(.today):hover,\n.hyperlink:not(.today).is-personalizable:hover {\n  color: ").concat(colors.hyperlinkTextHover, ";\n}\n.is-personalizable .hyperlink:not(.today):focus:not(.hide-focus),\n.hyperlink:not(.today).is-personalizable:focus:not(.hide-focus) {\n  border-color: ").concat(colors.hyperlinkText, ";\n  box-shadow: 0 0 4px 3px rgba(").concat(hyperlinkColorObj.r, ", ").concat(hyperlinkColorObj.g, ", ").concat(hyperlinkColorObj.b, ", 0.3);\n}\n\n.is-personalizable button:not(.btn-monthyear-pane):not(.btn-editor) svg.ripple-effect,\nbutton:not(.btn-monthyear-pane):not(.btn-editor).is-personalizable svg.ripple-effect,\n.is-personalizable a svg.ripple-effect,\na.is-personalizable svg.ripple-effect {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.is-personalizable .btn-primary svg.ripple-effect,\n.btn-primary.is-personalizable svg.ripple-effect,\n.is-personalizable .btn-secondary svg.ripple-effect,\n.btn-secondary.is-personalizable svg.ripple-effect {\n  background-color: ").concat(colors.contrast, " !important;\n  border-color: ").concat(colors.contrast, " !important;\n}\n\n.tab-container.module-tabs.is-personalizable {\n  border-top: 1px solid ").concat(colors.darkest, " !important;\n  border-bottom: 1px solid ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .tab:not(:first-child) {\n  border-left: 1px solid ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.tab-container.vertical.is-personalizable > .tab-list-container > .tab-list > .tab.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.tab-container.vertical.is-personalizable .tab-focus-indicator.is-visible {\n  border-color: ").concat(colors.base, " !important;\n  box-shadow: 0 0 4px 3px rgba(").concat(baseColorObj.r, ", ").concat(baseColorObj.g, ", ").concat(baseColorObj.b, ", 0.3);\n}\n\n.accordion.panel .accordion-header.is-selected {\n  background-color: ").concat(colors.lighter, " !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.builder-header.is-personalizable{\n  background-color: ").concat(colors.lighter, ";\n}\n\n.header.is-personalizable {\n  background-color: ").concat(colors.base, ";\n}\n\n.header.is-personalizable .title {\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable h1 {\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable button svg.ripple-effect {\n  background-color: ").concat(colors.contrast, " !important;\n}\n\n.header.is-personalizable button:not(:disabled),\n.header.is-personalizable button:not(:disabled) .icon,\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable .header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable button:not(:disabled):hover,\n.header.is-personalizable button:not(:disabled):hover .icon,\n.header.is-personalizable button:not(:disabled):hover .app-header.icon > span,\n.header.is-personalizable .toolbar [class^='btn']:hover:not([disabled]) {\n  color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\n.header.is-personalizable button:not(:disabled) .app-header.icon > span {\n  background-color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\n.header.is-personalizable .go-button.is-personalizable {\n  background-color: ").concat(colors.lightest, ";\n  border-color:").concat(colors.lightest, ";\n  color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab.is-selected:not(.is-disabled) {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  color: ").concat(colors.contrast, " !important;\n  opacity: .8;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled),\n.is-personalizable.tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)  {\n  color: ").concat(colors.contrast, " !important;\n  opacity: 1;\n}\n\nhtml[class*=\"theme-new-\"] .header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab,\nhtml[class*=\"theme-new-\"] .is-personalizable.tab-container.header-tabs > .tab-list-container .tab  {\n  opacity: 1;\n}\n\n.header.is-personalizable.has-tabs .tab-container.header-tabs > .tab-list-container .tab:hover:not(.is-disabled)::before {\n  background-color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .animated-bar {\n  background-color: ").concat(colors.contrast, ";\n}\n\n.header.is-personalizable.has-tabs .tab-list-container .tab.is-selected:not(.is-disabled):hover::before {\n  background-color: ").concat(colors.contrast, " !important;\n}\n\n.subheader.is-personalizable .go-button.is-personalizable {\n  background-color: ").concat(colors.dark, ";\n  border-color: ").concat(colors.dark, ";\n  color: ").concat(colors.contrast, ";\n}\n\n.is-personalizable .breadcrumb .hyperlink,\n.breadcrumb.is-personalizable .hyperlink {\n  color: ").concat(colors.theme.text, ";\n}\n.is-personalizable .breadcrumb .hyperlink:hover,\n.breadcrumb.is-personalizable .hyperlink:hover {\n  color: ").concat(colors.theme.text, ";\n}\n.is-personalizable .breadcrumb .hyperlink:focus:not(.hide-focus),\n.breadcrumb.is-personalizable .hyperlink:focus:not(.hide-focus) {\n  box-shadow: none;\n}\n.is-personalizable .breadcrumb .hyperlink[disabled],\n.breadcrumb.is-personalizable .hyperlink[disabled],\n.is-personalizable .breadcrumb .hyperlink[disabled]:hover,\n.breadcrumb.is-personalizable .hyperlink[disabled]:hover {\n  color: ").concat(colors.theme.disabledText, ";\n}\n\n.is-personalizable .scrollable-flex-header .breadcrumb:not(.alternate),\n.scrollable-flex-header.is-personalizable .breadcrumb:not(.alternate) {\n  background-color: ").concat(colors.base, ";\n}\n.is-personalizable .scrollable-flex-header .breadcrumb.truncated:not(.alternate) .breadcrumb-list::before,\n.scrollable-flex-header.is-personalizable .breadcrumb.truncated:not(.alternate) .breadcrumb-list::before {\n  background-image: linear-gradient(to right, ").concat(colors.base, ", ").concat(colorUtils.hexToRgba(colors.base, 0), ");\n}\nhtml[dir='rtl'] .is-personalizable .scrollable-flex-header .breadcrumb.truncated:not(.alternate) .breadcrumb-list::before,\nhtml[dir='rtl'] .scrollable-flex-header.is-personalizable .breadcrumb.truncated:not(.alternate) .breadcrumb-list::before {\n  background-image: linear-gradient(to right, ").concat(colorUtils.hexToRgba(colors.base, 0), ", ").concat(colors.base, ");\n}\n.is-personalizable .scrollable-flex-header .breadcrumb:not(.alternate) .hyperlink,\n.scrollable-flex-header.is-personalizable .breadcrumb:not(.alternate) .hyperlink {\n  color: ").concat(colors.contrast, ";\n}\n.is-personalizable .scrollable-flex-header .breadcrumb:not(.alternate) .hyperlink:hover,\n.scrollable-flex-header.is-personalizable .breadcrumb:not(.alternate) .hyperlink:hover  {\n  color: ").concat(colors.contrast, ";\n}\n\n.is-personalizable .scrollable-flex-header .breadcrumb:not(.alternate) .btn-actions.is-open .icon,\n.scrollable-flex-header.is-personalizable .breadcrumb:not(.alternate) .btn-actions.is-open .icon {\n  color: ").concat(colors.contrast, ";\n}\n.is-personalizable .scrollable-flex-header .breadcrumb:not(.alternate) .btn-actions:focus:not(.hide-focus),\n.scrollable-flex-header.is-personalizable .breadcrumb:not(.alternate) .btn-actions:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent, 0 0 0 1px ").concat(colors.contrast, ", 0 0 1px 2px ").concat(colorUtils.hexToRgba(colors.contrast, 0.3), " !important;\n}\n\n.module-tabs.is-personalizable .tab-more {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more:hover {\n  background-color: ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-open {\n  background-color: ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab-more.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield {\n  background-color: ").concat(colors.hover, " !important;\n  border-bottom-color: ").concat(colors.hover, " !important;\n}\n\n.header .toolbar > .toolbar-searchfield-wrapper.active .searchfield-category-button {\n  background-color: ").concat(colors.hover, " !important;\n  border-bottom-color: ").concat(colors.hover, " !important;\n}\n\n.subheader.is-personalizable {\n  background-color: ").concat(colors.lighter, " !important;\n}\n\n.builder .sidebar .header {\n  border-right: 1px solid ").concat(colors.hover, " !important;\n}\n\n.module-tabs.is-personalizable .tab:hover {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.has-toolbar.is-personalizable .tab-list-container + .toolbar {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable [class^=\"btn\"] {\n  background-color: transparent !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled {\n  background-color: ").concat(colors.darker, " !important;\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .tab.is-disabled > svg {\n  fill: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button {\n  border-left-color: ").concat(colors.darkest, " !important;\n}\n\n.module-tabs.is-personalizable .add-tab-button:hover {\n  background-color: ").concat(colors.darker, " !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > .searchfield {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.module-tabs.is-personalizable .toolbar-searchfield-wrapper > svg {\n  fill: ").concat(colors.contrast, " !important;\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::before,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::before {\n  background-image: linear-gradient(to right, ").concat(colors.dark, " , ").concat(colorUtils.hexToRgba(colors.dark, 0), ") !important;\n}\nhtml[dir='rtl'] .is-personalizable .tab-container.header-tabs:not(.alternate)::before,\nhtml[dir='rtl'] .is-personalizable.tab-container.header-tabs:not(.alternate)::before {\n  background-image: linear-gradient(to left, ").concat(colorUtils.hexToRgba(colors.base, 0), ", ").concat(colors.base, ");\n}\n\n.is-personalizable .tab-container.header-tabs:not(.alternate)::after,\n.is-personalizable.tab-container.header-tabs:not(.alternate)::after {\n  background-image: linear-gradient(to right, ").concat(colorUtils.hexToRgba(colors.dark, 0), ", ").concat(colors.dark, ") !important;\n}\nhtml[dir='rtl'] .is-personalizable .tab-container.header-tabs:not(.alternate)::after,\nhtml[dir='rtl'] .is-personalizable.tab-container.header-tabs:not(.alternate)::after {\n  background-image: linear-gradient(to left, ").concat(colorUtils.hexToRgba(colors.dark, 0), ", ").concat(colors.dark, ") !important;\n}\n\n.hero-widget.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .hero-bottom {\n  background-color: ").concat(colors.base, ";\n}\n\n.hero-widget.is-personalizable .hero-footer .hero-footer-nav li::before {\n  color: ").concat(colors.light, ";\n}\n\n.hero-widget.is-personalizable .chart-container .arc {\n  stroke: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .chart-container .bar {\n  stroke: ").concat(colors.lighter, ";\n}\n\n.hero-widget.is-personalizable .chart-container.line-chart .dot {\n  stroke: ").concat(colors.lighter, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable button .icon,\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable button span,\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .hyperlink {\n  color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable button:not(:disabled):hover .icon,\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable button:not(:disabled):hover span,\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .hyperlink:hover {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel {\n  background-color: ").concat(colors.lighter, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .name-xl,\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .name,\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion-heading {\n  color: ").concat(colors.contrast, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel .accordion-header {\n  background-color: ").concat(colors.lighter, " !important;\n  border: 1px solid transparent !important;\n  color: ").concat(colors.contrast, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel .accordion-header .icon {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .btn-icon:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.lighter, ",\n    0 0 2px 1px ").concat(colors.lighter, ";\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected {\n  background-color: ").concat(colors.base, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover {\n  border-bottom-color: ").concat(colors.dark, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected:hover > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected .icon {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected button .icon.plus-minus::before,\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-selected button .icon.plus-minus::after {\n  background-color: ").concat(colors.contrast, ";\n}\n\n.application-menu.is-personalizable .accordion.panel .accordion-header.is-focused:not(.hide-focus) {\n  border: 1px solid ").concat(colors.contrast, " !important;\n  box-shadow: none !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: ").concat(colors.lighter, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  border: 1px solid ").concat(colors.lighter, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable button:focus:not(.hide-focus),\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .hyperlink:focus:not(.hide-focus)::after {\n  border-color: ").concat(colors.contrast, " !important;\n  box-shadow: none !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu .application-menu-header button:hover,\nhtml[class*=\"theme-new-\"] .application-menu .application-menu-footer button:hover {\n  background-color: ").concat(colors.base, " !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .searchfield-wrapper .searchfield {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .accordion-header.has-filtered-children > a,\n.application-menu.is-personalizable .accordion.panel .accordion-header.has-filtered-children.is-focused {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .searchfield::placeholder {\n  color: ").concat(colors.contrast, ";\n  opacity: .5;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper .icon {\n  color: ").concat(colors.contrast, ";\n  opacity: .8;\n}\n\n.application-menu.is-personalizable .searchfield-wrapper.active .icon {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel,\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header {\n  background-color: ").concat(colors.base, " !important;\n  border-top-color: transparent;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion.panel .accordion-header:hover {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\n.application-menu.is-personalizable .application-menu-switcher-panel .accordion-heading {\n  border-top-color: ").concat(colors.darkest, ";\n}\n\n.application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ").concat(colors.base, ";\n  border-bottom: none !important;\n}\n\nhtml[dir='rtl'] .application-menu.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n  border-left: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable button svg.ripple-effect {\n  background-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable {\n  background-color: ").concat(colors.lighter, ";\n  border-right: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .application-menu-header {\n  background-color: ").concat(colors.lighter, ";\n  border-bottom-color: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .application-menu-footer {\n  background-color: ").concat(colors.lighter, ";\n  border-top-color: ").concat(colors.light, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .searchfield-wrapper {\n  background-color: ").concat(colors.dark, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header {\n  background-color: transparent !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header:hover {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header.is-selected {\n  background-color: ").concat(colors.darkest, " !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::before {\n  background-color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-header .icon.plus-minus::after {\n  background-color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane {\n  background-color: transparent !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse .accordion-pane .accordion-header {\n  color: ").concat(colors.subtext, ";\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded {\n  background-color: ").concat(colors.dark, " !important;\n  color: ").concat(colors.subtext, " !important;\n}\n\nhtml[class*=\"theme-new\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-focused:not(.hide-focus):not(.is-expanded) {\n  border-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-new\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-focused.is-expanded {\n  border-color: transparent !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-selected::before {\n  background-color: ").concat(colors.darker, " !important;\n  border-color: ").concat(colors.darker, " !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded.is-focused::before {\n  border-color: ").concat(colors.contrast, " !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded + .accordion-pane {\n  background-color: ").concat(colors.dark, " !important;\n}\n\nhtml[class*=\"theme-new-\"] .application-menu.is-personalizable .accordion.panel.inverse > .accordion-header.is-expanded:hover::before {\n  border-color: ").concat(colors.darkest, " !important;\n  background-color: ").concat(colors.darkest, " !important;\n}\n\n.is-personalizable .personalize-header,\n.is-personalizable.tab-container {\n  background-color: ").concat(colors.dark, " !important;\n}\n\n.is-personalizable .personalize-subheader {\n  background-color: ").concat(colors.lighter, " !important;\n}\n\n.is-personalizable .personalize-text {\n  color: ").concat(colors.contrast, " !important;\n}\n\n.is-personalizable .personalize-actionable,\n.is-personalizable .personalize-actionable svg {\n  color: ").concat(colors.contrast, ";\n  opacity: .8;\n}\n\n.is-personalizable .personalize-actionable:hover:not([disabled]),\n.is-personalizable .personalize-actionable:hover:not([disabled]) svg {\n  color: ").concat(colors.contrast, ";\n  opacity: 1;\n}\n\n.is-personalizable .personalize-actionable.is-focused:not(.hide-focus),\n.is-personalizable .personalize-actionable:focus:not(.hide-focus) {\n  border-color: ").concat(colors.contrast, ";\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-actionable.hyperlink:focus:not(.hide-focus)::after {\n  border-color: ").concat(colors.contrast, ";\n  opacity: 1;\n  box-shadow: 0 0 4px 3px rgba(0, 0, 0, 0.2);\n}\n\n.is-personalizable .personalize-vertical-border {\n  border-color: ").concat(colors.light, ";\n}\n\n.is-personalizable .personalize-horizontal-bottom-border {\n  border-bottom: 1px solid ").concat(colors.darkest, ";\n}\n\n.is-personalizable .personalize-horizontal-top-border {\n  border-top: 1px solid: ").concat(colors.darkest, ";\n}\n\n.is-personalizable .personalize-chart-targeted .total.bar {\n  background-color: rgba(255, 255, 255, .8);\n}\n\n.is-personalizable .personalize-chart-targeted .chart-percent-text,\n.is-personalizable .personalize-chart-targeted .label {\n  color: ").concat(colors.text, ";\n}\n\n.is-personalizable .info-message,\n.is-personalizable .info-message .icon,\n.is-personalizable .info-message p {\n  color: ").concat(colors.text, " !important;\n}\n\n.is-personalizable .personalize-actionable-disabled,\n.is-personalizable .personalize-actionable-disabled:hover {\n  opacity: .4 !important;\n  cursor: default;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .arc,\n.hero-widget.is-personalizable .hero-header .chart-container .bar,\n.hero-widget.is-personalizable .hero-header .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-content .chart-container .arc,\n.hero-widget.is-personalizable .hero-content .chart-container .bar,\n.hero-widget.is-personalizable .hero-content .chart-container.line-chart .dot,\n.hero-widget.is-personalizable .hero-footer .chart-container .arc,\n.hero-widget.is-personalizable .hero-footer .chart-container .bar,\n.hero-widget.is-personalizable .hero-footer .chart-container.line-chart .dot {\n    stroke: ").concat(colors.lighter, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container text,\n.hero-widget.is-personalizable .hero-content .chart-container text,\n.hero-widget.is-personalizable .hero-footer .chart-container text {\n    fill: ").concat(colors.text, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-content .chart-container .chart-legend-item-text,\n.hero-widget.is-personalizable .hero-footer .chart-container .chart-legend-item-text {\n  color: ").concat(colors.text, ";\n  fill: ").concat(colors.text, ";\n}\n\n.hero-widget.is-personalizable .hero-header .chart-container .axis path, .chart-container .axis line,\n.hero-widget.is-personalizable .hero-header .chart-container .axis .tick0 line {\n  stroke: ").concat(colors.subtext, " !important;\n}\n\n.hero-widget.is-personalizable .hero-header .title,\n.hero-widget.is-personalizable .hero-content .title,\n.hero-widget.is-personalizable .hero-footer .title {\n  color: ").concat(colors.subtext, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-content .btn-tertiary,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary),\n.hero-widget.is-personalizable .hero-header .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary) .icon\n {\n  color: ").concat(colors.subtext, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover,\n.hero-widget.is-personalizable .hero-header .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:hover .icon,\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):hover .icon\n {\n  color: ").concat(colors.text, ";\n}\n\n.hero-widget.is-personalizable .hero-header .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-header .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-content .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-tertiary:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary).is-open span:focus:not(.hide-focus),\n.hero-widget.is-personalizable .hero-footer .btn-menu:not(.btn):not(.btn-primary):not(.btn-secondary):not(.btn-tertiary):focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.subtext, ",\n    0 0 2px 1px ").concat(colors.subtext, ";\n}\n\n.header.is-personalizable .toolbar [class^='btn']:focus:not(.hide-focus),\n.header.is-personalizable .flex-toolbar [class^='btn']:focus:not(.hide-focus),\n.subheader.is-personalizable .toolbar [class^='btn']:focus:not(.hide-focus),\n.subheader.is-personalizable .flex-toolbar [class^='btn']:focus:not(.hide-focus) {\n  box-shadow: 0 0 0 2px transparent,\n    0 0 0 1px ").concat(colors.subtext, ",\n    0 0 2px 1px ").concat(colors.subtext, ";\n}\n\n/*\n.tooltip.is-personalizable {\n  background-color: ").concat(colors.darkest, ";\n  border-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable .chart-swatch .swatch-row div {\n  border-bottom-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable,\n.tooltip.is-personalizable p,\n.tooltip.is-personalizable .chart-swatch .swatch-row span,\n.tooltip.is-personalizable .chart-swatch .swatch-row b {\n  color: ").concat(colors.tooltipText, ";\n}\n.tooltip.is-personalizable.top .arrow::after {\n  border-top-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.right .arrow::after {\n  border-right-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.bottom .arrow::after {\n  border-bottom-color: ").concat(colors.darkest, ";\n}\n.tooltip.is-personalizable.left .arrow::after {\n  border-left-color: ").concat(colors.darkest, ";\n}\n*/\n    ");
 }
 
-var COMPONENT_NAME = 'personalize'; // Component Defaults
+var COMPONENT_NAME$1k = 'personalize'; // Component Defaults
 
 var PERSONALIZE_DEFAULTS = {
   colors: '',
@@ -10127,7 +10414,7 @@ Personalize.prototype = {
    */
   handleEvents: function handleEvents() {
     var self = this;
-    this.element.off("updated.".concat(COMPONENT_NAME)).on("updated.".concat(COMPONENT_NAME), function () {
+    this.element.off("updated.".concat(COMPONENT_NAME$1k)).on("updated.".concat(COMPONENT_NAME$1k), function () {
       self.updated();
     });
     return this;
@@ -10200,7 +10487,7 @@ Personalize.prototype = {
     colors.theme.disabledText = themeColors.brand.secondary.alt.value;
     var dark = false;
     var contrast = false;
-    var uplift = false;
+    var newTheme = false;
 
     if (themeColors.themeName.indexOf('contrast') > -1) {
       contrast = true;
@@ -10210,15 +10497,15 @@ Personalize.prototype = {
       dark = true;
     }
 
-    if (themeColors.themeName.indexOf('uplift') > -1) {
-      uplift = true;
+    if (themeColors.themeName.indexOf('uplift') > -1 || themeColors.themeName.indexOf('new') > -1) {
+      newTheme = true;
     }
 
     colors.theme.props = {
       contrast: contrast,
       dark: dark,
-      uplift: uplift
-    }; // Force to be light text on custom colors { color: ['soho', 'uplift'] }
+      newTheme: newTheme
+    }; // Force to be light text on custom colors { color: ['classic', 'new'] }
 
     var forceToBeLightTextOn = {
       amber: ['#db7726', '#bb5500'],
@@ -10281,7 +10568,7 @@ Personalize.prototype = {
     colors.dark = colors.btnColorSubheader;
     colors.darker = colors.inactive;
     colors.darkest = colors.horizontalBorder; // Some disabled colors on some preset color schemes come out terrible,
-    // unless they are adjusted here. { color: ['soho', 'uplift'] }
+    // unless they are adjusted here. { color: ['classic', 'new'] }
     // The alternate color is generally less luminous and less color-saturated (more gray).
 
     var alternateDisabledColors = {
@@ -10304,7 +10591,7 @@ Personalize.prototype = {
     var lum = useAlternates ? 0.5 : 0.7;
     var sat = useAlternates ? 0.3 : 0.5;
 
-    if (!uplift) {
+    if (!newTheme) {
       // Soho adjustments go here
       if (dark) {
         baseColor = colors.darkest;
@@ -10377,7 +10664,7 @@ Personalize.prototype = {
     this.element.triggerHandler('colorschanged', {
       colors: this.settings.colors.header || this.settings.colors || theme.themeColors().brand.primary.alt.value,
       isDefault: false,
-      theme: this.currentTheme || 'theme-soho-light'
+      theme: this.currentTheme || 'theme-new-light'
     });
     return this;
   },
@@ -10396,7 +10683,7 @@ Personalize.prototype = {
     this.element.triggerHandler('colorschanged', {
       colors: theme.themeColors().brand.primary.alt.value,
       isDefault: true,
-      theme: this.currentTheme || 'theme-soho-light'
+      theme: this.currentTheme || 'theme-new-light'
     });
   },
 
@@ -10437,8 +10724,9 @@ Personalize.prototype = {
 
     if (!incomingTheme) {
       return;
-    } // Somehow colorpicker uses this, so keep it
+    }
 
+    incomingTheme = incomingTheme.replace('soho', 'classic').replace('uplift', 'new'); // Somehow colorpicker uses this, so keep it
 
     this.currentTheme = incomingTheme;
 
@@ -10546,7 +10834,7 @@ Personalize.prototype = {
     */
     this.element.triggerHandler('themechanged', {
       colors: this.settings.colors.header || this.settings.colors || theme.themeColors().brand.primary.alt.value,
-      theme: incomingTheme || 'theme-soho-light'
+      theme: incomingTheme || 'theme-new-light'
     });
     $('body').trigger('resize');
   },
@@ -10616,7 +10904,7 @@ Personalize.prototype = {
    * @returns {this} component instance
    */
   teardown: function teardown() {
-    this.element.off("updated.".concat(COMPONENT_NAME));
+    this.element.off("updated.".concat(COMPONENT_NAME$1k));
     return this;
   },
 
@@ -10626,16 +10914,16 @@ Personalize.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME);
+    $.removeData(this.element[0], COMPONENT_NAME$1k);
   }
 };
 
-var instanceSettings$1 = {
-  theme: 'theme-soho-light'
+var instanceSettings = {
+  theme: 'theme-new-light'
 };
 
 if (_typeof(window.SohoConfig) === 'object' && _typeof(window.SohoConfig.personalize) === 'object') {
-  instanceSettings$1 = window.SohoConfig.personalize;
+  instanceSettings = window.SohoConfig.personalize;
 }
 /**
  * Setup a single instance of the Personalization system on the HTML tag.
@@ -10643,7 +10931,7 @@ if (_typeof(window.SohoConfig) === 'object' && _typeof(window.SohoConfig.persona
  */
 
 
-var personalization = new Personalize(document.documentElement, instanceSettings$1);
+var personalization = new Personalize(document.documentElement, instanceSettings);
 
 /**
  * Hooks that match up to methods in the Personalization system,
@@ -10674,10 +10962,10 @@ function getColorStyleSheet(colors) {
 
 $.fn.personalize = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME);
+    var instance = $.data(this, COMPONENT_NAME$1k);
 
     if (!instance) {
-      instance = $.data(this, COMPONENT_NAME, personalization);
+      instance = $.data(this, COMPONENT_NAME$1k, personalization);
     }
 
     instance.updated(settings);
@@ -10768,8 +11056,7 @@ $.fn.revealText = function (settings) {
 
   var input = this; // Set the initial state
 
-  input.addClass((settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.initialState) === 'show' ? 'input-show-text' : 'input-hide-text');
-  input.addClass('input-hidepass'); // Add a text span and click events
+  input.addClass((settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.initialState) === 'show' ? 'input-show-text' : 'input-hide-text'); // Add a text span and click events
 
   var textSpan = $("<span class=\"input-hideshow-text\">".concat(Soho.Locale.translate((settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.initialState) === 'show' ? 'Hide' : 'Show'), "</span>")); // eslint-disable-line
 
@@ -10787,7 +11074,7 @@ $.fn.revealText = function (settings) {
     }
 
     input.removeClass('input-show-text').addClass('input-hide-text');
-    input.attr('type', 'password');
+    input.attr('type', 'text');
     textSpan.text(Soho.Locale.translate('Show')); // eslint-disable-line
   };
 
@@ -10939,7 +11226,7 @@ $.fn.unhighlight = function () {
   }).end();
 };
 
-var COMPONENT_NAME$1 = 'arrange';
+var COMPONENT_NAME$1j = 'arrange';
 /**
 * The Arrange Component allows touch and drag support to sort UI items.
 * @class Arrange
@@ -10953,6 +11240,7 @@ var COMPONENT_NAME$1 = 'arrange';
 * @param {boolean} [settings.isVisualItems] Use only index of visual items to trigger
 * @param {string} [settings.placeholder] The html for the element that appears while dragging
 * @param {string} [settings.placeholderCssClass='arrange-placeholder'] The class to add to the ghost element that is being dragged.
+* @param {boolean} [settings.useItemDimensions=false] If true, use item's dimensions to placeholder.
 */
 
 var ARRANGE_DEFAULTS = {
@@ -10962,7 +11250,8 @@ var ARRANGE_DEFAULTS = {
   connectWith: false,
   isVisualItems: false,
   placeholder: null,
-  placeholderCssClass: 'arrange-placeholder'
+  placeholderCssClass: 'arrange-placeholder',
+  useItemDimensions: false
 };
 
 function Arrange(element, settings) {
@@ -10973,7 +11262,7 @@ function Arrange(element, settings) {
 
 
 Arrange.prototype = {
-  // example from: https://github.com/farhadi/html5arrangeable/blob/master/jquery.arrangeable.js
+  // example from: https://github.com/farhadi/html5arrangeable
   init: function init() {
     this.isTouch = Environment.features.touch;
     this.isIe = Environment.browser.name === 'ie';
@@ -11012,9 +11301,12 @@ Arrange.prototype = {
    * @returns {void}
    */
   dragTouchElement: function dragTouchElement(e, elm) {
-    var orig = e.originalEvent.changedTouches[0];
-    elm[0].style.top = "".concat(orig.pageY - this.offset.y, "px");
-    elm[0].style.left = "".concat(orig.pageX - this.offset.x, "px");
+    var orig = e.originalEvent.changedTouches;
+
+    if (elm && elm[0] && orig && orig[0] && this.offset) {
+      elm[0].style.top = "".concat(orig[0].pageY - this.offset.y, "px");
+      elm[0].style.left = "".concat(orig[0].pageX - this.offset.x, "px");
+    }
   },
 
   /**
@@ -11047,7 +11339,7 @@ Arrange.prototype = {
   */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$1);
+    $.removeData(this.element[0], COMPONENT_NAME$1j);
   },
 
   /**
@@ -11161,22 +11453,38 @@ Arrange.prototype = {
         if (typeof result === 'boolean' && !result || typeof result === 'string' && result.toLowerCase() === 'false') {
           self.dragging = null;
           return;
+        } // Get size of drag item and its position
+
+
+        var rect = self.dragging[0].getBoundingClientRect(); // Use item dimensions
+
+        if (s.useItemDimensions) {
+          var _placeholder$0$classL;
+
+          placeholder[0].style.width = "".concat(rect.width, "px");
+          placeholder[0].style.height = "".concat(rect.height, "px");
+
+          (_placeholder$0$classL = placeholder[0].classList).add.apply(_placeholder$0$classL, _toConsumableArray(s.placeholderCssClass.split(' ')));
         }
 
         if (self.isTouch) {
-          var rect = self.dragging[0].getBoundingClientRect();
-          var touch = e.originalEvent.changedTouches[0]; // Save offset
+          var touch = e.originalEvent.changedTouches; // Save the offset
 
-          self.offset = {
-            x: touch.pageX - rect.left,
-            y: touch.pageY - rect.top
-          };
-          self.placeholderTouch = self.dragging.clone().addClass('is-touch').attr('id', 'arrange-placeholder-touch').insertBefore(self.dragging);
-          self.dragTouchElement(e, self.placeholderTouch);
+          if (touch && touch[0]) {
+            self.offset = {
+              x: touch[0].pageX - rect.left,
+              y: touch[0].pageY - rect.top
+            };
+          }
         } else {
           var dt = e.originalEvent.dataTransfer;
+          var offset = {
+            x: e.originalEvent.clientX - rect.left,
+            y: e.originalEvent.clientY - rect.top
+          };
           dt.effectAllowed = 'move';
-          dt.setData('Text', 'dummy');
+          dt.setData('Text', 'sample');
+          dt.setDragImage(self.dragging[0], offset.x, offset.y);
         }
       }) // Drag end ----------------------------------------------------------
       .on(self.dragEnd, function () {
@@ -11185,10 +11493,21 @@ Arrange.prototype = {
         }
 
         if (self.isTouch) {
-          self.dragging.css('opacity', 1);
-          self.placeholderTouch.remove();
+          var _self$placeholderTouc;
+
+          var rules = {
+            opacity: 1
+          };
+
+          if (s.useItemDimensions) {
+            rules.position = '';
+          }
+
+          self.dragging.css(rules);
+          (_self$placeholderTouc = self.placeholderTouch) === null || _self$placeholderTouc === void 0 ? void 0 : _self$placeholderTouc == null ? void 0 : _self$placeholderTouc.remove();
         }
 
+        self.element.removeClass('has-arrange-placeholder');
         self.placeholders.filter(':visible').after(self.dragging);
         self.dragging.removeClass('arrange-dragging').show();
         self.placeholders.detach();
@@ -11222,6 +11541,11 @@ Arrange.prototype = {
         var overItem = this;
         var overIndex;
         e.preventDefault();
+
+        if (self.isTouch && !self.placeholderTouch) {
+          self.placeholderTouch = self.dragging.clone().addClass('is-touch').attr('id', 'arrange-placeholder-touch').insertBefore(self.dragging);
+          self.dragTouchElement(e, self.placeholderTouch);
+        }
         /**
         * Fires after finishing an arrange action.
         *
@@ -11229,6 +11553,7 @@ Arrange.prototype = {
         * @memberof ApplicationMenu
         * @param {object} event - The jquery event object
         */
+
 
         if (e.type === 'drop') {
           e.stopPropagation();
@@ -11249,7 +11574,15 @@ Arrange.prototype = {
 
         if (items.is(overItem) && placeholder.index() !== overItem.index()) {
           if (self.isTouch) {
-            self.dragging.css('opacity', 0);
+            var rules = {
+              opacity: 0
+            };
+
+            if (s.useItemDimensions) {
+              rules.position = 'fixed';
+            }
+
+            self.dragging.css(rules);
           } else {
             self.dragging.hide();
           }
@@ -11266,6 +11599,7 @@ Arrange.prototype = {
             idx = s.isVisualItems ? self.getVisualIndex(placeholder) : overIndex;
           }
 
+          self.element.addClass('has-arrange-placeholder');
           $.extend(status, {
             over: overItem,
             overIndex: idx
@@ -11298,12 +11632,12 @@ Arrange.prototype = {
 
 $.fn.arrange = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1);
+    var instance = $.data(this, COMPONENT_NAME$1j);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1, new Arrange(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1j, new Arrange(this, settings));
     }
   });
 };
@@ -11312,7 +11646,7 @@ $.fn.arrange = function (settings) {
 // Similar: https://github.com/desandro/draggabilly
 // The name of this plugin
 
-var COMPONENT_NAME$2 = 'drag';
+var COMPONENT_NAME$1i = 'drag';
 /**
  * Drag/Drop functions with touch support.
  * @class Drag
@@ -11590,7 +11924,7 @@ Drag.prototype = {
    * Detach all functionality and events.
    */
   destroy: function destroy() {
-    $.removeData(this.element[0], COMPONENT_NAME$2);
+    $.removeData(this.element[0], COMPONENT_NAME$1i);
     this.element.off('touchstart.draggable MSPointerDown.draggable pointerdown.draggable touchmove.draggable touchend.draggable touchcancel.draggable mousedown.draggable');
   },
   handleEvents: function handleEvents() {
@@ -11694,17 +12028,17 @@ Drag.prototype = {
 
 $.fn.drag = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$2);
+    var instance = $.data(this, COMPONENT_NAME$1i);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$2, new Drag(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1i, new Drag(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$3 = 'place'; // Default Component Options
+var COMPONENT_NAME$1h = 'place'; // Default Component Options
 
 var DEFAULT_PLACE_SETTINGS = {
   bleedFromContainer: false,
@@ -11865,12 +12199,12 @@ Place.prototype = {
    */
   handleEvents: function handleEvents() {
     var self = this;
-    this.element.on("place.".concat(COMPONENT_NAME$3), function (e, x, y) {
+    this.element.on("place.".concat(COMPONENT_NAME$1h), function (e, x, y) {
       self.place(new PlacementObject({
         x: x,
         y: y
       }));
-    }).on("updated.".concat(COMPONENT_NAME$3), function () {
+    }).on("updated.".concat(COMPONENT_NAME$1h), function () {
       self.updated();
     });
     return this;
@@ -12596,12 +12930,8 @@ Place.prototype = {
     arrow[0].removeAttribute('style');
     element.removeClass('top right bottom left').addClass(dir); // Custom target for some scenarios
 
-    if (target.is('.colorpicker')) {
+    if (target.is('.colorpicker, .datepicker, .timepicker')) {
       target = target.next('.trigger');
-    }
-
-    if (target.is('.datepicker, .timepicker')) {
-      target = target.next('.icon');
     }
 
     if (target.is('.btn-split-menu, .btn-menu, .btn-actions, .btn-filter, .tab, .tab-more')) {
@@ -12687,14 +13017,14 @@ Place.prototype = {
   teardown: function teardown() {
     this.clearOldStyles();
     this.element.removeClass('placeable');
-    this.element.off("updated.".concat(COMPONENT_NAME$3, " place.").concat(COMPONENT_NAME$3));
+    this.element.off("updated.".concat(COMPONENT_NAME$1h, " place.").concat(COMPONENT_NAME$1h));
     this.element.trigger('afterteardown');
     return this;
   },
   // Teardown - Remove added markup and events
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$3);
+    $.removeData(this.element[0], COMPONENT_NAME$1h);
   }
 };
 
@@ -12706,17 +13036,17 @@ Place.prototype = {
 
 $.fn.place = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$3);
+    var instance = $.data(this, COMPONENT_NAME$1h);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$3, new Place(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1h, new Place(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$4 = 'icon'; // Default Options
+var COMPONENT_NAME$1g = 'icon'; // Default Options
 
 var ICON_DEFAULTS = {
   use: 'user-profile',
@@ -12838,7 +13168,7 @@ Icon.prototype = {
    */
   handleEvents: function handleEvents() {
     var self = this;
-    this.element.on("updated.".concat(COMPONENT_NAME$4), function () {
+    this.element.on("updated.".concat(COMPONENT_NAME$1g), function () {
       self.updated();
     });
     return this;
@@ -12864,7 +13194,7 @@ Icon.prototype = {
    * @returns {this} component instance
    */
   teardown: function teardown() {
-    this.element.off("updated.".concat(COMPONENT_NAME$4));
+    this.element.off("updated.".concat(COMPONENT_NAME$1g));
     return this;
   },
 
@@ -12873,7 +13203,7 @@ Icon.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$4);
+    $.removeData(this.element[0], COMPONENT_NAME$1g);
   }
 };
 
@@ -12885,10 +13215,10 @@ Icon.prototype = {
 
 $.fn.icon = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$4);
+    var instance = $.data(this, COMPONENT_NAME$1g);
 
     if (!instance) {
-      instance = $.data(this, COMPONENT_NAME$4, new Icon(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1g, new Icon(this, settings));
     } else {
       instance.updated(settings);
     }
@@ -12985,7 +13315,7 @@ $.fn.icon = function (settings) {
   };
 })();
 
-var COMPONENT_NAME$5 = 'tooltip'; // Trigger Methods
+var COMPONENT_NAME$1f = 'tooltip'; // Trigger Methods
 
 var TOOLTIP_TRIGGER_METHODS = ['hover', 'immediate', 'click', 'focus'];
 /**
@@ -13180,8 +13510,24 @@ Tooltip.prototype = {
       this.element.removeAttr('title').attr('aria-describedby', this.description.attr('id'));
     }
 
-    if (this.isPopover && this.settings.trigger === 'click') {
-      this.element.attr('aria-haspopup', true);
+    if (this.isPopover) {
+      var hasTimepicker = this.element.prev('input.timepicker').length;
+
+      if (!hasTimepicker && this.settings.trigger === 'click') {
+        this.element.attr('aria-haspopup', true);
+      }
+
+      if (hasTimepicker) {
+        var id = this.tooltip.attr('id');
+        var input = this.element.prev('input.timepicker');
+        input.attr('role', 'combobox');
+        input.attr('aria-haspopup', 'dialog');
+        input.attr('aria-owns', id);
+        this.element.attr('role', 'button');
+        this.element.attr('aria-controls', id);
+        this.tooltip.attr('role', 'dialog');
+        this.tooltip.attr('aria-label', Locale.translate('TimepickerPopup'));
+      }
     }
   },
 
@@ -13212,7 +13558,7 @@ Tooltip.prototype = {
 
     if (!this.tooltip.length) {
       var name = this.settings.tooltipElement ? this.settings.tooltipElement.substring(1, this.settings.tooltipElement.length) : 'tooltip';
-      this.tooltip = $("<div class=\"".concat(this.isPopover ? 'popover' : 'tooltip', " bottom is-hidden\" role=\"tooltip\" id=\"").concat(name, "\"><div class=\"arrow\"></div><div class=\"tooltip-content\"></div></div>"));
+      this.tooltip = $("<div class=\"".concat(this.isPopover ? 'popover' : 'tooltip', " bottom is-hidden\" id=\"").concat(name, "\"><div class=\"arrow\"></div><div class=\"tooltip-content\"></div></div>"));
     }
 
     this.tooltip.place({
@@ -13224,6 +13570,7 @@ Tooltip.prototype = {
 
     $.data(this.tooltip[0], 'tooltip', this);
     this.setTargetContainer();
+    this.addAria();
   },
 
   /**
@@ -13264,38 +13611,38 @@ Tooltip.prototype = {
     }
 
     if (this.settings.trigger === 'hover' && !this.settings.isError) {
-      (this.element.is('.dropdown, .multiselect, span.longpress-target') ? this.activeElement : this.element).on("mouseenter.".concat(COMPONENT_NAME$5), function () {
+      (this.element.is('.dropdown, .multiselect, span.longpress-target') ? this.activeElement : this.element).on("mouseenter.".concat(COMPONENT_NAME$1f), function () {
         if (self.isTouch) {
           return;
         }
 
         showOnTimer();
-      }).on("mouseleave.".concat(COMPONENT_NAME$5), function () {
+      }).on("mouseleave.".concat(COMPONENT_NAME$1f), function () {
         if (self.visible) {
           hideImmediately();
         } else {
           clearTimer();
         }
-      }).on("click.".concat(COMPONENT_NAME$5), function () {
+      }).on("click.".concat(COMPONENT_NAME$1f), function () {
         if (self.isTouch) {
           return;
         }
 
         hideImmediately();
-      }).on("longpress.".concat(COMPONENT_NAME$5), function () {
+      }).on("longpress.".concat(COMPONENT_NAME$1f), function () {
         showImmediately();
-      }).on("updated.".concat(COMPONENT_NAME$5), function () {
+      }).on("updated.".concat(COMPONENT_NAME$1f), function () {
         self.updated();
       });
 
       if (this.settings.showOnKeyboardFocus) {
-        (this.element.is('.dropdown, .multiselect, span.longpress-target') ? this.activeElement : this.element).on("focus.".concat(COMPONENT_NAME$5), function () {
+        (this.element.is('.dropdown, .multiselect, span.longpress-target') ? this.activeElement : this.element).on("focus.".concat(COMPONENT_NAME$1f), function () {
           if (self.isTouch && !keyboard.pressedKeys.get('Tab')) {
             return;
           }
 
           showOnTimer();
-        }).on("blur.".concat(COMPONENT_NAME$5), function () {
+        }).on("blur.".concat(COMPONENT_NAME$1f), function () {
           if (!self.settings.keepOpen) {
             hideImmediately();
           }
@@ -13312,7 +13659,7 @@ Tooltip.prototype = {
     }
 
     if (this.settings.trigger === 'click') {
-      this.element.on("click.".concat(COMPONENT_NAME$5), function () {
+      this.element.on("click.".concat(COMPONENT_NAME$1f), function () {
         toggleTooltipDisplay();
       });
     }
@@ -13326,9 +13673,9 @@ Tooltip.prototype = {
     var isFocusable = this.settings.trigger === 'focus';
 
     if (isFocusable) {
-      this.element.on("focus.".concat(COMPONENT_NAME$5), function () {
+      this.element.on("focus.".concat(COMPONENT_NAME$1f), function () {
         showImmediately();
-      }).on("blur.".concat(COMPONENT_NAME$5), function () {
+      }).on("blur.".concat(COMPONENT_NAME$1f), function () {
         if (!self.settings.keepOpen) {
           hideImmediately();
         }
@@ -13336,7 +13683,7 @@ Tooltip.prototype = {
     } // Close the popup/tooltip on orientation changes (but not when keyboard is open)
 
 
-    $(window).on("orientationchange.".concat(COMPONENT_NAME$5), function () {
+    $(window).on("orientationchange.".concat(COMPONENT_NAME$1f), function () {
       if (!self.visible) {
         return;
       }
@@ -13418,9 +13765,7 @@ Tooltip.prototype = {
       // and store the reference only.
       // Adding a condition if it's really uses the ID attribute.
 
-      var idAttr = this.element[0].id;
-
-      if (content.indexOf('#') === 0 && (this.settings.popover ? true : idAttr === content.split('#').pop())) {
+      if (content.indexOf('#') === 0) {
         var contentCheck = $("".concat(content));
 
         if (contentCheck.length) {
@@ -13429,7 +13774,9 @@ Tooltip.prototype = {
           return true;
         }
 
-        return false;
+        this.content = content;
+        doRender();
+        return true;
       } // functions
 
     } else if (typeof content === 'function') {
@@ -13597,7 +13944,7 @@ Tooltip.prototype = {
       title.appendChild(closeBtnX[0]);
 
       if (Array.isArray(this.settings.attributes)) {
-        utils.addAttributes(closeBtnX, this, this.settings.attributes, 'close-btn');
+        utils.addAttributes(closeBtnX, this, this.settings.attributes, 'btn-close', true);
       }
     }
 
@@ -13705,13 +14052,17 @@ Tooltip.prototype = {
     this.element.trigger('show', [this.tooltip]);
     var mouseUpEventName = this.isTouch ? 'touchend' : 'mouseup'; // Personalizable the tooltip
 
-    if (!self.settings.popover) {
-      var isPersonalizable = self.element.closest('.is-personalizable').length > 0;
-      self.tooltip[0].classList[isPersonalizable ? 'add' : 'remove']('is-personalizable');
+    if (!this.settings.popover) {
+      var isPersonalizable = this.element.closest('.is-personalizable').length > 0;
+      this.tooltip[0].classList[isPersonalizable ? 'add' : 'remove']('is-personalizable');
+    } else {
+      utils.addAttributes(this.tooltip.find('.tooltip-title'), this, this.settings.attributes, 'title', true);
+      utils.addAttributes(this.tooltip.find('.btn-close'), this, this.settings.attributes, 'btn-close', true);
+      this.element.attr('aria-expanded', 'true');
     }
 
     setTimeout(function () {
-      $(document).on("".concat(mouseUpEventName, ".").concat(COMPONENT_NAME$5, "-").concat(self.uniqueId), function (e) {
+      $(document).on("".concat(mouseUpEventName, ".").concat(COMPONENT_NAME$1f, "-").concat(self.uniqueId), function (e) {
         var target = $(e.target);
 
         if (self.settings.isError || self.settings.trigger === 'focus') {
@@ -13738,7 +14089,7 @@ Tooltip.prototype = {
         if (target.closest('.popover').length === 1 && target.closest('.popover').not('.monthview-popup').length && self.element.prev().is('.datepicker')) {
           self.hide();
         }
-      }).on("keydown.".concat(COMPONENT_NAME$5, "-").concat(self.uniqueId), function (e) {
+      }).on("keydown.".concat(COMPONENT_NAME$1f, "-").concat(self.uniqueId), function (e) {
         if (e.which === 27 || self.settings.isError) {
           self.hide();
         }
@@ -13749,13 +14100,13 @@ Tooltip.prototype = {
       }
 
       if (window.orientation === undefined) {
-        $('body').on("resize.".concat(COMPONENT_NAME$5), function () {
+        $('body').on("resize.".concat(COMPONENT_NAME$1f), function () {
           self.hide();
         });
       } // Hide on Page scroll
 
 
-      $('body').on("scroll.".concat(COMPONENT_NAME$5), function () {
+      $('body').on("scroll.".concat(COMPONENT_NAME$1f), function () {
         self.hide();
       });
       self.element.closest('.modal-body-wrapper').on('scroll.tooltip', function () {
@@ -13769,7 +14120,7 @@ Tooltip.prototype = {
       }); // Click to close
 
       if (self.settings.isError) {
-        self.tooltip.on("click.".concat(COMPONENT_NAME$5), function () {
+        self.tooltip.on("click.".concat(COMPONENT_NAME$1f), function () {
           self.hide();
         });
       }
@@ -13795,7 +14146,17 @@ Tooltip.prototype = {
    * @returns {void}
    */
   setTargetContainer: function setTargetContainer() {
-    var targetContainer = $('body');
+    var targetContainer = $('body'); // Popovers need to be contained by an element with the correct ARIA role.
+    // See infor-design/enterprise#4403
+
+    if (this.isPopover) {
+      targetContainer = $('[role="main"]');
+    }
+
+    if (!targetContainer.length) {
+      targetContainer = $('body');
+    }
+
     var attachAfterTriggerElem = false; // adjust the tooltip if the element is being scrolled inside a scrollable DIV
 
     this.scrollparent = this.element.closest('.page-container.scrollable');
@@ -13930,6 +14291,16 @@ Tooltip.prototype = {
       $(document).off('mouseup.tooltip keydown.tooltip');
       $('body').off('resize.tooltip');
     }
+
+    this.element.removeAttr('aria-owns');
+
+    if (this.isPopover) {
+      var input = this.element.prev('input');
+
+      if (input.length) {
+        input.attr('aria-expanded', 'false').removeAttr('aria-describedby').removeAttr('aria-haspopup').removeAttr('aria-owns');
+      }
+    }
     /**
      * Fires when hide the tooltip.
      *
@@ -13979,12 +14350,12 @@ Tooltip.prototype = {
    * @returns {void}
    */
   detachOpenEvents: function detachOpenEvents() {
-    this.tooltip.off("click.".concat(COMPONENT_NAME$5));
-    $(document).off(["keydown.".concat(COMPONENT_NAME$5, "-").concat(self.uniqueId), "mouseup.".concat(COMPONENT_NAME$5, "-").concat(self.uniqueId), "touchend.".concat(COMPONENT_NAME$5, "-").concat(self.uniqueId)].join(' '));
-    $('body').off(["resize.".concat(COMPONENT_NAME$5), "scroll.".concat(COMPONENT_NAME$5)].join(' '));
-    this.element.closest('.modal-body-wrapper').off("scroll.".concat(COMPONENT_NAME$5));
-    this.element.closest('.scrollable').off("scroll.".concat(COMPONENT_NAME$5));
-    this.element.closest('.datagrid-body').off("scroll.".concat(COMPONENT_NAME$5));
+    this.tooltip.off("click.".concat(COMPONENT_NAME$1f));
+    $(document).off(["keydown.".concat(COMPONENT_NAME$1f, "-").concat(self.uniqueId), "mouseup.".concat(COMPONENT_NAME$1f, "-").concat(self.uniqueId), "touchend.".concat(COMPONENT_NAME$1f, "-").concat(self.uniqueId)].join(' '));
+    $('body').off(["resize.".concat(COMPONENT_NAME$1f), "scroll.".concat(COMPONENT_NAME$1f)].join(' '));
+    this.element.closest('.modal-body-wrapper').off("scroll.".concat(COMPONENT_NAME$1f));
+    this.element.closest('.scrollable').off("scroll.".concat(COMPONENT_NAME$1f));
+    this.element.closest('.datagrid-body').off("scroll.".concat(COMPONENT_NAME$1f));
   },
 
   /**
@@ -14000,7 +14371,6 @@ Tooltip.prototype = {
     this.description.remove();
     this.descriptionId = undefined;
     this.activeElement = undefined;
-    this.element.removeAttr('aria-describedby').removeAttr('aria-haspopup');
 
     if (!this.tooltip.hasClass('is-hidden')) {
       this.hide();
@@ -14021,10 +14391,10 @@ Tooltip.prototype = {
       }
     }
 
-    this.element.off(["mouseenter.".concat(COMPONENT_NAME$5), "mouseleave.".concat(COMPONENT_NAME$5), "longpress.".concat(COMPONENT_NAME$5), "click.".concat(COMPONENT_NAME$5), "updated.".concat(COMPONENT_NAME$5), "focus.".concat(COMPONENT_NAME$5), "blur.".concat(COMPONENT_NAME$5)].join(' '));
+    this.element.off(["mouseenter.".concat(COMPONENT_NAME$1f), "mouseleave.".concat(COMPONENT_NAME$1f), "longpress.".concat(COMPONENT_NAME$1f), "click.".concat(COMPONENT_NAME$1f), "updated.".concat(COMPONENT_NAME$1f), "focus.".concat(COMPONENT_NAME$1f), "blur.".concat(COMPONENT_NAME$1f)].join(' '));
     DOM.removeClass(this.element[0], 'has-tooltip');
     this.detachOpenEvents();
-    $(window).off("orientationchange.".concat(COMPONENT_NAME$5));
+    $(window).off("orientationchange.".concat(COMPONENT_NAME$1f));
     return this;
   },
 
@@ -14034,7 +14404,7 @@ Tooltip.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$5);
+    $.removeData(this.element[0], COMPONENT_NAME$1f);
   }
 };
 
@@ -14046,17 +14416,17 @@ Tooltip.prototype = {
 
 $.fn.tooltip = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$5);
+    var instance = $.data(this, COMPONENT_NAME$1f);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$5, new Tooltip(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1f, new Tooltip(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$6 = 'button'; // Styles of Buttons
+var COMPONENT_NAME$1e = 'button'; // Styles of Buttons
 
 var buttonStyles = ['default', 'btn', 'btn-primary', 'btn-secondary', 'btn-tertiary', 'btn-destructive']; // Types of Buttons
 
@@ -14667,7 +15037,7 @@ Button.prototype = {
    * @returns {Button} This component's API.
    */
   teardown: function teardown() {
-    this.element.off(["click.".concat(COMPONENT_NAME$6), "touchstart.".concat(COMPONENT_NAME$6)].join(' '));
+    this.element.off(["click.".concat(COMPONENT_NAME$1e), "touchstart.".concat(COMPONENT_NAME$1e)].join(' '));
     var tooltipApi = this.tooltipAPI;
 
     if (this.element.hasClass('btn-actions') && tooltipApi) {
@@ -14711,7 +15081,7 @@ Button.prototype = {
       delete this.buttonsetAPI;
     }
 
-    $.removeData(this.element[0], COMPONENT_NAME$6);
+    $.removeData(this.element[0], COMPONENT_NAME$1e);
   }
   /**
   *  Fires when the button is clicked (if enabled).
@@ -14739,17 +15109,17 @@ Button.prototype = {
 
 $.fn.button = function jQueryButton(settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$6);
+    var instance = $.data(this, COMPONENT_NAME$1e);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$6, new Button(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1e, new Button(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$7 = 'buttonset'; // Styles of Buttonset
+var COMPONENT_NAME$1d = 'buttonset'; // Styles of Buttonset
 
 var BUTTONSET_STYLES = ['default', 'modal']; // Default Buttonset Styles
 
@@ -15056,7 +15426,7 @@ ButtonSet.prototype = {
   */
   destroy: function destroy() {
     this.teardown(true);
-    $.removeData(this.element, COMPONENT_NAME$7);
+    $.removeData(this.element, COMPONENT_NAME$1d);
   }
 };
 
@@ -15068,17 +15438,17 @@ ButtonSet.prototype = {
 
 $.fn.buttonset = function jQueryButton(settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$7);
+    var instance = $.data(this, COMPONENT_NAME$1d);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$7, new ButtonSet(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1d, new ButtonSet(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$8 = 'hyperlink';
+var COMPONENT_NAME$1c = 'hyperlink';
 /**
  * Soho component wrapper for Hyperlinks.
  * @class Hyperlink
@@ -15153,16 +15523,16 @@ Hyperlink.prototype = {
 
 $.fn.hyperlink = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$8);
+    var instance = $.data(this, COMPONENT_NAME$1c);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$8, new Hyperlink(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1c, new Hyperlink(this, settings));
 
       instance.destroy = function destroy() {
         this.teardown();
-        $.removeData(this, COMPONENT_NAME$8);
+        $.removeData(this, COMPONENT_NAME$1c);
       };
     }
   });
@@ -15572,6 +15942,7 @@ var DATE_MAX_VALUES = {
   MMM: undefined,
   MM: 12,
   M: 12,
+  y: 9999,
   yy: 99,
   yyyy: 9999,
   h: 12,
@@ -16497,7 +16868,7 @@ MaskAPI.prototype = {
 
 /* eslint-disable no-underscore-dangle, new-cap */
 
-var COMPONENT_NAME$9 = 'mask';
+var COMPONENT_NAME$1b = 'mask';
 /**
  * Component Wrapper for input elements that gives them the ability to become "masked".
  * @class MaskInput
@@ -17203,16 +17574,16 @@ MaskInput.prototype = {
 
 $.fn.maskinput = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$9);
+    var instance = $.data(this, COMPONENT_NAME$1b);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$9, new MaskInput(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1b, new MaskInput(this, settings));
 
       instance.destroy = function () {
         this.teardown();
-        $.removeData(this.element, COMPONENT_NAME$9);
+        $.removeData(this.element, COMPONENT_NAME$1b);
       };
     }
   });
@@ -17227,7 +17598,7 @@ $.fn.maskinput = function (settings) {
 $.fn.maskedinput = $.fn.maskinput;
 $.fn.mask = $.fn.maskinput;
 
-var COMPONENT_NAME$a = 'popupmenu'; // Popupmenu Trigger Types
+var COMPONENT_NAME$1a = 'popupmenu'; // Popupmenu Trigger Types
 
 var triggerTypes = ['click', 'rightClick', 'immediate', 'manual'];
 /**
@@ -17504,7 +17875,9 @@ PopupMenu.prototype = {
     // to prevent containment issues. (Now a Preference)
 
 
-    if (this.settings.attachToBody && this.menu.parent().not('body').length > 0) {
+    var menuParent = this.menu.parent().not('.popupmenu-wrapper, body');
+
+    if (this.settings.attachToBody && menuParent.length > 0) {
       this.originalParent = this.menu.prev();
       this.setMenuOrgContainment(this.menu);
       this.menu.detach().appendTo('body');
@@ -18151,7 +18524,7 @@ PopupMenu.prototype = {
     if (!immediate) {
       // Left-Click activation
       if (leftClick) {
-        this.element.on('click.popupmenu', function (e) {
+        this.element.off('click.popupmenu').on('click.popupmenu', function (e) {
           contextMenuHandler(e, true);
         });
       } // Right-Click activation
@@ -18941,14 +19314,15 @@ PopupMenu.prototype = {
      * @event beforeopen
      * @memberof PopupMenu
      * @property {object} event - The jquery event object
-     * @property {object} this menu instance
+     * @property {object} this The menu instance
+     * @property {object} api The menu api
      */
 
 
     var canOpen = true;
 
     if (!this.element.hasClass('autocomplete')) {
-      canOpen = this.element.triggerHandler('beforeopen', [this.menu]);
+      canOpen = this.element.triggerHandler('beforeopen', [this.menu, this]);
 
       if (canOpen === false) {
         return;
@@ -19216,7 +19590,7 @@ PopupMenu.prototype = {
       submenu = submenu.children('.popupmenu');
     }
 
-    var canOpen = this.element.triggerHandler('beforeopen', [submenu]);
+    var canOpen = this.element.triggerHandler('beforeopen', [submenu, this]);
 
     if (canOpen === false) {
       return;
@@ -19503,7 +19877,7 @@ PopupMenu.prototype = {
     $('.scrollable').off('scroll.popupmenu');
 
     if (this.menu && this.menu.length) {
-      this.menu.off('click.popupmenu touchend.popupmenu touchcancel.popupmenu');
+      this.menu.off('click.popupmenu touchend.popupmenu touchcancel.popupmenu dragstart.popupmenu');
     }
 
     $('iframe').each(function () {
@@ -19641,9 +20015,11 @@ PopupMenu.prototype = {
    * @returns {void}
    */
   teardown: function teardown() {
+    var _this$menu$;
+
     var self = this;
 
-    if (!this.menu || !this.menu.parent) {
+    if (!this.menu || !this.menu.length || !this.menu.parent()) {
       return this;
     }
 
@@ -19661,52 +20037,57 @@ PopupMenu.prototype = {
       this.ajaxContent.off().remove();
     }
 
-    this.predefinedItems = $();
-    var parentNode = this.menu.parent();
-    parentNode.find('.arrow').remove();
-    parentNode.off('contextmenu.popupmenu');
+    this.predefinedItems = $(); // Only unwrap/move this menu if there are no other menus attempting to control it (shared instance)
 
-    if (this.element.hasClass('btn-actions')) {
-      parentNode.removeClass('bottom');
+    var menuId = (_this$menu$ = this.menu[0]) === null || _this$menu$ === void 0 ? void 0 : _this$menu$ == null ? void 0 : _this$menu$.id;
+    var otherTriggers = $("[aria-controls=\"".concat(menuId, "\"]")).not(this.element);
+
+    if (!otherTriggers.length) {
+      var parentNode = this.menu.parent();
+      parentNode.find('.arrow').remove();
+      parentNode.off('contextmenu.popupmenu');
+
+      if (this.element.hasClass('btn-actions')) {
+        parentNode.removeClass('bottom');
+      } // Remove the wrapper, if applicable
+
+
+      if (!this.preExistingWrapper && this.menu.parent().is('.popupmenu-wrapper') && !otherTriggers.length) {
+        this.menu.unwrap();
+      } // Place the menu back where it came from while cleaning up.
+      // Get an accurate target to place the menu back where it came from
+
+
+      var searchfield = this.element.parent().children('.searchfield');
+
+      if (searchfield.length) {
+        this.menu.insertAfter(searchfield.first());
+      } else if (this.menuOrgContainment) {
+        this.insertAtContainment(this.menu);
+      } else {
+        this.menu.insertAfter(this.element);
+      } // Cleanup menu items
+
+
+      this.menu.find('.submenu').children('a').each(function (i, item) {
+        var spantext = $(item).find('span').text();
+        var text = spantext || $(item).text();
+        $(item).find('span, svg').remove();
+        $(item).text(text);
+      });
+      this.menu.find('.submenu').removeClass('submenu'); // Unwrap submenus, if applicable
+
+      this.menu.find('.popupmenu').each(function () {
+        unwrapPopup($(this));
+      }); // Finish cleaning up after the wrapper
+
+      if (self.wrapperPlace) {
+        self.wrapperPlace.destroy();
+        delete self.wrapperPlace;
+      }
+
+      wrapper.off().remove();
     }
-
-    this.menu.off('dragstart.popupmenu'); // Remove the wrapper, if applicable
-
-    if (!this.preExistingWrapper && this.menu.parent().is('.popupmenu-wrapper')) {
-      this.menu.unwrap();
-    } // Place the menu back where it came from while cleaning up.
-    // Get an accurate target to place the menu back where it came from
-
-
-    var searchfield = this.element.parent().children('.searchfield');
-
-    if (searchfield.length) {
-      this.menu.insertAfter(searchfield.first());
-    } else if (this.menuOrgContainment) {
-      this.insertAtContainment(this.menu);
-    } else {
-      this.menu.insertAfter(this.element);
-    } // Cleanup menu items
-
-
-    this.menu.find('.submenu').children('a').each(function (i, item) {
-      var spantext = $(item).find('span').text();
-      var text = spantext || $(item).text();
-      $(item).find('span, svg').remove();
-      $(item).text(text);
-    });
-    this.menu.find('.submenu').removeClass('submenu'); // Unwrap submenus, if applicable
-
-    this.menu.find('.popupmenu').each(function () {
-      unwrapPopup($(this));
-    }); // Finish cleaning up after the wrapper
-
-    if (self.wrapperPlace) {
-      self.wrapperPlace.destroy();
-      delete self.wrapperPlace;
-    }
-
-    wrapper.off().remove();
 
     if (this.menu && this.menu.length && this.menu.data('trigger')) {
       $.removeData(this.menu[0], 'trigger');
@@ -19748,7 +20129,7 @@ PopupMenu.prototype = {
       delete this.menu;
     }
 
-    $.removeData(this.element[0], COMPONENT_NAME$a);
+    $.removeData(this.element[0], COMPONENT_NAME$1a);
   }
 };
 
@@ -19760,17 +20141,17 @@ PopupMenu.prototype = {
 
 $.fn.popupmenu = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$a);
+    var instance = $.data(this, COMPONENT_NAME$1a);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$a, new PopupMenu(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1a, new PopupMenu(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$b = 'about';
+var COMPONENT_NAME$19 = 'about';
 /**
  * The About Dialog Component is displays information regarding the application.
  * @class About
@@ -19995,7 +20376,7 @@ About.prototype = {
     }
 
     if (this.element.length > 0) {
-      $.removeData(this.element[0], COMPONENT_NAME$b);
+      $.removeData(this.element[0], COMPONENT_NAME$19);
     }
   },
 
@@ -20039,12 +20420,12 @@ About.prototype = {
 
 $.fn.about = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$b);
+    var instance = $.data(this, COMPONENT_NAME$19);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$b, new About(this, settings));
+      instance = $.data(this, COMPONENT_NAME$19, new About(this, settings));
     }
   });
 };
@@ -20209,7 +20590,7 @@ $.fn.isAnimating = function () {
   });
 };
 
-var COMPONENT_NAME$c = 'accordion'; // Expander Button Display Modes
+var COMPONENT_NAME$18 = 'accordion'; // Expander Button Display Modes
 // In some cases, expander buttons can be all "plus-minus" icons, or all "chevron" icons.
 // "Classic" is the original mode, with Chevrons at the top level, and Plus-minus style on all subheaders.
 // "Plus-minus" mode is the replacement setting for the deprecated setting `displayChevron`
@@ -20314,6 +20695,14 @@ Accordion.prototype = {
       this.anchors = this.anchors.add(anchors);
       this.panes = this.panes.add(panes);
       this.contentAreas = this.contentAreas.add(contentAreas);
+    } // Making the accordion pane to display
+    // so the scrollHeight in textarea will be calculated
+
+
+    var textAreaChild = $('.accordion-content').find('textarea');
+
+    if (textAreaChild) {
+      textAreaChild.parents('.accordion-pane').attr('style', 'display: block');
     }
 
     var headersHaveIcons = false; // Accordion Headers that have an expandable pane need to have an
@@ -21078,12 +21467,12 @@ Accordion.prototype = {
           e.stopPropagation();
         }
 
-        pane.triggerHandler('afterexpand', [a]);
-        self.element.trigger('afterexpand', [a]);
-
         (_$ = $).when.apply(_$, expandDfds.concat(collapseDfds)).done(function () {
           dfd.resolve();
         });
+
+        pane.triggerHandler('afterexpand', [a]);
+        self.element.trigger('afterexpand', [a]);
       }
 
       if (pane.hasClass('no-transition')) {
@@ -21194,10 +21583,10 @@ Accordion.prototype = {
         e.stopPropagation();
       }
 
-      pane.triggerHandler('aftercollapse', [a]);
-      self.element.trigger('aftercollapse', [a]);
       header.add(pane).removeClass('is-expanded');
       a.attr('aria-expanded', 'false');
+      pane.triggerHandler('aftercollapse', [a]);
+      self.element.trigger('aftercollapse', [a]);
       dfd.resolve();
     }
 
@@ -21912,12 +22301,12 @@ Accordion.prototype = {
 
 $.fn.accordion = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$c);
+    var instance = $.data(this, COMPONENT_NAME$18);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$c, new Accordion(this, settings));
+      instance = $.data(this, COMPONENT_NAME$18, new Accordion(this, settings));
     }
   });
 };
@@ -22057,7 +22446,7 @@ $.fn.handleResize = function () {
   return siftFor($(this), 'handleResize', EXCLUDED_FROM_HANDLE_RESIZE);
 };
 
-var COMPONENT_NAME$d = 'expandablearea';
+var COMPONENT_NAME$17 = 'expandablearea';
 /**
 * An expandable pane / area.
 * @class ExpandableArea
@@ -22406,7 +22795,7 @@ ExpandableArea.prototype = {
     this.header.off();
     this.header.removeAttr('id');
     this.content.removeAttr('id').removeClass('no-transition');
-    $.removeData(this.element[0], COMPONENT_NAME$d);
+    $.removeData(this.element[0], COMPONENT_NAME$17);
   },
 
   /**
@@ -22438,12 +22827,12 @@ ExpandableArea.prototype = {
 
 $.fn.expandablearea = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$d);
+    var instance = $.data(this, COMPONENT_NAME$17);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$d, new ExpandableArea(this, settings));
+      instance = $.data(this, COMPONENT_NAME$17, new ExpandableArea(this, settings));
     }
   });
 };
@@ -22539,8 +22928,8 @@ function bind(fn, thisArg) {
  * @constructor
  * @param {Function} fn
  */
-function Promise(fn) {
-  if (!(this instanceof Promise))
+function Promise$1(fn) {
+  if (!(this instanceof Promise$1))
     throw new TypeError('Promises must be constructed via new');
   if (typeof fn !== 'function') throw new TypeError('not a function');
   /** @type {!number} */
@@ -22564,7 +22953,7 @@ function handle(self, deferred) {
     return;
   }
   self._handled = true;
-  Promise._immediateFn(function() {
+  Promise$1._immediateFn(function() {
     var cb = self._state === 1 ? deferred.onFulfilled : deferred.onRejected;
     if (cb === null) {
       (self._state === 1 ? resolve : reject)(deferred.promise, self._value);
@@ -22591,7 +22980,7 @@ function resolve(self, newValue) {
       (typeof newValue === 'object' || typeof newValue === 'function')
     ) {
       var then = newValue.then;
-      if (newValue instanceof Promise) {
+      if (newValue instanceof Promise$1) {
         self._state = 3;
         self._value = newValue;
         finale(self);
@@ -22617,9 +23006,9 @@ function reject(self, newValue) {
 
 function finale(self) {
   if (self._state === 2 && self._deferreds.length === 0) {
-    Promise._immediateFn(function() {
+    Promise$1._immediateFn(function() {
       if (!self._handled) {
-        Promise._unhandledRejectionFn(self._value);
+        Promise$1._unhandledRejectionFn(self._value);
       }
     });
   }
@@ -22667,11 +23056,11 @@ function doResolve(fn, self) {
   }
 }
 
-Promise.prototype['catch'] = function(onRejected) {
+Promise$1.prototype['catch'] = function(onRejected) {
   return this.then(null, onRejected);
 };
 
-Promise.prototype.then = function(onFulfilled, onRejected) {
+Promise$1.prototype.then = function(onFulfilled, onRejected) {
   // @ts-ignore
   var prom = new this.constructor(noop);
 
@@ -22679,10 +23068,10 @@ Promise.prototype.then = function(onFulfilled, onRejected) {
   return prom;
 };
 
-Promise.prototype['finally'] = finallyConstructor;
+Promise$1.prototype['finally'] = finallyConstructor;
 
-Promise.all = function(arr) {
-  return new Promise(function(resolve, reject) {
+Promise$1.all = function(arr) {
+  return new Promise$1(function(resolve, reject) {
     if (!isArray(arr)) {
       return reject(new TypeError('Promise.all accepts an array'));
     }
@@ -22721,38 +23110,38 @@ Promise.all = function(arr) {
   });
 };
 
-Promise.allSettled = allSettled;
+Promise$1.allSettled = allSettled;
 
-Promise.resolve = function(value) {
-  if (value && typeof value === 'object' && value.constructor === Promise) {
+Promise$1.resolve = function(value) {
+  if (value && typeof value === 'object' && value.constructor === Promise$1) {
     return value;
   }
 
-  return new Promise(function(resolve) {
+  return new Promise$1(function(resolve) {
     resolve(value);
   });
 };
 
-Promise.reject = function(value) {
-  return new Promise(function(resolve, reject) {
+Promise$1.reject = function(value) {
+  return new Promise$1(function(resolve, reject) {
     reject(value);
   });
 };
 
-Promise.race = function(arr) {
-  return new Promise(function(resolve, reject) {
+Promise$1.race = function(arr) {
+  return new Promise$1(function(resolve, reject) {
     if (!isArray(arr)) {
       return reject(new TypeError('Promise.race accepts an array'));
     }
 
     for (var i = 0, len = arr.length; i < len; i++) {
-      Promise.resolve(arr[i]).then(resolve, reject);
+      Promise$1.resolve(arr[i]).then(resolve, reject);
     }
   });
 };
 
 // Use polyfill for setImmediate for performance gains
-Promise._immediateFn =
+Promise$1._immediateFn =
   // @ts-ignore
   (typeof setImmediate === 'function' &&
     function(fn) {
@@ -22763,7 +23152,7 @@ Promise._immediateFn =
     setTimeoutFunc(fn, 0);
   };
 
-Promise._unhandledRejectionFn = function _unhandledRejectionFn(err) {
+Promise$1._unhandledRejectionFn = function _unhandledRejectionFn(err) {
   if (typeof console !== 'undefined' && console) {
     console.warn('Possible Unhandled Promise Rejection:', err); // eslint-disable-line no-console
   }
@@ -23107,7 +23496,7 @@ Tmpl.compile = function compile(template, self, parent, invert) {
   return output;
 };
 
-var COMPONENT_NAME$e = 'autocomplete';
+var COMPONENT_NAME$16 = 'autocomplete';
 /*
  * Default Autocomplete Result Item Template.  This can be modified to add data points that
  * will be populated by adding properties to the object created
@@ -23519,13 +23908,13 @@ Autocomplete.prototype = {
 
     if (!this.previouslyOpened) {
       // Overrides the 'click' listener attached by the Popupmenu plugin
-      self.list.on("touchend.".concat(COMPONENT_NAME$e, " click.").concat(COMPONENT_NAME$e), 'a', function (e) {
+      self.list.on("touchend.".concat(COMPONENT_NAME$16, " click.").concat(COMPONENT_NAME$16), 'a', function (e) {
         self.select(e);
-      }).on("focusout.".concat(COMPONENT_NAME$e), function () {
+      }).on("focusout.".concat(COMPONENT_NAME$16), function () {
         self.checkActiveElement();
       }); // Highlight anchors on focus
 
-      var all = self.list.find('a').on("focus.".concat(COMPONENT_NAME$e, " touchend.").concat(COMPONENT_NAME$e), function () {
+      var all = self.list.find('a').on("focus.".concat(COMPONENT_NAME$16, " touchend.").concat(COMPONENT_NAME$16), function () {
         self.highlight($(this), all);
       });
 
@@ -23566,8 +23955,8 @@ Autocomplete.prototype = {
     } // Remove events
 
 
-    this.list.off(["click.".concat(COMPONENT_NAME$e), "keydown.".concat(COMPONENT_NAME$e), "touchend.".concat(COMPONENT_NAME$e), "focusout.".concat(COMPONENT_NAME$e)].join(' '));
-    this.list.find('a').off("focus.".concat(COMPONENT_NAME$e, " touchend.").concat(COMPONENT_NAME$e));
+    this.list.off(["click.".concat(COMPONENT_NAME$16), "keydown.".concat(COMPONENT_NAME$16), "touchend.".concat(COMPONENT_NAME$16), "focusout.".concat(COMPONENT_NAME$16)].join(' '));
+    this.list.find('a').off("focus.".concat(COMPONENT_NAME$16, " touchend.").concat(COMPONENT_NAME$16));
     this.element.trigger('listclose');
 
     if (typeof this.settings.clearResultsCallback === 'function') {
@@ -24017,7 +24406,7 @@ Autocomplete.prototype = {
     // See https://github.com/infor-design/enterprise-ng/issues/901
 
 
-    this.list.on("keydown.".concat(COMPONENT_NAME$e), function (e) {
+    this.list.on("keydown.".concat(COMPONENT_NAME$16), function (e) {
       if (e.key === 'Enter') {
         _this2.handleAutocompleteKeydown(e);
       }
@@ -24065,7 +24454,7 @@ Autocomplete.prototype = {
       popup.destroy();
     }
 
-    this.element.off(["focus.".concat(COMPONENT_NAME$e), "focusout.".concat(COMPONENT_NAME$e), "input.".concat(COMPONENT_NAME$e), "keydown.".concat(COMPONENT_NAME$e), "listopen.".concat(COMPONENT_NAME$e), "requestend.".concat(COMPONENT_NAME$e), "resetfilter.".concat(COMPONENT_NAME$e), "updated.".concat(COMPONENT_NAME$e)].join(' '));
+    this.element.off(["focus.".concat(COMPONENT_NAME$16), "focusout.".concat(COMPONENT_NAME$16), "input.".concat(COMPONENT_NAME$16), "keydown.".concat(COMPONENT_NAME$16), "listopen.".concat(COMPONENT_NAME$16), "requestend.".concat(COMPONENT_NAME$16), "resetfilter.".concat(COMPONENT_NAME$16), "updated.".concat(COMPONENT_NAME$16)].join(' '));
     return this;
   },
 
@@ -24075,7 +24464,7 @@ Autocomplete.prototype = {
   */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$e);
+    $.removeData(this.element[0], COMPONENT_NAME$16);
   },
 
   /**
@@ -24086,15 +24475,15 @@ Autocomplete.prototype = {
   handleEvents: function handleEvents() {
     // similar code as dropdown but close enough to be dry
     var self = this;
-    this.element.on("updated.".concat(COMPONENT_NAME$e), function () {
+    this.element.on("updated.".concat(COMPONENT_NAME$16), function () {
       self.updated();
-    }).on("keydown.".concat(COMPONENT_NAME$e), function (e) {
+    }).on("keydown.".concat(COMPONENT_NAME$16), function (e) {
       self.handleAutocompleteKeydown(e);
-    }).on("input.".concat(COMPONENT_NAME$e), function (e) {
+    }).on("input.".concat(COMPONENT_NAME$16), function (e) {
       self.handleAutocompleteInput(e);
-    }).on("focus.".concat(COMPONENT_NAME$e), function () {
+    }).on("focus.".concat(COMPONENT_NAME$16), function () {
       self.handleAutocompleteFocus();
-    }).on("focusout.".concat(COMPONENT_NAME$e), function () {
+    }).on("focusout.".concat(COMPONENT_NAME$16), function () {
       self.checkActiveElement();
     })
     /**
@@ -24104,7 +24493,7 @@ Autocomplete.prototype = {
     * @param {object} event - The jquery event object
     * @param {object} ui - The dialog object
     */
-    .on("listopen.".concat(COMPONENT_NAME$e), function () {
+    .on("listopen.".concat(COMPONENT_NAME$16), function () {
       self.handleAfterListOpen();
     })
     /**
@@ -24114,7 +24503,7 @@ Autocomplete.prototype = {
     * @memberof Autocomplete
     * @param {object} event - The jquery event object
     */
-    .on("resetfilter.".concat(COMPONENT_NAME$e), function () {
+    .on("resetfilter.".concat(COMPONENT_NAME$16), function () {
       self.resetFilters();
     });
   }
@@ -24129,7 +24518,7 @@ Autocomplete.prototype = {
 
 $.fn.autocomplete = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$e); // NOTE: This is modified due to a conflict between a legacy Soho attribute, `data-autocomplete`,
+    var instance = $.data(this, COMPONENT_NAME$16); // NOTE: This is modified due to a conflict between a legacy Soho attribute, `data-autocomplete`,
     // having the same value as jQuery's `$.data('autocomplete')`.
 
     if (typeof instance === 'string') {
@@ -24137,16 +24526,16 @@ $.fn.autocomplete = function (settings) {
       var modifiedSettings = utils.extend({}, settings, {
         source: stringSource || settings.source
       });
-      instance = $.data(this, COMPONENT_NAME$e, new Autocomplete(this, modifiedSettings));
+      instance = $.data(this, COMPONENT_NAME$16, new Autocomplete(this, modifiedSettings));
     } else if (!instance) {
-      instance = $.data(this, COMPONENT_NAME$e, new Autocomplete(this, settings));
+      instance = $.data(this, COMPONENT_NAME$16, new Autocomplete(this, settings));
     } else {
       instance.updated(settings);
     }
   });
 };
 
-var COMPONENT_NAME$f = 'searchfield'; // Types of collapse modes
+var COMPONENT_NAME$15 = 'searchfield'; // Types of collapse modes
 
 var SEARCHFIELD_COLLAPSE_MODES = [false, 'mobile', true]; // Search Field Defaults
 
@@ -24164,7 +24553,8 @@ var SEARCHFIELD_DEFAULTS = {
   template: undefined,
   clearable: false,
   collapsible: SEARCHFIELD_COLLAPSE_MODES[0],
-  collapseSize: undefined
+  collapseSize: undefined,
+  tabbable: true
 }; // Used throughout:
 
 var TOOLBARSEARCHFIELD_EXPAND_SIZE = 280;
@@ -24191,6 +24581,7 @@ var MAX_TOOLBARSEARCHFIELD_EXPAND_SIZE = 450;
  * focused/blurred respectively
  * @param {boolean} [settings.collapsibleOnMobile = true] If true, overrides `collapsible` only on mobile settings.
  * @param {number|function} [settings.collapseSize=undefined] If true, configures the size of a toolbar searchfield when it's in it's "button", unfocused mode.  If defined as a function, gets a reference to this API as its primary argument, and returns a number.
+ * @param {boolean} [settings.tabbable=true] If true, the x button will get a tab stop. For accessibility its reccomended to keep this on.
  */
 
 function SearchField(element, settings) {
@@ -24203,10 +24594,15 @@ function SearchField(element, settings) {
 
     if (settings.collapsible === undefined) {
       settings.collapsible = true;
+      settings.tabbable = false;
     }
   }
 
   this.settings = utils.mergeSettings(element, settings, SEARCHFIELD_DEFAULTS);
+
+  if (this.settings.collapsible) {
+    this.settings.tabbable = false;
+  }
   this.init();
 }
 
@@ -24352,7 +24748,7 @@ SearchField.prototype = {
   build: function build() {
     // Used for managing events that are bound to $(document)
     if (!this.id) {
-      this.id = utils.uniqueId(this.element, COMPONENT_NAME$f);
+      this.id = utils.uniqueId(this.element, COMPONENT_NAME$15);
     }
 
     this.label = this.element.prev('label, .label');
@@ -24581,7 +24977,14 @@ SearchField.prototype = {
         self.calculateSearchfieldWidth();
       }
     });
-    renderLoop.register(resizeTimer);
+    renderLoop.register(resizeTimer); // when the window size changes, searchfield
+    // should calculate its width so that the input
+    // does not overflow the buttons/icons contained
+    // in it
+
+    $('body').on("resize.".concat(this.id), function () {
+      self.calculateSearchfieldWidth();
+    });
 
     if (this.settings.collapsible === false || this.settings.collapsible === 'mobile' && breakpoints.isAbove('phone-to-tablet')) {
       this.expand(true);
@@ -24889,12 +25292,12 @@ SearchField.prototype = {
       }).on("collapse.".concat(this.id), function () {
         self.collapse();
       });
-      $('body').on("resize.".concat(this.id), function () {
+      $('body').on('breakpoint-change', function () {
         self.adjustOnBreakpoint();
       });
       self.adjustOnBreakpoint();
     } else {
-      $('body').on("resize.".concat(this.id), function () {
+      $('body').on('breakpoint-change', function () {
         self.simpleAdjustOnBreakpoint();
       });
       self.simpleAdjustOnBreakpoint();
@@ -25032,8 +25435,13 @@ SearchField.prototype = {
    */
   get isFocused() {
     var active = document.activeElement;
-    var wrapperElem = this.wrapper[0]; // If another element inside the Searchfield Wrapper is focused, the entire component
+    var wrapperElem = this.wrapper[0];
+
+    if (this.settings.tabbable && wrapperElem.contains(active) && $(active).is('button.close')) {
+      return true;
+    } // If another element inside the Searchfield Wrapper is focused, the entire component
     // is considered "focused".
+
 
     if (wrapperElem.contains(active)) {
       return true;
@@ -25786,7 +26194,7 @@ SearchField.prototype = {
     var _this3 = this;
 
     var self = this;
-    var expandPromise = new Promise(function (resolve) {
+    var expandPromise = new Promise$1(function (resolve) {
       if (self.isExpanded || self.isExpanding || self.isCollapsing) {
         resolve();
         return;
@@ -25884,7 +26292,7 @@ SearchField.prototype = {
     var _this4 = this;
 
     var self = this;
-    var collapsePromise = new Promise(function (resolve) {
+    var collapsePromise = new Promise$1(function (resolve) {
       if (!self.isExpanded && self.isExpanding && !self.isCollapsing) {
         resolve();
         return;
@@ -26152,7 +26560,7 @@ SearchField.prototype = {
 
 
     this.removeDocumentDeactivationEvents();
-    $('body').off("resize.".concat(this.id));
+    $('body').off('breakpoint-change');
 
     if (this.autocomplete) {
       this.autocomplete.destroy();
@@ -26183,13 +26591,19 @@ SearchField.prototype = {
    * @returns {void} adds 'x' button to clear the searchfield.
    */
   makeClearable: function makeClearable() {
-    this.element.clearable();
+    this.element.clearable({
+      tabbable: this.settings.tabbable
+    });
     this.wrapper.addClass('has-close-icon-button');
     this.xButton = this.wrapper.children('.icon.close'); // Ignoring the close button from tabbing
 
-    this.xButton[0].setAttribute('tabindex', '-1'); // Add test automation ids
+    if (!this.settings.tabbable) {
+      this.xButton[0].setAttribute('tabindex', '-1');
+    } // Add test automation ids
+
 
     utils.addAttributes(this.xButton, this, this.settings.attributes, 'btn-close', true);
+    utils.addAttributes(this.element.xButton, this, this.settings.attributes, 'btn-close', true);
   },
 
   /**
@@ -26201,6 +26615,10 @@ SearchField.prototype = {
     if (this.xButton) {
       this.xButton.click();
     }
+
+    if (this.element.xButton) {
+      this.element.xButton.click();
+    }
   },
 
   /**
@@ -26209,7 +26627,7 @@ SearchField.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$f);
+    $.removeData(this.element[0], COMPONENT_NAME$15);
   }
 };
 
@@ -26222,19 +26640,19 @@ SearchField.prototype = {
 $.fn.searchfield = function (settings) {
   return this.each(function () {
     // Normal invoke setup
-    var instance = $.data(this, COMPONENT_NAME$f);
+    var instance = $.data(this, COMPONENT_NAME$15);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$f, new SearchField(this, settings));
+      instance = $.data(this, COMPONENT_NAME$15, new SearchField(this, settings));
     }
   });
 };
 
 /* eslint-disable no-underscore-dangle, prefer-arrow-callback */
 
-var COMPONENT_NAME$g = 'applicationmenu';
+var COMPONENT_NAME$14 = 'applicationmenu';
 /**
  * The Application Menu provides access to all the functions, pages, and forms in an application.
  * @class ApplicationMenu
@@ -26372,7 +26790,7 @@ ApplicationMenu.prototype = {
           return self.filterResultsCallback(results, done, term);
         }
       });
-      this.searchfield.on("cleared.".concat(COMPONENT_NAME$g), function () {
+      this.searchfield.on("cleared.".concat(COMPONENT_NAME$14), function () {
         self.accordionAPI.unfilter();
       });
     } // Sync with application menus that have an 'is-open' CSS class.
@@ -26770,8 +27188,8 @@ ApplicationMenu.prototype = {
       });
 
       if (trig.parents('.header').length > 0 || trig.parents('.masthead').length > 0) {
-        trig.find('.icon.app-header').removeClass('close');
         trig.find('.icon.app-header');
+        trig.trigger('icon-change');
       }
     });
 
@@ -26815,6 +27233,7 @@ ApplicationMenu.prototype = {
     }
 
     var changed = $();
+    var isHidden = !this.element.is(':visible');
     $.each(triggers, function (i, obj) {
       changed = changed.add($(obj));
     });
@@ -26847,6 +27266,10 @@ ApplicationMenu.prototype = {
     }
 
     this.updated();
+
+    if (isHidden) {
+      this.element.css('display', 'none');
+    }
   },
 
   /**
@@ -26939,9 +27362,9 @@ ApplicationMenu.prototype = {
     $(window).off('scroll.applicationmenu');
     $('body').off('resize.applicationmenu');
     $(document).off(['click.applicationmenu', 'open-applicationmenu', 'close-applicationmenu', 'dismiss-applicationmenu', 'keydown.applicationmenu'].join(' '));
-    this.element.find('.expandable-area').off(['beforeexpand.applicationmenu', 'aftercollapse.applicationmenu', "keydown.".concat(COMPONENT_NAME$g, "-switcher")].join(' '));
+    this.element.find('.expandable-area').off(['beforeexpand.applicationmenu', 'aftercollapse.applicationmenu', "keydown.".concat(COMPONENT_NAME$14, "-switcher")].join(' '));
     this.accordion.off(['blur.applicationmenu', 'selected.applicationmenu', 'followlink.applicationmenu', 'afterexpand.applicationmenu', 'aftercollapse.applicationmenu'].join(' '));
-    this.element.find('.application-menu-toolbar').off("click.".concat(COMPONENT_NAME$g));
+    this.element.find('.application-menu-toolbar').off("click.".concat(COMPONENT_NAME$14));
 
     if (this.accordionAPI && typeof this.accordionAPI.destroy === 'function') {
       if (this.isFiltered) {
@@ -26952,13 +27375,13 @@ ApplicationMenu.prototype = {
     }
 
     if (this.switcherPanel) {
-      this.switcherPanel.off(['beforeexpand.applicationmenu', 'aftercollapse.applicationmenu', "afterexpand.".concat(COMPONENT_NAME$g)].join(' '));
+      this.switcherPanel.off(['beforeexpand.applicationmenu', 'aftercollapse.applicationmenu', "afterexpand.".concat(COMPONENT_NAME$14)].join(' '));
       delete this.switcherTrigger;
       delete this.switcherPanel;
     }
 
     if (this.searchfield && this.searchfield.length) {
-      this.searchfield.off(['input.applicationmenu', "cleared.".concat(COMPONENT_NAME$g)].join(' '));
+      this.searchfield.off(['input.applicationmenu', "cleared.".concat(COMPONENT_NAME$14)].join(' '));
       var sfAPI = this.searchfield.data('searchfield');
 
       if (sfAPI) {
@@ -26992,7 +27415,7 @@ ApplicationMenu.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$g);
+    $.removeData(this.element[0], COMPONENT_NAME$14);
   },
 
   /**
@@ -27050,7 +27473,7 @@ ApplicationMenu.prototype = {
           focusableElems[0].focus();
         }
 
-        self.element.on("keydown.".concat(COMPONENT_NAME$g, "-switcher"), function (e) {
+        self.element.on("keydown.".concat(COMPONENT_NAME$14, "-switcher"), function (e) {
           var key = e.key;
 
           if (key === 'Escape' && self.element[0].classList.contains('has-open-switcher')) {
@@ -27062,7 +27485,7 @@ ApplicationMenu.prototype = {
             self.keyboardChangedFocus = true;
           }
         });
-        self.switcherPanel.one("afterexpand.".concat(COMPONENT_NAME$g), function () {
+        self.switcherPanel.one("afterexpand.".concat(COMPONENT_NAME$14), function () {
           if (_this2.keyboardChangedFocus) {
             return;
           }
@@ -27076,9 +27499,9 @@ ApplicationMenu.prototype = {
           _this2.settings.onCollapseSwitcher(_this2, _this2.element, _this2.settings);
         }
 
-        _this2.element.off("keydown.".concat(COMPONENT_NAME$g, "-switcher"));
+        _this2.element.off("keydown.".concat(COMPONENT_NAME$14, "-switcher"));
 
-        _this2.switcherPanel.off("afterexpand.".concat(COMPONENT_NAME$g));
+        _this2.switcherPanel.off("afterexpand.".concat(COMPONENT_NAME$14));
 
         delete _this2.keyboardChangedFocus;
       });
@@ -27086,17 +27509,17 @@ ApplicationMenu.prototype = {
     // should cause the menu to close in some conditions.
 
 
-    this.element.find('.application-menu-toolbar').on("click.".concat(COMPONENT_NAME$g), 'button', function (e) {
+    this.element.find('.application-menu-toolbar').on("click.".concat(COMPONENT_NAME$14), 'button', function (e) {
       if (e.defaultPrevented) {
         return;
       }
 
       _this2.handleDismissOnClick();
     });
-    $(document).on('open-applicationmenu', function () {
-      self.openMenu(undefined, true);
-    }).on('close-applicationmenu', function () {
-      self.closeMenu();
+    $(document).on('open-applicationmenu', function (e, noFocus, userOpened) {
+      self.openMenu(noFocus, userOpened);
+    }).on('close-applicationmenu', function (e, userClosed) {
+      self.closeMenu(userClosed);
     }).on('dismiss-applicationmenu', function () {
       self.handleDismissOnClick();
     });
@@ -27137,19 +27560,19 @@ ApplicationMenu.prototype = {
 
 $.fn.applicationmenu = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$g);
+    var instance = $.data(this, COMPONENT_NAME$14);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$g, new ApplicationMenu(this, settings));
+      instance = $.data(this, COMPONENT_NAME$14, new ApplicationMenu(this, settings));
     }
 
     return instance;
   });
 };
 
-var COMPONENT_NAME$h = 'blockgrid';
+var COMPONENT_NAME$13 = 'blockgrid';
 /**
  * The Blockgrid Component displays data as selectable blocks within a simple grid.
  * @class Blockgrid
@@ -27253,7 +27676,7 @@ Blockgrid.prototype = {
     var _this = this;
 
     var self = this;
-    this.element.on("click.".concat(COMPONENT_NAME$h), '.block', function (e) {
+    this.element.on("click.".concat(COMPONENT_NAME$13), '.block', function (e) {
       var activeBlock = $(e.currentTarget);
       var target = $(e.target);
       var isCheckbox = target.is('.checkbox-label') || target.is('.checkbox');
@@ -27263,15 +27686,15 @@ Blockgrid.prototype = {
       e.stopPropagation();
       e.preventDefault();
     });
-    this.element.on("focus.".concat(COMPONENT_NAME$h), '.checkbox', function (e) {
+    this.element.on("focus.".concat(COMPONENT_NAME$13), '.checkbox', function (e) {
       var block = $(e.currentTarget).parent();
       block.addClass('has-focus');
     });
-    this.element.on("blur.".concat(COMPONENT_NAME$h), '.checkbox', function (e) {
+    this.element.on("blur.".concat(COMPONENT_NAME$13), '.checkbox', function (e) {
       var block = $(e.currentTarget).parent();
       block.removeClass('has-focus');
     });
-    this.element.on("keypress.".concat(COMPONENT_NAME$h), '.block', function (e) {
+    this.element.on("keypress.".concat(COMPONENT_NAME$13), '.block', function (e) {
       if (e.which !== 32) {
         return;
       }
@@ -27279,16 +27702,16 @@ Blockgrid.prototype = {
       var activeBlock = $(e.target);
       self.select(activeBlock, false);
     });
-    this.element.on("updated.".concat(COMPONENT_NAME$h), function () {
+    this.element.on("updated.".concat(COMPONENT_NAME$13), function () {
       self.updated();
     });
 
     if (this.pagerAPI) {
-      this.element.on("page.".concat(COMPONENT_NAME$h), function () {
+      this.element.on("page.".concat(COMPONENT_NAME$13), function () {
         _this.previousFocusedElement = true;
 
         _this.build();
-      }).on("pagesizechange.".concat(COMPONENT_NAME$h), function () {
+      }).on("pagesizechange.".concat(COMPONENT_NAME$13), function () {
         _this.previousFocusedElement = true;
 
         _this.build();
@@ -27546,8 +27969,8 @@ Blockgrid.prototype = {
    * @private
    */
   teardown: function teardown() {
-    this.element.off("updated.".concat(COMPONENT_NAME$h));
-    this.element.off("click.".concat(COMPONENT_NAME$h));
+    this.element.off("updated.".concat(COMPONENT_NAME$13));
+    this.element.off("click.".concat(COMPONENT_NAME$13));
     this.element.empty();
     this.selectedRows = [];
     return this;
@@ -27558,7 +27981,7 @@ Blockgrid.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$h);
+    $.removeData(this.element[0], COMPONENT_NAME$13);
   }
 };
 
@@ -27570,12 +27993,12 @@ Blockgrid.prototype = {
 
 $.fn.blockgrid = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$h);
+    var instance = $.data(this, COMPONENT_NAME$13);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$h, new Blockgrid(this, settings));
+      instance = $.data(this, COMPONENT_NAME$13, new Blockgrid(this, settings));
     }
   });
 };
@@ -27930,7 +28353,7 @@ BreadcrumbItem.prototype = {
   }
 }; // Breadcrumb Component Name
 
-var COMPONENT_NAME$i = 'breadcrumb'; // Breadcrumb Styles
+var COMPONENT_NAME$12 = 'breadcrumb'; // Breadcrumb Styles
 
 var BREADCRUMB_STYLES = ['default', 'alternate']; // Breadcrumb default settings
 
@@ -28272,7 +28695,7 @@ Breadcrumb.prototype = {
 
     var self = this; // Runs a callback associated with a breadcrumb item's anchor tag, if one's defined.
 
-    $(this.list).on("click.".concat(COMPONENT_NAME$i), 'li', function (e) {
+    $(this.list).on("click.".concat(COMPONENT_NAME$12), 'li', function (e) {
       var item = _this2.getBreadcrumbItemAPI(e.currentTarget);
 
       if (!item || !item.api) {
@@ -28316,7 +28739,7 @@ Breadcrumb.prototype = {
 
 
     if (this.overflowBtn) {
-      $(this.overflowBtn).on("selected.".concat(COMPONENT_NAME$i), function (e) {
+      $(this.overflowBtn).on("selected.".concat(COMPONENT_NAME$12), function (e) {
         // First argument is the clicked item from the `popupmenu.selected` event
         var liItem = arguments.length <= 1 ? undefined : arguments[1];
         var index = liItem[0].getAttribute('data-breadcrumb-index');
@@ -28461,7 +28884,7 @@ Breadcrumb.prototype = {
     }
 
     if (this.overflowBtn) {
-      $(this.overflowBtn).off(["beforeopen.".concat(COMPONENT_NAME$i), "selected.".concat(COMPONENT_NAME$i)].join(' '));
+      $(this.overflowBtn).off(["beforeopen.".concat(COMPONENT_NAME$12), "selected.".concat(COMPONENT_NAME$12)].join(' '));
     }
 
     $(this.list).off();
@@ -28502,7 +28925,7 @@ Breadcrumb.prototype = {
   */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element, COMPONENT_NAME$i);
+    $.removeData(this.element, COMPONENT_NAME$12);
   }
 };
 
@@ -28514,17 +28937,17 @@ Breadcrumb.prototype = {
 
 $.fn.breadcrumb = function jQueryBreadcrumb(settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$i);
+    var instance = $.data(this, COMPONENT_NAME$12);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$i, new Breadcrumb(this, settings));
+      instance = $.data(this, COMPONENT_NAME$12, new Breadcrumb(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$j = 'busyindicator';
+var COMPONENT_NAME$11 = 'busyindicator';
 /**
  * A Busy Indicator notifies the user that the system is processing a request, and that they must
  * wait for that request to be processed before continuing with the current task.
@@ -28879,14 +29302,19 @@ BusyIndicator.prototype = {
       this.scrollParent = $(this.getScrollParent(elem));
       var sElem = this.scrollParent[0];
       var height = sElem ? sElem.offsetHeight : 0;
-      var elComputedPos = window.getComputedStyle(this.overlay[0], null).getPropertyValue('position');
+      var elComputedPos;
+
+      if (this.overlay && this.overlay[0]) {
+        elComputedPos = window.getComputedStyle(this.overlay[0], null).getPropertyValue('position');
+      }
+
       var isOverlayAbsolute = elComputedPos === 'absolute';
 
       if (height && this.container && height <= elem.offsetHeight) {
         var winHeight = window.innerHeight || document.documentElement.clientHeight;
 
         var isHeight = function isHeight(el) {
-          return el.scrollHeight > el.clientHeight && el.clientHeight < winHeight - 60;
+          return el.scrollHeight >= el.clientHeight && el.clientHeight < winHeight - 60;
         };
 
         var loc = height / 2 - 58;
@@ -29024,7 +29452,7 @@ BusyIndicator.prototype = {
     this.removeScrollParent();
     this.close(true);
     this.element.off('start.busyindicator complete.busyindicator afterstart.busyindicator aftercomplete.busyindicator updated.busyindicator');
-    $.removeData(this.element[0], COMPONENT_NAME$j);
+    $.removeData(this.element[0], COMPONENT_NAME$11);
   },
   handleEvents: function handleEvents() {
     var _this2 = this;
@@ -29080,17 +29508,25 @@ BusyIndicator.prototype = {
 
 $.fn.busyindicator = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$j);
+    var instance = $.data(this, COMPONENT_NAME$11);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$j, new BusyIndicator(this, settings));
+      instance = $.data(this, COMPONENT_NAME$11, new BusyIndicator(this, settings));
     }
   });
 };
 
-var charts = {}; // Reference to the tooltip
+var charts = {};
+
+charts.destroy = function destroy(el) {
+  var _el$, _el$$classList;
+
+  var chartClasses = ['line-chart', 'bar-chart', 'bar-chart-stacked', 'bar-chart-grouped', 'bubble', 'column-chart', 'completion-chart', 'chart-completion-target-padding', 'chart-pie', 'has-right-legend'];
+  (_el$ = el[0]) === null || _el$ === void 0 ? void 0 : (_el$$classList = _el$ == null ? void 0 : _el$.classList).remove.apply(_el$$classList, chartClasses);
+}; // Reference to the tooltip
+
 
 charts.tooltip = {};
 charts.isIE = Environment.browser.name === 'ie';
@@ -29211,7 +29647,7 @@ charts.removeTooltip = function removeTooltip() {
 charts.colorRange = function () {
   var palette = theme.themeColors().palette;
 
-  if (theme.uplift) {
+  if (theme.new) {
     return [palette.azure['80'].value, palette.turquoise['40'].value, palette.amethyst['60'].value, palette.graphite['40'].value, palette.amber['40'].value, palette.emerald['70'].value, palette.ruby['60'].value, palette.azure['30'].value, palette.amber['70'].value, palette.graphite['60'].value, palette.turquoise['60'].value, palette.emerald['90'].value, palette.amethyst['30'].value, palette.azure['50'].value, palette.ruby['30'].value, palette.amethyst['80'].value, palette.emerald['30'].value, palette.turquoise['80'].value, palette.graphite['20'].value, palette.amber['90'].value];
   }
 
@@ -29219,7 +29655,7 @@ charts.colorRange = function () {
 };
 
 charts.colorNameRange = function () {
-  if (theme.uplift) {
+  if (theme.new) {
     return ['azure08', 'turquoise04', 'amethyst06', 'graphite04', 'amber04', 'emerald07', 'ruby06', 'azure03', 'amber07', 'graphite06', 'turquoise06', 'emerald09', 'amethyst03', 'azure05', 'ruby03', 'amethyst08', 'emerald03', 'turquoise08', 'graphite02', 'amber09'];
   }
 
@@ -29416,7 +29852,7 @@ charts.addLegend = function (series, chartType, settings, container) {
       extraClass += " ".concat(series[i].option);
     }
 
-    var seriesLine = "<span class=\"chart-legend-item".concat(extraClass, "\" tabindex=\"0\"></span>");
+    var seriesLine = "<span class=\"chart-legend-item".concat(extraClass, "\" tabindex=\"0\" role=\"button\"></span>");
     var hexColor = charts.chartColor(i, chartType || (series.length === 1 ? 'bar-single' : 'bar'), series[i]);
     var colorName = charts.chartColorName(i, chartType || (series.length === 1 ? 'bar-single' : 'bar'), series[i]);
     var color = '';
@@ -29448,19 +29884,19 @@ charts.addLegend = function (series, chartType, settings, container) {
     }
 
     if (series[i].display && series[i].display === 'block') {
-      seriesLine = "<span class=\"chart-legend-item".concat(extraClass, "\" tabindex=\"0\"></span>");
+      seriesLine = "<span class=\"chart-legend-item".concat(extraClass, "\" tabindex=\"0\" role=\"button\"></span>");
     }
 
     if (isTwoColumn) {
       if (widthPercent > 45 && settings.legendPlacement !== 'right') {
-        seriesLine = "<span class=\"chart-legend-item".concat(extraClass, "\" tabindex=\"0\"></span>");
+        seriesLine = "<span class=\"chart-legend-item".concat(extraClass, "\" tabindex=\"0\" role=\"button\"></span>");
       } else {
-        seriesLine = "<span class=\"chart-legend-item".concat(extraClass, " is-two-column\" tabindex=\"0\" ></span>");
+        seriesLine = "<span class=\"chart-legend-item".concat(extraClass, " is-two-column\" tabindex=\"0\" role=\"button\"></span>");
       }
     }
 
     seriesLine = $(seriesLine);
-    seriesLine.append(color, textBlock);
+    seriesLine.append(color, "<span class=\"audible\">".concat(Locale.translate('Highlight'), "</span>"), textBlock);
     utils.addAttributes(seriesLine, series[i], (_series$i = series[i]) === null || _series$i === void 0 ? void 0 : (_series$i$data = _series$i == null ? void 0 : _series$i.data) === null || _series$i$data === void 0 ? void 0 : _series$i$data == null ? void 0 : _series$i$data.attributes, 'legend');
 
     if ((chartType === 'pie' || chartType === 'donut') && settings.showMobile) {
@@ -29550,8 +29986,15 @@ charts.handleElementClick = function (line, series, settings) {
   }
 
   if (['radar', 'pie', 'donut', 'column', 'bar', 'bar-stacked', 'bar-grouped', 'bar-normalized', 'column-grouped', 'column-stacked', 'column-positive-negative', 'positive-negative'].indexOf(settings.type) !== -1) {
+    var lineElem = $(line);
+    var isPressed = lineElem.attr('aria-pressed') === 'true';
     charts.clickedLegend = true;
     selector.dispatch('click');
+    lineElem.parent().find('[aria-pressed]').removeAttr('aria-pressed');
+
+    if (!isPressed) {
+      lineElem.attr('aria-pressed', 'true');
+    }
   }
 
   if (elem.selectionObj) {
@@ -29966,7 +30409,7 @@ charts.setSelected = function (o, isToggle, internals) {
         $(legends.selectAll('.chart-legend-item').nodes()[barIndex]).trigger('click.chart');
       }
     } else {
-      selector.on('click').call(selector.node(), selector.datum(), barIndex);
+      selector.dispatch('click');
     }
   }
 };
@@ -30049,11 +30492,13 @@ charts.calculateTextRenderWidth = function (textStr, fonts) {
 
   var defaultFonts = {
     soho: '700 12px arial',
-    uplift: '600 14px arial'
+    uplift: '600 14px arial',
+    classic: '700 12px arial',
+    new: '600 14px arial'
   };
   fonts = utils.mergeSettings(undefined, fonts, defaultFonts);
-  var themeId = ((theme === null || theme === void 0 ? void 0 : (_theme$currentTheme = theme == null ? void 0 : theme.currentTheme) === null || _theme$currentTheme === void 0 ? void 0 : _theme$currentTheme == null ? void 0 : _theme$currentTheme.id) || '').match(/soho|uplift/);
-  themeId = themeId ? themeId[0] : 'soho';
+  var themeId = ((theme === null || theme === void 0 ? void 0 : (_theme$currentTheme = theme == null ? void 0 : theme.currentTheme) === null || _theme$currentTheme === void 0 ? void 0 : _theme$currentTheme == null ? void 0 : _theme$currentTheme.id) || '').match(/soho|uplift|new|classic/);
+  themeId = themeId ? themeId[0] : 'new';
   this.canvas = this.canvas || (this.canvas = document.createElement('canvas'));
   var context = this.canvas.getContext('2d');
   context.font = fonts[themeId];
@@ -30166,7 +30611,7 @@ charts.wrap = function (node, width, labelFactor) {
   });
 };
 
-var COMPONENT_NAME$k = 'bullet';
+var COMPONENT_NAME$10 = 'bullet';
 /**
  * A bullet graph is a variation of a bar graph developed by Stephen Few.
  * Seemingly inspired by the traditional thermometer charts and progress bars found in many
@@ -30343,6 +30788,13 @@ Bullet.prototype = {
       var w1 = bulletWidth(x1); // Update the range rects.
 
       var range = g.selectAll('rect.range').data(ranges);
+      var delay = 200;
+      var prevent = false;
+      var timer = 0; // Make sure the default to get prevent not bubble up.
+
+      self.element.off("dblclick.".concat(self.namespace)).on("dblclick.".concat(self.namespace), '*', function (e) {
+        e.stopImmediatePropagation();
+      });
       range.enter().append('rect').call(function (d) {
         d._groups.forEach(function (thisRanges) {
           thisRanges.forEach(function (thisRange, idx) {
@@ -30359,9 +30811,25 @@ Bullet.prototype = {
         }
 
         return '';
-      }).attr('height', barHeight).on("click.".concat(self.namespace), function () {
+      }).attr('height', barHeight) // Click and double click events
+      // Use very slight delay to fire off the normal click action
+      // It alow to cancel when the double click event happens
+      .on("click.".concat(self.namespace), function () {
         var bar = d3.select(this);
-        self.element.trigger('selected', [bar, chartData.data[bar.attr('data-idx')]]);
+        timer = setTimeout(function () {
+          if (!prevent) {
+            // Run click action
+            self.element.trigger('selected', [bar, chartData.data[bar.attr('data-idx')]]);
+          }
+
+          prevent = false;
+        }, delay);
+      }).on("dblclick.".concat(self.namespace), function () {
+        var bar = d3.select(this);
+        clearTimeout(timer);
+        prevent = true; // Run double click action
+
+        self.element.trigger('dblclick', [bar, chartData.data[bar.attr('data-idx')]]);
       }).on("mouseenter.".concat(self.namespace), function (d, mouseEnterIdx) {
         var bar = d3.select(this);
         var data = chartData.data[bar.attr('data-idx')];
@@ -30599,7 +31067,7 @@ Bullet.prototype = {
 
     if (this.element) {
       this.element.empty().removeClass('bullet-chart');
-      $.removeData(this.element[0], COMPONENT_NAME$k);
+      $.removeData(this.element[0], COMPONENT_NAME$10);
       $.removeData(this.element[0], 'chart');
     }
   }
@@ -30607,7 +31075,7 @@ Bullet.prototype = {
 
 // Other Shared Imports
 
-var COMPONENT_NAME$l = 'completion-chart';
+var COMPONENT_NAME$$ = 'completion-chart';
 /**
 * A completion chart shows completion over a target value. Usually used to show progress as a percentage.
 * @class CompletionChart
@@ -31027,7 +31495,7 @@ CompletionChart.prototype = {
   handleEvents: function handleEvents() {
     var _this2 = this;
 
-    this.element.on("updated.".concat(COMPONENT_NAME$l), function () {
+    this.element.on("updated.".concat(COMPONENT_NAME$$), function () {
       _this2.updated();
     });
     return this;
@@ -31057,7 +31525,7 @@ CompletionChart.prototype = {
    * @private
    */
   teardown: function teardown() {
-    this.element.off("updated.".concat(COMPONENT_NAME$l));
+    this.element.off("updated.".concat(COMPONENT_NAME$$));
     return this;
   },
 
@@ -31069,12 +31537,12 @@ CompletionChart.prototype = {
     this.element.empty().removeClass('completion-chart');
     charts.removeTooltip();
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$l);
+    $.removeData(this.element[0], COMPONENT_NAME$$);
     $.removeData(this.element[0], 'chart');
   }
 };
 
-var COMPONENT_NAME$m = 'sparkline'; // The Component Defaults
+var COMPONENT_NAME$_ = 'sparkline'; // The Component Defaults
 
 var SPARKLINE_DEFAULTS = {
   dataset: [],
@@ -31115,7 +31583,7 @@ Sparkline.prototype = {
     if (!this.settings.colors) {
       var palette = theme.themeColors().palette;
       this.settings.colors = [];
-      this.settings.colors[0] = palette.azure[theme.uplift ? '80' : '70'].value;
+      this.settings.colors[0] = palette.azure[theme.uplift || theme.new ? '80' : '70'].value;
       this.settings.colors[1] = palette.slate['40'].value;
       this.settings.colors[2] = palette.slate['30'].value;
       this.settings.colors[3] = palette.slate['20'].value;
@@ -31387,7 +31855,7 @@ Sparkline.prototype = {
   handleEvents: function handleEvents() {
     var _this2 = this;
 
-    this.element.on("updated.".concat(COMPONENT_NAME$m), function (e, settings) {
+    this.element.on("updated.".concat(COMPONENT_NAME$_), function (e, settings) {
       _this2.updated(settings);
     });
 
@@ -31473,7 +31941,7 @@ Sparkline.prototype = {
 
     if (this.element) {
       this.element.empty().removeClass('sparkline');
-      $.removeData(this.element[0], COMPONENT_NAME$m);
+      $.removeData(this.element[0], COMPONENT_NAME$_);
       $.removeData(this.element[0], 'chart');
     }
   }
@@ -31481,7 +31949,7 @@ Sparkline.prototype = {
 
 /* eslint-disable consistent-return */
 
-var COMPONENT_NAME$n = 'emptymessage';
+var COMPONENT_NAME$Z = 'emptymessage';
 /**
 * The Empty Message is a message with an icon that can be used when no data is present.
 * @class EmptyMessage
@@ -31555,7 +32023,7 @@ EmptyMessage.prototype = {
       $(buttonMarkup).appendTo(this.element);
 
       if (opts.button.click) {
-        this.element.on('click', 'button', opts.button.click);
+        this.element.off('click').on('click', 'button', opts.button.click);
       }
     }
 
@@ -31581,7 +32049,7 @@ EmptyMessage.prototype = {
    * @returns {void}
    */
   destroy: function destroy() {
-    $.removeData(this.element[0], COMPONENT_NAME$n);
+    $.removeData(this.element[0], COMPONENT_NAME$Z);
     this.element.empty();
     this.element.removeClass('empty-message');
   }
@@ -31589,17 +32057,17 @@ EmptyMessage.prototype = {
 
 $.fn.emptymessage = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$n);
+    var instance = $.data(this, COMPONENT_NAME$Z);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$n, new EmptyMessage(this, settings));
+      instance = $.data(this, COMPONENT_NAME$Z, new EmptyMessage(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$o = 'line';
+var COMPONENT_NAME$Y = 'line';
 /**
  * A line chart or line graph is a type of chart which displays information as a series of data
  * points called 'markers' connected by straight line segments.
@@ -31667,6 +32135,7 @@ var LINE_DEFAULTS = {
 function Line(element, settings) {
   this.settings = utils.mergeSettings(element, settings, LINE_DEFAULTS);
   this.element = $(element);
+  charts.destroy(element);
   this.init();
 } // Plugin Methods
 
@@ -32036,6 +32505,27 @@ Line.prototype = {
       return xScale(typeof ((_s$xAxis7 = s.xAxis) === null || _s$xAxis7 === void 0 ? void 0 : _s$xAxis7 == null ? void 0 : _s$xAxis7.parser) === 'function' ? s.xAxis.parser(d, n) : s.isBubble || s.isScatterPlot ? d.value.x : n);
     }).y(function (d) {
       return yScale(s.isBubble || s.isScatterPlot ? d.value.y : d.value);
+    });
+    var clickStatus = {
+      line: {
+        delay: 200,
+        prevent: false,
+        timer: 0
+      },
+      dot: {
+        delay: 200,
+        prevent: false,
+        timer: 0
+      },
+      symbol: {
+        delay: 200,
+        prevent: false,
+        timer: 0
+      }
+    }; // Make sure the default to get prevent not bubble up.
+
+    self.element.off("dblclick.".concat(self.namespace)).on("dblclick.".concat(self.namespace), '*', function (e) {
+      e.stopImmediatePropagation();
     }); // Append the lines
 
     dataset.forEach(function (d, lineIdx) {
@@ -32066,8 +32556,29 @@ Line.prototype = {
             utils.addAttributes($(thisLine), d, d.attributes, 'line');
           });
         });
-      }).on("click.".concat(self.namespace), function () {
-        charts.selectElement(d3.select(this.parentNode), self.svg.selectAll('.line-group'), d, self.element, dataset, self.initialSelectCall);
+      }) // Click and double click events
+      // Use very slight delay to fire off the normal click action
+      // It alow to cancel when the double click event happens
+      .on("click.".concat(self.namespace), function () {
+        var selector = this;
+        clickStatus.line.timer = setTimeout(function () {
+          if (!clickStatus.line.prevent) {
+            // Run click action
+            charts.selectElement(d3.select(selector.parentNode), self.svg.selectAll('.line-group'), d, self.element, dataset, self.initialSelectCall);
+          }
+
+          clickStatus.line.prevent = false;
+        }, clickStatus.line.delay);
+      }).on("dblclick.".concat(self.namespace), function () {
+        // const selector = this;
+        clearTimeout(clickStatus.line.timer);
+        clickStatus.line.prevent = true; // Run double click action
+
+        var args = [{
+          elem: [this.parentNode],
+          data: d
+        }];
+        self.element.triggerHandler('dblclick', [args]);
       }).on("contextmenu.".concat(self.namespace), function () {
         charts.triggerContextMenu(self.element, d3.select(this).nodes()[0], d);
       }); // Add animation
@@ -32185,8 +32696,29 @@ Line.prototype = {
             d3.select(this).attr('r', function (dg) {
               return s.isBubble ? zScale(dg.value.z) : dots.radius;
             });
-          }).on("click.".concat(self.namespace), function (dh) {
-            charts.selectElement(d3.select(this.parentNode), self.svg.selectAll('.line-group'), dh, self.element, dataset, self.initialSelectCall);
+          }) // Click and double click events
+          // Use very slight delay to fire off the normal click action
+          // It alow to cancel when the double click event happens
+          .on("click.".concat(self.namespace), function (dh) {
+            var selector = this;
+            clickStatus.dot.timer = setTimeout(function () {
+              if (!clickStatus.dot.prevent) {
+                // Run click action
+                charts.selectElement(d3.select(selector.parentNode), self.svg.selectAll('.line-group'), dh, self.element, dataset, self.initialSelectCall);
+              }
+
+              clickStatus.dot.prevent = false;
+            }, clickStatus.dot.delay);
+          }).on("dblclick.".concat(self.namespace), function (dh) {
+            // const selector = this;
+            clearTimeout(clickStatus.dot.timer);
+            clickStatus.dot.prevent = true; // Run double click action
+
+            var args = [{
+              elem: [this.parentNode],
+              data: dh
+            }];
+            self.element.triggerHandler('dblclick', [args]);
           }).on("contextmenu.".concat(self.namespace), function (di) {
             charts.triggerContextMenu(self.element, d3.select(this).nodes()[0], di);
           });
@@ -32215,8 +32747,29 @@ Line.prototype = {
             d3.select(this).attr('r', function () {
               return dots.radius;
             });
-          }).on("click.".concat(self.namespace), function (dh) {
-            charts.selectElement(d3.select(this.parentNode), self.svg.selectAll('.line-group'), dh, self.element, dataset, self.initialSelectCall);
+          }) // Click and double click events
+          // Use very slight delay to fire off the normal click action
+          // It alow to cancel when the double click event happens
+          .on("click.".concat(self.namespace), function (dh) {
+            var selector = this;
+            clickStatus.symbol.timer = setTimeout(function () {
+              if (!clickStatus.symbol.prevent) {
+                // Run click action
+                charts.selectElement(d3.select(selector.parentNode), self.svg.selectAll('.line-group'), dh, self.element, dataset, self.initialSelectCall);
+              }
+
+              clickStatus.symbol.prevent = false;
+            }, clickStatus.symbol.delay);
+          }).on("dblclick.".concat(self.namespace), function (dh) {
+            // const selector = this;
+            clearTimeout(clickStatus.symbol.timer);
+            clickStatus.symbol.prevent = true; // Run double click action
+
+            var args = [{
+              elem: [this.parentNode],
+              data: dh
+            }];
+            self.element.triggerHandler('dblclick', [args]);
           }).on("contextmenu.".concat(self.namespace), function (di) {
             charts.triggerContextMenu(self.element, d3.select(this).nodes()[0], di);
           });
@@ -32615,8 +33168,8 @@ Line.prototype = {
     };
 
     if (this.element) {
-      this.element.find('.line-group .line').off(events(['click', 'contextmenu']));
-      this.element.find('.line-group .symbol').off(events(['mouseenter', 'mouseleave', 'click', 'contextmenu']));
+      this.element.find('.line-group .line').off(events(['click', 'dblclick', 'contextmenu']));
+      this.element.find('.line-group .symbol').off(events(['mouseenter', 'mouseleave', 'click', 'dblclick', 'contextmenu']));
       this.element.off(events(['updated', 'resize']));
     }
 
@@ -32624,7 +33177,7 @@ Line.prototype = {
     $('html').off("themechanged.".concat(this.namespace));
 
     if (this.dots && this.element) {
-      this.element.find(".line-group .".concat(this.dots.class)).off(events(['mouseenter', 'mouseleave', 'click', 'contextmenu']));
+      this.element.find(".line-group .".concat(this.dots.class)).off(events(['mouseenter', 'mouseleave', 'click', 'dblclick', 'contextmenu']));
       delete this.dots;
     }
 
@@ -32642,13 +33195,13 @@ Line.prototype = {
 
     if (this.element) {
       this.element.empty().removeClass('line-chart');
-      $.removeData(this.element[0], COMPONENT_NAME$o);
+      $.removeData(this.element[0], COMPONENT_NAME$Y);
       $.removeData(this.element[0], 'chart');
     }
   }
 };
 
-var COMPONENT_NAME$p = 'column';
+var COMPONENT_NAME$X = 'column';
 /**
 * A column chart displays a series as a set of vertical bars that are grouped by category.
 * Column charts are useful for showing data changes over a period of time or for illustrating
@@ -33281,6 +33834,13 @@ Column.prototype = {
       isGrouped: isGrouped,
       isStacked: self.settings.isStacked
     });
+    var delay = 200;
+    var prevent = false;
+    var timer = 0; // Make sure the default to get prevent not bubble up.
+
+    self.element.off("dblclick.".concat(self.namespace)).on("dblclick.".concat(self.namespace), '*', function (e) {
+      e.stopImmediatePropagation();
+    });
     (isPositiveNegative ? pnBars : bars).on("mouseenter.".concat(self.namespace), function (d, i) {
       var x;
       var y; //eslint-disable-line
@@ -33294,34 +33854,80 @@ Column.prototype = {
       var thisShape = this;
       var shape = $(this);
       var content = '';
+      var tooltipTargetEl = null;
       var ePageY = d3.event.pageY;
 
       var setPattern = function setPattern(pattern, hexColor) {
         //eslint-disable-line
         return !pattern || !hexColor ? '' : "".concat('<svg width="12" height="12">' + '<rect style="fill: ').concat(hexColor, "\" mask=\"url(#").concat(pattern, ")\" height=\"12\" width=\"12\" />") + '</svg>';
-      };
+      }; // Index to stroe tooltip cache data
+
+
+      var tooltipIdx = i; // Set group info
+
+      var thisGroup = null;
+
+      if (self.isGrouped) {
+        thisGroup = {
+          elem: d3.select(this.parentNode)
+        };
+        thisGroup.data = thisGroup.elem.datum().values;
+        thisGroup.items = thisGroup.elem.selectAll('.bar');
+        thisGroup.idx = parseInt(thisGroup.elem.attr('data-group-id'), 10);
+        tooltipIdx = thisGroup.idx * thisGroup.data.length + i;
+      }
 
       var show = function show(isTooltipBottom) {
         //eslint-disable-line
         size = charts.tooltipSize(content);
-        x = shape[0].getBoundingClientRect().left - size.width / 2 + shape.attr('width') / 2;
+        var tooltipOuterHeight = charts.tooltip.outerHeight();
+        var rect = null;
 
-        if (self.settings.isStacked) {
-          y = shape[0].getBoundingClientRect().top - size.height - 10;
-        } else {
-          y = ePageY - charts.tooltip.outerHeight() - 25;
+        if (DOM.isValidElement(tooltipTargetEl)) {
+          // If target come from callback, bar or group element
+          rect = tooltipTargetEl.getBoundingClientRect();
+          x = rect.left - size.width / 2 + rect.width / 2;
 
-          if (dataset.length > 1) {
-            x = thisShape.parentNode.getBoundingClientRect().left - size.width / 2 + thisShape.parentNode.getBoundingClientRect().width / 2;
+          if (tooltipTargetEl !== thisGroup.elem.node()) {
+            // Bar element
+            y = rect.top - size.height - 10;
+          } else {
+            // Group element
+            y = ePageY - tooltipOuterHeight - 25;
 
             if (isTooltipBottom) {
-              y += charts.tooltip.outerHeight() + 50;
+              y += tooltipOuterHeight + 50;
 
-              if (y > thisShape.parentNode.getBoundingClientRect().bottom + 10) {
-                y = thisShape.parentNode.getBoundingClientRect().bottom + 10;
+              if (y > rect.bottom + 10) {
+                y = rect.bottom + 10;
               }
             } else {
-              y = thisShape.parentNode.getBoundingClientRect().top - charts.tooltip.outerHeight() + 25;
+              y = rect.top - tooltipOuterHeight + 25;
+            }
+          }
+        } else {
+          // Default use current shape or current group element
+          rect = shape[0].getBoundingClientRect();
+          x = rect.left - size.width / 2 + shape.attr('width') / 2;
+
+          if (self.settings.isStacked) {
+            y = rect.top - size.height - 10;
+          } else {
+            rect = thisShape.parentNode.getBoundingClientRect();
+            y = ePageY - tooltipOuterHeight - 25;
+
+            if (dataset.length > 1) {
+              x = rect.left - size.width / 2 + rect.width / 2;
+
+              if (isTooltipBottom) {
+                y += tooltipOuterHeight + 50;
+
+                if (y > rect.bottom + 10) {
+                  y = rect.bottom + 10;
+                }
+              } else {
+                y = rect.top - tooltipOuterHeight + 25;
+              }
             }
           }
         }
@@ -33373,15 +33979,23 @@ Column.prototype = {
       var setCustomTooltip = function setCustomTooltip(method) {
         content = '';
         var args = {
+          elem: thisShape,
           index: i,
           data: d
         };
 
-        var req = function req(res) {
+        if (self.isGrouped) {
+          args.groupElem = thisGroup.elem.node();
+          args.groupItems = thisGroup.items.nodes();
+          args.groupIndex = thisGroup.idx;
+          args.groupData = thisGroup.data;
+        }
+
+        var req = function req(res, target) {
           if (typeof res === 'string' || typeof res === 'number') {
             content = res;
+            tooltipTargetEl = target;
             replaceMatchAndSetType();
-            tooltipDataCache[i] = content;
           }
         };
 
@@ -33446,18 +34060,18 @@ Column.prototype = {
         }
       }
 
-      if (tooltipData && typeof tooltipData === 'function' && typeof d.tooltip === 'undefined' && !tooltipDataCache[i]) {
+      if (tooltipData && typeof tooltipData === 'function' && typeof d.tooltip === 'undefined' && !tooltipDataCache[tooltipIdx]) {
         setCustomTooltip(tooltipData);
       } else {
-        content = tooltipDataCache[i] || tooltipData || content || '';
+        content = tooltipDataCache[tooltipIdx] || tooltipData || content || '';
 
-        if (!tooltipDataCache[i] && d.tooltip !== false && typeof d.tooltip !== 'undefined' && d.tooltip !== null) {
+        if (!tooltipDataCache[tooltipIdx] && d.tooltip !== false && typeof d.tooltip !== 'undefined' && d.tooltip !== null) {
           if (typeof d.tooltip === 'function') {
             setCustomTooltip(d.tooltip);
           } else {
             content = d.tooltip.toString();
             replaceMatchAndSetType();
-            tooltipDataCache[i] = content;
+            tooltipDataCache[tooltipIdx] = content;
           }
         }
 
@@ -33469,50 +34083,28 @@ Column.prototype = {
     .on("mouseleave.".concat(self.namespace), function () {
       clearInterval(tooltipInterval);
       charts.hideTooltip();
-    }) // Click
-    .on("click.".concat(self.namespace), function (d, i, clickedLegend) {
-      var isTargetBar = this && d3.select(this).classed('target-bar');
-      var isSelected = this && d3.select(this).classed('is-selected');
-      var thisGroupId = parseInt(d3.select(this.parentNode).attr('data-group-id'), 10); // Set isSelected to false if even 1 bar is selected
-
-      if (isTargetBar) {
-        var allBars = d3.selectAll('.bar').nodes();
-        var len = allBars.length;
-
-        for (var j = 0; j < len; j++) {
-          var bar = allBars[j];
-
-          if (d3.select(bar).classed('is-selected')) {
-            isSelected = false;
-            break;
-          }
-        }
-      }
-
-      charts.setSelectedElement({
-        task: isSelected ? 'unselected' : 'selected',
-        container: self.element,
-        selector: this,
-        isTrigger: self.initialSelectCall ? false : !isSelected,
-        isTargetBar: isTargetBar,
-        triggerGroup: isGrouped,
-        d: d,
-        i: i,
-        type: self.settings.type,
-        dataset: self.dataset,
-        isSingle: self.isSingle,
-        isGrouped: self.isGrouped,
-        isStacked: self.settings.isStacked,
-        svg: self.svg,
-        clickedLegend: clickedLegend === true
-      });
-
-      if (isSelected && !self.initialSelectCall) {
-        self.element.triggerHandler('selected', [d3.select(this).nodes(), {}, isGrouped ? thisGroupId : i]);
-      }
     }) // Contextmenu
     .on("contextmenu.".concat(self.namespace), function (d) {
       charts.triggerContextMenu(self.element, d3.select(this).nodes()[0], d);
+    }) // Click and double click events
+    // Use very slight delay to fire off the normal click action
+    // It alow to cancel when the double click event happens
+    .on("click.".concat(self.namespace), function (d, i, clickedLegend) {
+      var selector = this;
+      timer = setTimeout(function () {
+        if (!prevent) {
+          // Run click action
+          self.doClickAction(d, i, selector, clickedLegend);
+        }
+
+        prevent = false;
+      }, delay);
+    }).on("dblclick.".concat(self.namespace), function (d, i) {
+      var selector = this;
+      clearTimeout(timer);
+      prevent = true; // Run double click action
+
+      self.doDoubleClickAction(d, i, selector);
     }); // Add Legend
 
     self.settings.isGrouped = isGrouped;
@@ -33896,6 +34488,117 @@ Column.prototype = {
   },
 
   /**
+   * Action to happen on click.
+   * @private
+   * @param {object} d - The data object
+   * @param {number} i - The index
+   * @param {object} selector - The selector element
+   * @param {boolean} clickedLegend - Is clicked by legend
+   * @returns {void}
+   */
+  doClickAction: function doClickAction(d, i, selector, clickedLegend) {
+    var self = this;
+    var isTargetBar = selector && d3.select(selector).classed('target-bar');
+    var isSelected = selector && d3.select(selector).classed('is-selected');
+    var thisGroupId = parseInt(d3.select(selector.parentNode).attr('data-group-id'), 10); // Set isSelected to false if even 1 bar is selected
+
+    if (isTargetBar) {
+      var allBars = self.svg.selectAll('.bar').nodes();
+      var len = allBars.length;
+
+      for (var j = 0; j < len; j++) {
+        var bar = allBars[j];
+
+        if (d3.select(bar).classed('is-selected')) {
+          isSelected = false;
+          break;
+        }
+      }
+    }
+
+    charts.setSelectedElement({
+      task: isSelected ? 'unselected' : 'selected',
+      container: self.element,
+      selector: selector,
+      isTrigger: self.initialSelectCall ? false : !isSelected,
+      isTargetBar: isTargetBar,
+      triggerGroup: self.isGrouped,
+      d: d,
+      i: i,
+      type: self.settings.type,
+      dataset: self.dataset,
+      isSingle: self.isSingle,
+      isGrouped: self.isGrouped,
+      isStacked: self.settings.isStacked,
+      svg: self.svg,
+      clickedLegend: clickedLegend === true
+    });
+
+    if (isSelected && !self.initialSelectCall) {
+      self.element.triggerHandler('selected', [d3.select(selector).nodes(), {}, self.isGrouped ? thisGroupId : i]);
+    }
+  },
+
+  /**
+   * Action to happen on double click.
+   * @private
+   * @param {object} d - The data object
+   * @param {number} i - The index
+   * @param {object} selector - The selector element
+   * @returns {void}
+   */
+  doDoubleClickAction: function doDoubleClickAction(d, i, selector) {
+    var self = this;
+    var s = this.settings;
+    var args;
+
+    if (s.isGrouped) {
+      var groupElem = d3.select(selector.parentNode);
+      var groupIndex = parseInt(groupElem === null || groupElem === void 0 ? void 0 : groupElem == null ? void 0 : groupElem.attr('data-group-id'), 10);
+      var groupItems = [];
+      groupElem.selectAll('.bar').each(function (d2, i2) {
+        groupItems.push({
+          elem: this,
+          data: d2,
+          index: i2
+        });
+      });
+      args = [{
+        groupElem: groupElem.node(),
+        groupIndex: groupIndex,
+        groupItems: groupItems
+      }];
+    } else if (self.isSingle && self.settings.isStacked) {
+      var _self$dataset$;
+
+      var thisData = self.dataset && (_self$dataset$ = self.dataset[0]) !== null && _self$dataset$ !== void 0 && (_self$dataset$ == null ? void 0 : _self$dataset$.data) && self.dataset[0].data[i] ? self.dataset[0].data[i] : d;
+      args = [{
+        data: thisData,
+        index: i,
+        elem: [selector]
+      }];
+    } else if (self.settings.isStacked) {
+      args = [];
+      self.svg.selectAll('.series-group').each(function () {
+        var bar = d3.select(this).selectAll('.bar').nodes()[i];
+        args.push({
+          elem: bar,
+          data: d3.select(bar).datum(),
+          index: i
+        });
+      });
+    } else {
+      args = [{
+        data: d,
+        index: i,
+        elem: selector
+      }];
+    }
+
+    self.element.triggerHandler('dblclick', [args]);
+  },
+
+  /**
    * Handle updated settings and values.
    * @param  {object} settings The new settings to use.
    * @returns {object} The api for chaining.
@@ -33945,7 +34648,7 @@ Column.prototype = {
 
     if (this.element) {
       this.element.empty().removeClass('column-chart');
-      $.removeData(this.element[0], COMPONENT_NAME$p);
+      $.removeData(this.element[0], COMPONENT_NAME$X);
       $.removeData(this.element[0], 'chart');
     }
   }
@@ -33953,7 +34656,7 @@ Column.prototype = {
 
 /* eslint-disable no-nested-ternary, prefer-arrow-callback, no-underscore-dangle */
 
-var COMPONENT_NAME$q = 'bar';
+var COMPONENT_NAME$W = 'bar';
 /**
  * A bar chart or bar graph is a chart or graph that presents categorical data with rectangular bars
  * with heights or lengths proportional to the values that they represent. This is adapated from
@@ -34024,6 +34727,7 @@ function Bar(element, settings) {
   }
 
   this.element = $(element);
+  charts.destroy(element);
   this.init();
 } // Plugin Methods
 
@@ -34354,12 +35058,15 @@ Bar.prototype = {
     });
     s.isGrouped = self.svg.selectAll('.series-group').nodes().length > 1 && !s.isStacked || s.isGrouped && dataset.length === 1;
     s.isSingle = self.svg.selectAll('.series-group').nodes().length === 1 && s.isStacked;
+    var delay = 200;
+    var prevent = false;
+    var timer = 0;
     groups.selectAll('rect').data(function (d, i) {
-      d.forEach(function (d3) {
-        d3.index = i;
+      d.forEach(function (rectData) {
+        rectData.index = i;
 
         if (!s.isStacked) {
-          d3.gindex = gindex++;
+          rectData.gindex = gindex++;
         }
       });
       return d;
@@ -34405,23 +35112,56 @@ Bar.prototype = {
       return s.isStacked ? yScale.bandwidth() : maxBarHeight;
     }).attr('width', 0) // Animated in later
     .on("mouseenter.".concat(self.namespace), function (d, i) {
+      var _this = this;
+
       var j;
       var l;
       var hexColor;
       var total = 0;
       var totals = [];
       var content = '';
-      var data = d3.select(this.parentNode).datum();
-      var mid = Math.round(data.length / 2);
+      var tooltipTargetEl = null;
+      var maxBarsForTopTooltip = 6;
       var shape = d3.select(this);
+      var parentNode = this.parentNode;
+      var data = d3.select(parentNode).datum();
+      var mid = Math.round(data.length / 2);
 
       var setPattern = function setPattern(pattern, hexColor2) {
         return !pattern || !hexColor2 ? '' : "<svg width=\"12\" height=\"12\"><rect mask=\"url(#".concat(pattern, ")\" height=\"12\" width=\"12\" /></svg>");
-      };
+      }; // Set group info
 
-      var show = function show(xPosS, yPosS, isTooltipBottom) {
+
+      var thisGroup = null;
+
+      if (s.isGrouped) {
+        thisGroup = {
+          elem: d3.select(parentNode)
+        };
+        thisGroup.data = data;
+        thisGroup.items = thisGroup.elem.selectAll('.bar');
+        thisGroup.idx = parseInt(parentNode.getAttribute('data-group-id'), 10);
+      }
+
+      var show = function show() {
+        var isTooltipBottom = !s.isStacked && data.length > maxBarsForTopTooltip;
+        var el;
+        var midNode = $(".series-".concat(mid), parentNode)[0];
+
+        if (DOM.isValidElement(tooltipTargetEl)) {
+          // If target come from callback, bar or group element
+          el = tooltipTargetEl === thisGroup.elem.node() ? midNode : tooltipTargetEl;
+        } else {
+          // Default use current shape or current group element
+          el = s.isGrouped ? midNode : shape.node();
+        }
+
+        var rect = el.getBoundingClientRect();
+        var winJq = $(window);
+        var yPosS = rect.top + winJq.scrollTop();
+        var xPosS = rect.left + winJq.scrollLeft();
         var size = charts.tooltipSize(content);
-        var x = xPosS + parseFloat(shape.attr('width')) / 2 - size.width / 2;
+        var x = xPosS + rect.width / 2 - size.width / 2;
         var y = isTooltipBottom ? yPosS : yPosS - size.height - 13;
 
         if (content !== '') {
@@ -34471,15 +35211,23 @@ Bar.prototype = {
       var setCustomTooltip = function setCustomTooltip(method) {
         content = '';
         var args = {
+          elem: _this,
           index: i,
           data: d
         };
 
-        var req = function req(res) {
+        if (s.isGrouped) {
+          args.groupElem = thisGroup.elem.node();
+          args.groupItems = thisGroup.items.nodes();
+          args.groupIndex = thisGroup.idx;
+          args.groupData = thisGroup.data;
+        }
+
+        var req = function req(res, target) {
           if (typeof res === 'string' || typeof res === 'number') {
             content = res;
+            tooltipTargetEl = target;
             replaceMatchAndSetType();
-            tooltipDataCache[i] = content;
           }
         };
 
@@ -34515,10 +35263,6 @@ Bar.prototype = {
             content += "<div class=\"swatch-row\">\n                  <div class=\"swatch-color\">".concat(setPattern(series[j].pattern, hexColor), "</div>\n                  <span>").concat(series[j].name, "</span>\n                  <b> ").concat(isFormatter ? format(totals[j]) : "".concat(Math.round(totals[j] / total * 100), "%"), " </b>\n                </div>");
           }
         } else {
-          if (mid > 1) {
-            shape = d3.select(this.parentNode).select(".series-".concat(mid));
-          }
-
           for (j = 0, l = data.length; j < l; j++) {
             hexColor = charts.chartColor(j, 'bar', legendMap[j]);
             content += "<div class=\"swatch-row\">\n                    <div class=\"swatch-color\">".concat(setPattern(legendMap[j].pattern, hexColor), "</div>\n                  <span>").concat(data[j].name, "</span><b>").concat(format(data[j].value), "</b>\n                </div>");
@@ -34532,28 +35276,8 @@ Bar.prototype = {
         content = "<span class=\"chart-tooltip-total\"><b>".concat(total, "</b> ").concat(Locale.translate('Total'), "</span>").concat(content);
       }
 
-      var yPosS = shape.nodes()[0].getBoundingClientRect().top + $(window).scrollTop();
-      var xPosS = shape.nodes()[0].getBoundingClientRect().left + $(window).scrollLeft();
-      var maxBarsForTopTooltip = 6;
-      var isTooltipBottom = !s.isStacked && data.length > maxBarsForTopTooltip;
-
       if (tooltipData && typeof tooltipData === 'function' && !tooltipDataCache[i]) {
-        content = '';
-        var runInterval = true;
-        tooltipInterval = setInterval(function () {
-          if (runInterval) {
-            runInterval = false;
-            tooltipData(function (data2) {
-              content = data2;
-              tooltipDataCache[i] = data2;
-            });
-          }
-
-          if (content !== '') {
-            clearInterval(tooltipInterval);
-            show(xPosS, yPosS, isTooltipBottom);
-          }
-        }, 10);
+        setCustomTooltip(tooltipData);
       } else {
         content = tooltipDataCache[i] || tooltipData || content || '';
 
@@ -34568,7 +35292,7 @@ Bar.prototype = {
         }
 
         if (typeof content === 'string' && content !== '') {
-          show(xPosS, yPosS, isTooltipBottom);
+          show();
         } // set inline colors
 
 
@@ -34600,31 +35324,31 @@ Bar.prototype = {
     }).on("mouseleave.".concat(self.namespace), function () {
       clearInterval(tooltipInterval);
       charts.hideTooltip();
-    }).on('click', function (d, i) {
-      var isSelected = this && d3.select(this).classed('is-selected');
-      var thisGroupId = parseInt(d3.select(this.parentNode).attr('data-group-id'), 10);
-      charts.setSelectedElement({
-        task: isSelected ? 'unselected' : 'selected',
-        container: self.element,
-        selector: this,
-        isTrigger: self.initialSelectCall ? false : !isSelected,
-        triggerGroup: s.isGrouped,
-        d: d,
-        i: i,
-        type: s.type,
-        dataset: s.dataset,
-        isSingle: self.isSingular,
-        isGrouped: s.isGrouped,
-        isStacked: s.isStacked,
-        svg: self.svg,
-        clickedLegend: s.clickedLegend
-      });
-
-      if (isSelected && !self.initialSelectCall) {
-        self.element.triggerHandler('selected', [d3.select(this).nodes(), {},  i]);
-      }
     }).on("contextmenu.".concat(self.namespace), function (d) {
       charts.triggerContextMenu(self.element, d3.select(this).nodes()[0], d);
+    }) // Click and double click events
+    // Use very slight delay to fire off the normal click action
+    // It alow to cancel when the double click event happens
+    .on("click.".concat(self.namespace), function (d, i) {
+      var selector = this;
+      timer = setTimeout(function () {
+        if (!prevent) {
+          // Run click action
+          self.doClickAction(d, i, selector);
+        }
+
+        prevent = false;
+      }, delay);
+    }).on("dblclick.".concat(self.namespace), function (d, i) {
+      var selector = this;
+      clearTimeout(timer);
+      prevent = true; // Run double click action
+
+      self.doDoubleClickAction(d, i, selector);
+    }); // Make sure the default to get prevent not bubble up.
+
+    self.element.off("dblclick.".concat(self.namespace)).on("dblclick.".concat(self.namespace), '*', function (e) {
+      e.stopImmediatePropagation();
     }); // Adjust the labels
 
     self.svg.selectAll('.axis.y text').attr('x', function () {
@@ -34718,7 +35442,7 @@ Bar.prototype = {
    */
   setTextValues: function setTextValues() {
     var _this$settings,
-        _this = this;
+        _this2 = this;
 
     var dataset = (_this$settings = this.settings) === null || _this$settings === void 0 ? void 0 : _this$settings == null ? void 0 : _this$settings.dataset;
 
@@ -34741,7 +35465,7 @@ Bar.prototype = {
             maxWidth: "".concat(brief.maxWidth, "px")
           },
           arrow: {
-            left: _this.isRTL ? 'calc(100% - 20px)' : '20px'
+            left: _this2.isRTL ? 'calc(100% - 20px)' : '20px'
           }
         };
       };
@@ -34750,8 +35474,8 @@ Bar.prototype = {
     var getText = function getText(d, i) {
       var r;
 
-      if (_this.ellipsis.use) {
-        r = charts.trimText(d.name, _this.ellipsis.threshold);
+      if (_this2.ellipsis.use) {
+        r = charts.trimText(d.name, _this2.ellipsis.threshold);
 
         if (r.substr(-3) === '...') {
           var textWidth = charts.calculateTextRenderWidth(d.name);
@@ -34769,7 +35493,7 @@ Bar.prototype = {
               y -= 33 * ((numOfLines - 1) * 0.5);
             }
 
-            if (_this.isRTL) {
+            if (_this2.isRTL) {
               x = rect.left - textWidth + brief.transX;
             }
 
@@ -34785,15 +35509,15 @@ Bar.prototype = {
             d3.select(parentNode).append('foreignObject').attr('overflow', 'visible').attr('width', "".concat(brief.transX)).attr('height', '16').attr('class', "foreign-object tick-y".concat(i)).attr('x', "-".concat(brief.transX)).attr('y', '-1em').attr('requiredFeatures', 'http://www.w3.org/TR/SVG11/feature#Extensibility').html("<div class=\"text ellipsis\" resizeable=\"false\" xmlns=\"http://www.w3.org/1999/xhtml\">".concat(d.name, "</div>"));
           }
 
-          d3.select(parentNode).on("mouseover.".concat(_this.namespace), function () {
+          d3.select(parentNode).on("mouseover.".concat(_this2.namespace), function () {
             var pos = calculatePos(parentNode.getBoundingClientRect());
             charts.showTooltip(pos.x, pos.y, d.name, 'top', brief.customCss());
-          }).on("mouseout.".concat(_this.namespace), function () {
+          }).on("mouseout.".concat(_this2.namespace), function () {
             return charts.hideTooltip();
           });
         }
       } else {
-        r = charts.getLabel(d, _this.viewport);
+        r = charts.getLabel(d, _this2.viewport);
       }
 
       return r;
@@ -34928,7 +35652,7 @@ Bar.prototype = {
         }
       } else {
         this.initialSelectCall = true;
-        selector.on('click').call(selector.node(), selector.datum(), barIndex);
+        selector.dispatch('click');
       }
     }
 
@@ -34941,23 +35665,23 @@ Bar.prototype = {
    * @private
    */
   handleEvents: function handleEvents() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.element.on("updated.".concat(this.namespace), function () {
-      _this2.updated();
+      _this3.updated();
     });
 
     if (this.settings.redrawOnResize) {
       $('body').on("resize.".concat(this.namespace), function () {
-        _this2.handleResize();
+        _this3.handleResize();
       });
       this.element.on("resize.".concat(this.namespace), function () {
-        _this2.handleResize();
+        _this3.handleResize();
       });
     }
 
     $('html').on("themechanged.".concat(this.namespace), function () {
-      _this2.updated();
+      _this3.updated();
     });
     return this;
   },
@@ -34991,26 +35715,111 @@ Bar.prototype = {
     this.setSelected(options, true);
   },
 
+  /**
+   * Action to happen on click.
+   * @private
+   * @param {object} d - The data object
+   * @param {number} i - The index
+   * @param {object} selector - The selector element
+   * @returns {void}
+   */
+  doClickAction: function doClickAction(d, i, selector) {
+    var self = this;
+    var s = this.settings;
+    var isSelected = selector && d3.select(selector).classed('is-selected');
+    var thisGroupId = parseInt(d3.select(selector.parentNode).attr('data-group-id'), 10);
+    charts.setSelectedElement({
+      task: isSelected ? 'unselected' : 'selected',
+      container: self.element,
+      selector: selector,
+      isTrigger: self.initialSelectCall ? false : !isSelected,
+      triggerGroup: s.isGrouped,
+      d: d,
+      i: i,
+      type: s.type,
+      dataset: s.dataset,
+      isSingle: self.isSingular,
+      isGrouped: s.isGrouped,
+      isStacked: s.isStacked,
+      svg: self.svg,
+      clickedLegend: s.clickedLegend
+    });
+
+    if (isSelected && !self.initialSelectCall) {
+      self.element.triggerHandler('selected', [d3.select(selector).nodes(), {}, s.isGrouped ? thisGroupId : i]);
+    }
+  },
+
+  /**
+   * Action to happen on double click.
+   * @private
+   * @param {object} d - The data object
+   * @param {number} i - The index
+   * @param {object} selector - The selector element
+   * @returns {void}
+   */
+  doDoubleClickAction: function doDoubleClickAction(d, i, selector) {
+    var self = this;
+    var s = this.settings;
+    var args;
+
+    if (s.isGrouped) {
+      var groupElem = d3.select(selector.parentNode);
+      var groupIndex = parseInt(groupElem === null || groupElem === void 0 ? void 0 : groupElem == null ? void 0 : groupElem.attr('data-group-id'), 10);
+      var groupItems = [];
+      groupElem.selectAll('.bar').each(function (d2, i2) {
+        groupItems.push({
+          elem: this,
+          data: d2,
+          index: i2
+        });
+      });
+      args = [{
+        groupElem: groupElem.node(),
+        groupIndex: groupIndex,
+        groupItems: groupItems
+      }];
+    } else if (s.type === 'bar-stacked') {
+      args = [];
+      self.svg.selectAll('.series-group').each(function () {
+        var bar = d3.select(this).selectAll('.bar').nodes()[i];
+        args.push({
+          elem: bar,
+          data: d3.select(bar).datum(),
+          index: i
+        });
+      });
+    } else {
+      args = [{
+        data: d,
+        index: i,
+        elem: selector
+      }];
+    }
+
+    self.element.triggerHandler('dblclick', [args]);
+  },
+
   /*
    * Handles resizing a chart.
    * @private
    * @returns {void}
    */
   handleResize: function handleResize() {
-    var _this3 = this;
+    var _this4 = this;
 
     var resize = function resize() {
-      if (_this3.width === _this3.element.width()) {
+      if (_this4.width === _this4.element.width()) {
         return;
       }
 
-      _this3.width = _this3.element.width();
+      _this4.width = _this4.element.width();
 
-      if (!_this3.element.is(':visible')) {
+      if (!_this4.element.is(':visible')) {
         return;
       }
 
-      _this3.updated();
+      _this4.updated();
     }; // Waiting to complete the animatin on widget
 
 
@@ -35045,14 +35854,14 @@ Bar.prototype = {
    * @private
    */
   teardown: function teardown() {
-    var _this4 = this;
+    var _this5 = this;
 
     var events = function events(arr) {
-      return "".concat(arr.join(".".concat(_this4.namespace, " ")), ".").concat(_this4.namespace);
+      return "".concat(arr.join(".".concat(_this5.namespace, " ")), ".").concat(_this5.namespace);
     };
 
     if (this.element) {
-      this.element.find('.group .series-group .bar').off(events(['mouseenter', 'mouseleave', 'click', 'contextmenu']));
+      this.element.find('.group .series-group .bar').off(events(['mouseenter', 'mouseleave', 'click', 'dblclick', 'contextmenu']));
       this.element.off(events(['updated', 'resize']));
     }
 
@@ -35072,7 +35881,7 @@ Bar.prototype = {
 
     if (this.element) {
       this.element.empty().removeClass('bar-chart');
-      $.removeData(this.element[0], COMPONENT_NAME$q);
+      $.removeData(this.element[0], COMPONENT_NAME$W);
       $.removeData(this.element[0], 'chart');
     }
   }
@@ -35080,7 +35889,7 @@ Bar.prototype = {
 
 /* eslint-disable no-nested-ternary, prefer-arrow-callback, no-underscore-dangle */
 
-var COMPONENT_NAME$r = 'pie';
+var COMPONENT_NAME$V = 'pie';
 /**
  * A pie chart (or a circle chart) is a circular statistical graphic which is divided
   into slices to illustrate numerical proportion. In a pie chart, the arc length of each slice is proportional to the quantity it represents.
@@ -35163,6 +35972,7 @@ function Pie(element, settings) {
   }
 
   this.element = $(element);
+  charts.destroy(element);
   this.init();
 } // Plugin Methods
 
@@ -35310,6 +36120,11 @@ Pie.prototype = {
           height: 'auto'
         });
       }
+    } else if (this.element[0].style.height === 'auto') {
+      // unset height from auto if previously set so chart can fill space again
+      this.element.css({
+        height: ''
+      });
     } // move the origin of the group's coordinate space to the center of the SVG element
 
 
@@ -35496,6 +36311,13 @@ Pie.prototype = {
     };
 
     self.isRTL = Locale.isRTL();
+    var delay = 200;
+    var prevent = false;
+    var timer = 0; // Make sure the default to get prevent not bubble up.
+
+    self.element.off("dblclick.".concat(self.namespace)).on("dblclick.".concat(self.namespace), '*', function (e) {
+      e.stopImmediatePropagation();
+    });
     slice.enter().insert('path').style('fill', function (d, i) {
       return charts.chartColor(i, 'pie', d.data);
     }).attr('class', 'slice').call(function (d) {
@@ -35506,36 +36328,26 @@ Pie.prototype = {
         });
       });
     }).on("contextmenu.".concat(self.namespace), function (d) {
-      charts.triggerContextMenu(self.element, d3.select(this).nodes()[0], d); // charts.triggerContextMenu(self.element, d3.select(this).select('path').nodes()[0], d);
-    }).on("click.".concat(self.namespace), function (d, i) {
-      clearTimeout(tooltipInterval); // Handle Click to select
+      charts.triggerContextMenu(self.element, d3.select(this).nodes()[0], d);
+    }) // Click and double click events
+    // Use very slight delay to fire off the normal click action
+    // It alow to cancel when the double click event happens
+    .on("click.".concat(self.namespace), function (d, i) {
+      var selector = this;
+      timer = setTimeout(function () {
+        if (!prevent) {
+          // Run click action
+          self.doClickAction(d, i, selector, tooltipInterval);
+        }
 
-      var isSelected = this && d3.select(this).classed('is-selected'); // Make unselected
+        prevent = false;
+      }, delay);
+    }).on("dblclick.".concat(self.namespace), function (d, i) {
+      var selector = this;
+      clearTimeout(timer);
+      prevent = true; // Run double click action
 
-      charts.setSelectedElement({
-        task: isSelected ? 'unselected' : 'selected',
-        container: self.element,
-        selector: isSelected ? '.chart-container .is-selected' : this,
-        isTrigger: self.initialSelectCall ? false : !isSelected,
-        d: d.data,
-        i: i,
-        type: self.settings.type,
-        dataset: self.settings.dataset,
-        svg: self.svg
-      });
-
-      if (isSelected && !self.initialSelectCall) {
-        /**
-         * Fires when arc/slice is selected.
-         * @event selected
-         * @memberof Pie
-         * @property {object} event - The jquery event object
-         * @property {object} selected arc/slice.
-         * @property {object} data of selected arc/slice.
-         * @property {number} index of selected arc/slice.
-         */
-        self.element.triggerHandler('selected', [d3.select(this).nodes(), {}, i]);
-      }
+      self.doDoubleClickAction(d, i, selector, tooltipInterval);
     }).on("mouseenter.".concat(self.namespace), function (d, i) {
       if (!self.settings.showTooltips) {
         return;
@@ -35890,6 +36702,72 @@ Pie.prototype = {
   },
 
   /**
+   * Action to happen on click.
+   * @private
+   * @param {object} d - The data object
+   * @param {number} i - The index
+   * @param {object} selector - The selector element
+   * @param {object} tooltipInterval - The tooltip-interval element
+   * @returns {void}
+   */
+  doClickAction: function doClickAction(d, i, selector, tooltipInterval) {
+    var self = this;
+    clearTimeout(tooltipInterval); // Handle Click to select
+
+    var isSelected = selector && d3.select(selector).classed('is-selected'); // Make unselected
+
+    charts.setSelectedElement({
+      task: isSelected ? 'unselected' : 'selected',
+      container: self.element,
+      selector: isSelected ? '.chart-container .is-selected' : selector,
+      isTrigger: self.initialSelectCall ? false : !isSelected,
+      d: d.data,
+      i: i,
+      type: self.settings.type,
+      dataset: self.settings.dataset,
+      svg: self.svg
+    });
+
+    if (isSelected && !self.initialSelectCall) {
+      /**
+       * Fires when arc/slice is selected.
+       * @event selected
+       * @memberof Pie
+       * @property {object} event - The jquery event object
+       * @property {object} selected arc/slice.
+       * @property {object} data of selected arc/slice.
+       * @property {number} index of selected arc/slice.
+       */
+      self.element.triggerHandler('selected', [d3.select(selector).nodes(), {}, i]);
+    }
+  },
+
+  /**
+   * Action to happen on double click.
+   * @private
+   * @param {object} d - The data object
+   * @param {number} i - The index
+   * @param {object} selector - The selector element
+   * @param {object} tooltipInterval - The tooltip-interval element
+   * @returns {void}
+   */
+  doDoubleClickAction: function doDoubleClickAction(d, i, selector, tooltipInterval) {
+    var _dataset$;
+
+    clearTimeout(tooltipInterval);
+    var self = this;
+    var dataset = self.settings.dataset;
+    var thisArcData = dataset && (_dataset$ = dataset[0]) !== null && _dataset$ !== void 0 && (_dataset$ == null ? void 0 : _dataset$.data) ? dataset[0].data[i] : d.data || d;
+    thisArcData = thisArcData || {};
+    var args = [{
+      elem: d3.select(selector).nodes(),
+      data: thisArcData,
+      index: i
+    }];
+    self.element.triggerHandler('dblclick', [args]);
+  },
+
+  /**
    * Simple Teardown - remove events & rebuildable markup.
    * @private
    * @returns {object} The Component prototype, useful for chaining.
@@ -35932,7 +36810,7 @@ Pie.prototype = {
 
     if (this.element) {
       this.element.empty().removeClass('pie-chart');
-      $.removeData(this.element[0], COMPONENT_NAME$r);
+      $.removeData(this.element[0], COMPONENT_NAME$V);
       $.removeData(this.element[0], 'chart');
     }
   }
@@ -35940,7 +36818,7 @@ Pie.prototype = {
 
 /* eslint-disable no-nested-ternary, prefer-arrow-callback, no-underscore-dangle */
 
-var COMPONENT_NAME$s = 'radar'; // Default Radar Options
+var COMPONENT_NAME$U = 'radar'; // Default Radar Options
 
 var RADAR_DEFAULTS = {
   dataset: [],
@@ -36117,7 +36995,7 @@ Radar.prototype = {
       dims.w *= 0.75;
     }
 
-    if (theme.uplift && dims.w >= 420) {
+    if ((theme.uplift || theme.new) && dims.w >= 420) {
       dims.extra -= 0.12;
     } // Manually adjust height to fit legend on mobile view
 
@@ -36211,7 +37089,7 @@ Radar.prototype = {
     if (s.showAxisLabels) {
       axisGrid.selectAll('.axis-label').data(d3.range(1, s.levels + 1).reverse()).enter().append('text').attr('class', 'axis-label').attr('x', 4).attr('y', function (d) {
         return -d * radius / s.levels;
-      }).attr('dy', '0.4em').style('font-size', theme.uplift ? '12px' : '10px').attr('fill', '#737373').text(function (d) {
+      }).attr('dy', '0.4em').style('font-size', theme.uplift || theme.new ? '12px' : '10px').attr('fill', '#737373').text(function (d) {
         var text = '';
         var roundedVal = Math.round(maxValue * 10) / 10;
 
@@ -36238,7 +37116,7 @@ Radar.prototype = {
     } // Append the labels at each axis
 
 
-    axis.append('text').attr('class', 'legend').style('font-size', theme.uplift ? '14px' : '12px').attr('text-anchor', 'middle').attr('dy', '0.35em').attr('x', function (d, i) {
+    axis.append('text').attr('class', 'legend').style('font-size', theme.uplift || theme.new ? '14px' : '12px').attr('text-anchor', 'middle').attr('dy', '0.35em').attr('x', function (d, i) {
       return rScale(maxValue * s.labelFactor) * Math.cos(angleSlice * i - Math.PI / 2);
     }).attr('y', function (d, i) {
       return rScale(maxValue * s.labelFactor) * Math.sin(angleSlice * i - Math.PI / 2);
@@ -36268,7 +37146,14 @@ Radar.prototype = {
 
     var blobWrapper = g.selectAll('.radarWrapper').data(data.map(function (i) {
       return i.data;
-    })).enter().append('g').attr('class', 'chart-radar-wrapper'); // Append the backgrounds
+    })).enter().append('g').attr('class', 'chart-radar-wrapper');
+    var delay = 200;
+    var prevent = false;
+    var timer = 0; // Make sure the default to get prevent not bubble up.
+
+    self.element.off("dblclick.".concat(self.namespace)).on("dblclick.".concat(self.namespace), '*', function (e) {
+      e.stopImmediatePropagation();
+    }); // Append the backgrounds
 
     blobWrapper.append('path').attr('class', 'chart-radar-area').call(function (d) {
       d._groups.forEach(function (areas) {
@@ -36281,49 +37166,27 @@ Radar.prototype = {
       return radarLine(d);
     }).style('fill', function (d, i) {
       return colors(i);
-    }).style('fill-opacity', s.opacityArea).on("click.".concat(self.namespace), function (d, i) {
-      // Handle Click to select
-      clearTimeout(tooltipInterval);
-      var selectElem = d3.select(this);
-      var isSelected = selectElem.classed('is-selected');
-      svg.selectAll('.is-selected').classed('is-selected', false);
-      svg.selectAll('.is-not-selected').classed('is-not-selected', false);
-      charts.clearSelected(s.dataset);
-
-      if (!isSelected) {
-        svg.selectAll('.chart-radar-area').classed('is-not-selected', true);
-        selectElem.classed('is-selected', true).classed('is-not-selected', false);
-        selectElem.style('fill-opacity', s.opacityArea);
-        s.dataset[i].selected = true;
-      }
-
-      var triggerData = {
-        elem: selectElem.nodes(),
-        data: d,
-        index: i
-      };
-      /**
-      * Fires when the chart is complete done rendering, for customization.
-      * @event selected
-      * @memberof Radar
-      * @property {object} data - The data element attached
-      * @property {HTMLElement} elem - The dom element
-      * @property {number} index - The index for this blob.
-      */
-
-      /**
-      * Fires when the chart is complete done rendering, for customization.
-      * @event deselected
-      * @memberof Radar
-      * @property {object} data - The data element attached
-      * @property {HTMLElement} elem - The dom element
-      * @property {number} index - The index for this blob.
-      */
-
-      self.element.triggerHandler(isSelected ? 'deselected' : 'selected', triggerData);
-      charts.selected = !isSelected ? triggerData : [];
-    }).on("contextmenu.".concat(self.namespace), function (d) {
+    }).style('fill-opacity', s.opacityArea).on("contextmenu.".concat(self.namespace), function (d) {
       charts.triggerContextMenu(self.element, d3.select(this).nodes()[0], d);
+    }) // Click and double click events
+    // Use very slight delay to fire off the normal click action
+    // It alow to cancel when the double click event happens
+    .on("click.".concat(self.namespace), function (d, i) {
+      var selector = this;
+      timer = setTimeout(function () {
+        if (!prevent) {
+          // Run click action
+          self.doClickAction(d, i, selector, tooltipInterval, svg);
+        }
+
+        prevent = false;
+      }, delay);
+    }).on("dblclick.".concat(self.namespace), function (d, i) {
+      var selector = this;
+      clearTimeout(timer);
+      prevent = true; // Run double click action
+
+      self.doDoubleClickAction(d, i, selector);
     }); // Create the outlines
 
     blobWrapper.append('path').attr('class', 'chart-radar-stroke').call(function (d) {
@@ -36558,6 +37421,76 @@ Radar.prototype = {
   },
 
   /**
+   * Action to happen on click.
+   * @private
+   * @param {object} d - The data object
+   * @param {number} i - The index
+   * @param {object} selector - The selector element
+   * @param {object} tooltipInterval - The tooltip-interval element
+   * @param {object} svg - The svg element
+   * @returns {void}
+   */
+  doClickAction: function doClickAction(d, i, selector, tooltipInterval, svg) {
+    clearTimeout(tooltipInterval);
+    var s = this.settings;
+    var selectElem = d3.select(selector);
+    var isSelected = selectElem.classed('is-selected');
+    svg.selectAll('.is-selected').classed('is-selected', false);
+    svg.selectAll('.is-not-selected').classed('is-not-selected', false);
+    charts.clearSelected(s.dataset);
+
+    if (!isSelected) {
+      svg.selectAll('.chart-radar-area').classed('is-not-selected', true);
+      selectElem.classed('is-selected', true).classed('is-not-selected', false);
+      selectElem.style('fill-opacity', s.opacityArea);
+      s.dataset[i].selected = true;
+    }
+
+    var triggerData = {
+      elem: selectElem.nodes(),
+      data: d,
+      index: i
+    };
+    /**
+    * Fires when the chart is complete done rendering, for customization.
+    * @event selected
+    * @memberof Radar
+    * @property {object} data - The data element attached
+    * @property {HTMLElement} elem - The dom element
+    * @property {number} index - The index for this blob.
+    */
+
+    /**
+    * Fires when the chart is complete done rendering, for customization.
+    * @event deselected
+    * @memberof Radar
+    * @property {object} data - The data element attached
+    * @property {HTMLElement} elem - The dom element
+    * @property {number} index - The index for this blob.
+    */
+
+    this.element.triggerHandler(isSelected ? 'deselected' : 'selected', triggerData);
+    charts.selected = !isSelected ? triggerData : [];
+  },
+
+  /**
+   * Action to happen on double click.
+   * @private
+   * @param {object} d - The data object
+   * @param {number} i - The index
+   * @param {object} selector - The selector element
+   * @returns {void}
+   */
+  doDoubleClickAction: function doDoubleClickAction(d, i, selector) {
+    var triggerData = {
+      elem: [selector],
+      data: d,
+      index: i
+    };
+    this.element.triggerHandler('dblclick', triggerData);
+  },
+
+  /**
    * Handle updated settings and values.
    * @param  {object} settings The new settings to use.
    * @returns {object} The api for chaining.
@@ -36610,7 +37543,7 @@ Radar.prototype = {
 
     if (this.element) {
       this.element.empty().removeClass('radar-chart');
-      $.removeData(this.element[0], COMPONENT_NAME$s);
+      $.removeData(this.element[0], COMPONENT_NAME$U);
       $.removeData(this.element[0], 'radar');
     }
   }
@@ -36640,7 +37573,7 @@ $.fn.chart = function (settings) {
         }
 
         var chartComponent = new CompletionChart(this, settings);
-        this.data(COMPONENT_NAME$l, chartComponent);
+        this.data(COMPONENT_NAME$$, chartComponent);
         this.data('chart', chartComponent); // Compatibility
 
         this.data(settings.type, chartComponent); // Compatibility
@@ -36650,7 +37583,7 @@ $.fn.chart = function (settings) {
 
     case 'bullet':
       {
-        instance = this.data(COMPONENT_NAME$k);
+        instance = this.data(COMPONENT_NAME$10);
 
         if (instance) {
           instance.updated(settings);
@@ -36659,7 +37592,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent = new Bullet(this, settings);
 
-        this.data(COMPONENT_NAME$k, _chartComponent);
+        this.data(COMPONENT_NAME$10, _chartComponent);
         this.data('chart', _chartComponent); // Compatibility
 
         break;
@@ -36667,7 +37600,7 @@ $.fn.chart = function (settings) {
 
     case 'radar':
       {
-        instance = this.data(COMPONENT_NAME$s);
+        instance = this.data(COMPONENT_NAME$U);
 
         if (instance) {
           instance.updated(settings);
@@ -36676,7 +37609,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent2 = new Radar(this, settings);
 
-        this.data(COMPONENT_NAME$s, _chartComponent2);
+        this.data(COMPONENT_NAME$U, _chartComponent2);
         this.data('chart', _chartComponent2); // Compatibility
 
         break;
@@ -36684,7 +37617,7 @@ $.fn.chart = function (settings) {
 
     case 'sparkline':
       {
-        instance = this.data(COMPONENT_NAME$m);
+        instance = this.data(COMPONENT_NAME$_);
 
         if (instance) {
           instance.updated(settings);
@@ -36693,7 +37626,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent3 = new Sparkline(this, settings);
 
-        this.data(COMPONENT_NAME$m, _chartComponent3);
+        this.data(COMPONENT_NAME$_, _chartComponent3);
         this.data('chart', _chartComponent3); // Compatibility
 
         break;
@@ -36702,7 +37635,7 @@ $.fn.chart = function (settings) {
     case 'sparkline-dots':
       {
         settings.isDots = true;
-        instance = this.data(COMPONENT_NAME$m);
+        instance = this.data(COMPONENT_NAME$_);
 
         if (instance) {
           instance.updated(settings);
@@ -36711,7 +37644,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent4 = new Sparkline(this, settings);
 
-        this.data(COMPONENT_NAME$m, _chartComponent4);
+        this.data(COMPONENT_NAME$_, _chartComponent4);
         this.data('chart', _chartComponent4); // Compatibility
 
         break;
@@ -36720,7 +37653,7 @@ $.fn.chart = function (settings) {
     case 'sparkline-peak':
       {
         settings.isPeakDot = true;
-        instance = this.data(COMPONENT_NAME$m);
+        instance = this.data(COMPONENT_NAME$_);
 
         if (instance) {
           instance.updated(settings);
@@ -36729,7 +37662,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent5 = new Sparkline(this, settings);
 
-        this.data(COMPONENT_NAME$m, _chartComponent5);
+        this.data(COMPONENT_NAME$_, _chartComponent5);
         this.data('chart', _chartComponent5); // Compatibility
 
         break;
@@ -36739,7 +37672,7 @@ $.fn.chart = function (settings) {
       {
         settings.isPeakDot = true;
         settings.isDots = true;
-        instance = this.data(COMPONENT_NAME$m);
+        instance = this.data(COMPONENT_NAME$_);
 
         if (instance) {
           instance.updated(settings);
@@ -36748,7 +37681,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent6 = new Sparkline(this, settings);
 
-        this.data(COMPONENT_NAME$m, _chartComponent6);
+        this.data(COMPONENT_NAME$_, _chartComponent6);
         this.data('chart', _chartComponent6); // Compatibility
 
         break;
@@ -36757,7 +37690,7 @@ $.fn.chart = function (settings) {
     case 'sparkline-minmax':
       {
         settings.isMinMax = true;
-        instance = this.data(COMPONENT_NAME$m);
+        instance = this.data(COMPONENT_NAME$_);
 
         if (instance) {
           instance.updated(settings);
@@ -36766,7 +37699,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent7 = new Sparkline(this, settings);
 
-        this.data(COMPONENT_NAME$m, _chartComponent7);
+        this.data(COMPONENT_NAME$_, _chartComponent7);
         this.data('chart', _chartComponent7); // Compatibility
 
         break;
@@ -36775,7 +37708,7 @@ $.fn.chart = function (settings) {
     case 'sparkline-medianrange':
       {
         settings.isMedianRange = true;
-        instance = this.data(COMPONENT_NAME$m);
+        instance = this.data(COMPONENT_NAME$_);
 
         if (instance) {
           instance.updated(settings);
@@ -36784,7 +37717,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent8 = new Sparkline(this, settings);
 
-        this.data(COMPONENT_NAME$m, _chartComponent8);
+        this.data(COMPONENT_NAME$_, _chartComponent8);
         this.data('chart', _chartComponent8); // Compatibility
 
         break;
@@ -36794,7 +37727,7 @@ $.fn.chart = function (settings) {
       {
         settings.isMedianRange = true;
         settings.isPeakDot = true;
-        instance = this.data(COMPONENT_NAME$m);
+        instance = this.data(COMPONENT_NAME$_);
 
         if (instance) {
           instance.updated(settings);
@@ -36803,7 +37736,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent9 = new Sparkline(this, settings);
 
-        this.data(COMPONENT_NAME$m, _chartComponent9);
+        this.data(COMPONENT_NAME$_, _chartComponent9);
         this.data('chart', _chartComponent9); // Compatibility
 
         break;
@@ -36811,7 +37744,7 @@ $.fn.chart = function (settings) {
 
     case 'line':
       {
-        instance = this.data(COMPONENT_NAME$o);
+        instance = this.data(COMPONENT_NAME$Y);
 
         if (instance) {
           instance.updated(settings);
@@ -36820,7 +37753,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent10 = new Line(this, settings);
 
-        this.data(COMPONENT_NAME$o, _chartComponent10);
+        this.data(COMPONENT_NAME$Y, _chartComponent10);
         this.data('chart', _chartComponent10); // Compatibility
 
         break;
@@ -36829,7 +37762,7 @@ $.fn.chart = function (settings) {
     case 'area':
       {
         settings.isArea = true;
-        instance = this.data(COMPONENT_NAME$o);
+        instance = this.data(COMPONENT_NAME$Y);
 
         if (instance) {
           instance.updated(settings);
@@ -36838,7 +37771,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent11 = new Line(this, settings);
 
-        this.data(COMPONENT_NAME$o, _chartComponent11);
+        this.data(COMPONENT_NAME$Y, _chartComponent11);
         this.data('chart', _chartComponent11); // Compatibility
 
         break;
@@ -36847,7 +37780,7 @@ $.fn.chart = function (settings) {
     case 'bubble':
       {
         settings.isBubble = true;
-        instance = this.data(COMPONENT_NAME$o);
+        instance = this.data(COMPONENT_NAME$Y);
 
         if (instance) {
           instance.updated(settings);
@@ -36856,7 +37789,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent12 = new Line(this, settings);
 
-        this.data(COMPONENT_NAME$o, _chartComponent12);
+        this.data(COMPONENT_NAME$Y, _chartComponent12);
         this.data('chart', _chartComponent12); // Compatibility
 
         break;
@@ -36865,7 +37798,7 @@ $.fn.chart = function (settings) {
     case 'scatterplot':
       {
         settings.isScatterPlot = true;
-        instance = this.data(COMPONENT_NAME$o);
+        instance = this.data(COMPONENT_NAME$Y);
 
         if (instance) {
           instance.updated(settings);
@@ -36874,7 +37807,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent13 = new Line(this, settings);
 
-        this.data(COMPONENT_NAME$o, _chartComponent13);
+        this.data(COMPONENT_NAME$Y, _chartComponent13);
         this.data('chart', _chartComponent13); // Compatibility
 
         break;
@@ -36885,7 +37818,7 @@ $.fn.chart = function (settings) {
     case 'positive-negative':
     case 'column-positive-negative':
       {
-        instance = this.data(COMPONENT_NAME$p);
+        instance = this.data(COMPONENT_NAME$X);
 
         if (instance) {
           instance.updated(settings);
@@ -36894,7 +37827,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent14 = new Column(this, settings);
 
-        this.data(COMPONENT_NAME$p, _chartComponent14);
+        this.data(COMPONENT_NAME$X, _chartComponent14);
         this.data('chart', _chartComponent14); // Compatibility
 
         break;
@@ -36903,7 +37836,7 @@ $.fn.chart = function (settings) {
     case 'column-stacked':
       {
         settings.isStacked = true;
-        instance = this.data(COMPONENT_NAME$p);
+        instance = this.data(COMPONENT_NAME$X);
 
         if (instance) {
           instance.updated(settings);
@@ -36912,7 +37845,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent15 = new Column(this, settings);
 
-        this.data(COMPONENT_NAME$p, _chartComponent15);
+        this.data(COMPONENT_NAME$X, _chartComponent15);
         this.data('chart', _chartComponent15); // Compatibility
 
         break;
@@ -36921,7 +37854,7 @@ $.fn.chart = function (settings) {
     case 'bar':
       {
         settings.isStacked = true;
-        instance = this.data(COMPONENT_NAME$q);
+        instance = this.data(COMPONENT_NAME$W);
 
         if (instance) {
           instance.updated(settings);
@@ -36930,7 +37863,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent16 = new Bar(this, settings);
 
-        this.data(COMPONENT_NAME$q, _chartComponent16);
+        this.data(COMPONENT_NAME$W, _chartComponent16);
         this.data('chart', _chartComponent16); // Compatibility
 
         break;
@@ -36939,7 +37872,7 @@ $.fn.chart = function (settings) {
     case 'bar-stacked':
       {
         settings.isStacked = true;
-        instance = this.data(COMPONENT_NAME$q);
+        instance = this.data(COMPONENT_NAME$W);
 
         if (instance) {
           instance.updated(settings);
@@ -36948,7 +37881,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent17 = new Bar(this, settings);
 
-        this.data(COMPONENT_NAME$q, _chartComponent17);
+        this.data(COMPONENT_NAME$W, _chartComponent17);
         this.data('chart', _chartComponent17); // Compatibility
 
         break;
@@ -36957,7 +37890,7 @@ $.fn.chart = function (settings) {
     case 'bar-normalized':
       {
         settings.isNormalized = true;
-        instance = this.data(COMPONENT_NAME$q);
+        instance = this.data(COMPONENT_NAME$W);
 
         if (instance) {
           instance.updated(settings);
@@ -36966,7 +37899,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent18 = new Bar(this, settings);
 
-        this.data(COMPONENT_NAME$q, _chartComponent18);
+        this.data(COMPONENT_NAME$W, _chartComponent18);
         this.data('chart', _chartComponent18); // Compatibility
 
         break;
@@ -36976,7 +37909,7 @@ $.fn.chart = function (settings) {
       {
         settings.isStacked = false;
         settings.isGrouped = true;
-        instance = this.data(COMPONENT_NAME$q);
+        instance = this.data(COMPONENT_NAME$W);
 
         if (instance) {
           instance.updated(settings);
@@ -36985,7 +37918,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent19 = new Bar(this, settings);
 
-        this.data(COMPONENT_NAME$q, _chartComponent19);
+        this.data(COMPONENT_NAME$W, _chartComponent19);
         this.data('chart', _chartComponent19); // Compatibility
 
         break;
@@ -36993,7 +37926,7 @@ $.fn.chart = function (settings) {
 
     case 'pie':
       {
-        instance = this.data(COMPONENT_NAME$r);
+        instance = this.data(COMPONENT_NAME$V);
 
         if (instance) {
           instance.updated(settings);
@@ -37002,7 +37935,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent20 = new Pie(this, settings);
 
-        this.data(COMPONENT_NAME$r, _chartComponent20);
+        this.data(COMPONENT_NAME$V, _chartComponent20);
         this.data('chart', _chartComponent20); // Compatibility
 
         break;
@@ -37011,7 +37944,7 @@ $.fn.chart = function (settings) {
     case 'donut':
       {
         settings.isDonut = true;
-        instance = this.data(COMPONENT_NAME$r);
+        instance = this.data(COMPONENT_NAME$V);
 
         if (instance) {
           instance.updated(settings);
@@ -37020,7 +37953,7 @@ $.fn.chart = function (settings) {
 
         var _chartComponent21 = new Pie(this, settings);
 
-        this.data(COMPONENT_NAME$r, _chartComponent21);
+        this.data(COMPONENT_NAME$V, _chartComponent21);
         this.data('chart', _chartComponent21); // Compatibility
 
         break;
@@ -37487,7 +38420,7 @@ calendarShared.cleanEventData = function cleanEventData(event, addPlaceholder, c
 };
  //eslint-disable-line
 
-var COMPONENT_NAME$t = 'tag'; // Tag style states
+var COMPONENT_NAME$T = 'tag'; // Tag style states
 
 var tagStyles = ['default', 'neutral', 'secondary', 'error', 'alert', 'good', 'info']; // Default Tag Options
 
@@ -37888,7 +38821,7 @@ Tag.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element, COMPONENT_NAME$t);
+    $.removeData(this.element, COMPONENT_NAME$T);
   },
 
   /**
@@ -37951,7 +38884,7 @@ Tag.prototype = {
   }
 };
 
-var COMPONENT_NAME$u = 'taglist'; // Default Tag Options
+var COMPONENT_NAME$S = 'taglist'; // Default Tag Options
 
 var TAG_LIST_DEFAULTS = {
   tags: []
@@ -38214,15 +39147,333 @@ TagList.prototype = {
       tag.remove();
     });
     delete this.tags;
-    var $api = $(this.element).data(COMPONENT_NAME$u);
+    var $api = $(this.element).data(COMPONENT_NAME$S);
 
     if ($api) {
-      $.removeData(this.element, COMPONENT_NAME$u);
+      $.removeData(this.element, COMPONENT_NAME$S);
     }
   }
 };
 
-var COMPONENT_NAME$v = 'dropdown'; // Dropdown Settings and Options
+var COMPONENT_NAME$R = 'virtual-scroll'; // Default VirtualScroll Options
+
+var VIRTUALSCROLL_DEFAULTS = {
+  height: 300,
+  itemHeight: 50,
+  bufferSize: 20,
+  data: [],
+  scrollTop: 0,
+  itemCount: 0,
+  itemTemplate: null,
+  startIndex: 0
+};
+/**
+* Add Virtual scrolling to a fixed size container
+* @class VirtualScroll
+* @param {string} element The component element.
+* @param {string} [settings] The component settings.
+*/
+
+function VirtualScroll(element, settings) {
+  this.settings = utils.mergeSettings(element, settings, VIRTUALSCROLL_DEFAULTS);
+  this.element = $(element);
+  this.init();
+} // VirtualScroll Methods
+
+
+VirtualScroll.prototype = {
+  init: function init() {
+    this.container = this.element.find('.ids-virtual-scroll')[0];
+    this.stringTemplate = '<div class="ids-virtual-scroll-item">${productName}</div>'; //eslint-disable-line
+
+    this.itemCount = this.settings.data.length;
+    this.itemTemplate = this.settings.itemTemplate || this.itemTemplate;
+    this.handleEvents();
+    this.applyHeight();
+    this.renderItems(false);
+    return this;
+  },
+
+  /**
+   * Attach Events used by the Component
+   * @private
+   * @returns {void}
+   */
+  handleEvents: function handleEvents() {
+    var _this = this;
+
+    this.timeout = null;
+
+    this.scrollHandler = function (e) {
+      _this.handleScroll(e);
+    };
+
+    this.container.addEventListener('scroll', this.scrollHandler, {
+      passive: true
+    });
+    return this;
+  },
+
+  /**
+   * Handle the scrolling event
+   * @private
+   * @param {Event} e The scroll event data
+   */
+  handleScroll: function handleScroll(e) {
+    var _this2 = this;
+
+    if (this.timeout) {
+      cancelAnimationFrame(this.timeout);
+    }
+
+    var target = e.target;
+    this.timeout = requestAnimationFrame(function () {
+      _this2.scrollTop = target.scrollTop;
+    });
+  },
+
+  /**
+    * Render the visible section plus the cached data
+    * @private
+    * @param {boolean} allowZero Allow a zero length dataset (render empty)
+   */
+  renderItems: function renderItems(allowZero) {
+    var _this3 = this;
+
+    if (!this.settings.data || !allowZero && this.data.length === 0) {
+      return;
+    }
+
+    var startIndex = this.startIndex;
+    var endIndex = this.startIndex + this.visibleItemCount();
+
+    if (this.lastStart === startIndex && this.lastEnd === endIndex) {
+      return;
+    }
+
+    this.lastStart = startIndex;
+    this.lastEnd = endIndex;
+    var data = this.settings.data.slice(startIndex, endIndex);
+    var html = '';
+    data.map(function (item, elem) {
+      var node = _this3.itemTemplate(item, elem);
+
+      html += node;
+      return node;
+    });
+    this.itemContainer.style.transform = "translateY(".concat(this.offsetY, "px)");
+    this.itemContainer.innerHTML = html;
+    this.element.trigger('afterrendered', this, {
+      elem: this,
+      startIndex: startIndex,
+      endIndex: endIndex
+    });
+  },
+
+  /**
+   * Set the height of the containers
+   * @private
+   */
+  applyHeight: function applyHeight() {
+    this.container.style.height = "".concat(this.settings.height, "px");
+    this.container.querySelector('.ids-virtual-scroll-viewport').style.height = "".concat(this.viewPortHeight, "px");
+    /** @type {object} */
+
+    this.itemContainer = this.element.find('.contents')[0];
+    this.itemContainer.style.transform = "translateY(".concat(this.offsetY, "px)");
+    this.isTable = this.element.find('.ids-data-grid-container').length > 0;
+
+    if (this.isTable) {
+      // @ts-ignore
+      this.element.find('.ids-virtual-scroll')[0].style.overflow = 'inherit';
+    }
+  },
+
+  /**
+   * Render the visible section plus the cached data
+   * @private
+   * @returns {number} The array of visible data
+   */
+  visibleItemCount: function visibleItemCount() {
+    // @ts-ignore
+    var count = Math.ceil(this.height / this.itemHeight) + 2 * this.bufferSize;
+    count = Math.min(Number(this.itemCount) - this.startIndex, count);
+    return count;
+  },
+
+  /**
+   * Resync the UI and Settings.
+   * @param {object} settings The settings to apply.
+   * @returns {object} The api
+   */
+  updated: function updated(settings) {
+    if (typeof settings !== 'undefined') {
+      this.settings = utils.mergeSettings(this.element, settings, VIRTUALSCROLL_DEFAULTS);
+    }
+
+    return this.unbind().init();
+  },
+
+  /**
+   * Unbind all open events
+   * @returns {void}
+   */
+  unbind: function unbind() {
+    this.container.removeEventListener('scroll', this.scrollHandler);
+    $.removeData(this.element[0], COMPONENT_NAME$R);
+  },
+
+  /**
+   * Destroy this component instance and remove the link from its base element.
+   * @returns {void}
+   */
+  destroy: function destroy() {
+    this.unbind();
+    $.removeData(this.element[0], COMPONENT_NAME$R);
+  },
+
+  /**
+   * The height of the virtual scroll container
+   * @param {number|string} value the height in pixels
+   */
+  set height(value) {
+    this.settings.height = value;
+  },
+
+  get height() {
+    return this.data.length === 0 ? 0 : this.settings.height;
+  },
+
+  /**
+   * The height of each item in the scroller. TODO: support dynamic heights
+   * @param {number|string} value the height of each item in pixels
+   */
+  set itemHeight(value) {
+    this.settings.itemHeight = value;
+  },
+
+  get itemHeight() {
+    return this.settings.itemHeight;
+  },
+
+  /**
+   * Extra padding at the top and bottom so that the data transition smoothly
+   * @param {number|string} value The number of extra top and bottom elements
+   */
+  set bufferSize(value) {
+    this.settings.bufferSize = value;
+  },
+
+  get bufferSize() {
+    return this.settings.bufferSize || 20;
+  },
+
+  /**
+   * Set the scroll top position and scroll down to that location
+   * @param {number|string} value The number of pixels from the top
+   */
+  set scrollTop(value) {
+    if (this.container.scrollTop !== value) {
+      this.container.scrollTop = value;
+      return;
+    }
+
+    this.settings.scrollTop = value;
+    this.renderItems(false);
+  },
+
+  get scrollTop() {
+    return this.settings.scrollTop || 0;
+  },
+
+  /**
+   * Scroll to a indexed item bring it into center view.
+   * @param {number} value The index to scroll to
+   */
+  scrollTo: function scrollTo(value) {
+    this.scrollTop = Number(value) * this.itemHeight;
+  },
+
+  /**
+   * The height of the inner viewport
+   * @returns {number} The calculated viewport height
+   */
+  get viewPortHeight() {
+    return Number(this.itemCount) * Number(this.itemHeight);
+  },
+
+  /**
+   * The (dynamic sometimes) total number of data being rendered
+   * @param {number|string} value The number of pixels from the top
+   */
+  set itemCount(value) {
+    this.settings.itemCount = value;
+  },
+
+  get itemCount() {
+    return this.settings.itemCount;
+  },
+
+  get offsetY() {
+    return Number(this.startIndex) * Number(this.itemHeight);
+  },
+
+  get startIndex() {
+    var startNode = Math.floor(Number(this.scrollTop) / Number(this.itemHeight)) - Number(this.bufferSize);
+    startNode = Math.max(0, startNode);
+    return startNode;
+  },
+
+  /**
+   * Return a item's html injecting any values from the dataset as needed.
+   * @param  {object} item The item to generate
+   * @returns {string} The html for this item
+   */
+  itemTemplate: function itemTemplate(item) {
+    return this.injectTemplate(this.stringTemplate, item);
+  },
+
+  /**
+   * Inject template variables in a string
+   * @private
+   * @param {string} str The string to inject into
+   * @param {string} obj The string to inject into
+   * @returns {obj} The dataset row / item
+   */
+  injectTemplate: function injectTemplate(str, obj) {
+    return str.replace(/\${(.*?)}/g, function (_x, g) {
+      return obj[g];
+    });
+  },
+
+  /**
+   * Set the data array of the listview
+   * @param {Array|undefined} value The array to use
+   */
+  set data(value) {
+    if (value) {
+      this.settings.data = value;
+      this.itemCount = value.length;
+      this.lastStart = null;
+      this.lastEnd = null;
+      this.scrollTop = 0;
+      this.applyHeight();
+      this.renderItems(true);
+      return;
+    }
+
+    this.settings.data = null;
+  },
+
+  get data() {
+    var _this$settings;
+
+    return this === null || this === void 0 ? void 0 : (_this$settings = this == null ? void 0 : this.settings) === null || _this$settings === void 0 ? void 0 : _this$settings == null ? void 0 : _this$settings.data;
+  }
+
+};
+
+var COMPONENT_NAME$Q = 'dropdown'; // Dropdown Settings and Options
 
 var moveSelectedOpts = ['none', 'all', 'group'];
 var reloadSourceStyles = ['none', 'open', 'typeahead'];
@@ -38234,6 +39485,7 @@ var reloadSourceStyles = ['none', 'open', 'typeahead'];
 * @param {boolean} [settings.closeOnSelect = true]  When an option is selected, the list will close if set to "true".  List stays open if "false".
 * @param {string} [settings.cssClass = null]  Append an optional css class to dropdown-list
 * @param {string} [settings.filterMode = 'contains']  Search mode to use between 'startsWith' and 'contains', false will not allow client side filter
+* @param {boolean} [settings.virtualScroll = false] If true virtual scrolling will be used, this is good for larger lists but may not work with all other features.
 * @param {boolean} [settings.noSearch = false]  If true, disables the ability of the user to enter text
 * in the Search Input field in the open combo box
 * @param {boolean} [settings.showEmptyGroupHeaders = false]  If true, displays optgroup headers in the list
@@ -38251,6 +39503,7 @@ var reloadSourceStyles = ['none', 'open', 'typeahead'];
 * @param {boolean} [settings.delay = 300]  Typing buffer delay in ms
 * @param {number} [settings.maxWidth = null] If set the width of the dropdown is limited to this pixel width.
 * Fx 300 for the 300 px size fields. Default is size of the largest data.
+* @param {number} [settings.width = null] Sets the width of the open list, by default its the size of the field
 * @param {object} [settings.placementOpts = null]  Gets passed to this control's Place behavior
 * @param {function} [settings.onKeyDown = null]  Allows you to hook into the onKeyDown. If you do you can access the keydown event data. And optionally return false to cancel the keyDown action.
 * @param {object} [settings.tagSettings] if defined, passes along 'clickHandler' and 'dismissHandler' functions to any Tags in the Taglist
@@ -38265,6 +39518,7 @@ var DROPDOWN_DEFAULTS = {
   closeOnSelect: true,
   cssClass: null,
   filterMode: 'contains',
+  virtualScroll: false,
   maxSelected: undefined,
   // (multiselect) sets a limit on the number of items that can be selected
   moveSelected: 'none',
@@ -38476,8 +39730,10 @@ Dropdown.prototype = {
     var attributesToCopy = this.getDataAttributes(attributes, toExclude);
     this.pseudoElem.attr(attributesToCopy.obj).attr({
       role: 'button',
-      'aria-haspopup': 'listbox'
+      'aria-haspopup': 'listbox',
+      'aria-expanded': 'false'
     });
+    this.renderPseudoElemLabel();
 
     if (this.settings.attributes) {
       utils.addAttributes(this.pseudoElem, this, this.settings.attributes, 'dropdown', true);
@@ -38543,7 +39799,7 @@ Dropdown.prototype = {
     if (dataMaxselected && !isNaN(dataMaxselected)) {
       //eslint-disable-line
       this.settings.maxSelected = parseInt(dataMaxselected, 10);
-    } // TODO: deprecate "moveSelectedToTop" in favor of "moveSelected"
+    } // Maybe deprecate "moveSelectedToTop" in favor of "moveSelected"
     // _getMoveSelectedSetting()_ converts the old setting to the new text type.
 
 
@@ -38696,6 +39952,27 @@ Dropdown.prototype = {
   },
 
   /**
+   * @private
+   * @returns {void}
+   */
+  renderPseudoElemLabel: function renderPseudoElemLabel() {
+    // NOTE: this doesn't use the ID to get the label due to
+    // potentially not being placed in the page yet (in jQuery cache).
+    var label = this.element.prev();
+    var labelText = '';
+    this.selectedOptions.forEach(function (option) {
+      if (labelText.length) {
+        labelText += ', ';
+      }
+
+      labelText += $(option).text().trim();
+    });
+    this.pseudoElem.attr({
+      'aria-label': "".concat(label.text(), ", ").concat(labelText)
+    });
+  },
+
+  /**
    * Used for preventing menus from popping open/closed when they shouldn't.
    * Gets around the need for timeouts everywhere
    * @private
@@ -38710,7 +39987,7 @@ Dropdown.prototype = {
     this.inputTimeout = setTimeout(function () {
       clearTimeout(self.inputTimeout);
       self.inputTimeout = null;
-    }, 100);
+    }, 200);
     return true;
   },
 
@@ -39014,8 +40291,13 @@ Dropdown.prototype = {
       selected: Locale.translate('Selected'),
       labelText: self.isInlineLabel ? self.inlineLabelText.text() : this.label.text()
     };
-    headerText.all = typeof s.allTextString === 'string' && s.allTextString !== '' ? self.settings.allTextString : "".concat(headerText.all, " ").concat(headerText.labelText);
-    headerText.selected = typeof s.selectedTextString === 'string' && s.selectedTextString !== '' ? self.settings.selectedTextString : "".concat(headerText.selected, " ").concat(headerText.labelText);
+    headerText.all = typeof s.allTextString === 'string' && s.allTextString !== '' ? self.settings.allTextString : "".concat(headerText.all);
+    headerText.selected = typeof s.selectedTextString === 'string' && s.selectedTextString !== '' ? self.settings.selectedTextString : "".concat(headerText.selected); // Find custom ID attributes
+
+    var baseIdAttr = utils.getAttribute(this, 'id', this.settings.attributes);
+    var listId = "".concat(baseIdAttr ? "".concat(baseIdAttr, "-") : '', "dropdown-list");
+    var listUlId = "".concat(baseIdAttr ? "".concat(baseIdAttr, "-") : '', "listbox");
+    var listAria = ' role="listbox"';
 
     if (this.element[0].classList.contains('text-align-reverse')) {
       reverseText = ' text-align-reverse';
@@ -39024,17 +40306,30 @@ Dropdown.prototype = {
     }
 
     if (!listExists) {
-      listContents = "<div class=\"dropdown-list".concat(reverseText).concat(isMobile ? ' mobile' : '').concat(this.settings.multiple ? ' multiple' : '', "\" id=\"dropdown-list\" ").concat(this.settings.multiple ? 'aria-multiselectable="true"' : '', ">\n        <label for=\"dropdown-search\" class=\"audible\">").concat(this.settings.noSearch ? Locale.translate('PressDown') : Locale.translate('TypeToFilter'), "</label>\n        <input type=\"text\" class=\"dropdown-search").concat(reverseText, "\" ").concat(this.settings.noSearch ? 'aria-readonly="true"' : '', " id=\"dropdown-search\" autocomplete=\"off\" />\n        <span class=\"trigger\">").concat(isMobile ? $.createIcon({
+      listContents = "<div class=\"dropdown-list".concat(reverseText).concat(isMobile ? ' mobile' : '').concat(this.settings.multiple ? ' multiple' : '', "\" id=\"").concat(listId, "\" ").concat(this.settings.multiple ? 'aria-multiselectable="true"' : '', ">\n        <label for=\"dropdown-search\" class=\"audible\">").concat(this.settings.noSearch ? Locale.translate('PressDown') : Locale.translate('TypeToFilter'), "</label>\n        <input type=\"text\" class=\"dropdown-search").concat(reverseText, "\" ").concat(this.settings.noSearch ? 'aria-readonly="true"' : '', " id=\"dropdown-search\" autocomplete=\"off\" />\n        <span class=\"trigger\">").concat(isMobile ? $.createIcon({
         icon: 'close',
         classes: ['close']
-      }) : $.createIcon('dropdown'), "</span>\n        <ul role=\"listbox\" aria-label=\"").concat(Locale.translate('Dropdown'), "\">");
+      }) : $.createIcon('dropdown'), "</span>");
+
+      if (this.settings.virtualScroll) {
+        listContents += "<div class=\"virtual-scroll-container\">\n            <div class=\"ids-virtual-scroll\">\n              <div class=\"ids-virtual-scroll-viewport\">\n                <ul id=\"".concat(listUlId, "\"").concat(listAria, " class=\"contents\" aria-label=\"").concat(Locale.translate('Dropdown'), "\"></ul>\n              </div>\n            </div>\n          </div>");
+      } else {
+        listContents += "<ul id=\"".concat(listUlId, "\"").concat(listAria, " aria-label=\"").concat(Locale.translate('Dropdown'), "\">");
+      }
+    } else {
+      this.list.attr('id', listId);
+      this.listUl.attr('id', "".concat(listUlId));
     } // Get a current list of <option> elements
     // If none are available, simply return out
 
 
     var opts = this.element.find('option');
     var groups = this.element.find('optgroup');
-    var selectedFilterMethod = ':selected';
+
+    var selectedFilterMethod = function selectedFilterMethod(i, opt) {
+      return opt.selected;
+    };
+
     var groupsSelectedOpts = []; // For typeahead reloading, the <option> tags are not used for determining what's already
     // selected.  Use the internal storage of selected values instead.
 
@@ -39052,63 +40347,13 @@ Dropdown.prototype = {
 
     if (this.settings.reload === 'typeahead') {
       selectedOpts.prop('selected', true);
-    }
-
-    function buildLiHeader(textContent) {
-      return "<li role=\"presentation\" class=\"group-label\" focusable=\"false\">\n        ".concat(textContent, "\n      </li>");
-    }
-
-    function buildLiOption(option, index) {
-      var liMarkup = '';
-      var text = option.innerHTML;
-      var attributes = DOM.getAttributes(option);
-      var value = attributes.getNamedItem('value');
-      var title = attributes.getNamedItem('title');
-      var hasTitle = title ? "\" title=\"".concat(title.value, "\"") : '';
-      var badge = attributes.getNamedItem('data-badge');
-      var badgeColor = attributes.getNamedItem('data-badge-color');
-      var badgeHtml = '';
-      var isSelected = option.selected ? ' is-selected' : '';
-      var isDisabled = option.disabled ? ' is-disabled' : '';
-      var liCssClasses = option.className ? " ".concat(option.className.value) : '';
-      var aCssClasses = liCssClasses.indexOf('clear') > -1 ? ' class="clear-selection"' : '';
-      var tabIndex = " tabIndex=\"".concat(index && index === 0 ? 0 : -1, "\"");
-      var toExclude = ['data-badge', 'data-badge-color', 'data-val', 'data-icon'];
-      var copiedDataAttrs = " ".concat(self.getDataAttributes(attributes, toExclude).str);
-      var trueValue = (value && 'value' in value ? value.value : text).replace(/"/g, '/quot/');
-      var iconHtml = '';
-
-      if (self.listIcon.hasIcons && self.listIcon.items[index]) {
-        iconHtml = self.listIcon.items[index].html;
-      }
-
-      if (badge) {
-        badgeHtml = "<span class=\"badge ".concat(badgeColor ? badgeColor.value : 'azure07', "\">").concat(badge.value, "</span>");
-      }
-
-      if (liCssClasses.indexOf('clear') > -1 && text === '') {
-        text = Locale.translate('ClearSelection');
-      } // Highlight search term
-
-
-      if (term && term.length > 0) {
-        var exp = self.getSearchRegex(term);
-        text = text.replace(exp, '<span class="dropdown-highlight">$1</span>').trim();
-      }
-
-      if (self.listIcon.hasIcons && self.listIcon.items[index] && self.listIcon.items[index].isSwatch) {
-        liCssClasses += ' is-swatch';
-      }
-
-      liMarkup += "<li class=\"dropdown-option".concat(isSelected).concat(isDisabled).concat(liCssClasses, "\" ").concat(isSelected ? 'aria-selected="true"' : '', " data-val=\"").concat(trueValue, "\" ").concat(copiedDataAttrs).concat(tabIndex).concat(hasTitle, " role=\"option\">\n        <a id=\"list-option-").concat(index, "\" href=\"#\" ").concat(aCssClasses, " role=\"option\">").concat(iconHtml).concat(text).concat(badgeHtml, "</a></li>");
-      return liMarkup;
     } // In multiselect scenarios, shows an option at the top of the list that will
     // select all available options if checked.
 
 
     if (isMultiselect && showSelectAll && opts.length) {
       var allSelected = opts.not('[disabled], .hidden').length === selectedOpts.not('[disabled], .hidden').length;
-      ulContents += "<li role=\"presentation\" class=\"dropdown-select-all-list-item".concat(allSelected ? ' is-selected' : '', "\">") + "<a role=\"option\" href=\"#\" id=\"dropdown-select-all-anchor\" class=\"dropdown-select-all-anchor\">".concat(Locale.translate('SelectAll'), "</a>") + '</li>';
+      ulContents += "<li role=\"none\" class=\"dropdown-select-all-list-item".concat(allSelected ? ' is-selected' : '', "\">") + "<a role=\"option\" href=\"#\" id=\"dropdown-select-all-anchor\" class=\"dropdown-select-all-anchor\">".concat(Locale.translate('SelectAll'), "</a>") + '</li>';
     } // Move selected options in each group to just underneath their corresponding group headers.
 
 
@@ -39134,56 +40379,61 @@ Dropdown.prototype = {
       opts = opts.not(selectedOpts); // Show a "selected" header if there are selected options
 
       if (selectedOpts.length > 0) {
-        ulContents += buildLiHeader(headerText.selected);
+        ulContents += self.buildLiHeader(headerText.selected);
       }
 
       selectedOpts.each(function (i) {
-        ulContents += buildLiOption(this, i);
+        ulContents += self.buildLiOption(this, i, term);
         upTopOpts++;
       }); // Only show the "all" header beneath the selected options if there
       // are no other optgroups present
 
       if (!hasOptGroups && opts.length > 0) {
-        ulContents += buildLiHeader(headerText.all);
+        ulContents += self.buildLiHeader(headerText.all);
       }
     }
 
-    opts.each(function (i) {
-      var count = i + upTopOpts;
-      var option = $(this);
-      var parent = option.parent();
-      var optgroupIsNotDrawn;
-      var optgroupIndex; // Add Group Header if this is an <optgroup>
-      // Remove the group header from the queue.
+    if (this.settings.virtualScroll) {
+      ulContents = '';
+    } else {
+      opts.each(function (i) {
+        var count = i + upTopOpts;
+        var option = $(this);
+        var parent = option.parent();
+        var optgroupIsNotDrawn;
+        var optgroupIndex; // Add Group Header if this is an <optgroup>
+        // Remove the group header from the queue.
 
-      if (parent.is('optgroup') && groups.length) {
-        optgroupIndex = parent.index();
-        optgroupIsNotDrawn = groups.index(parent) > -1;
+        if (parent.is('optgroup') && groups.length) {
+          optgroupIndex = parent.index();
+          optgroupIsNotDrawn = groups.index(parent) > -1;
 
-        if (optgroupIsNotDrawn) {
-          groups = groups.not(parent);
-          ulContents += buildLiHeader("".concat(parent.attr('label'))); // Add all selected items for this group
+          if (optgroupIsNotDrawn) {
+            groups = groups.not(parent);
+            ulContents += self.buildLiHeader("".concat(parent.attr('label'))); // Add all selected items for this group
 
-          if (moveSelected === 'group') {
-            groupsSelectedOpts[optgroupIndex].each(function (j) {
-              ulContents += buildLiOption(this, j);
-              upTopOpts++;
-            });
+            if (moveSelected === 'group') {
+              groupsSelectedOpts[optgroupIndex].each(function (j) {
+                ulContents += self.buildLiOption(this, j, term);
+                upTopOpts++;
+              });
+            }
           }
         }
-      }
 
-      if (moveSelected !== 'none' && option.is(':selected')) {
-        return;
-      }
+        if (moveSelected !== 'none' && option.is(':selected')) {
+          return;
+        }
 
-      ulContents += buildLiOption(this, count);
-    }); // Render the new list contents to the page.
+        ulContents += self.buildLiOption(this, count, term);
+      });
+    } // Render the new list contents to the page.
     // Build the entire thing and set references if this is the first opening.
     // Otherwise, simply replace the elements inside the <ul>.
 
+
     if (!listExists) {
-      listContents += "".concat(ulContents, "</ul>") + '</div>'; // Append markup to the DOM
+      listContents += this.settings.virtualScroll ? "".concat(ulContents, "</div>") : "".concat(ulContents, "</ul></div>"); // Append markup to the DOM
 
       this.list = $(listContents); // Get references
 
@@ -39192,6 +40442,13 @@ Dropdown.prototype = {
     } else {
       this.listUl.html(ulContents);
     }
+
+    if (Environment.os.name === 'ios' || Environment.os.name === 'android') {
+      this.searchInput.attr('readonly', 'readonly');
+    }
+
+    this.virtualScrollElem = this.listUl.closest('.virtual-scroll-container');
+    this.opts = opts;
 
     if (this.listIcon.hasIcons) {
       this.list.addClass('has-icons');
@@ -39202,12 +40459,65 @@ Dropdown.prototype = {
       this.listUl.addClass('has-groups');
     }
 
-    this.hasTooltips = this.listUl.find('[title]').length > 0;
+    this.hasTooltips = this.listUl.find('[title]').length > 0 || this.element.find('[title]').length > 0;
 
     if (this.isOpen()) {
       this.position();
       this.highlightOption(this.listUl.find('li:visible:not(.separator):not(.group-label):not(.is-disabled)').first());
     }
+  },
+  buildLiHeader: function buildLiHeader(textContent) {
+    return "<li role=\"none\" class=\"group-label\" focusable=\"false\">\n      ".concat(textContent, "\n    </li>");
+  },
+  buildLiOption: function buildLiOption(option, index, term) {
+    var self = this;
+    var liMarkup = '';
+    var text = option.innerHTML;
+    var attributes = DOM.getAttributes(option);
+    var value = attributes.getNamedItem('value');
+    var title = attributes.getNamedItem('title');
+    var hasTitle = title ? " title=\"".concat(title.value, "\"") : '';
+    var badge = attributes.getNamedItem('data-badge');
+    var badgeColor = attributes.getNamedItem('data-badge-color');
+    var badgeHtml = '';
+    var isSelected = option.selected ? ' is-selected' : '';
+    var isDisabled = option.disabled ? ' is-disabled' : '';
+    var liCssClasses = option.className ? " ".concat(option.className.value) : '';
+    var aCssClasses = liCssClasses.indexOf('clear') > -1 ? ' class="clear-selection"' : '';
+    var tabIndex = " tabIndex=\"".concat(index && index === 0 ? 0 : -1, "\"");
+    var toExclude = ['data-badge', 'data-badge-color', 'data-val', 'data-icon'];
+    var copiedDataAttrs = " ".concat(self.getDataAttributes(attributes, toExclude).str);
+    var trueValue = (value && 'value' in value ? value.value : text).replace(/"/g, '/quot/');
+    var iconHtml = '';
+
+    if (self.listIcon.hasIcons && self.listIcon.items[index]) {
+      iconHtml = self.listIcon.items[index].html;
+    }
+
+    if (copiedDataAttrs === ' ') {
+      copiedDataAttrs = '';
+    }
+
+    if (badge) {
+      badgeHtml = "<span class=\"badge ".concat(badgeColor ? badgeColor.value : 'azure07', "\">").concat(badge.value, "</span>");
+    }
+
+    if (liCssClasses.indexOf('clear') > -1 && text === '') {
+      text = Locale.translate('ClearSelection');
+    } // Highlight search term
+
+
+    if (term && term.length > 0) {
+      var exp = self.getSearchRegex(term);
+      text = text.replace(exp, '<span class="dropdown-highlight">$1</span>').trim();
+    }
+
+    if (self.listIcon.hasIcons && self.listIcon.items[index] && self.listIcon.items[index].isSwatch) {
+      liCssClasses += ' is-swatch';
+    }
+
+    liMarkup += "<li class=\"dropdown-option".concat(isSelected).concat(isDisabled).concat(liCssClasses, "\" data-val=\"").concat(trueValue, "\" ").concat(copiedDataAttrs).concat(hasTitle, " role=\"none\">\n      <a id=\"list-option-").concat(index, "\" href=\"#\" ").concat(aCssClasses, " role=\"option\" ").concat(isSelected ? 'aria-selected="true"' : '').concat(tabIndex, ">").concat(iconHtml).concat(text).concat(badgeHtml, "</a></li>");
+    return liMarkup;
   },
 
   /**
@@ -39235,6 +40545,7 @@ Dropdown.prototype = {
         _span = $("#".concat(this.element.attr('id'))).next().find('span').first();
         DOM.html(_span, "<span class=\"audible\">".concat(this.label.text(), " </span>"), '<div><p><span><ul><li><a><abbr><b><i><kbd><small><strong><sub><svg><use><br>');
         this.setPlaceholder(text);
+        this.scrollRelease(this.listUl);
         return;
       } // Render text
 
@@ -39259,6 +40570,7 @@ Dropdown.prototype = {
 
 
     this.previousActiveDescendant = opts.first().val();
+    this.renderPseudoElemLabel();
     this.updateItemIcon(opts);
     this.setBadge(opts);
   },
@@ -39370,19 +40682,17 @@ Dropdown.prototype = {
     var rectStr;
 
     if (!isIE11) {
-      /* eslint-disable */
       rectStr = String.fromCodePoint(8);
-      /* eslint-enable no-alert, no-console */
     }
 
     if (searchInputVal === '.' || searchInputVal === rectStr) {
       this.searchInput[0].value = '';
     }
 
-    this.searchInput.on("keydown.".concat(COMPONENT_NAME$v), function (e) {
+    this.searchInput.on("keydown.".concat(COMPONENT_NAME$Q), function (e) {
       var searchInput = $(_this3);
       return _this3.handleKeyDown(searchInput, e);
-    }).on("input.".concat(COMPONENT_NAME$v), function (e) {
+    }).on("input.".concat(COMPONENT_NAME$Q), function (e) {
       _this3.isFiltering = true;
 
       _this3.handleAutoComplete(e);
@@ -39395,6 +40705,8 @@ Dropdown.prototype = {
    * @param  {string} term The search term
    */
   filterList: function filterList(term) {
+    var _this4 = this;
+
     var typeahead = false; // 'typeahead' reloading skips client-side filtering in favor of server-side
 
     if (this.settings.source && this.settings.reload === 'typeahead') {
@@ -39416,66 +40728,90 @@ Dropdown.prototype = {
       term = '';
     }
 
-    if (!typeahead && term && term.length) {
-      results = this.listfilter.filter(list, term);
-    } else {
-      results = list;
-    }
+    var completeFilter = function completeFilter() {
+      if (!typeahead && term && term.length) {
+        results = _this4.listfilter.filter(list, term);
+      } else {
+        results = list;
+      }
 
-    this.list.addClass('search-mode');
-    this.list.find('.trigger').find('.icon').attr('class', 'icon search').changeIcon('search');
-    this.searchInput.removeAttr('aria-activedescendant');
-    this.unhighlightOptions();
+      _this4.list.addClass('search-mode');
 
-    if (!results || !results.length && !term) {
-      this.resetList();
+      _this4.list.find('.trigger').find('.icon').attr('class', 'icon search').changeIcon('search');
+
+      _this4.searchInput.removeAttr('aria-activedescendant');
+
+      _this4.unhighlightOptions();
+
+      if (!results || !results.length && !term) {
+        _this4.resetList();
+
+        return;
+      }
+
+      results.removeClass('hidden');
+      list.not(results).add(headers).addClass('hidden');
+      _this4.filteredItems = list.filter(results);
+
+      _this4.filteredItems.each(function (i) {
+        var li = $(this);
+        li.children('a').attr('tabindex', i === 0 ? '0' : '-1');
+
+        if (!selected) {
+          self.highlightOption(li);
+          selected = true;
+        }
+
+        self.highlightSearchTerm(li, term);
+      });
+
+      headers.each(function () {
+        var children = $(this).nextUntil('.group-label, .selector').not('.hidden');
+
+        if (self.settings.showEmptyGroupHeaders || children.length) {
+          $(this).removeClass('hidden');
+        }
+      });
+      term = ''; // Checking the position of the dropdown element
+      // If near at the bottom of the page, will not be flowing up
+      // and stay still to its position.
+
+      var totalPageHeight = document.body.scrollHeight;
+      var scrollPoint = window.scrollY + window.innerHeight;
+      var isNearBottom = scrollPoint >= totalPageHeight;
+
+      if (isNearBottom) {
+        self.position();
+      } else {
+        self.shrinkTop(self);
+      }
+    };
+
+    if (this.settings.virtualScroll) {
+      $(this.virtualScroller.element).one('afterrendered', function () {
+        list = $('.dropdown-option', _this4.listUl);
+        completeFilter();
+      });
+      this.virtualScroller.data = this.listfilter.filter(this.opts, term);
+      list = $('.dropdown-option', this.listUl);
       return;
     }
 
-    results.removeClass('hidden');
-    list.not(results).add(headers).addClass('hidden');
-    this.filteredItems = list.filter(results);
-    this.filteredItems.each(function (i) {
-      var li = $(this);
-      var a = li.children('a');
-      li.attr('tabindex', i === 0 ? '0' : '-1');
+    completeFilter();
+  },
 
-      if (!selected) {
-        self.highlightOption(li);
-        selected = true;
-      } // Highlight Term
-
-
-      var exp = self.getSearchRegex(term);
-      var text = li.text();
-      text = xssUtils.escapeHTML(text);
-      text = text.replace(/&lt;/g, '&#16;');
-      text = text.replace(/&gt;/g, '&#17;');
-      text = text.replace(/&apos;/g, '&#18;');
-      text = text.replace(/&quot;/g, '&#19;');
-      text = text.replace(/&amp;/g, '&');
-      text = text.replace(exp, '<span class="dropdown-highlight">$1</span>').trim();
-      text = text.replace(/&#16;/g, '&lt;');
-      text = text.replace(/&#17;/g, '&gt;');
-      text = text.replace(/&#18;/g, '&apos;');
-      text = text.replace(/&#19;/g, '&quot;');
-      var icon = li.children('a').find('svg').length !== 0 ? new XMLSerializer().serializeToString(li.children('a').find('svg')[0]) : '';
-      var swatch = li.children('a').find('.swatch');
-      var swatchHtml = swatch.length !== 0 ? swatch[0].outerHTML : '';
-
-      if (a[0]) {
-        a[0].innerHTML = swatchHtml + icon + text;
-      }
-    });
-    headers.each(function () {
-      var children = $(this).nextUntil('.group-label, .selector').not('.hidden');
-
-      if (self.settings.showEmptyGroupHeaders || children.length) {
-        $(this).removeClass('hidden');
-      }
-    });
-    term = '';
-    this.position();
+  /**
+   * Shrink if the element is flowing up
+   * @private
+   * @param {Object} self The api object
+   */
+  shrinkTop: function shrinkTop(self) {
+    // Minimal shrink when on top on
+    if (self.list && self.list[0].classList.contains('is-ontop')) {
+      var listHeight = parseInt(self.list[0].offsetHeight, 10);
+      var searchInputHeight = parseInt(self.searchInput[0].offsetHeight, 10);
+      self.list[0].style.top = "".concat(self.wrapper[0].offsetParent.offsetTop + (listHeight - searchInputHeight) + 4, "px");
+    }
   },
 
   /**
@@ -39522,6 +40858,10 @@ Dropdown.prototype = {
       this.updateList();
     }
 
+    if (this.settings.virtualScroll) {
+      this.virtualScroller.data = this.opts;
+    }
+
     lis.removeClass('hidden');
     this.position();
 
@@ -39541,9 +40881,7 @@ Dropdown.prototype = {
 
     if (!blank.length) {
       return;
-    } // TODO: Refactor this in v4.9.0 to call `selectOption` instead.  Can't currently
-    // do that because `selectOption` depends on the list being open.
-
+    }
 
     blank[0].selected = true;
     blank[0].setAttribute('selected', true);
@@ -39559,6 +40897,8 @@ Dropdown.prototype = {
    * @returns {boolean} Returns the event in some situations.
    */
   handleKeyDown: function handleKeyDown(input, e) {
+    var _this5 = this;
+
     var selectedIndex = this.element[0].selectedIndex || -1;
     var options = this.element[0].options;
     var key = e.which;
@@ -39571,7 +40911,7 @@ Dropdown.prototype = {
     }
 
     if (this.isLoading()) {
-      return;
+      return true;
     }
 
     if (self.settings.onKeyDown) {
@@ -39585,10 +40925,10 @@ Dropdown.prototype = {
     }
 
     if (self.isOpen()) {
-      options = this.listUl.find(excludes);
+      options = self.settings.virtualScroll ? this.opts : this.listUl.find(excludes);
       selectedIndex = -1;
       $(options).each(function (index) {
-        if ($(this).is('.is-focused')) {
+        if ($(this).is('.is-focused') || self.settings.virtualScroll && $(this).is(':selected')) {
           selectedIndex = index;
         }
       });
@@ -39686,7 +41026,7 @@ Dropdown.prototype = {
         {
           // up
           if (e.shiftKey) {
-            return;
+            return true;
           }
 
           this.searchKeyMode = false;
@@ -39702,6 +41042,12 @@ Dropdown.prototype = {
             next.addClass('is-focused');
           }
 
+          if (this.settings.virtualScroll) {
+            $(this.virtualScroller.element).one('afterrendered', function () {
+              _this5.highlightOption(next);
+            });
+          }
+
           e.stopPropagation();
           e.preventDefault();
           return false; //eslint-disable-line
@@ -39711,7 +41057,7 @@ Dropdown.prototype = {
         {
           // down
           if (e.shiftKey) {
-            return;
+            return true;
           }
 
           this.searchKeyMode = false;
@@ -39725,6 +41071,12 @@ Dropdown.prototype = {
 
             next.parent().find('.is-focused').removeClass('is-focused');
             next.addClass('is-focused');
+          }
+
+          if (this.settings.virtualScroll) {
+            $(this.virtualScroller.element).one('afterrendered', function () {
+              _this5.highlightOption(next);
+            });
           }
 
           e.stopPropagation();
@@ -39820,7 +41172,7 @@ Dropdown.prototype = {
     if (openKeys.indexOf(key) > -1) {
       if (!this.isOpen()) {
         this.open();
-      } // TODO: refactor this out so that `handleKeyDown` is no longer necessary.
+      } // Maybe refactor this out so that `handleKeyDown` is no longer necessary.
       // This is necessary here because in `noSearch` mode, there is no actionable searchInput.
 
 
@@ -39867,7 +41219,7 @@ Dropdown.prototype = {
    * @param {object} e The event object
    */
   handleAutoComplete: function handleAutoComplete(e) {
-    var _this4 = this;
+    var _this6 = this;
 
     if (this.isLoading()) {
       return;
@@ -39880,7 +41232,7 @@ Dropdown.prototype = {
     }
 
     if (e.type === 'input') {
-      this.filterTerm = this.searchInput.val();
+      this.filterTerm = self.settings.noSearch ? this.searchInput.val().toLowerCase() : this.searchInput.val();
     } else {
       this.filterTerm += $.actualChar(e).toLowerCase();
 
@@ -39913,15 +41265,15 @@ Dropdown.prototype = {
         return;
       }
 
-      _this4.searchKeyMode = true;
+      _this6.searchKeyMode = true;
 
       if (!self.isOpen()) {
         self.open(filter);
         return;
       }
 
-      if (_this4.list.find('ul li.hidden').length === 0) {
-        _this4.list.find(' > svg.listoption-icon:not(.swatch)').changeIcon('icon-empty-circle');
+      if (_this6.list.find('ul li.hidden').length === 0) {
+        _this6.list.find(' > svg.listoption-icon:not(.swatch)').changeIcon('icon-empty-circle');
       }
 
       filter();
@@ -39980,7 +41332,7 @@ Dropdown.prototype = {
 
     selectText(); // Set focus back to the element
 
-    if (input) {
+    if (input && document.activeElement.tagName !== 'INPUT') {
       input[0].focus();
     }
   },
@@ -40065,11 +41417,14 @@ Dropdown.prototype = {
    * @private
    */
   openList: function openList() {
+    var _this7 = this;
+
     var current = this.previousActiveDescendant ? this.list.find(".dropdown-option[data-val=\"".concat(this.previousActiveDescendant.replace(/"/g, '/quot/'), "\"]")) : this.list.find('.is-selected');
     var self = this;
     var threshold = 10;
     var pos;
-    this.touchPrevented = false; // Close any other drop downs.
+    this.touchPrevented = false;
+    this.scrollLock(this.listUl); // Close any other drop downs.
 
     $('select').each(function () {
       var data = $(this).data();
@@ -40101,13 +41456,12 @@ Dropdown.prototype = {
       this.list.appendTo('body');
     }
 
-    this.list.show(); // Persist the "short" input field
+    this.list.show();
+    this.list.attr('data-element-id', this.element.attr('id')); // Persist the "short" input field
 
     if (this.isShortField) {
       this.list[0].classList.add('dropdown-short');
     }
-
-    this.pseudoElem.attr('aria-expanded', 'true').addClass('is-open');
 
     if (self.settings.attributes) {
       // Add test automation ids
@@ -40115,15 +41469,19 @@ Dropdown.prototype = {
       this.list.find('label').attr('for', this.list.find('input').attr('id'));
       utils.addAttributes(this.list.find('label'), this, this.settings.attributes, 'search-label');
       utils.addAttributes(this.list.find('.trigger svg'), this, this.settings.attributes, 'trigger', true);
-      utils.addAttributes(this.list.find('ul'), this, this.settings.attributes, 'listbox', true);
+      utils.addAttributes(this.listUl, this, this.settings.attributes, 'listbox', true);
       utils.addAttributes(this.list, this, this.settings.attributes, 'list');
       var options = this.list.find('.dropdown-option a');
       options.each(function (i) {
         var opt = $(this);
         utils.addAttributes(opt, self, self.settings.attributes, "option-".concat(i), true);
       });
+      var customId = utils.getAttribute(this, 'id', this.settings.attributes);
+      this.pseudoElem.attr('aria-controls', customId ? "".concat(customId, "-listbox") : 'dropdown-list');
+      this.pseudoElem.attr('aria-expanded');
     }
 
+    this.pseudoElem.attr('aria-expanded', 'true').addClass('is-open');
     this.searchInput.attr('aria-activedescendant', current.children('a').attr('id'));
 
     if (this.settings.showSearchUnderSelected) {
@@ -40152,10 +41510,54 @@ Dropdown.prototype = {
       this.list.addClass(cssClass);
     }
 
-    this.position(); // Limit the width
+    this.position();
+
+    if (this.settings.virtualScroll) {
+      var selectedIndex = -1;
+      var selectedElem = null;
+      this.opts.toArray().filter(function (opt, i) {
+        if (opt.selected) {
+          selectedIndex = i;
+          selectedElem = opt;
+          return opt;
+        }
+
+        return null;
+      });
+      this.virtualScroller = new VirtualScroll(this.virtualScrollElem, {
+        height: 304,
+        itemHeight: 32,
+        itemTemplate: function itemTemplate(item, elem) {
+          //eslint-disable-line
+          var li = self.buildLiOption(elem, item);
+
+          if (elem.selected) {
+            selectedElem = elem;
+            current = $(selectedElem);
+          }
+
+          li = self.highlightSearchTerm($(li), self.filterTerm);
+          return li;
+        },
+        data: this.opts
+      });
+      setTimeout(function () {
+        $(_this7.virtualScroller.element).on('afterrendered', function () {
+          _this7.highlightOption($(selectedElem));
+        });
+
+        _this7.virtualScroller.scrollTo(selectedIndex);
+      });
+    } // Limit the width
+
 
     if (this.settings.maxWidth) {
       this.list.css('max-width', "".concat(this.settings.maxWidth, "px"));
+    } // Limit the width
+
+
+    if (this.settings.width) {
+      this.list.css('width', "".concat(this.settings.width, "px"));
     } // Set the contents of the search input.
     // If we've got a stored typeahead
 
@@ -40220,12 +41622,14 @@ Dropdown.prototype = {
 
     if (this.hasTooltips) {
       var clearTimer = function clearTimer() {
-        if (_self.timer && _self.timer.destroy) {
-          _self.timer.destroy(true);
+        //eslint-disable-line
+        if (self.timer && self.timer.destroy) {
+          self.timer.destroy(true);
         }
       };
 
       var showTooltip = function showTooltip(target, title) {
+        //eslint-disable-line
         $(target).tooltip({
           trigger: 'immediate',
           content: title
@@ -40236,13 +41640,15 @@ Dropdown.prototype = {
       var hideTooltip = function hideTooltip(target) {
         var _$$data;
 
+        //eslint-disable-line
         $('#tooltip').hide();
         (_$$data = $('#tooltip').data('tooltip')) === null || _$$data === void 0 ? void 0 : _$$data == null ? void 0 : _$$data.destroy();
       };
 
       var showOnTimer = function showOnTimer(target) {
+        //eslint-disable-line
         clearTimer();
-        _self.timer = new RenderLoopItem({
+        self.timer = new RenderLoopItem({
           duration: 500 / 10,
           timeoutCallback: function timeoutCallback() {
             var title = target.getAttribute('title');
@@ -40258,53 +41664,35 @@ Dropdown.prototype = {
             showTooltip(target, title);
           }
         });
-        renderLoop.register(_self.timer);
+        renderLoop.register(self.timer);
       };
 
       var hideImmediately = function hideImmediately(target) {
+        //eslint-disable-line
         clearTimer();
         hideTooltip(target);
       };
 
-      var _self = this;
-
-      _self.list.on('mouseover.tooltip', 'li[title], li[data-title]', function (e) {
+      self.list.on('mouseover.tooltip', 'li[title], li[data-title]', function (e) {
         showOnTimer(e.currentTarget);
-      }).on('mouseleave.tooltip, click.tooltip', 'li[title], li[data-title]', function (e) {
+      }).on('mouseleave.tooltip, mousewheel.tooltip, click.tooltip', 'li[title], li[data-title]', function (e) {
         hideImmediately(e.currentTarget);
       });
-    } // Some list-closing events are on a timer to prevent immediate list close
+    }
+
+    this.scrollRelease(this.listUl); // Some list-closing events are on a timer to prevent immediate list close
     // There would be several things to check with a setTimeout, so this is done with a CSS
     // class to keep things a bit cleaner
 
-
     setTimeout(function () {
       self.list.addClass('is-closable');
-    }, 100); // Is the jQuery Element a component of the current Dropdown list?
-
-    function isDropdownElement(target) {
-      return target.closest('.dropdown, .multiselect').length > 0 || target.closest('.dropdown-list').length > 0 || self.touchmove === true;
-    } // Triggered when the user scrolls the page.
-    // Ignores Scrolling on Mobile, and will not close the list if accessing an item within the list
-
-
-    function scrollDocument(e) {
-      var focus = $('*:focus'); // dont close on timepicker arrow down and up
-
-      if (self.touchPrevented || isDropdownElement($(e.target)) || focus.is('.timepicker')) {
-        self.touchPrevented = false;
-        return;
-      }
-
-      self.closeList('cancel');
-    } // Triggered when the user clicks anywhere in the document
+    }, 100); // Triggered when the user clicks anywhere in the document
     // Will not close the list if the clicked target is anywhere inside the dropdown list.
-
 
     function clickDocument(e) {
       var target = $(e.target);
 
-      if (self.touchPrevented || isDropdownElement(target) && !target.is('.icon')) {
+      if (self.touchPrevented || self.isDropdownElement(target) && !target.is('.icon')) {
         e.preventDefault();
         self.touchPrevented = false;
         return;
@@ -40359,7 +41747,10 @@ Dropdown.prototype = {
 
     if (parentScrollableArea.length) {
       this.parentScrollableArea = parentScrollableArea;
-      this.parentScrollableArea.on('scroll.dropdown', scrollDocument);
+      this.parentScrollableArea.on('scroll.dropdown', function (e) {
+        _this7.scrollDocument(e);
+      });
+      this.parentScrollableArea.css('overscroll-behavior', 'none');
     }
 
     $('body').on('resize.dropdown', function () {
@@ -40380,6 +41771,33 @@ Dropdown.prototype = {
   },
 
   /**
+   * Is the jQuery Element a component of the current Dropdown list?
+   * @param {HTMLElement} target The element to check
+   * @private
+   * @returns {HTMLElement} whether or not the item was successfully selected.
+   */
+  isDropdownElement: function isDropdownElement(target) {
+    return target.closest('.dropdown, .multiselect').length > 0 || target.closest('.dropdown-list').length > 0 || self.touchmove === true;
+  },
+
+  /**
+   * Ignores Scrolling on Mobile, and will not close the list if accessing an item within the list
+   * @param {Event} e Triggered when the user scrolls the page.
+   * @private
+   */
+  scrollDocument: function scrollDocument(e) {
+    var self = this;
+    var focus = $('*:focus'); // dont close on timepicker arrow down and up
+
+    if (self.touchPrevented || self.isDropdownElement($(e.target)) || focus.is('.timepicker')) {
+      self.touchPrevented = false;
+      return;
+    }
+
+    self.closeList('cancel');
+  },
+
+  /**
    * Set size and positioning of the list
    * @private
    */
@@ -40394,7 +41812,11 @@ Dropdown.prototype = {
     function dropdownAfterPlaceCallback(e, placementObj) {
       // Turn upside-down if flipped to the top of the pseudoElem
       self.list[placementObj.wasFlipped === true ? 'addClass' : 'removeClass']('is-ontop');
-      self.listUl[placementObj.wasFlipped === true ? 'prependTo' : 'appendTo'](self.list);
+
+      if (!self.settings.virtualScroll) {
+        self.listUl[placementObj.wasFlipped === true ? 'prependTo' : 'appendTo'](self.list);
+      }
+
       var listStyle = window.getComputedStyle(self.list[0]);
       var listStyleTop = listStyle.top ? parseInt(listStyle.top, 10) : 0; // Firefox has different alignments without an adjustment:
 
@@ -40416,7 +41838,7 @@ Dropdown.prototype = {
         adjustedUlHeight = "".concat(listHeight - searchInputHeight - 5, "px");
 
         if (isToBottom) {
-          self.list[0].style.height = "".concat(parseInt(listHeight, 10) - 10, "px");
+          self.list[0].style.maxHeight = "".concat(parseInt(listHeight, 10) - 5, "px");
         }
       }
 
@@ -40428,8 +41850,8 @@ Dropdown.prototype = {
         }
       }
 
-      if (adjustedUlHeight) {
-        self.listUl[0].style.height = adjustedUlHeight;
+      if (adjustedUlHeight && !self.settings.virtualScroll) {
+        self.listUl[0].style.maxHeight = adjustedUlHeight;
       }
 
       if (adjustedUlHeight === undefined && self.list[0].classList.contains('is-ontop')) {
@@ -40475,6 +41897,16 @@ Dropdown.prototype = {
 
     if (self.settings.placementOpts && self.settings.placementOpts.x) {
       positionOpts.x = self.settings.placementOpts.x;
+    } // Limit the maxWidth
+
+
+    if (this.settings.maxWidth) {
+      this.list.css('max-width', "".concat(this.settings.maxWidth, "px"));
+    } // Limit the width
+
+
+    if (this.settings.width) {
+      this.list.css('width', "".concat(this.settings.width, "px"));
     }
 
     this.list.one('afterplace.dropdown', dropdownAfterPlaceCallback).place(positionOpts);
@@ -40498,17 +41930,18 @@ Dropdown.prototype = {
 
     if (target.is('.dropdown-select-all-anchor')) {
       target = target.parent();
-    } // If this is the Select All option, select/deselect all.
+    }
 
+    var a = target[0].querySelector('a'); // If this is the Select All option, select/deselect all.
 
     if (this.settings.multiple && target[0].classList.contains('dropdown-select-all-list-item')) {
       var doSelectAll = !target[0].classList.contains('is-selected');
       target[0].classList[doSelectAll ? 'add' : 'remove']('is-selected');
 
       if (doSelectAll) {
-        target[0].setAttribute('aria-selected', 'true');
+        a.setAttribute('aria-selected', 'true');
       } else {
-        target[0].removeAttribute('aria-selected');
+        a.setAttribute('aria-selected', 'false');
       }
 
       this.selectAll(doSelectAll);
@@ -40538,7 +41971,7 @@ Dropdown.prototype = {
       var selectedOpts = opts.filter(':selected');
 
       if (opts.length > selectedOpts.length) {
-        this.list.find('.dropdown-select-all-list-item').removeClass('is-selected').removeAttr('aria-selected');
+        this.list.find('.dropdown-select-all-list-item').removeClass('is-selected').attr('aria-selected', 'false');
       } else {
         this.list.find('.dropdown-select-all-list-item').addClass('is-selected').attr('aria-selected', 'true');
       }
@@ -40555,7 +41988,14 @@ Dropdown.prototype = {
    * @returns {object} The corrected object
    */
   correctValue: function correctValue(option) {
-    var val = option.attr('data-val').replace(/"/g, '/quot/');
+    var val = option.attr('data-val') || option.attr('value');
+
+    if (!val) {
+      // Blank option
+      return option;
+    }
+
+    val = val.replace(/"/g, '/quot/');
     var cur = this.element.find("option[value=\"".concat(val, "\"]"));
 
     if (cur.length === 0 || cur.length > 1) {
@@ -40608,11 +42048,11 @@ Dropdown.prototype = {
       this.scrollTagList();
     }
 
-    this.searchInput.off(["input.".concat(COMPONENT_NAME$v), "keydown.".concat(COMPONENT_NAME$v)].join(' '));
-    this.list.off(["click.".concat(COMPONENT_NAME$v), "touchmove.".concat(COMPONENT_NAME$v), "touchend.".concat(COMPONENT_NAME$v), "touchcancel.".concat(COMPONENT_NAME$v), "mousewheel.".concat(COMPONENT_NAME$v), "mouseenter.".concat(COMPONENT_NAME$v)].join(' ')).remove();
+    this.searchInput.off(["input.".concat(COMPONENT_NAME$Q), "keydown.".concat(COMPONENT_NAME$Q)].join(' '));
+    this.list.off(["click.".concat(COMPONENT_NAME$Q), "touchmove.".concat(COMPONENT_NAME$Q), "touchend.".concat(COMPONENT_NAME$Q), "touchcancel.".concat(COMPONENT_NAME$Q), "mousewheel.".concat(COMPONENT_NAME$Q), "mouseenter.".concat(COMPONENT_NAME$Q)].join(' ')).remove();
     this.pseudoElem.removeClass('is-open').removeAttr('aria-expanded');
     this.searchInput.removeAttr('aria-activedescendant');
-    $(document).off(["click.".concat(COMPONENT_NAME$v), "scroll.".concat(COMPONENT_NAME$v), "touchstart.".concat(COMPONENT_NAME$v), "touchmove.".concat(COMPONENT_NAME$v), "touchend.".concat(COMPONENT_NAME$v), "touchcancel.".concat(COMPONENT_NAME$v)].join(' '));
+    $(document).off(["click.".concat(COMPONENT_NAME$Q), "scroll.".concat(COMPONENT_NAME$Q), "touchstart.".concat(COMPONENT_NAME$Q), "touchmove.".concat(COMPONENT_NAME$Q), "touchend.".concat(COMPONENT_NAME$Q), "touchcancel.".concat(COMPONENT_NAME$Q)].join(' '));
 
     if (this.parentScrollableArea) {
       this.parentScrollableArea.off('scroll.dropdown');
@@ -40631,7 +42071,11 @@ Dropdown.prototype = {
     */
 
     this.element.trigger('listclosed', action);
-    this.activate();
+
+    if (action !== 'click') {
+      this.activate();
+    }
+
     this.toggleTooltip();
     this.list = null;
     this.searchInput = null;
@@ -40645,8 +42089,6 @@ Dropdown.prototype = {
   * @returns {void}
   */
   scrollToOption: function scrollToOption(current) {
-    var self = this;
-
     if (!current) {
       return;
     }
@@ -40656,8 +42098,46 @@ Dropdown.prototype = {
     } // scroll to the currently selected option
 
 
-    self.listUl.scrollTop(0);
-    self.listUl.scrollTop(current.offset().top - self.listUl.offset().top - self.listUl.scrollTop() - 40);
+    this.scrollLock(this.listUl);
+
+    if (!this.settings.virtualScroll) {
+      current[0].parentNode.scrollTop = current[0].offsetTop - current[0].parentNode.offsetTop;
+    } else {
+      current[0].closest('.ids-virtual-scroll').scrollTop = current[0].offsetTop - current[0].closest('.ids-virtual-scroll').offsetTop;
+      current[0].scrollIntoView({
+        block: 'center'
+      });
+    }
+
+    current.focus();
+    this.searchInput.focus();
+    this.scrollRelease(this.listUl);
+  },
+
+  /**
+   * Isolate scrolling to a parent
+   * @private
+   */
+  scrollLock: function scrollLock() {
+    var _this$parentScrollabl;
+
+    (_this$parentScrollabl = this.parentScrollableArea) === null || _this$parentScrollabl === void 0 ? void 0 : _this$parentScrollabl == null ? void 0 : _this$parentScrollabl.off('scroll.dropdown');
+  },
+
+  /**
+   * Restore the scroll behavior
+   * @private
+   */
+  scrollRelease: function scrollRelease() {
+    var _this8 = this;
+
+    setTimeout(function () {
+      var _this8$parentScrollab;
+
+      (_this8$parentScrollab = _this8.parentScrollableArea) === null || _this8$parentScrollab === void 0 ? void 0 : _this8$parentScrollab == null ? void 0 : _this8$parentScrollab.off('scroll.dropdown').on('scroll.dropdown', function (e) {
+        _this8.scrollDocument(e);
+      });
+    }, Environment.os.name === 'ios' ? 800 : 400);
   },
 
   /**
@@ -40666,15 +42146,15 @@ Dropdown.prototype = {
    * @returns {void}
    */
   scrollTagList: function scrollTagList() {
-    var _this5 = this;
+    var _this9 = this;
 
     if (!this.tagListAPI) {
       return;
     }
 
     setTimeout(function () {
-      if (!_this5.isFocused) {
-        _this5.tagListAPI.element.scrollTop = 0;
+      if (!_this9.isFocused) {
+        _this9.tagListAPI.element.scrollTop = 0;
       }
     }, 5);
   },
@@ -40769,7 +42249,7 @@ Dropdown.prototype = {
 
 
     this.setItemIconOverColor();
-    this.list.find('.is-focused').removeClass('is-focused').attr({
+    this.list.find('.is-focused').removeClass('is-focused').children('a').attr({
       tabindex: '-1'
     }); // Don't continue if a match hasn't been found, or the match is disabled.
 
@@ -40783,7 +42263,7 @@ Dropdown.prototype = {
 
     if (!isEmpty) {
       this.setItemIconOverColor(listOption);
-      listOption.addClass('is-focused').attr({
+      listOption.addClass('is-focused').children('a').attr({
         tabindex: '0'
       });
 
@@ -40791,6 +42271,46 @@ Dropdown.prototype = {
         this.scrollToOption(listOption);
       }
     }
+  },
+
+  /**
+   * Highlight Term and replace it in the DOM element
+   * @param  {HTMLElement} li  The list item to replace
+   * @param  {string} term  The search term
+   * @returns {string} the markup of the li
+   */
+  highlightSearchTerm: function highlightSearchTerm(li, term) {
+    if (!li) {
+      return '';
+    }
+
+    if (!term) {
+      return li[0].outerHTML;
+    }
+
+    var a = li.children('a');
+    var exp = this.getSearchRegex(term);
+    var text = li.text();
+    text = xssUtils.escapeHTML(text);
+    text = text.replace(/&lt;/g, '&#16;');
+    text = text.replace(/&gt;/g, '&#17;');
+    text = text.replace(/&apos;/g, '&#18;');
+    text = text.replace(/&quot;/g, '&#19;');
+    text = text.replace(/&amp;/g, '&');
+    text = text.replace(exp, '<span class="dropdown-highlight">$1</span>').trim();
+    text = text.replace(/&#16;/g, '&lt;');
+    text = text.replace(/&#17;/g, '&gt;');
+    text = text.replace(/&#18;/g, '&apos;');
+    text = text.replace(/&#19;/g, '&quot;');
+    var icon = li.children('a').find('svg').length !== 0 ? new XMLSerializer().serializeToString(li.children('a').find('svg')[0]) : '';
+    var swatch = li.children('a').find('.swatch');
+    var swatchHtml = swatch.length !== 0 ? swatch[0].outerHTML : '';
+
+    if (a[0]) {
+      a[0].innerHTML = swatchHtml + icon + text;
+    }
+
+    return li[0].outerHTML;
   },
 
   /**
@@ -40805,7 +42325,7 @@ Dropdown.prototype = {
     }
 
     this.setItemIconOverColor();
-    listOptions.removeClass('is-focused').attr({
+    listOptions.removeClass('is-focused').children('a').attr({
       tabindex: '-1'
     });
     this.searchInput.removeAttr('aria-activedescendant');
@@ -40825,15 +42345,20 @@ Dropdown.prototype = {
     var optionVal = optionEl.value;
     var selected = optionEl.selected;
     var li = this.listUl.find("li[data-val=\"".concat(optionVal, "\"]"));
+    var a = li.children('a');
+
+    if (!li) {
+      return;
+    }
 
     if (selected) {
       li[0].classList.add('is-selected');
-      li[0].setAttribute('aria-selected', true);
+      a[0].setAttribute('aria-selected', 'true');
       return;
     }
 
     li[0].classList.remove('is-selected');
-    li[0].removeAttribute('aria-selected');
+    a[0].setAttribute('aria-selected', 'false');
   },
 
   /**
@@ -40843,7 +42368,7 @@ Dropdown.prototype = {
    * @returns {void}
    */
   selectAll: function selectAll(doSelectAll) {
-    var _this6 = this;
+    var _this10 = this;
 
     var selector = {
       options: 'option:not(.is-disabled):not(:disabled)',
@@ -40864,7 +42389,7 @@ Dropdown.prototype = {
           return;
         }
 
-        var opt = _this6.element[0].querySelector("option[value=\"".concat(val, "\"]"));
+        var opt = _this10.element[0].querySelector("option[value=\"".concat(val, "\"]"));
 
         if (opt) {
           options.push(opt);
@@ -40876,7 +42401,7 @@ Dropdown.prototype = {
       // Select all
       items.forEach(function (node) {
         node.classList.add('is-selected');
-        node.setAttribute('aria-selected', true);
+        node.querySelector('a').setAttribute('aria-selected', 'true');
       });
       options.forEach(function (node) {
         node.selected = true;
@@ -40886,7 +42411,7 @@ Dropdown.prototype = {
       // Clear all
       items.forEach(function (node) {
         node.classList.remove('is-selected');
-        node.removeAttribute('aria-selected');
+        node.querySelector('a').setAttribute('aria-selected', 'false');
       });
       options.forEach(function (node) {
         // Fix for ie-edge
@@ -40946,7 +42471,8 @@ Dropdown.prototype = {
       return;
     }
 
-    var li; // Discovers a `<option>` incoming item from its corresponding Dropdown List item's `data-val` attribute.
+    var li;
+    this.scrollLock(this.listUl); // Discovers a `<option>` incoming item from its corresponding Dropdown List item's `data-val` attribute.
 
     if (option.is('li')) {
       li = option;
@@ -40960,6 +42486,7 @@ Dropdown.prototype = {
       }
 
       if (option.prop('disabled')) {
+        this.scrollRelease(this.listUl);
         return;
       }
     }
@@ -41049,6 +42576,9 @@ Dropdown.prototype = {
         this.element.val(ieVal);
       }
     }
+
+    $('.tooltip:not(.is-hidden)').hide();
+    this.scrollRelease(this.listUl);
   },
 
   /**
@@ -41130,13 +42660,13 @@ Dropdown.prototype = {
    * @returns {void}
    */
   deselectAll: function deselectAll() {
-    var _this7 = this;
+    var _this11 = this;
 
     var allOptions = this.element.find('option');
     allOptions.each(function (i, option) {
       $(option).prop('selected', false);
 
-      _this7.deselectValue(option);
+      _this11.deselectValue(option);
     });
   },
 
@@ -41187,7 +42717,7 @@ Dropdown.prototype = {
       }
     }
 
-    return elem.options[newIdx];
+    return elem.options[newIdx]; //eslint-disable-line
   },
 
   /**
@@ -41527,7 +43057,7 @@ Dropdown.prototype = {
       this.pseudoElem.blur();
     }
 
-    this.pseudoElem.addClass('is-disabled').removeClass('is-readonly').attr('tabindex', '-1').prop('readonly', false).prop('disabled', true);
+    this.pseudoElem.addClass('is-disabled').removeClass('is-readonly').removeAttr('aria-readonly').attr('tabindex', '-1').prop('readonly', false).prop('disabled', true);
     this.closeList('cancel');
 
     if (this.settings.showTags) {
@@ -41548,7 +43078,7 @@ Dropdown.prototype = {
    */
   enable: function enable() {
     this.element.prop('disabled', false).prop('readonly', false);
-    this.pseudoElem.prop('disabled', false).prop('readonly', false).attr('tabindex', '0').removeClass('is-disabled').removeClass('is-readonly');
+    this.pseudoElem.prop('disabled', false).prop('readonly', false).attr('tabindex', '0').removeClass('is-disabled').removeClass('is-readonly').removeAttr('aria-readonly');
 
     if (this.settings.showTags) {
       this.pseudoElem.find('.tag').removeClass('is-disabled');
@@ -41560,7 +43090,7 @@ Dropdown.prototype = {
    */
   readonly: function readonly() {
     this.element.prop('disabled', false).prop('readonly', true);
-    this.pseudoElem.removeClass('is-disabled').addClass('is-readonly').attr('tabindex', this.element.attr('tabindex') || '0').prop('disabled', false).prop('readonly', true);
+    this.pseudoElem.removeClass('is-disabled').addClass('is-readonly').attr('aria-readonly', 'true').attr('tabindex', this.element.attr('tabindex') || '0').prop('disabled', false).prop('readonly', true);
     this.closeList('cancel');
   },
 
@@ -41592,6 +43122,7 @@ Dropdown.prototype = {
       this.readonly();
     } else {
       this.pseudoElem.removeClass('is-readonly');
+      this.pseudoElem.removeAttr('aria-readonly');
     } // update "disabled" prop
 
 
@@ -41616,7 +43147,7 @@ Dropdown.prototype = {
       delete this.currentlyScrolledPos;
     }
 
-    $.removeData(this.element[0], COMPONENT_NAME$v);
+    $.removeData(this.element[0], COMPONENT_NAME$Q);
     this.closeList('cancel');
     this.pseudoElem.off().remove();
     this.icon.remove();
@@ -41638,7 +43169,7 @@ Dropdown.prototype = {
    * @private
    */
   handleEvents: function handleEvents() {
-    var _this8 = this;
+    var _this12 = this;
 
     var self = this;
 
@@ -41660,7 +43191,7 @@ Dropdown.prototype = {
 
     var isTag = false;
     this.pseudoElem.on('keydown.dropdown', function (e) {
-      return _this8.handlePseudoElemKeydown(e);
+      return _this12.handlePseudoElemKeydown(e);
     }).on('click.dropdown touchstart.dropdown', function (e) {
       // Would like the click event to bubble up if ctrl and shift are pressed
       if (!(e.originalEvent.ctrlKey && e.originalEvent.shiftKey)) {
@@ -41675,7 +43206,6 @@ Dropdown.prototype = {
     }).on('mouseup.dropdown touchend.dropdown', function (e) {
       if (e.button === 2) {
         e.stopPropagation();
-        return;
       }
     }).on('mousedown.dropdown touchstart.dropdown', function (e) {
       isTag = isTagEl(e);
@@ -41692,7 +43222,7 @@ Dropdown.prototype = {
 
     if (this.tagListAPI) {
       this.pseudoElem.on('focusout.dropdown', function () {
-        _this8.scrollTagList();
+        _this12.scrollTagList();
       });
     }
 
@@ -41712,6 +43242,10 @@ Dropdown.prototype = {
     }); // Handle Label click
 
     this.label.on('click', function () {
+      if (self.isDisabled()) {
+        return;
+      }
+
       self.pseudoElem.focus();
     });
   }
@@ -41726,22 +43260,22 @@ Dropdown.prototype = {
 $.fn.dropdown = function (settings) {
   // Keep the Chaining and Init the Controls or Settings
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$v);
+    var instance = $.data(this, COMPONENT_NAME$Q);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$v, new Dropdown(this, settings));
+      instance = $.data(this, COMPONENT_NAME$Q, new Dropdown(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$w = 'colorpicker';
+var COMPONENT_NAME$P = 'colorpicker';
 /**
  * The ColorPicker Component is a trigger field with a listing colors that can be selected.
  * @class ColorPicker
  * @param {jQuery[]|HTMLElement} element The plugin element for the constuctor
- * @param {object} [settings] The settings element.
+ * @param {object} [settings] The settings element. 
  * @param {object} [settings.themes={}] Themes available for ColorPicker
  * @param {array} [settings.colors=[]] An array of objects of the form. {label: 'Azure', number: '01', value: 'CBEBF4'}
  * that can be used to populate the color grid.
@@ -42250,12 +43784,14 @@ ColorPicker.prototype = {
   */
   setCustomWidth: function setCustomWidth() {
     if (this.element[0].style && this.element[0].style.width) {
+      var _this$swatch;
+
       var w = parseInt(this.element[0].style.width, 10);
       this.container.css({
         width: w
       });
       this.element.css({
-        width: w - 4 - this.swatch.width()
+        width: w - 4 - ((_this$swatch = this.swatch) === null || _this$swatch === void 0 ? void 0 : _this$swatch == null ? void 0 : _this$swatch.width())
       });
     }
   },
@@ -42501,23 +44037,34 @@ ColorPicker.prototype = {
   },
 
   /**
-   * Make basic theme variants backwards/forwards compatible
-   * @param {string} activeTheme The active theme to get the variant for
-   * @returns {string} The theme variants's border property value
-   * @example (i.e. match "theme-uplift-light" with "light" and return "themes.light.border")
+   * Make basic theme modes backwards/forwards compatible
+   * @param {string} activeTheme The active theme to get the mode for
+   * @returns {string} The theme modes's border property value
+   * @example (i.e. match "theme-new-light" with "light" and return "themes.light.border")
    */
-  getThemeVariant: function getThemeVariant(activeTheme) {
+  getThemeMode: function getThemeMode(activeTheme) {
     var legacyThemes = Object.keys(COLORPICKER_DEFAULTS.themes);
     var res = legacyThemes.filter(function (legacyTheme) {
       return activeTheme.indexOf(legacyTheme) > -1;
     });
-    var variant = 'light';
+    var mode = 'light';
 
     if (res.length > 0) {
-      variant = res[0];
+      mode = res[0];
     }
 
-    return variant;
+    return mode;
+  },
+
+  /**
+  * Make basic theme modes backwards/forwards compatible
+  * @deprecated Use getThemeMode
+  * @param {string} activeTheme The active theme to get the mode for
+  * @returns {string} The theme modes's border property value
+  * @example (i.e. match "theme-new-light" with "light" and return "themes.light.border")
+  */
+  getThemeVariant: function getThemeVariant(activeTheme) {
+    return this.getThemeMode(activeTheme);
   },
 
   /**
@@ -42532,9 +44079,9 @@ ColorPicker.prototype = {
     var isMenu = !!$('#colorpicker-menu').length;
     var menu = $('<ul id="colorpicker-menu" class="popupmenu colorpicker"></ul>');
     var activeTheme = personalization.currentTheme;
-    var themeVariant = this.getThemeVariant(activeTheme);
-    var isBorderAll = s.themes[themeVariant].border === 'all';
-    var checkThemes = s.themes[themeVariant].checkmark;
+    var themeMode = this.getThemeMode(activeTheme);
+    var isBorderAll = s.themes[themeMode].border === 'all';
+    var checkThemes = s.themes[themeMode].checkmark;
     var checkmarkClass = ''; // Remove previously opened colorpicker first
 
     $('#colorpicker-menu').remove();
@@ -42585,7 +44132,7 @@ ColorPicker.prototype = {
         swatch[0].style.backgroundColor = "#".concat(colorValue);
       }
 
-      swatch.addClass(isBorder ? 'is-border' : '');
+      swatch === null || swatch === void 0 ? void 0 : swatch == null ? void 0 : swatch.addClass(isBorder ? 'is-border' : '');
       a[0].setAttribute('data-label', colorText);
       a[0].setAttribute('data-value', colorValue);
       a[0].setAttribute('title', "".concat(colorText, " #").concat(colorValue));
@@ -42709,10 +44256,10 @@ ColorPicker.prototype = {
     return this.init();
   },
   teardown: function teardown() {
-    this.element.off(["keypress.".concat(COMPONENT_NAME$w), "keyup.".concat(COMPONENT_NAME$w), "blur.".concat(COMPONENT_NAME$w), "openlist.".concat(COMPONENT_NAME$w), "change.".concat(COMPONENT_NAME$w), "paste.".concat(COMPONENT_NAME$w)].join(' '));
+    this.element.off(["keypress.".concat(COMPONENT_NAME$P), "keyup.".concat(COMPONENT_NAME$P), "blur.".concat(COMPONENT_NAME$P), "openlist.".concat(COMPONENT_NAME$P), "change.".concat(COMPONENT_NAME$P), "paste.".concat(COMPONENT_NAME$P)].join(' '));
 
     if (this.swatch && this.swatch.length) {
-      this.swatch.off("click.".concat(COMPONENT_NAME$w));
+      this.swatch.off("click.".concat(COMPONENT_NAME$P));
       this.swatch.remove();
       delete this.swatch;
     }
@@ -42743,23 +44290,31 @@ ColorPicker.prototype = {
   */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$w);
+    $.removeData(this.element[0], COMPONENT_NAME$P);
     return this;
   },
 
   /**
-  * Detach events and restore DOM to default.
+  * Attach events to DOM on init
   * @private
   * @returns {void}
   */
   handleEvents: function handleEvents() {
-    var _this3 = this;
+    var _this$icon$parent,
+        _this$icon,
+        _this$icon$parent$cal,
+        _this$icon$parent$cal2,
+        _this3 = this,
+        _this$swatch2;
 
     var elem = this.element;
     var elemParent = elem.parent();
     var originalVal;
-    this.icon.parent().on('click.colorpicker', function () {
-      _this3.toggleList();
+    (_this$icon$parent = (_this$icon = this.icon).parent) === null || _this$icon$parent === void 0 ? void 0 : (_this$icon$parent$cal = (_this$icon$parent$cal2 = _this$icon$parent.call) == null ? void 0 : _this$icon$parent$cal2.call(_this$icon$parent, _this$icon)) === null || _this$icon$parent$cal === void 0 ? void 0 : _this$icon$parent$cal == null ? void 0 : _this$icon$parent$cal.on('click.colorpicker', function () {
+      return _this3.toggleList();
+    });
+    (_this$swatch2 = this.swatch) === null || _this$swatch2 === void 0 ? void 0 : _this$swatch2 == null ? void 0 : _this$swatch2.on('click.colorpicker', function () {
+      return _this3.toggleList();
     });
     elem.on('focus.colorpicker', function () {
       originalVal = elem.val();
@@ -42808,17 +44363,17 @@ ColorPicker.prototype = {
 
 $.fn.colorpicker = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$w);
+    var instance = $.data(this, COMPONENT_NAME$P);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$w, new ColorPicker(this, settings));
+      instance = $.data(this, COMPONENT_NAME$P, new ColorPicker(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$x = 'toolbarflexitem'; // Filters out buttons located inside of Searchfield wrappers.
+var COMPONENT_NAME$O = 'toolbarflexitem'; // Filters out buttons located inside of Searchfield wrappers.
 // Only `input` elements should be picked up by the item detector.
 
 function buttonFilter(elem) {
@@ -43276,7 +44831,7 @@ ToolbarFlexItem.prototype = {
 
     if (popupmenuConsumers.indexOf(this.type) > -1) {
       // Listen to the Popupmenu's selected event
-      $element.on("selected.".concat(COMPONENT_NAME$x), function (e, anchor) {
+      $element.on("selected.".concat(COMPONENT_NAME$O), function (e, anchor) {
         if (_this.selectedAnchor) {
           return;
         }
@@ -43317,12 +44872,12 @@ ToolbarFlexItem.prototype = {
     }
 
     if (this.type === 'actionbutton') {
-      $element.on("beforeopen.".concat(COMPONENT_NAME$x), this.handleActionButtonBeforeOpen.bind(this));
-      $('body').off("resize.".concat(COMPONENT_NAME$x)).on("resize.".concat(COMPONENT_NAME$x), this.handleActionButtonResize.bind(this));
+      $element.on("beforeopen.".concat(COMPONENT_NAME$O), this.handleActionButtonBeforeOpen.bind(this));
+      $('body').off("resize.".concat(COMPONENT_NAME$O)).on("resize.".concat(COMPONENT_NAME$O), this.handleActionButtonResize.bind(this));
     }
 
     if (!this.settings.allowTabs) {
-      $element.on("focus.".concat(COMPONENT_NAME$x), this.handleFocus.bind(this));
+      $element.on("focus.".concat(COMPONENT_NAME$O), this.handleFocus.bind(this));
     }
   },
 
@@ -43803,8 +45358,8 @@ ToolbarFlexItem.prototype = {
    * @returns {void}
    */
   teardown: function teardown() {
-    $(this.element).off("selected.".concat(COMPONENT_NAME$x)).off("beforeopen.".concat(COMPONENT_NAME$x)).off("focus.".concat(COMPONENT_NAME$x));
-    $('body').off("resize.".concat(COMPONENT_NAME$x));
+    $(this.element).off("selected.".concat(COMPONENT_NAME$O)).off("beforeopen.".concat(COMPONENT_NAME$O)).off("focus.".concat(COMPONENT_NAME$O));
+    $('body').off("resize.".concat(COMPONENT_NAME$O));
     this.teardownPredefinedItems();
     delete this.type;
     delete this.selected;
@@ -43841,12 +45396,12 @@ ToolbarFlexItem.prototype = {
 
 $.fn.toolbarflexitem = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$x);
+    var instance = $.data(this, COMPONENT_NAME$O);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$x, new ToolbarFlexItem(this, settings)); // Remove the jQuery Component reference from $.data
+      instance = $.data(this, COMPONENT_NAME$O, new ToolbarFlexItem(this, settings)); // Remove the jQuery Component reference from $.data
 
       var oldDestroy = instance.destroy;
 
@@ -43855,13 +45410,13 @@ $.fn.toolbarflexitem = function (settings) {
           oldDestroy.call(this);
         }
 
-        $.removeData(this, COMPONENT_NAME$x);
+        $.removeData(this, COMPONENT_NAME$O);
       };
     }
   });
 };
 
-var COMPONENT_NAME$y = 'toolbar-flex';
+var COMPONENT_NAME$N = 'toolbar-flex';
 /**
  * Component Default Settings
  * @namespace
@@ -43987,13 +45542,13 @@ ToolbarFlex.prototype = {
       this.element.addEventListener('click', this.clickListener);
     }
 
-    $(this.element).on("selected.".concat(COMPONENT_NAME$y), function (e) {
+    $(this.element).on("selected.".concat(COMPONENT_NAME$N), function (e) {
       for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         args[_key - 1] = arguments[_key];
       }
     }); // Inlined Searchfields can cause navigation requiring a focus change to occur on collapse.
 
-    $(this.element).on("collapsed-responsive.".concat(COMPONENT_NAME$y), function (e, direction) {
+    $(this.element).on("collapsed-responsive.".concat(COMPONENT_NAME$N), function (e, direction) {
       e.stopPropagation();
 
       _this2.navigate(direction, null, true);
@@ -44495,8 +46050,8 @@ ToolbarFlex.prototype = {
       this.element.removeEventListener('click', this.clickListener);
     }
 
-    $(this.element).off("selected.".concat(COMPONENT_NAME$y));
-    $(this.element).off("collapsed-responsive.".concat(COMPONENT_NAME$y));
+    $(this.element).off("selected.".concat(COMPONENT_NAME$N));
+    $(this.element).off("collapsed-responsive.".concat(COMPONENT_NAME$N));
     this.items.forEach(function (item) {
       item.teardown();
     });
@@ -44524,12 +46079,12 @@ ToolbarFlex.prototype = {
 
 $.fn.toolbarflex = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$y);
+    var instance = $.data(this, COMPONENT_NAME$N);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$y, new ToolbarFlex(this, settings)); // Remove the jQuery Component reference from $.data
+      instance = $.data(this, COMPONENT_NAME$N, new ToolbarFlex(this, settings)); // Remove the jQuery Component reference from $.data
 
       var oldDestroy = instance.destroy;
 
@@ -44538,13 +46093,13 @@ $.fn.toolbarflex = function (settings) {
           oldDestroy.call(this);
         }
 
-        $.removeData(this, COMPONENT_NAME$y);
+        $.removeData(this, COMPONENT_NAME$N);
       };
     }
   });
 };
 
-var COMPONENT_NAME$z = 'calendartoolbar';
+var COMPONENT_NAME$M = 'calendartoolbar';
 /**
  * The Calendar Toolbar Displays a toolbar above calendars and week views.
  * @class CalendarToolbar
@@ -44669,7 +46224,7 @@ CalendarToolbar.prototype = {
     utils.addAttributes(this.element.find('.next'), this, this.settings.attributes, "".concat(this.settings.viewChangerValue, "-view-btn-next"));
     utils.addAttributes(this.element.find('.prev'), this, this.settings.attributes, "".concat(this.settings.viewChangerValue, "-view-btn-prev"));
     utils.addAttributes(this.element.find('.today'), this, this.settings.attributes, "".concat(this.settings.viewChangerValue, "-view-today"));
-    utils.addAttributes(this.element.find('#monthview-datepicker-field + .icon'), this, this.settings.attributes, "".concat(this.settings.viewChangerValue, "-view-datepicker-trigger"), true);
+    utils.addAttributes(this.element.find('#monthview-datepicker-field + .trigger'), this, this.settings.attributes, "".concat(this.settings.viewChangerValue, "-view-datepicker-trigger"), true);
     utils.addAttributes(this.element.find('#monthview-datepicker-field'), this, this.settings.attributes, "".concat(this.settings.viewChangerValue, "-view-datepicker"), true);
     utils.addAttributes($('.monthview-header #month-calendar-view-changer [value="month"]'), this, this.settings.attributes, 'month-view-changer-month');
     utils.addAttributes($('.monthview-header #month-calendar-view-changer [value="week"]'), this, this.settings.attributes, 'month-view-changer-week');
@@ -44871,12 +46426,12 @@ CalendarToolbar.prototype = {
    */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$z);
+    $.removeData(this.element[0], COMPONENT_NAME$M);
   }
 };
 
-var COMPONENT_NAME$A = 'monthview';
-var COMPONENT_NAME_DEFAULTS = {
+var COMPONENT_NAME$L = 'monthview';
+var COMPONENT_NAME_DEFAULTS$2 = {
   locale: null,
   language: null,
   month: new Date().getMonth(),
@@ -45000,7 +46555,7 @@ var COMPONENT_NAME_DEFAULTS = {
 */
 
 function MonthView(element, settings) {
-  this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS);
+  this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS$2);
   this.element = $(element);
   this.init();
 } // Plugin Methods
@@ -45785,7 +47340,7 @@ MonthView.prototype = {
 
     var self = this;
     var s = this.settings;
-    this.element.off("updated.".concat(COMPONENT_NAME$A)).on("updated.".concat(COMPONENT_NAME$A), function () {
+    this.element.off("updated.".concat(COMPONENT_NAME$L)).on("updated.".concat(COMPONENT_NAME$L), function () {
       _this4.updated();
     }); // Change Month Events
 
@@ -46898,7 +48453,7 @@ MonthView.prototype = {
 
     if (this.element && this.element[0]) {
       try {
-        $.removeData(this.element[0], COMPONENT_NAME$A);
+        $.removeData(this.element[0], COMPONENT_NAME$L);
       } catch (error) {} //eslint-disable-line
 
     }
@@ -46907,7 +48462,7 @@ MonthView.prototype = {
   }
 };
 
-var COMPONENT_NAME$B = 'weekview';
+var COMPONENT_NAME$K = 'weekview';
 var COMPONENT_NAME_DEFAULTS$1 = {
   eventTypes: [{
     id: 'example',
@@ -47614,10 +49169,10 @@ WeekView.prototype = {
   handleEvents: function handleEvents() {
     var _this6 = this;
 
-    this.element.off("updated.".concat(COMPONENT_NAME$B)).on("updated.".concat(COMPONENT_NAME$B), function () {
+    this.element.off("updated.".concat(COMPONENT_NAME$K)).on("updated.".concat(COMPONENT_NAME$K), function () {
       _this6.updated();
     });
-    this.element.off("change-date.".concat(COMPONENT_NAME$B)).on("change-date.".concat(COMPONENT_NAME$B), function (e, args) {
+    this.element.off("change-date.".concat(COMPONENT_NAME$K)).on("change-date.".concat(COMPONENT_NAME$K), function (e, args) {
       var startDate = args.isToday ? new Date() : args.selectedDate;
 
       if (_this6.isDayView) {
@@ -47637,10 +49192,10 @@ WeekView.prototype = {
 
       _this6.showWeek(_this6.settings.startDate, _this6.settings.endDate);
     });
-    this.element.off("change-next.".concat(COMPONENT_NAME$B)).on("change-next.".concat(COMPONENT_NAME$B), function () {
+    this.element.off("change-next.".concat(COMPONENT_NAME$K)).on("change-next.".concat(COMPONENT_NAME$K), function () {
       _this6.advanceDays(true);
     });
-    this.element.off("change-prev.".concat(COMPONENT_NAME$B)).on("change-prev.".concat(COMPONENT_NAME$B), function () {
+    this.element.off("change-prev.".concat(COMPONENT_NAME$K)).on("change-prev.".concat(COMPONENT_NAME$K), function () {
       _this6.advanceDays(false);
     });
 
@@ -47681,11 +49236,11 @@ WeekView.prototype = {
       });
     };
 
-    this.element.off("click.".concat(COMPONENT_NAME$B)).on("click.".concat(COMPONENT_NAME$B), '.calendar-event', function (e) {
+    this.element.off("click.".concat(COMPONENT_NAME$K)).on("click.".concat(COMPONENT_NAME$K), '.calendar-event', function (e) {
       fireEvent(e.currentTarget, 'eventclick');
       e.preventDefault();
     });
-    this.element.off("dblclick.".concat(COMPONENT_NAME$B)).on("dblclick.".concat(COMPONENT_NAME$B), '.calendar-event', function (e) {
+    this.element.off("dblclick.".concat(COMPONENT_NAME$K)).on("dblclick.".concat(COMPONENT_NAME$K), '.calendar-event', function (e) {
       fireEvent(e.currentTarget, 'eventdblclick');
     });
     return this;
@@ -47836,13 +49391,13 @@ WeekView.prototype = {
   destroy: function destroy() {
     this.teardown();
     this.element.empty();
-    $.removeData(this.element[0], COMPONENT_NAME$B);
+    $.removeData(this.element[0], COMPONENT_NAME$K);
     return this;
   }
 };
 
-var COMPONENT_NAME$C = 'calendar';
-var COMPONENT_NAME_DEFAULTS$2 = {
+var COMPONENT_NAME$J = 'calendar';
+var COMPONENT_NAME_DEFAULTS = {
   eventTypes: [{
     id: 'example',
     label: 'Example',
@@ -47905,7 +49460,7 @@ var COMPONENT_NAME_DEFAULTS$2 = {
  * @param {array} [settings.year] Initial year to show.
  * @param {array} [settings.month] Initial month to show.
  * @param {number} [settings.day] The initial selected day to show.
- * @param {array} [settings.upcomingEventDays=14] How many days in advance should we show in the upcoming events pane.
+ * @param {number} [settings.upcomingEventDays=14] How many days in advance should we show in the upcoming events pane.
  * @param {boolean} [settings.showViewChanger] If false the dropdown to change views will not be shown.
  * @param {function} [settings.onRenderMonth] Fires when a month is rendered, allowing you to pass back events or event types to show.
  * @param {function} [settings.onSelected] Fires when a month day is clicked. Allowing you to do something.
@@ -47914,13 +49469,13 @@ var COMPONENT_NAME_DEFAULTS$2 = {
  * @param {string} [settings.mobileTemplate] The ID of the template on mobile responsive used for the events.
  * @param {string} [settings.modalTemplate] The ID of the template used for the modal dialog on events.
  * @param {string} [settings.menuId=null] ID of the menu to use for an event right click context menu
- * @param {string} [settings.menuSelected=null] Callback for the  right click context menu
+ * @param {function} [settings.menuSelected=null] Callback for the  right click context menu
  * @param {string} [settings.newEventDefaults] Initial event properties for the new events dialog.
  * @param {string | function} [settings.eventTooltip] The content of event tooltip. Default value is 'overflow'
  * @param {string | function} [settings.iconTooltip] The content of event icon tooltip. Default value is 'overflow'
  * @param {boolean} [settings.showToday=true] Deterimines if the today button should be shown.
  * @param {object} [settings.weekViewSettings = {}] an object containing settings for the internal weekview component.
- * @param {boolean} [settings.weekViewSettings.firstDayOfWeek=0] Set first day of the week. '1' would be Monday.
+ * @param {number} [settings.weekViewSettings.firstDayOfWeek=0] Set first day of the week. '1' would be Monday.
  * @param {number} [settings.weekViewSettings.startHour=7] The hour (0-24) to end on each day.
  * @param {number} [settings.weekViewSettings.endHour=19] The hour (0-24) to end on each day.
  * @param {boolean} [settings.weekViewSettings.showAllDay=true] Detemines if the all day events row should be shown.
@@ -47950,7 +49505,7 @@ var COMPONENT_NAME_DEFAULTS$2 = {
 */
 
 function Calendar(element, settings) {
-  this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS$2);
+  this.settings = utils.mergeSettings(element, settings, COMPONENT_NAME_DEFAULTS);
   this.element = $(element);
   this.init();
 } // Plugin Methods
@@ -48634,7 +50189,7 @@ Calendar.prototype = {
         setMoreSpan(node, 1);
         container.querySelector('.day-container').appendChild(node); // Switch to day view on click
 
-        $(container).off("click.".concat(COMPONENT_NAME$C)).on("click.".concat(COMPONENT_NAME$C), '.calendar-event-more span', function () {
+        $(container).off("click.".concat(COMPONENT_NAME$J)).on("click.".concat(COMPONENT_NAME$J), '.calendar-event-more span', function () {
           var thisDate = _this5.monthView.dayMap[idx].key;
 
           _this5.monthView.selectDay(thisDate, false, true);
@@ -48779,11 +50334,11 @@ Calendar.prototype = {
     var _this6 = this;
 
     var self = this;
-    this.element.off("updated.".concat(COMPONENT_NAME$C)).on("updated.".concat(COMPONENT_NAME$C), function () {
+    this.element.off("updated.".concat(COMPONENT_NAME$J)).on("updated.".concat(COMPONENT_NAME$J), function () {
       _this6.updated();
     });
     this.isSwitchingMonth = false;
-    this.element.off("monthrendered.".concat(COMPONENT_NAME$C)).on("monthrendered.".concat(COMPONENT_NAME$C), function (e, args) {
+    this.element.off("monthrendered.".concat(COMPONENT_NAME$J)).on("monthrendered.".concat(COMPONENT_NAME$J), function (e, args) {
       _this6.isSwitchingMonth = true;
 
       if (_this6.modalVisible()) {
@@ -48799,18 +50354,18 @@ Calendar.prototype = {
         _this6.isSwitchingMonth = false;
       }, 500);
     });
-    this.element.off("change.".concat(COMPONENT_NAME$C)).on("change.".concat(COMPONENT_NAME$C), '.checkbox', function () {
+    this.element.off("change.".concat(COMPONENT_NAME$J)).on("change.".concat(COMPONENT_NAME$J), '.checkbox', function () {
       _this6.renderAllEvents(true);
     });
-    $(this.monthViewContainer).off("selected.".concat(COMPONENT_NAME$C)).on("selected.".concat(COMPONENT_NAME$C), function () {
+    $(this.monthViewContainer).off("selected.".concat(COMPONENT_NAME$J)).on("selected.".concat(COMPONENT_NAME$J), function () {
       _this6.renderSelectedEventDetails();
     });
-    this.element.off("click.".concat(COMPONENT_NAME$C, "-upcoming")).on("click.".concat(COMPONENT_NAME$C, "-upcoming"), '.calendar-upcoming-event', function (e) {
+    this.element.off("click.".concat(COMPONENT_NAME$J, "-upcoming")).on("click.".concat(COMPONENT_NAME$J, "-upcoming"), '.calendar-upcoming-event', function (e) {
       var key = e.currentTarget.getAttribute('data-key');
 
       _this6.renderDay(key);
     });
-    this.element.off("contextmenu.".concat(COMPONENT_NAME$C)).on("contextmenu.".concat(COMPONENT_NAME$C), '.calendar-event', function (e) {
+    this.element.off("contextmenu.".concat(COMPONENT_NAME$J)).on("contextmenu.".concat(COMPONENT_NAME$J), '.calendar-event', function (e) {
       e.stopPropagation();
 
       var hasMenu = function hasMenu() {
@@ -48873,7 +50428,7 @@ Calendar.prototype = {
     var timer = 0;
     var delay = 100;
     var prevent = false;
-    this.element.off("click.".concat(COMPONENT_NAME$C, "-event")).on("click.".concat(COMPONENT_NAME$C, "-event"), '.calendar-event', function (e) {
+    this.element.off("click.".concat(COMPONENT_NAME$J, "-event")).on("click.".concat(COMPONENT_NAME$J, "-event"), '.calendar-event', function (e) {
       timer = setTimeout(function () {
         if (!prevent) {
           var eventId = e.currentTarget.getAttribute('data-id');
@@ -48914,7 +50469,7 @@ Calendar.prototype = {
         prevent = false;
       }, delay);
     });
-    this.element.off("dblclick.".concat(COMPONENT_NAME$C, "-event")).on("dblclick.".concat(COMPONENT_NAME$C, "-event"), '.calendar-event', function (e) {
+    this.element.off("dblclick.".concat(COMPONENT_NAME$J, "-event")).on("dblclick.".concat(COMPONENT_NAME$J, "-event"), '.calendar-event', function (e) {
       clearTimeout(timer);
       prevent = true;
       var eventId = e.currentTarget.getAttribute('data-id');
@@ -48942,7 +50497,7 @@ Calendar.prototype = {
         event: eventData[0]
       });
     });
-    this.element.off("dblclick.".concat(COMPONENT_NAME$C)).on("dblclick.".concat(COMPONENT_NAME$C), 'td', function (e) {
+    this.element.off("dblclick.".concat(COMPONENT_NAME$J)).on("dblclick.".concat(COMPONENT_NAME$J), 'td', function (e) {
       var key = e.currentTarget.getAttribute('data-key');
 
       if (!key || _this6.isSwitchingMonth) {
@@ -48974,7 +50529,7 @@ Calendar.prototype = {
       });
     }); // Set up mobile list view events
 
-    this.element.find('.listview').off("click.".concat(COMPONENT_NAME$C, "-mobile")).on("click.".concat(COMPONENT_NAME$C, "-mobile"), function (e) {
+    this.element.find('.listview').off("click.".concat(COMPONENT_NAME$J, "-mobile")).on("click.".concat(COMPONENT_NAME$J, "-mobile"), function (e) {
       var target = $(e.target).closest('li');
       var mobileEventId = target.attr('data-id');
 
@@ -49554,7 +51109,7 @@ Calendar.prototype = {
 
     this.removeModal();
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$C);
+    $.removeData(this.element[0], COMPONENT_NAME$J);
     return this;
   }
 };
@@ -49567,17 +51122,17 @@ Calendar.prototype = {
 
 $.fn.calendar = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$C);
+    var instance = $.data(this, COMPONENT_NAME$J);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$C, new Calendar(this, settings));
+      instance = $.data(this, COMPONENT_NAME$J, new Calendar(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$D = 'circlepager';
+var COMPONENT_NAME$I = 'circlepager';
 /**
  * The Circle Pager Displays content in a sliding carousel and has paging buttons.
  * @class CirclePager
@@ -49792,6 +51347,8 @@ CirclePager.prototype = {
         _this.initActiveSlide();
 
         _this.showCollapsedView();
+
+        _this.removeOverflowedControls();
       }, 0);
     }
   },
@@ -49924,7 +51481,21 @@ CirclePager.prototype = {
     this.show();
   },
 
-  /** 
+  /**
+   * This will remove excess control elements that don't need.
+   * @private
+   * @returns {void}
+   */
+  removeOverflowedControls: function removeOverflowedControls() {
+    var mainControls = this.controlButtons.parent();
+    var siblingControls = mainControls[0].nextElementSibling;
+
+    if (mainControls.length > 1 && siblingControls) {
+      siblingControls.remove();
+    }
+  },
+
+  /**
    * Add attributes for control buttons
    * @private
    * @returns {void}
@@ -50011,7 +51582,7 @@ CirclePager.prototype = {
    */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$D);
+    $.removeData(this.element[0], COMPONENT_NAME$I);
   },
 
   /**
@@ -50168,12 +51739,12 @@ CirclePager.prototype = {
 
 $.fn.circlepager = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$D);
+    var instance = $.data(this, COMPONENT_NAME$I);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$D, new CirclePager(this, settings));
+      instance = $.data(this, COMPONENT_NAME$I, new CirclePager(this, settings));
     }
   });
 };
@@ -50186,17 +51757,17 @@ $.fn.circlepager = function (settings) {
 
 $.fn.calendartoolbar = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$z);
+    var instance = $.data(this, COMPONENT_NAME$M);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$z, new CalendarToolbar(this, settings));
+      instance = $.data(this, COMPONENT_NAME$M, new CalendarToolbar(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$E = 'compositeform';
+var COMPONENT_NAME$H = 'compositeform';
 /**
 * CompositeForm is a specialized responsive form component.
 * @class CompositeForm
@@ -50281,10 +51852,10 @@ CompositeForm.prototype = {
    */
   handleEvents: function handleEvents() {
     var self = this;
-    $('body').off("resize.".concat(COMPONENT_NAME$E)).on("resize.".concat(COMPONENT_NAME$E), function (e) {
+    $('body').off("resize.".concat(COMPONENT_NAME$H)).on("resize.".concat(COMPONENT_NAME$H), function (e) {
       self.checkResponsive(e);
     });
-    this.element.on("updated.".concat(COMPONENT_NAME$E), function () {
+    this.element.on("updated.".concat(COMPONENT_NAME$H), function () {
       self.updated();
     });
 
@@ -50294,7 +51865,7 @@ CompositeForm.prototype = {
     }
 
     if (this.hasSummary) {
-      this.expandableArea.on("expand.".concat(COMPONENT_NAME$E), changeExpanderText).on("collapse.".concat(COMPONENT_NAME$E), changeExpanderText);
+      this.expandableArea.on("expand.".concat(COMPONENT_NAME$H), changeExpanderText).on("collapse.".concat(COMPONENT_NAME$H), changeExpanderText);
     }
 
     return this;
@@ -50363,11 +51934,11 @@ CompositeForm.prototype = {
    * @returns {object} The component API for chaining.
    */
   teardown: function teardown() {
-    $('body').off("resize.".concat(COMPONENT_NAME$E));
-    this.element.off("updated.".concat(COMPONENT_NAME$E));
+    $('body').off("resize.".concat(COMPONENT_NAME$H));
+    this.element.off("updated.".concat(COMPONENT_NAME$H));
 
     if (this.hasSummary) {
-      this.expandableArea.off("expand.".concat(COMPONENT_NAME$E, " collapse.").concat(COMPONENT_NAME$E));
+      this.expandableArea.off("expand.".concat(COMPONENT_NAME$H, " collapse.").concat(COMPONENT_NAME$H));
     }
 
     return this;
@@ -50379,7 +51950,7 @@ CompositeForm.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$E);
+    $.removeData(this.element[0], COMPONENT_NAME$H);
   }
 };
 
@@ -50391,17 +51962,17 @@ CompositeForm.prototype = {
 
 $.fn.compositeform = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$E);
+    var instance = $.data(this, COMPONENT_NAME$H);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$E, new CompositeForm(this, settings));
+      instance = $.data(this, COMPONENT_NAME$H, new CompositeForm(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$F = 'contextualactionpanel';
+var COMPONENT_NAME$G = 'contextualactionpanel';
 /**
 * A more complex modal for complex in page interactions.
 * @class ContextualActionPanel
@@ -50937,7 +52508,7 @@ ContextualActionPanel.prototype = {
       this.modalAPI.close(true);
     }
 
-    $.removeData(this.element[0], COMPONENT_NAME$F);
+    $.removeData(this.element[0], COMPONENT_NAME$G);
 
     if (this.toolbar && this.toolbar.data('toolbar')) {
       this.toolbar.data('toolbar').destroy();
@@ -50982,7 +52553,7 @@ $.fn.contextualactionpanel = function (settings) {
       return;
     }
 
-    $.data(this, COMPONENT_NAME$F, new ContextualActionPanel(this, settings));
+    $.data(this, COMPONENT_NAME$G, new ContextualActionPanel(this, settings));
   });
 };
 
@@ -50990,7 +52561,7 @@ $.fn.contextualactionpanel = function (settings) {
 
 $.fn.popover = $.fn.tooltip;
 
-var COMPONENT_NAME$G = 'timepicker'; // Timepicker Modes
+var COMPONENT_NAME$F = 'timepicker'; // Timepicker Modes
 
 var TIMEPICKER_MODES = ['standard', 'range']; // Timepicker defaults
 
@@ -51005,7 +52576,8 @@ var TIMEPICKER_DEFAULTS = function TIMEPICKER_DEFAULTS() {
     roundToInterval: true,
     parentElement: null,
     returnFocus: true,
-    attributes: null
+    attributes: null,
+    tabbable: true
   };
 };
 /**
@@ -51026,6 +52598,7 @@ var TIMEPICKER_DEFAULTS = function TIMEPICKER_DEFAULTS() {
  * @property {string} [settings.returnFocus = true]  If set to false, focus will not be returned to
  *  the calling element. It usually should be for accessibility purposes.
  * @param {string} [settings.attributes] Add extra attributes like id's to the toast element. For example `attributes: { name: 'id', value: 'my-unique-id' }`
+ * @param {boolean} [settings.tabbable=true] If true, causes the Timepicker's trigger icon to be focusable with the keyboard.
  */
 
 
@@ -51151,7 +52724,8 @@ TimePicker.prototype = {
    * @returns {this} component instance
    */
   build: function build() {
-    this.setup(); // With this option forgoe the input and append the dropdowns/popup to the parent element
+    this.setup();
+    this.element.attr('autocomplete', 'off'); // With this option forgoe the input and append the dropdowns/popup to the parent element
 
     if (this.settings.parentElement) {
       this.settings.parentElement.empty();
@@ -51159,15 +52733,18 @@ TimePicker.prototype = {
       this.buildStandardPopup();
       this.setupStandardEvents();
       return this;
-    } // Append a Button
+    } // Append a Trigger Button
 
 
-    this.trigger = this.element.next('svg.icon');
+    var next = this.element.next();
 
-    if (this.trigger.length === 0) {
-      this.trigger = $.createIconElement('clock').insertAfter(this.element);
+    if (next.is('button.trigger')) {
+      this.trigger = next;
+    } else {
+      this.trigger = $("<button class=\"btn-icon trigger\" type=\"button\">\n        <span class=\"audible\"></span>\n        ".concat($.createIcon('clock'), "\n      </button>")).insertAfter(this.element);
     }
 
+    this.makeTabbable(this.settings.tabbable);
     this.addAria().addMask().handleEvents().roundMinutes();
     return this;
   },
@@ -51179,8 +52756,12 @@ TimePicker.prototype = {
    */
   addAria: function addAria() {
     this.element.attr({
-      'aria-expanded': 'false',
-      role: 'combobox'
+      role: 'combobox',
+      'aria-expanded': 'false'
+    });
+    this.trigger.attr({
+      role: 'button',
+      'aria-haspopup': 'dialog'
     }); // TODO: Confirm this with Accessibility Team
 
     this.label = $("label[for=\"".concat(this.element.attr('id'), "\"]"));
@@ -51188,7 +52769,10 @@ TimePicker.prototype = {
     this.label.append("<span class=\"audible\">".concat(Locale.translate('UseArrow', {
       locale: this.locale.name,
       language: this.language
-    }), "</span>"));
+    }), "</span>")); // Trigger Button text
+
+    var triggerBtnText = Locale.translate('TimepickerTriggerButton');
+    this.trigger.children('span.audible').text(triggerBtnText);
     return this;
   },
 
@@ -51428,12 +53012,14 @@ TimePicker.prototype = {
       hourCounter++;
     }
 
-    timeParts.append($("<label for=\"".concat(this.hoursId, "\" class=\"audible\">").concat(Locale.translate('Hours', {
+    var hourTimePart = $('<div class="time-part"></div>');
+    hourTimePart.append($("<label for=\"".concat(this.hoursId, "\">").concat(Locale.translate('Hours', {
       locale: this.locale.name,
       language: this.language
     }), "</label>")));
-    timeParts.append(this.hourSelect);
-    timeParts.append($("<span class=\"label colons\">".concat(timeSeparator, "</span>"))); // Minutes Picker
+    hourTimePart.append(this.hourSelect);
+    hourTimePart.append($("<span class=\"label colons\">".concat(timeSeparator, "</span>")));
+    timeParts.append(hourTimePart); // Minutes Picker
 
     var minuteCounter = 0;
     this.minuteSelect = $("<select id=\"".concat(this.minutesId, "\" data-options=\"{'noSearch': 'true'}\" class=\"minutes dropdown\"></select>"));
@@ -51456,11 +53042,18 @@ TimePicker.prototype = {
       this.minuteSelect.prepend($("<option selected>".concat(self.initValues.minutes, "</option>")));
     }
 
-    timeParts.append($("<label for=\"".concat(this.minutesId, "\" class=\"audible\">").concat(Locale.translate('Minutes', {
+    var minuteTimePart = $('<div class="time-part"></div>');
+    minuteTimePart.append($("<label for=\"".concat(this.minutesId, "\">").concat(Locale.translate('Minutes', {
       locale: this.locale.name,
       language: this.language
     }), "</label>")));
-    timeParts.append(this.minuteSelect); // Seconds Picker
+    minuteTimePart.append(this.minuteSelect);
+
+    if (hasSeconds) {
+      minuteTimePart.append($("<span class=\"label colons\">".concat(timeSeparator, "</span>")));
+    }
+
+    timeParts.append(minuteTimePart); // Seconds Picker
 
     if (hasSeconds) {
       var secondCounter = 0;
@@ -51484,12 +53077,13 @@ TimePicker.prototype = {
         this.secondSelect.prepend($("<option selected>".concat(self.initValues.seconds, "</option>")));
       }
 
-      timeParts.append($("<span class=\"label colons\">".concat(timeSeparator, "</span>")));
-      timeParts.append($("<label for=\"".concat(this.secondsId, "\" class=\"audible\">").concat(Locale.translate('Seconds', {
+      var secondsTimePart = $('<div class="time-part"></div>');
+      secondsTimePart.append($("<label for=\"".concat(this.secondsId, "\">").concat(Locale.translate('Seconds', {
         locale: this.locale.name,
         language: this.language
       }), "</label>")));
-      timeParts.append(this.secondSelect);
+      secondsTimePart.append(this.secondSelect);
+      timeParts.append(secondsTimePart);
     }
 
     if (!is24HourFormat && hasDayPeriods) {
@@ -51510,11 +53104,13 @@ TimePicker.prototype = {
         localeCount++;
       }
 
-      timeParts.append($("<label for=\"".concat(this.periodId, "\" class=\"audible\">").concat(Locale.translate('TimePeriod', {
+      var dayPeriodTimePart = $('<div class="time-part"></div>');
+      dayPeriodTimePart.append($("<label for=\"".concat(this.periodId, "\">").concat(Locale.translate('Period', {
         locale: this.locale.name,
         language: this.language
       }), "</label>")));
-      timeParts.append(this.periodSelect);
+      dayPeriodTimePart.append(this.periodSelect);
+      timeParts.append(dayPeriodTimePart);
     }
 
     if (this.settings.parentElement) {
@@ -51532,7 +53128,7 @@ TimePicker.prototype = {
 
       if (parent.is('.datagrid-cell-wrapper')) {
         placementParentXAlignment = 'center';
-        placementParent = this.element.next('.icon');
+        placementParent = this.element.next('.icon, .trigger');
       }
 
       this.trigger.popover({
@@ -51572,23 +53168,31 @@ TimePicker.prototype = {
     var self = this;
     ui.find('button').button(); // Set default values based on what's retrieved from the Timepicker's input field.
 
+    var hourSelectAPI = this.hourSelect.data('dropdown');
     this.hourSelect.val(this.initValues.hours);
-    this.hourSelect.data('dropdown').pseudoElem.find('span').text(this.initValues.hours);
+    hourSelectAPI.pseudoElem.find('span').text(this.initValues.hours);
+    hourSelectAPI.renderPseudoElemLabel();
+    utils.addAttributes(hourSelectAPI.wrapper.find('.dropdown'), this, this.settings.attributes, 'hours');
+    var minuteSelectAPI = this.minuteSelect.data('dropdown');
     this.minuteSelect.val(this.initValues.minutes);
-    this.minuteSelect.data('dropdown').pseudoElem.find('span').text(this.initValues.minutes);
-    utils.addAttributes(this.hourSelect.data('dropdown').wrapper.find('.dropdown'), this, this.settings.attributes, 'hours');
-    utils.addAttributes(this.minuteSelect.data('dropdown').wrapper.find('.dropdown'), this, this.settings.attributes, 'minutes');
+    minuteSelectAPI.pseudoElem.find('span').text(this.initValues.minutes);
+    minuteSelectAPI.renderPseudoElemLabel();
+    utils.addAttributes(minuteSelectAPI.wrapper.find('.dropdown'), this, this.settings.attributes, 'minutes');
 
     if (this.secondSelect) {
+      var secondSelectAPI = this.secondSelect.data('dropdown');
       this.secondSelect.val(this.initValues.seconds);
-      this.secondSelect.data('dropdown').pseudoElem.find('span').text(this.initValues.seconds);
-      utils.addAttributes(this.secondSelect.data('dropdown').wrapper.find('.dropdown'), this, this.settings.attributes, 'seconds');
+      secondSelectAPI.pseudoElem.find('span').text(this.initValues.seconds);
+      secondSelectAPI.renderPseudoElemLabel();
+      utils.addAttributes(secondSelectAPI.wrapper.find('.dropdown'), this, this.settings.attributes, 'seconds');
     }
 
     if (self.hasDayPeriods()) {
+      var periodSelectAPI = this.periodSelect.data('dropdown');
       this.periodSelect.val(this.initValues.period);
-      this.periodSelect.data('dropdown').pseudoElem.find('span').text(this.initValues.period);
-      utils.addAttributes(this.periodSelect.data('dropdown').wrapper.find('.dropdown'), this, this.settings.attributes, 'period');
+      periodSelectAPI.pseudoElem.find('span').text(this.initValues.period);
+      periodSelectAPI.renderPseudoElemLabel();
+      utils.addAttributes(periodSelectAPI.wrapper.find('.dropdown'), this, this.settings.attributes, 'period');
     }
 
     ui.find('div.dropdown').first().focus();
@@ -51729,7 +53333,16 @@ TimePicker.prototype = {
     var parts;
     var endParts;
     var timeparts = {};
-    val = val.replace(/[T\s:.-]/g, sep).replace(/z/i, '');
+    var timeFormat = this.settings.timeFormat;
+    var ampmHasDot = !!this.dayPeriods.filter(function (x) {
+      return x.indexOf('.') > -1;
+    }).length && val.indexOf('.') > -1 && timeFormat.indexOf('a') > -1 && timeFormat.indexOf('ah') < 0 && !this.is24HourFormat();
+    val = val.replace(ampmHasDot ? /[T\s:-]/g : /[T\s:.-]/g, sep).replace(/z/i, '');
+
+    if (val.indexOf(sep) < 0 && val.length === 4 && self.settings.timeFormat === 'HHmm') {
+      val = "".concat(val.substr(0, 2)).concat(sep).concat(val.substr(2));
+    }
+
     val = val.replace('午', "\u5348".concat(sep));
     parts = val.split(sep);
     var aLoc = this.currentCalendar.timeFormat.toLowerCase().indexOf('a');
@@ -51911,17 +53524,22 @@ TimePicker.prototype = {
     var hours = this.hourSelect ? (_this$hourSelect$ = this.hourSelect[0]) === null || _this$hourSelect$ === void 0 ? void 0 : _this$hourSelect$ == null ? void 0 : _this$hourSelect$.value : '';
     var minutes = this.minuteSelect ? (_this$minuteSelect$ = this.minuteSelect[0]) === null || _this$minuteSelect$ === void 0 ? void 0 : _this$minuteSelect$ == null ? void 0 : _this$minuteSelect$.value : '';
     var seconds = this.secondSelect ? (_this$secondSelect$ = this.secondSelect[0]) === null || _this$secondSelect$ === void 0 ? void 0 : _this$secondSelect$ == null ? void 0 : _this$secondSelect$.value : '';
-    var period = (this.periodSelect ? (_this$periodSelect$ = this.periodSelect[0]) === null || _this$periodSelect$ === void 0 ? void 0 : _this$periodSelect$ == null ? void 0 : _this$periodSelect$.value : '').toUpperCase();
+    var period = this.periodSelect ? (_this$periodSelect$ = this.periodSelect[0]) === null || _this$periodSelect$ === void 0 ? void 0 : _this$periodSelect$ == null ? void 0 : _this$periodSelect$.value : '';
     var sep = this.getTimeSeparator();
     var timeString = "".concat(hours).concat(sep).concat(minutes).concat(this.hasSeconds() ? sep + seconds : '');
     period = !this.is24HourFormat() && period === '' ? document.querySelector("#".concat(this.periodId, "-shdo")).value : period;
     timeString += period ? " ".concat(this.translateDayPeriod(period)) : '';
+
+    if (timeString.indexOf(sep) > -1 && this.settings.timeFormat === 'HHmm') {
+      timeString = timeString.replace(sep, '');
+    }
     /**
     * Fires when the value is changed by typing or the picker.
     * @event change
     * @memberof TimePicker
     * @property {object} event - The jquery event object
     */
+
 
     this.element.val(timeString).trigger('change');
     this.element.focus();
@@ -51963,9 +53581,10 @@ TimePicker.prototype = {
       self.setupStandardEvents();
     }
 
-    this.element.attr({
-      'aria-expanded': 'true'
-    });
+    if (this.trigger.data('tooltip')) {
+      this.element.attr('aria-expanded', 'true');
+    }
+
     this.popup.find('div.dropdown').first().focus();
   },
 
@@ -51979,6 +53598,7 @@ TimePicker.prototype = {
   closeTimePopup: function closeTimePopup() {
     if (this.trigger.data('tooltip')) {
       this.trigger.data('tooltip').hide();
+      this.element.attr('aria-expanded', 'false');
     }
   },
 
@@ -52017,9 +53637,6 @@ TimePicker.prototype = {
       this.popup.off('click.timepicker touchend.timepicker touchcancel.timepicker keydown.timepicker');
     }
 
-    this.element.attr({
-      'aria-expanded': 'false'
-    });
     this.trigger.off('hide.timepicker show.timepicker');
     this.trigger.data('tooltip').destroy();
     this.trigger.data('tooltip', undefined);
@@ -52100,6 +53717,13 @@ TimePicker.prototype = {
   },
 
   /**
+   * @param {boolean} val if true, sets the trigger button to a focusable tab index
+   */
+  makeTabbable: function makeTabbable(val) {
+    this.trigger.attr('tabIndex', val ? 0 : -1);
+  },
+
+  /**
    * Updates the component instance.  Can be used after being passed new settings.
    * @param {object} [settings] incoming settings
    * @returns {this} component instanceof
@@ -52119,7 +53743,7 @@ TimePicker.prototype = {
    */
   teardown: function teardown() {
     this.trigger.off('keydown.timepicker');
-    this.element.off('focus.timepicker blur.timepicker keydown.timepicker');
+    this.element.off('focus.timepicker blur.timepicker keydown.timepicker click.timepicker');
 
     if (this.popup) {
       this.closeTimePopup();
@@ -52146,7 +53770,7 @@ TimePicker.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$G);
+    $.removeData(this.element[0], COMPONENT_NAME$F);
   },
 
   /**
@@ -52163,7 +53787,14 @@ TimePicker.prototype = {
     var self = this;
     this.trigger.off('click.timepicker').on('click.timepicker', function () {
       self.toggleTimePopup();
-    });
+    }); // In Datepickers, labels aren't present
+
+    if (this.label) {
+      this.label.off('click.timepicker').on('click.timepicker', function () {
+        self.element[0].focus();
+      });
+    }
+
     this.handleKeys();
     this.handleBlur();
     return this;
@@ -52178,12 +53809,12 @@ TimePicker.prototype = {
 
 $.fn.timepicker = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$G);
+    var instance = $.data(this, COMPONENT_NAME$F);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$G, new TimePicker(this, settings));
+      instance = $.data(this, COMPONENT_NAME$F, new TimePicker(this, settings));
     }
   });
 };
@@ -52285,8 +53916,16 @@ function ValidationRules() {
     },
     // date: Validate date, datetime (24hr or 12hr am/pm)
     date: {
-      check: function check(value, field) {
+      check: function check(value, field, gridInfo) {
         this.message = Locale.translate('InvalidDate');
+
+        if (gridInfo && gridInfo.column) {
+          var gridValue = gridInfo.column.formatter(gridInfo.row, gridInfo.cell, value, gridInfo.column, true);
+
+          if (gridValue instanceof Date) {
+            return gridValue && gridValue.getTime && !isNaN(gridValue.getTime());
+          }
+        }
 
         if (value instanceof Date) {
           return value && value.getTime && !isNaN(value.getTime());
@@ -52297,7 +53936,22 @@ function ValidationRules() {
 
         if (field && field.data('datepicker')) {
           dtApi = field.data('datepicker');
+
+          if (dtApi.settings.showTime) {
+            this.message = Locale.translate('InvalidDateTime');
+          }
+
           dateFormat = dtApi.pattern;
+        }
+
+        if (gridInfo && gridInfo.column) {
+          var col = gridInfo.column;
+
+          if (typeof col.sourceFormat === 'string') {
+            dateFormat = gridInfo.column.sourceFormat;
+          } else if (typeof col.dateFormat === 'string') {
+            dateFormat = gridInfo.column.dateFormat;
+          }
         }
 
         var isStrict = !(dateFormat === 'MMMM' || dateFormat === 'MMM' || dateFormat === 'MM' || dateFormat === 'MMMM d' || dateFormat === 'd MMMM' || dateFormat === 'yyyy');
@@ -52319,7 +53973,7 @@ function ValidationRules() {
     },
     // Validate date, disable dates
     availableDate: {
-      check: function check(value, field) {
+      check: function check(value, field, gridInfo) {
         this.message = Locale.translate('UnavailableDate');
         var check = true;
 
@@ -52336,7 +53990,25 @@ function ValidationRules() {
 
         var datepickerApi = field.data('datepicker');
         var options = datepickerApi ? datepickerApi.settings : {};
-        var hasOptions = Object.keys(options).length > 0;
+
+        if (gridInfo && gridInfo.column) {
+          var gridValue = gridInfo.column.formatter(gridInfo.row, gridInfo.cell, value, gridInfo.column, true);
+
+          if (gridValue instanceof Date) {
+            value = gridValue;
+          }
+
+          if (gridInfo.column.editorOptions) {
+            options = gridInfo.column.editorOptions;
+          }
+        } // check that disbale option exists
+
+
+        if (!(options && options.disable)) {
+          return true;
+        }
+
+        var hasOptions = Object.keys(options.disable).length > 0;
         var d;
         var i;
         var l;
@@ -52349,7 +54021,10 @@ function ValidationRules() {
 
           if (options.showTime) {
             var timeFormat = options.timeFormat || Locale.calendar().timeFormat;
-            format += " ".concat(timeFormat);
+
+            if (format.indexOf(timeFormat) < 0) {
+              format += " ".concat(timeFormat);
+            }
           }
 
           if (datepickerApi && datepickerApi.isIslamic) {
@@ -52357,6 +54032,20 @@ function ValidationRules() {
               pattern: datepickerApi.pattern,
               locale: datepickerApi.locale.name
             };
+          }
+
+          if (gridInfo && gridInfo.column) {
+            var col = gridInfo.column;
+
+            if (col.sourceFormat) {
+              format = typeof col.sourceFormat === 'string' ? {
+                pattern: col.sourceFormat
+              } : col.sourceFormat;
+            } else if (col.dateFormat) {
+              format = typeof col.dateFormat === 'string' ? {
+                pattern: col.dateFormat
+              } : col.dateFormat;
+            }
           }
 
           dateObj = Locale.parseDate(dateObj, format);
@@ -52382,7 +54071,7 @@ function ValidationRules() {
           min = options.useUTC ? Locale.dateToUTC(new Date(options.disable.minDate)).setHours(0, 0, 0, 0) : new Date(options.disable.minDate).setHours(0, 0, 0, 0);
           max = options.useUTC ? Locale.dateToUTC(new Date(options.disable.maxDate)).setHours(0, 0, 0, 0) : new Date(options.disable.maxDate).setHours(0, 0, 0, 0); // dayOfWeek
 
-          if (options.disable.dayOfWeek.indexOf(d2.getDay()) !== -1) {
+          if (options.disable.dayOfWeek && options.disable.dayOfWeek.indexOf(d2.getDay()) !== -1) {
             check = false;
           }
 
@@ -52398,24 +54087,28 @@ function ValidationRules() {
             options.disable.years = [options.disable.years];
           }
 
-          for (var i2 = 0, l2 = options.disable.years.length; i2 < l2; i2++) {
-            if (thisYear === Number(options.disable.years[i2])) {
-              check = false;
-              break;
+          if (options.disable.years) {
+            for (var i2 = 0, l2 = options.disable.years.length; i2 < l2; i2++) {
+              if (thisYear === Number(options.disable.years[i2])) {
+                check = false;
+                break;
+              }
             }
           } // dates
 
 
-          if (options.disable.dates.length && typeof options.disable.dates === 'string') {
-            options.disable.dates = [options.disable.dates];
-          }
+          if (options.disable.dates) {
+            if (options.disable.dates.length && typeof options.disable.dates === 'string') {
+              options.disable.dates = [options.disable.dates];
+            }
 
-          for (i = 0, l = options.disable.dates.length; i < l; i++) {
-            d = options.useUTC ? Locale.dateToUTC(options.disable.dates[i]) : new Date(options.disable.dates[i]);
+            for (i = 0, l = options.disable.dates.length; i < l; i++) {
+              d = options.useUTC ? Locale.dateToUTC(options.disable.dates[i]) : new Date(options.disable.dates[i]);
 
-            if (d2 === d.setHours(0, 0, 0, 0)) {
-              check = false;
-              break;
+              if (d2 === d.setHours(0, 0, 0, 0)) {
+                check = false;
+                break;
+              }
             }
           }
         }
@@ -52659,7 +54352,7 @@ function ValidationRules() {
 
 var Validation = new ValidationRules();
 
-var COMPONENT_NAME$H = 'toast'; // Default Component Settings
+var COMPONENT_NAME$E = 'toast'; // Default Component Settings
 
 var TOAST_DEFAULTS = {
   title: '(Title)',
@@ -52724,12 +54417,12 @@ Toast.prototype = {
     var percentage = 100;
     this.uniqueId = s.uniqueid ? this.generateUniqueId('usersettings-position') : '';
     var container = $("#toast-container".concat(this.uniqueId));
-    var toast = $("\n      <div class=\"toast\">\n        <span class=\"toast-title\">".concat(xssUtils.stripHTML(s.title), "</span>\n        <span class=\"toast-message\">").concat(message, "</span>\n      </div>"));
+    var toast = $("\n      <div class=\"toast\">\n        <span aria-relevant=\"additions text\" aria-live=\"polite\">\n          <span class=\"toast-title\">".concat(xssUtils.stripHTML(s.title), "</span>\n          <span class=\"toast-message\">").concat(message, "</span>\n        </span>\n      </div>"));
     var closeBtn = $("\n      <button type=\"button\" class=\"btn-icon btn-close\" title=\"".concat(Locale.translate('Close'), "\" aria-hidden=\"true\">\n        ").concat($.createIcon('close'), "\n        <span class=\"audible\">").concat(Locale.translate('Close'), "</span>\n      </button>\n    "));
     var progress = $('<div class="toast-progress"></div>');
 
     if (!container.length) {
-      container = $("<div id=\"toast-container".concat(this.uniqueId, "\" class=\"toast-container\" aria-relevant=\"additions\" aria-live=\"polite\"></div>")).appendTo('body');
+      container = $("<div id=\"toast-container".concat(this.uniqueId, "\" class=\"toast-container\"></div>")).appendTo('body');
     }
 
     container.removeClass('toast-top-left toast-top-right toast-bottom-right toast-bottom-left').addClass("toast-".concat(s.position.replace(' ', '-')));
@@ -53095,6 +54788,7 @@ Toast.prototype = {
       return;
     }
 
+    toast.attr('aria-live', '').attr('aria-relevent', '').hide();
     toast.addClass('effect-scale-hide');
     var closeTimer = new RenderLoopItem({
       duration: 20,
@@ -53141,7 +54835,7 @@ Toast.prototype = {
     container.remove();
     delete this.toastIndex;
     delete this.uniqueId;
-    $.removeData(this.element[0], COMPONENT_NAME$H);
+    $.removeData(this.element[0], COMPONENT_NAME$E);
   }
 };
 
@@ -53153,17 +54847,17 @@ Toast.prototype = {
 
 $.fn.toast = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$H);
+    var instance = $.data(this, COMPONENT_NAME$E);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$H, new Toast(this, settings));
+      instance = $.data(this, COMPONENT_NAME$E, new Toast(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$I = 'Validator';
+var COMPONENT_NAME$D = 'Validator';
 /**
  * Validation Message Defaults
  * @namespace
@@ -54083,20 +55777,21 @@ Validator.prototype = {
     rule.icon = rule.icon || validationType.icon;
     var markup;
     var icon;
+    var messageId = "".concat(field.attr('id') || 'id', "-").concat(rule.type);
 
     if (rule.type === 'error') {
       icon = "".concat(validationType.type, "-alert");
     } else {
-      icon = theme.currentTheme.id && theme.currentTheme.id.indexOf('uplift') > -1 ? "".concat(validationType.type, "-alert") : "".concat(validationType.type);
+      icon = theme.currentTheme.id && theme.new ? "".concat(validationType.type, "-alert") : "".concat(validationType.type);
     }
 
     if (rule.type === 'icon') {
-      markup = '' + "<div class=\"custom-icon-message\" data-rule-id=\"".concat(rule.id || rule.message, "\">\n          ").concat($.createIcon({
+      markup = '' + "<div id=\"".concat(messageId, "\" class=\"custom-icon-message\" data-rule-id=\"").concat(rule.id || rule.message, "\">\n          ").concat($.createIcon({
         classes: ['icon-custom'],
         icon: rule.icon
       }), "\n          <pre class=\"audible\">\n            ").concat(Locale.translate(validationType.titleMessageID), "\n          </pre>\n          <p class=\"message-text\">").concat(rule.message, "</p>\n        </div>");
     } else {
-      markup = '' + "<div class=\"".concat(validationType.type, "-message\" data-rule-id=\"").concat(rule.id || rule.message, "\">\n          ").concat($.createIcon({
+      markup = '' + "<div id=\"".concat(messageId, "\" class=\"").concat(validationType.type, "-message\" data-rule-id=\"").concat(rule.id || rule.message, "\">\n          ").concat($.createIcon({
         classes: ["icon-".concat(validationType.type)],
         icon: icon
       }), "\n          <pre class=\"audible\">\n            ").concat(Locale.translate(validationType.titleMessageID), "\n          </pre>\n          <p class=\"message-text\">").concat(rule.message, "</p>\n        </div>");
@@ -54122,8 +55817,11 @@ Validator.prototype = {
 
     if (validationType.type === 'error') {
       field.parent().find('.icon-success').remove();
-    } // Trigger an event
+    } // Add aria
 
+
+    field.attr('aria-describedby', messageId);
+    field.attr('aria-invalid', 'true'); // Trigger an event
 
     field.triggerHandler(validationType.type, {
       field: field,
@@ -54231,8 +55929,10 @@ Validator.prototype = {
 
     if (field.closest('.field-fileupload').length > 0) {
       field.closest('.field-fileupload').find("input.".concat(rule.type)).removeClass(rule.type);
-    } // Remove tooltip style message and tooltip
+    } // Remove Aria
 
+
+    field.removeAttr('aria-describedby').removeAttr('aria-invalid'); // Remove tooltip style message and tooltip
 
     if (field.attr("data-".concat(rule.type, "-type")) === 'tooltip') {
       var errorIcon = field.closest('.field, .field-short').find('.icon-error');
@@ -54470,10 +56170,10 @@ $.fn.scrollIntoView = function (alignToTop, settings) {
 
 $.fn.addMessage = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$I);
+    var instance = $.data(this, COMPONENT_NAME$D);
 
     if (!instance) {
-      instance = $.data(this, COMPONENT_NAME$I, new Validator(this, settings));
+      instance = $.data(this, COMPONENT_NAME$D, new Validator(this, settings));
     }
 
     var rule = {
@@ -54526,10 +56226,10 @@ $.fn.removeMessage = function (settings) {
   }
 
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$I);
+    var instance = $.data(this, COMPONENT_NAME$D);
 
     if (!instance) {
-      instance = $.data(this, COMPONENT_NAME$I, new Validator(this, settings));
+      instance = $.data(this, COMPONENT_NAME$D, new Validator(this, settings));
     }
 
     var field = $(this);
@@ -54549,7 +56249,7 @@ $.fn.removeMessage = function (settings) {
     }
 
     instance.setIconOnParent(field, settings.type);
-    $.removeData(this, COMPONENT_NAME$I);
+    $.removeData(this, COMPONENT_NAME$D);
   });
 };
 /**
@@ -54638,7 +56338,7 @@ $.fn.resetForm = function () {
   api.resetForm(this);
 };
 
-var COMPONENT_NAME$J = 'datepicker';
+var COMPONENT_NAME$C = 'datepicker';
 /**
  * A component to support date entry.
  * @class DatePicker
@@ -54709,6 +56409,7 @@ var COMPONENT_NAME$J = 'datepicker';
  * @param {function} [settings.onOpenCalendar] Call back for when the calendar is open, allows you to set the date.
  * @param {boolean} [settings.isMonthPicker] Indicates this is a month picker on the month and week view. Has some slight different behavior.
  * @param {string} [settings.attributes] Add extra attributes like id's to the element. For example `attributes: { name: 'id', value: 'my-unique-id' }`
+ * @param {boolean} [settings.tabbable=true] If true, causes the Datepicker's trigger icon to be focusable with the keyboard.
 */
 
 var DATEPICKER_DEFAULTS = {
@@ -54778,7 +56479,8 @@ var DATEPICKER_DEFAULTS = {
   showToday: true,
   onOpenCalendar: null,
   isMonthPicker: false,
-  attributes: null
+  attributes: null,
+  tabbable: true
 };
 
 function DatePicker(element, settings) {
@@ -54800,24 +56502,31 @@ DatePicker.prototype = {
    * @returns {void}
    */
   build: function build() {
-    // Add "is-disabled" css class to closest ".field" if element is disabled
-    if (this.element.is(':disabled')) {
-      this.element.closest('.field').addClass('is-disabled');
-    }
-
     this.element.attr('autocomplete', 'off'); // Append a trigger button
 
-    if (this.element.next().is('svg')) {
-      this.trigger = this.element.next();
+    var next = this.element.next();
+
+    if (next.is('button.trigger')) {
+      this.trigger = next;
     } else {
-      this.trigger = $.createIconElement('calendar').insertAfter(this.element);
+      this.trigger = $("<button class=\"btn-icon trigger\" type=\"button\">\n        <span class=\"audible\"></span>\n        ".concat($.createIcon('calendar'), "\n      </button>")).insertAfter(this.element);
     } // Hide icon if datepicker input is hidden
 
 
     if (this.element.hasClass('hidden')) {
       this.trigger.addClass('hidden');
-    } // Enable classes and settings for week selection
+    } // Add "is-disabled" css class to closest ".field" if element is disabled
 
+
+    if (this.element.is(':disabled')) {
+      this.disable();
+    }
+
+    if (this.element.is('[readonly]')) {
+      this.readonly();
+    }
+
+    this.makeTabbable(this.settings.tabbable); // Enable classes and settings for week selection
 
     if (this.settings.range.selectWeek) {
       this.settings.selectForward = true;
@@ -54922,11 +56631,28 @@ DatePicker.prototype = {
    * @returns {void}
    */
   addAria: function addAria() {
+    this.element.attr({
+      role: 'combobox',
+      'aria-expanded': 'false'
+    });
+    this.trigger.attr({
+      role: 'button',
+      'aria-haspopup': 'dialog'
+    });
     this.label = $("label[for=\"".concat(this.element.attr('id'), "\"]"));
-    this.label.append("<span class=\"audible\">".concat(Locale.translate('PressDown', {
+    var pressDownMsg = ". ".concat(Locale.translate('PressDown', {
       locale: this.locale.name,
       language: this.language
-    }), "</span>"));
+    }));
+    var span = this.label.children('span.audible');
+
+    if (span.length) {
+      span.text(pressDownMsg);
+    } else {
+      this.label.append("<span class=\"audible\">".concat(pressDownMsg, "</span>"));
+    }
+
+    this.trigger.children('.audible').text(Locale.translate('DatePickerTriggerButton'));
   },
 
   /**
@@ -55434,7 +57160,7 @@ DatePicker.prototype = {
 
     if (parent.is('.datagrid-cell-wrapper')) {
       placementParentXAlignment = 'center';
-      placementParent = this.element.next('.icon');
+      placementParent = this.element.next('.icon, .trigger');
     }
 
     var popoverOpts = {
@@ -55457,7 +57183,7 @@ DatePicker.prototype = {
         _this4.popup.find('.arrow').hide();
 
         _this4.popup.css({
-          'min-height': $('html').hasClass('theme-uplift-light') ? '' : "".concat(_this4.popupClosestScrollable[0].scrollHeight - 521, "px"),
+          'min-height': $('html').hasClass('theme-new-light') ? '' : "".concat(_this4.popupClosestScrollable[0].scrollHeight - 521, "px"),
           height: ''
         });
 
@@ -55744,13 +57470,11 @@ DatePicker.prototype = {
   },
 
   /**
-   * Close the calendar popup.
-   * This method is slated to be removed in a future v4.15.0 or v5.0.0.
-   * @deprecated as of v4.9.0. Please use `closeCalendar()` instead.
+   * Close the calendar popup (an alias for close calendar)
    * @returns {void}
    */
   close: function close() {
-    return deprecateMethod(this.closeCalendar, this.close).apply(this);
+    this.closeCalendar();
   },
 
   /**
@@ -56437,7 +58161,7 @@ DatePicker.prototype = {
         hours = parsedDate === null || parsedDate === void 0 ? void 0 : parsedDate == null ? void 0 : parsedDate.getHours();
       }
 
-      if (!this.isIslamic && parsedDate && hours < 12 && self.element.val().trim().indexOf(this.currentCalendar.dayPeriods[1]) > -1) {
+      if (!this.isIslamic && parsedDate && hours < 12 && self.element.val().trim().indexOf(this.currentCalendar.dayPeriods[1]) > -1 && this.currentCalendar.dayPeriods[1] !== '') {
         parsedDate.setHours(hours + 12);
       }
 
@@ -56477,6 +58201,7 @@ DatePicker.prototype = {
    */
   enable: function enable() {
     this.element.removeAttr('disabled readonly').closest('.field').removeClass('is-disabled');
+    this.trigger.prop('disabled', false);
   },
 
   /**
@@ -56484,8 +58209,8 @@ DatePicker.prototype = {
    * @returns {void}
    */
   disable: function disable() {
-    this.enable();
-    this.element.attr('disabled', 'disabled').closest('.field').addClass('is-disabled');
+    this.element.removeAttr('readonly').attr('disabled', 'disabled').closest('.field').addClass('is-disabled');
+    this.trigger.prop('disabled', true);
   },
 
   /**
@@ -56503,6 +58228,7 @@ DatePicker.prototype = {
   readonly: function readonly() {
     this.enable();
     this.element.attr('readonly', 'readonly');
+    this.trigger.prop('disabled', false);
   },
 
   /**
@@ -56511,6 +58237,13 @@ DatePicker.prototype = {
    */
   isReadonly: function isReadonly() {
     return this.element.prop('readonly');
+  },
+
+  /**
+   * @param {boolean} val if true, sets the trigger button to a focusable tab index
+   */
+  makeTabbable: function makeTabbable(val) {
+    this.trigger.attr('tabIndex', val ? 0 : -1);
   },
 
   /**
@@ -56766,7 +58499,7 @@ DatePicker.prototype = {
     this.teardown();
 
     if (this.element[0]) {
-      $.removeData(this.element[0], COMPONENT_NAME$J);
+      $.removeData(this.element[0], COMPONENT_NAME$C);
     }
   },
 
@@ -56820,12 +58553,12 @@ DatePicker.prototype = {
 
 $.fn.datepicker = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$J);
+    var instance = $.data(this, COMPONENT_NAME$C);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$J, new DatePicker(this, settings));
+      instance = $.data(this, COMPONENT_NAME$C, new DatePicker(this, settings));
     }
   });
 };
@@ -56890,7 +58623,7 @@ FontPickerStyle.prototype = {
   }
 };
 
-var COMPONENT_NAME$K = 'fontpicker'; // Default Settings
+var COMPONENT_NAME$B = 'fontpicker'; // Default Settings
 // NOTE: new settings are created at runtime to avoid retention of state on FontPickerStyle objects
 
 function fontpickerSettingsFactory() {
@@ -57119,11 +58852,11 @@ FontPicker.prototype = {
     var _this = this;
 
     var self = this;
-    $(this.element).on("selected.".concat(COMPONENT_NAME$K), function (e, selectedItem) {
+    $(this.element).on("selected.".concat(COMPONENT_NAME$B), function (e, selectedItem) {
       var val = selectedItem.attr('data-val');
 
       _this.select(val);
-    }).on("updated.".concat(COMPONENT_NAME$K), function (e, settings) {
+    }).on("updated.".concat(COMPONENT_NAME$B), function (e, settings) {
       self.updated(settings);
     });
     return this;
@@ -57207,7 +58940,7 @@ FontPicker.prototype = {
     } // Remove events
 
 
-    $(this.element).off(["selected.".concat(COMPONENT_NAME$K), "updated.".concat(COMPONENT_NAME$K)].join(' '));
+    $(this.element).off(["selected.".concat(COMPONENT_NAME$B), "updated.".concat(COMPONENT_NAME$B)].join(' '));
     return this;
   },
 
@@ -57217,23 +58950,23 @@ FontPicker.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element, COMPONENT_NAME$K);
+    $.removeData(this.element, COMPONENT_NAME$B);
   }
 };
 
 $.fn.fontpicker = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$K);
+    var instance = $.data(this, COMPONENT_NAME$B);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$K, new FontPicker(this, settings));
+      instance = $.data(this, COMPONENT_NAME$B, new FontPicker(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$L = 'toolbar';
+var COMPONENT_NAME$A = 'toolbar';
 /**
  * The Toolbar Component manages various levels of application navigation.
  * It contains a group of buttons that functionally related content. Each panel
@@ -57512,7 +59245,14 @@ Toolbar.prototype = {
 
 
     function setActiveToolbarItem() {
-      self.items.attr('tabindex', '-1');
+      self.items.attr('tabindex', '-1'); // Make the home button tabbable
+
+      var homeButton = self.buttonset.children('button');
+
+      if (homeButton) {
+        homeButton.attr('tabindex', '0');
+      }
+
       var active = self.items.filter('.is-selected');
 
       if (active.length) {
@@ -57554,6 +59294,13 @@ Toolbar.prototype = {
 
     if (searchfieldWrapper.length) {
       searchfieldWrapper.trigger('reanimate');
+    } // Make the searchfield toolbar tabbable
+
+
+    var sfElement = this.buttonset.find('.toolbar-searchfield-wrapper .searchfield');
+
+    if (sfElement.length) {
+      sfElement[0].setAttribute('tabindex', '0');
     }
 
     return this;
@@ -58059,16 +59806,16 @@ Toolbar.prototype = {
    * @returns {void}
    */
   handleResize: function handleResize(containerDims) {
-    if (this.settings.resizeContainers) {
-      var title = containerDims ? containerDims.title : undefined;
-      var buttonset = containerDims ? containerDims.buttonset : undefined;
-      this.sizeContainers(title, buttonset);
-    }
-
     var buttons = this.getButtonsetButtons();
 
     for (var i = 0; i < buttons.length; i++) {
       buttons[i].removeClass('is-overflowed');
+    }
+
+    if (this.settings.resizeContainers) {
+      var title = containerDims ? containerDims.title : undefined;
+      var buttonset = containerDims ? containerDims.buttonset : undefined;
+      this.sizeContainers(title, buttonset);
     }
 
     if (this.element.is(':not(:hidden)')) {
@@ -58547,7 +60294,7 @@ Toolbar.prototype = {
       return true;
     }
 
-    if (classList.contains('searchfield')) {
+    if (classList.contains('searchfield') || item.nodeName === 'INPUT') {
       return false;
     }
 
@@ -58746,7 +60493,7 @@ Toolbar.prototype = {
       item.classList.remove('is-overflowed');
       item.removeAttribute('tabindex');
     });
-    this.items.off(["keydown.".concat(COMPONENT_NAME$L), "click.".concat(COMPONENT_NAME$L), "focus.".concat(COMPONENT_NAME$L), "blur.".concat(COMPONENT_NAME$L), "close.".concat(COMPONENT_NAME$L), "selected.".concat(COMPONENT_NAME$L)].join(' '));
+    this.items.off(["keydown.".concat(COMPONENT_NAME$A), "click.".concat(COMPONENT_NAME$A), "focus.".concat(COMPONENT_NAME$A), "blur.".concat(COMPONENT_NAME$A), "close.".concat(COMPONENT_NAME$A), "selected.".concat(COMPONENT_NAME$A)].join(' '));
     delete this.items;
 
     if (this.title && this.title.length) {
@@ -58791,7 +60538,7 @@ Toolbar.prototype = {
     }
 
     if (this.more.length && this.more.data('popupmenu') !== undefined) {
-      this.more.off(["keydown.".concat(COMPONENT_NAME$L), "beforeopen.".concat(COMPONENT_NAME$L), "selected.".concat(COMPONENT_NAME$L), "show-submenu.".concat(COMPONENT_NAME$L)].join(' '));
+      this.more.off(["keydown.".concat(COMPONENT_NAME$A), "beforeopen.".concat(COMPONENT_NAME$A), "selected.".concat(COMPONENT_NAME$A), "show-submenu.".concat(COMPONENT_NAME$A)].join(' '));
       this.more.data('popupmenu').destroy();
       delete this.more;
     } // Only delete the references, not the markup
@@ -58801,7 +60548,7 @@ Toolbar.prototype = {
       delete this.activeButton;
     }
 
-    this.element.off(["updated.".concat(COMPONENT_NAME$L), "recalculate-buttons.".concat(COMPONENT_NAME$L), "scrollup.".concat(COMPONENT_NAME$L)].join(' '));
+    this.element.off(["updated.".concat(COMPONENT_NAME$A), "recalculate-buttons.".concat(COMPONENT_NAME$A), "scrollup.".concat(COMPONENT_NAME$A)].join(' '));
     this.element[0].classList.remove('do-resize');
     this.element.removeAttr('role').removeAttr('aria-label');
     return this;
@@ -58857,7 +60604,7 @@ Toolbar.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$L);
+    $.removeData(this.element[0], COMPONENT_NAME$A);
   }
 };
 
@@ -58869,17 +60616,17 @@ Toolbar.prototype = {
 
 $.fn.toolbar = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$L);
+    var instance = $.data(this, COMPONENT_NAME$A);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$L, new Toolbar(this, settings));
+      instance = $.data(this, COMPONENT_NAME$A, new Toolbar(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$M = 'editor';
+var COMPONENT_NAME$z = 'editor';
 var EDITOR_PARENT_ELEMENTS = ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'pre', 'code'];
 /**
 * The Editor Component displays and edits markdown.
@@ -59052,6 +60799,10 @@ Editor.prototype = {
         styles.push(new FontPickerStyle("header".concat(hLevel), "Header ".concat(hLevel), "h".concat(hLevel)));
       }
 
+      if (s.buttons.editor[0] === 'separator') {
+        s.buttons.editor.splice(0, 1);
+      }
+
       if (foundOldSettings) {
         s.buttons.editor = s.buttons.editor.filter(function (el) {
           return el.substr(0, 6) !== 'header';
@@ -59059,10 +60810,6 @@ Editor.prototype = {
         s.fontpickerSettings = {
           styles: styles
         };
-      }
-
-      if (s.buttons.editor[0] === 'separator') {
-        s.buttons.editor.splice(0, 1);
       }
 
       if (foundOldSettings) {
@@ -59173,7 +60920,13 @@ Editor.prototype = {
     currentElement.on('keydown.editor', function (e) {
       if (e.which === 9) {
         // Override tab only for pre nodes
-        var tag = _this3.getSelectionStart().tagName.toLowerCase();
+        var selectionStart = _this3.getSelectionStart();
+
+        if (!selectionStart || !selectionStart.tagName) {
+          return;
+        }
+
+        var tag = selectionStart.tagName.toLowerCase();
 
         if (tag === 'pre') {
           e.preventDefault();
@@ -59431,7 +61184,7 @@ Editor.prototype = {
 
       _this7.element.trigger('change');
     }, 400));
-    $('html').on("themechanged.".concat(COMPONENT_NAME$M), function () {
+    $('html').on("themechanged.".concat(COMPONENT_NAME$z), function () {
       _this7.setRowsHeight();
 
       if (!_this7.sourceView.hasClass('hidden')) {
@@ -59449,18 +61202,18 @@ Editor.prototype = {
   setRowsHeight: function setRowsHeight() {
     var _this$settings, _this$settings$rows, _this$settings3, _this$settings3$rows;
 
-    var isUplift = theme.currentTheme.id && theme.currentTheme.id.indexOf('uplift') > -1;
+    var isNew = theme.currentTheme.id && (theme.currentTheme.id.indexOf('uplift') > -1 || theme.currentTheme.id.indexOf('new') > -1);
 
     if ((_this$settings = this.settings) !== null && _this$settings !== void 0 && (_this$settings$rows = _this$settings == null ? void 0 : _this$settings.rows) !== null && _this$settings$rows !== void 0 && (_this$settings$rows == null ? void 0 : _this$settings$rows.editor)) {
       var _this$settings2, _this$settings2$rows;
 
-      this.element.height(((_this$settings2 = this.settings) === null || _this$settings2 === void 0 ? void 0 : (_this$settings2$rows = _this$settings2 == null ? void 0 : _this$settings2.rows) === null || _this$settings2$rows === void 0 ? void 0 : _this$settings2$rows == null ? void 0 : _this$settings2$rows.editor) * (isUplift ? 26 : 22.2));
+      this.element.height(((_this$settings2 = this.settings) === null || _this$settings2 === void 0 ? void 0 : (_this$settings2$rows = _this$settings2 == null ? void 0 : _this$settings2.rows) === null || _this$settings2$rows === void 0 ? void 0 : _this$settings2$rows == null ? void 0 : _this$settings2$rows.editor) * (isNew ? 26 : 22.2));
     }
 
     if ((_this$settings3 = this.settings) !== null && _this$settings3 !== void 0 && (_this$settings3$rows = _this$settings3 == null ? void 0 : _this$settings3.rows) !== null && _this$settings3$rows !== void 0 && (_this$settings3$rows == null ? void 0 : _this$settings3$rows.source)) {
       var _this$settings4, _this$settings4$rows;
 
-      this.element.parent().find('.editor-source').height(((_this$settings4 = this.settings) === null || _this$settings4 === void 0 ? void 0 : (_this$settings4$rows = _this$settings4 == null ? void 0 : _this$settings4.rows) === null || _this$settings4$rows === void 0 ? void 0 : _this$settings4$rows == null ? void 0 : _this$settings4$rows.source) * (isUplift ? 26 : 26) + 15);
+      this.element.parent().find('.editor-source').height(((_this$settings4 = this.settings) === null || _this$settings4 === void 0 ? void 0 : (_this$settings4$rows = _this$settings4 == null ? void 0 : _this$settings4.rows) === null || _this$settings4$rows === void 0 ? void 0 : _this$settings4$rows == null ? void 0 : _this$settings4$rows.source) * (isNew ? 26 : 26) + 15);
     }
   },
 
@@ -60306,6 +62059,7 @@ Editor.prototype = {
         }, 1);
       }
 
+      this.element.trigger('change');
       this.bindAnchorPreview();
     }
   },
@@ -60900,12 +62654,12 @@ Editor.prototype = {
       editorContainer.parent().find('.editor-source').removeClass('error');
     }
 
-    this.container.on("focusin.".concat(COMPONENT_NAME$M), '.editor, .editor-source', containerFocusHandler).on("focusout.".concat(COMPONENT_NAME$M), '.editor, .editor-source', containerBlurHandler);
-    this.container.on("mouseenter.".concat(COMPONENT_NAME$M), function () {
+    this.container.on("focusin.".concat(COMPONENT_NAME$z), '.editor, .editor-source', containerFocusHandler).on("focusout.".concat(COMPONENT_NAME$z), '.editor, .editor-source', containerBlurHandler);
+    this.container.on("mouseenter.".concat(COMPONENT_NAME$z), function () {
       if (!_this15.element.hasClass('error')) {
         _this15.container.addClass('is-hover');
       }
-    }).on("mouseleave.".concat(COMPONENT_NAME$M), function () {
+    }).on("mouseleave.".concat(COMPONENT_NAME$z), function () {
       _this15.container.removeClass('is-hover');
     });
 
@@ -61743,7 +63497,7 @@ Editor.prototype = {
     }
 
     if (this.fontPickerElem) {
-      this.fontPickerElem.off("font-selected.".concat(COMPONENT_NAME$M));
+      this.fontPickerElem.off("font-selected.".concat(COMPONENT_NAME$z));
       var fontpickerAPI = this.fontPickerElem.data('fontpicker');
 
       if (fontpickerAPI) {
@@ -61754,13 +63508,13 @@ Editor.prototype = {
     } // Unbind/Remove Toolbar Component (generically)
 
 
-    this.toolbar.off(["click.".concat(COMPONENT_NAME$M), "selected.".concat(COMPONENT_NAME$M)].join(' '));
+    this.toolbar.off(["click.".concat(COMPONENT_NAME$z), "selected.".concat(COMPONENT_NAME$z)].join(' '));
     this.toolbar.remove();
     delete this.toolbar; // Remove events that could be bound to either:
     // - the WYSIWYG editor
     // - the source code view
 
-    var boundEventNames = ['blur', 'DOMNodeInserted', 'focus', "input.".concat(COMPONENT_NAME$M), "keydown.".concat(COMPONENT_NAME$M), "keypress.".concat(COMPONENT_NAME$M), "keyup.".concat(COMPONENT_NAME$M), "mouseup.".concat(COMPONENT_NAME$M), "mousedown.".concat(COMPONENT_NAME$M), "paste.".concat(COMPONENT_NAME$M)].join(' ');
+    var boundEventNames = ['blur', 'DOMNodeInserted', 'focus', "input.".concat(COMPONENT_NAME$z), "keydown.".concat(COMPONENT_NAME$z), "keypress.".concat(COMPONENT_NAME$z), "keyup.".concat(COMPONENT_NAME$z), "mouseup.".concat(COMPONENT_NAME$z), "mousedown.".concat(COMPONENT_NAME$z), "paste.".concat(COMPONENT_NAME$z)].join(' ');
     this.element.off(boundEventNames);
     this.textarea.off(boundEventNames);
     this.element.prev('.label').off('click.editor');
@@ -61924,16 +63678,16 @@ Editor.prototype = {
     } // Cleanup container
 
 
-    this.container.off(["focusin.".concat(COMPONENT_NAME$M), "focusout.".concat(COMPONENT_NAME$M), "mouseneter.".concat(COMPONENT_NAME$M), "mouseleave.".concat(COMPONENT_NAME$M), "input.".concat(COMPONENT_NAME$M), "keyup.".concat(COMPONENT_NAME$M)].join(' '));
+    this.container.off(["focusin.".concat(COMPONENT_NAME$z), "focusout.".concat(COMPONENT_NAME$z), "mouseneter.".concat(COMPONENT_NAME$z), "mouseleave.".concat(COMPONENT_NAME$z), "input.".concat(COMPONENT_NAME$z), "keyup.".concat(COMPONENT_NAME$z)].join(' '));
     this.container.removeClass('editor-container');
     delete this.container; // Cleanup label
 
-    this.label.off("click.".concat(COMPONENT_NAME$M));
+    this.label.off("click.".concat(COMPONENT_NAME$z));
     delete this.label; // Cleanup Editor Element
 
     this.element.attr('contenteditable', 'false');
-    this.element.off(["mousedown.".concat(COMPONENT_NAME$M), "updated.".concat(COMPONENT_NAME$M)].join(' '));
-    $('html').off("themechanged.".concat(COMPONENT_NAME$M));
+    this.element.off(["mousedown.".concat(COMPONENT_NAME$z), "updated.".concat(COMPONENT_NAME$z)].join(' '));
+    $('html').off("themechanged.".concat(COMPONENT_NAME$z));
     delete this.id;
     delete this.isActive;
     return this;
@@ -61945,7 +63699,7 @@ Editor.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$M);
+    $.removeData(this.element[0], COMPONENT_NAME$z);
   },
 
   /**
@@ -62153,17 +63907,17 @@ Editor.prototype = {
 
 $.fn.editor = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$M);
+    var instance = $.data(this, COMPONENT_NAME$z);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$M, new Editor(this, settings));
+      instance = $.data(this, COMPONENT_NAME$z, new Editor(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$N = 'hierarchy';
+var COMPONENT_NAME$y = 'hierarchy';
 /**
  * The displays customizable hierarchical data such as an org chart.
  *
@@ -62585,7 +64339,7 @@ Hierarchy.prototype = {
         }
       }
 
-      return "\n        <li data-disabled=\"".concat(a.disabled, "\" class=\"").concat(a.menu ? 'submenu' : '', "\">\n          <a href=\"").concat(a.url, "\"").concat(opAttrStr(idx), " data-action-reference=\"").concat(JSON.stringify(a.data), "\">\n            ").concat(a.value, "\n            ").concat(a.menu ? '<svg class="arrow icon-dropdown icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-dropdown"></use></svg>' : '', "\n          </a>\n          ").concat(a.menu ? "<div class=\"wrapper\" role=\"application\" aria-hidden=\"true\">\n            <ul class=\"popupmenu\">\n              ".concat(a.menu.map(function (x, idx2) {
+      return "\n        <li data-disabled=\"".concat(a.disabled, "\" class=\"").concat(a.menu ? 'submenu' : '', "\">\n          <a href=\"").concat(a.url, "\"").concat(opAttrStr(idx), " data-action-reference='") + JSON.stringify(a.data) + "'>\n            ".concat(a.value, "\n            ").concat(a.menu ? '<svg class="arrow icon-dropdown icon" focusable="false" aria-hidden="true" role="presentation"><use href="#icon-dropdown"></use></svg>' : '', "\n          </a>\n          ").concat(a.menu ? "<div class=\"wrapper\" role=\"application\" aria-hidden=\"true\">\n            <ul class=\"popupmenu\">\n              ".concat(a.menu.map(function (x, idx2) {
         return "\n              <li data-disabled=\"".concat(a.disabled, "\">\n                <a href=\"").concat(a.url, "\"").concat(opAttrStr("".concat(idx, "-").concat(idx2)), " data-action-reference=\"").concat(JSON.stringify(a.data), "\">").concat(x.value, "</a>\n              </li>");
       }).join(''), "\n            </ul>\n          </div>") : '', "\n        </li>");
     }).join('');
@@ -63262,7 +65016,7 @@ Hierarchy.prototype = {
 
     if (nodeData.length) {
       for (var i = 0, l = nodeData.length; i < l; i++) {
-        var isLast = i === nodeData.length - 1;
+        i === nodeData.length - 1;
         processDataForLeaf(nodeData[i]);
         self.updateState($("#".concat(self.settings.rootId, " #").concat(xssUtils.stripTags(nodeData[i].id))), false, nodeData[i], undefined);
       }
@@ -63461,7 +65215,7 @@ Hierarchy.prototype = {
    */
   destroy: function destroy() {
     this.unbind();
-    this.element.removeData(COMPONENT_NAME$N);
+    this.element.removeData(COMPONENT_NAME$y);
   }
 };
 
@@ -63473,17 +65227,17 @@ Hierarchy.prototype = {
 
 $.fn.hierarchy = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$N);
+    var instance = $.data(this, COMPONENT_NAME$y);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$N, new Hierarchy(this, settings));
+      instance = $.data(this, COMPONENT_NAME$y, new Hierarchy(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$O = 'fieldfilter';
+var COMPONENT_NAME$x = 'fieldfilter';
 /**
  * Ability to have a dropdown next to the field.
  *
@@ -63690,11 +65444,11 @@ FieldFilter.prototype = {
   handleEvents: function handleEvents() {
     var _this = this;
 
-    this.ffdropdown.on("listopened.".concat(COMPONENT_NAME$O), function () {
+    this.ffdropdown.on("listopened.".concat(COMPONENT_NAME$x), function () {
       // drowpdownWidth - border (52)
       var extra = _this.field.is('.field-short') ? 42 : 52;
       $('#dropdown-list ul').width(_this.element.outerWidth() + extra);
-    }).on("selected.".concat(COMPONENT_NAME$O), function (e, args) {
+    }).on("selected.".concat(COMPONENT_NAME$x), function (e, args) {
       /**
        * Fires after the value in the dropdown is selected.
        * @event filtered
@@ -63743,7 +65497,7 @@ FieldFilter.prototype = {
    * @returns {object} The api
    */
   unbind: function unbind() {
-    this.ffdropdown.off(".".concat(COMPONENT_NAME$O)); // Remove Dropdown
+    this.ffdropdown.off(".".concat(COMPONENT_NAME$x)); // Remove Dropdown
 
     if (this.ddApi && typeof this.ddApi.destroy === 'function') {
       this.ddApi.destroy();
@@ -63772,7 +65526,7 @@ FieldFilter.prototype = {
    */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$O);
+    $.removeData(this.element[0], COMPONENT_NAME$x);
   }
 };
 
@@ -63784,17 +65538,17 @@ FieldFilter.prototype = {
 
 $.fn.fieldfilter = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$O);
+    var instance = $.data(this, COMPONENT_NAME$x);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$O, new FieldFilter(this, settings));
+      instance = $.data(this, COMPONENT_NAME$x, new FieldFilter(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$P = 'fieldoptions';
+var COMPONENT_NAME$w = 'fieldoptions';
 /**
 * A control bind next to another component to add some extra functionality.
 * @class FieldOptions
@@ -63856,7 +65610,7 @@ FieldOptions.prototype = {
 
     if (this.isFirefox && this.trigger.length) {
       this.trigger[0].contentEditable = true;
-      this.trigger.on("keydown.".concat(COMPONENT_NAME$P), function (e) {
+      this.trigger.on("keydown.".concat(COMPONENT_NAME$w), function (e) {
         var key = e.which || e.keyCode || e.charCode || 0;
 
         if (key !== 9) {
@@ -63941,9 +65695,9 @@ FieldOptions.prototype = {
 
     var onPopupToggle = function onPopupToggle(elem) {
       if (elem.trigger) {
-        elem.trigger.off("show.".concat(COMPONENT_NAME$P)).on("show.".concat(COMPONENT_NAME$P), function () {
+        elem.trigger.off("show.".concat(COMPONENT_NAME$w)).on("show.".concat(COMPONENT_NAME$w), function () {
           doActive();
-        }).off("hide.".concat(COMPONENT_NAME$P)).on("hide.".concat(COMPONENT_NAME$P), function (e) {
+        }).off("hide.".concat(COMPONENT_NAME$w)).on("hide.".concat(COMPONENT_NAME$w), function (e) {
           if (canUnactive(e)) {
             doUnactive();
 
@@ -63990,13 +65744,13 @@ FieldOptions.prototype = {
 
     if (Environment.features.touch) {
       this.field.addClass('visible');
-      this.trigger.on("beforeopen.".concat(COMPONENT_NAME$P), function (e) {
+      this.trigger.on("beforeopen.".concat(COMPONENT_NAME$w), function (e) {
         if (!canActive()) {
           return;
         }
 
         doActive();
-      }).on("close.".concat(COMPONENT_NAME$P), function (e) {
+      }).on("close.".concat(COMPONENT_NAME$w), function (e) {
         if (!canUnactive(e)) {
           return;
         }
@@ -64005,7 +65759,7 @@ FieldOptions.prototype = {
       });
     } else {
       this.field.removeClass('visible');
-      this.field.on("mouseover.".concat(COMPONENT_NAME$P), function () {
+      this.field.on("mouseover.".concat(COMPONENT_NAME$w), function () {
         if (self.element.prop('disabled') || self.element.closest('is-disabled').length) {
           return;
         }
@@ -64013,7 +65767,7 @@ FieldOptions.prototype = {
         if (self.field[0].className.indexOf('visible') < 0) {
           self.field[0].classList.add('visible');
         }
-      }).on("mouseout.".concat(COMPONENT_NAME$P), function () {
+      }).on("mouseout.".concat(COMPONENT_NAME$w), function () {
         if (self.field[0].className.indexOf('visible') > -1) {
           self.field[0].classList.remove('visible');
         }
@@ -64049,12 +65803,12 @@ FieldOptions.prototype = {
 
 
     if (lookup || isColorpicker) {
-      this.field.on("click.".concat(COMPONENT_NAME$P), '.lookup-wrapper .trigger, .colorpicker-container .trigger', function () {
+      this.field.on("click.".concat(COMPONENT_NAME$w), '.lookup-wrapper .trigger, .colorpicker-container .trigger', function () {
         doActive();
       });
 
       if (isColorpicker) {
-        this.element.on("beforeopen.".concat(COMPONENT_NAME$P), function () {
+        this.element.on("beforeopen.".concat(COMPONENT_NAME$w), function () {
           doActive();
         });
       }
@@ -64065,9 +65819,9 @@ FieldOptions.prototype = {
       this.trigger.addClass('is-checkbox');
 
       if (!Environment.features.touch && this.isSafari) {
-        this.field.on("click.".concat(COMPONENT_NAME$P), '.checkbox-label', function () {
+        this.field.on("click.".concat(COMPONENT_NAME$w), '.checkbox-label', function () {
           doActive();
-        }).on("mouseout.".concat(COMPONENT_NAME$P), '.checkbox-label', function () {
+        }).on("mouseout.".concat(COMPONENT_NAME$w), '.checkbox-label', function () {
           doUnactive();
         });
       }
@@ -64075,10 +65829,10 @@ FieldOptions.prototype = {
 
 
     if (isFileupload) {
-      this.element.on("change.".concat(COMPONENT_NAME$P), function () {
+      this.element.on("change.".concat(COMPONENT_NAME$w), function () {
         _this2.targetElem.focus();
       });
-      this.field.on("click.".concat(COMPONENT_NAME$P), '.trigger, .trigger-close', function () {
+      this.field.on("click.".concat(COMPONENT_NAME$w), '.trigger, .trigger-close', function () {
         doActive();
       });
     } // Move trigger(action-button) in to searchfield-wrapper
@@ -64093,7 +65847,7 @@ FieldOptions.prototype = {
 
     if (isFieldset) {
       setTriggerCssTop();
-      this.targetElem.add(this.trigger).on("keydown.".concat(COMPONENT_NAME$P), function (e) {
+      this.targetElem.add(this.trigger).on("keydown.".concat(COMPONENT_NAME$w), function (e) {
         var key = e.which || e.keyCode || e.charCode || 0;
 
         if (key === 13) {
@@ -64102,15 +65856,15 @@ FieldOptions.prototype = {
           }, 0);
         }
       });
-      this.targetElem.attr('tabindex', 0).on("click.".concat(COMPONENT_NAME$P), function () {
+      this.targetElem.attr('tabindex', 0).on("click.".concat(COMPONENT_NAME$w), function () {
         doActive();
       });
-      $(document).on("click.".concat(COMPONENT_NAME$P), function (e) {
+      $(document).on("click.".concat(COMPONENT_NAME$w), function (e) {
         if (!$(e.target).is(_this2.element)) {
           doUnactive();
         }
       });
-      $('body').on("resize.".concat(COMPONENT_NAME$P), function () {
+      $('body').on("resize.".concat(COMPONENT_NAME$w), function () {
         setTriggerCssTop();
       });
     } // Radio group - set trigger(action-button) top value and bind events
@@ -64118,28 +65872,28 @@ FieldOptions.prototype = {
 
     if (isRadio) {
       setTriggerCssTop();
-      this.element.on("focusin.".concat(COMPONENT_NAME$P), '.radio', function () {
+      this.element.on("focusin.".concat(COMPONENT_NAME$w), '.radio', function () {
         var delay = _this2.isSafari ? 200 : 0;
         addFocused();
         setTimeout(function () {
           doActive();
         }, delay);
-      }).on("focusout.".concat(COMPONENT_NAME$P), '.radio', function () {
+      }).on("focusout.".concat(COMPONENT_NAME$w), '.radio', function () {
         removeFocused();
       });
-      $('body').on("resize.".concat(COMPONENT_NAME$P), function () {
+      $('body').on("resize.".concat(COMPONENT_NAME$w), function () {
         setTriggerCssTop();
       });
     } // Element events
 
 
-    this.targetElem.on("focusin.".concat(COMPONENT_NAME$P), function () {
+    this.targetElem.on("focusin.".concat(COMPONENT_NAME$w), function () {
       doActive();
 
       if (isRadio && _this2.isSafari) {
         addFocused();
       }
-    }).on("focusout.".concat(COMPONENT_NAME$P), function (e) {
+    }).on("focusout.".concat(COMPONENT_NAME$w), function (e) {
       var delay = _this2.isSafari ? 200 : 0;
 
       if (isRadio && _this2.isSafari) {
@@ -64153,15 +65907,15 @@ FieldOptions.prototype = {
       }, delay);
     }); // Trigger(action button) events
 
-    this.trigger.on("focusin.".concat(COMPONENT_NAME$P, " click.").concat(COMPONENT_NAME$P), function () {
+    this.trigger.on("focusin.".concat(COMPONENT_NAME$w, " click.").concat(COMPONENT_NAME$w), function () {
       doActive();
-    }).on("focusout.".concat(COMPONENT_NAME$P), function (e) {
+    }).on("focusout.".concat(COMPONENT_NAME$w), function (e) {
       if (canUnactive(e)) {
         doUnactive();
       }
-    }).on("selected.".concat(COMPONENT_NAME$P), function () {
+    }).on("selected.".concat(COMPONENT_NAME$w), function () {
       _this2.popupmenuApi.settings.returnFocus = true;
-    }).on("close.".concat(COMPONENT_NAME$P), function (e) {
+    }).on("close.".concat(COMPONENT_NAME$w), function (e) {
       if (canUnactive(e)) {
         doUnactive();
       }
@@ -64173,14 +65927,14 @@ FieldOptions.prototype = {
         this.element.attr('tabindex', 0);
       }
 
-      this.targetElem.on("keydown.".concat(COMPONENT_NAME$P), function (e) {
+      this.targetElem.on("keydown.".concat(COMPONENT_NAME$w), function (e) {
         var key = e.which || e.keyCode || e.charCode || 0;
 
         if (key === 9 && !e.shiftKey) {
           if (isRadio) {
             _this2.targetElem.find(':checked, .radio:first').not(':disabled').focus();
 
-            _this2.targetElem.find('.radio').off("keydown.".concat(COMPONENT_NAME$P)).on("keydown.".concat(COMPONENT_NAME$P), function (e2) {
+            _this2.targetElem.find('.radio').off("keydown.".concat(COMPONENT_NAME$w)).on("keydown.".concat(COMPONENT_NAME$w), function (e2) {
               var key2 = e2.which || e2.keyCode || e2.charCode || 0;
 
               if (key2 === 9 && !e.shiftKey) {
@@ -64200,9 +65954,9 @@ FieldOptions.prototype = {
       });
     }
 
-    this.element.on("listopened.".concat(COMPONENT_NAME$P), function () {
+    this.element.on("listopened.".concat(COMPONENT_NAME$w), function () {
       doActive();
-    }).on("listclosed.".concat(COMPONENT_NAME$P), function () {
+    }).on("listclosed.".concat(COMPONENT_NAME$w), function () {
       doUnactive();
     });
     return this;
@@ -64233,12 +65987,12 @@ FieldOptions.prototype = {
    * @returns {object} The api
    */
   unbind: function unbind() {
-    this.field.off(["click.".concat(COMPONENT_NAME$P), "mouseover.".concat(COMPONENT_NAME$P), "mouseout.".concat(COMPONENT_NAME$P)].join(' '));
-    this.element.off(["beforeopen.".concat(COMPONENT_NAME$P), "change.".concat(COMPONENT_NAME$P), "focusin.".concat(COMPONENT_NAME$P), "focusout.".concat(COMPONENT_NAME$P), "listclosed.".concat(COMPONENT_NAME$P), "listopened.".concat(COMPONENT_NAME$P)].join(' '));
-    this.trigger.off(["beforeopen.".concat(COMPONENT_NAME$P), "click.".concat(COMPONENT_NAME$P), "focusin.".concat(COMPONENT_NAME$P), "focusout.".concat(COMPONENT_NAME$P), "selected.".concat(COMPONENT_NAME$P), "close.".concat(COMPONENT_NAME$P)].join(' '));
-    this.targetElem.off(["click.".concat(COMPONENT_NAME$P), "keydown.".concat(COMPONENT_NAME$P)].join(' '));
-    $('body').off(["resize.".concat(COMPONENT_NAME$P)].join(' '));
-    $(document).off(["click.".concat(COMPONENT_NAME$P)].join(' '));
+    this.field.off(["click.".concat(COMPONENT_NAME$w), "mouseover.".concat(COMPONENT_NAME$w), "mouseout.".concat(COMPONENT_NAME$w)].join(' '));
+    this.element.off(["beforeopen.".concat(COMPONENT_NAME$w), "change.".concat(COMPONENT_NAME$w), "focusin.".concat(COMPONENT_NAME$w), "focusout.".concat(COMPONENT_NAME$w), "listclosed.".concat(COMPONENT_NAME$w), "listopened.".concat(COMPONENT_NAME$w)].join(' '));
+    this.trigger.off(["beforeopen.".concat(COMPONENT_NAME$w), "click.".concat(COMPONENT_NAME$w), "focusin.".concat(COMPONENT_NAME$w), "focusout.".concat(COMPONENT_NAME$w), "selected.".concat(COMPONENT_NAME$w), "close.".concat(COMPONENT_NAME$w)].join(' '));
+    this.targetElem.off(["click.".concat(COMPONENT_NAME$w), "keydown.".concat(COMPONENT_NAME$w)].join(' '));
+    $('body').off(["resize.".concat(COMPONENT_NAME$w)].join(' '));
+    $(document).off(["click.".concat(COMPONENT_NAME$w)].join(' '));
     return this;
   },
 
@@ -64261,7 +66015,7 @@ FieldOptions.prototype = {
   */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$P);
+    $.removeData(this.element[0], COMPONENT_NAME$w);
   }
 };
 
@@ -64273,17 +66027,17 @@ FieldOptions.prototype = {
 
 $.fn.fieldoptions = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$P);
+    var instance = $.data(this, COMPONENT_NAME$w);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$P, new FieldOptions(this, settings));
+      instance = $.data(this, COMPONENT_NAME$w, new FieldOptions(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$Q = 'fileupload';
+var COMPONENT_NAME$v = 'fileupload';
 /**
 * A list of items with add/remove/delete and sort functionality.
 * @class FileUpload
@@ -64491,9 +66245,10 @@ FileUpload.prototype = {
   * @returns {void}
   */
   destroy: function destroy() {
+    this.unbind();
     this.shadowField.remove();
     this.shadowLabel.remove();
-    $.removeData(this.element[0], COMPONENT_NAME$Q);
+    $.removeData(this.element[0], COMPONENT_NAME$v);
   },
 
   /**
@@ -64534,17 +66289,17 @@ FileUpload.prototype = {
 
 $.fn.fileupload = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$Q);
+    var instance = $.data(this, COMPONENT_NAME$v);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$Q, new FileUpload(this, settings));
+      instance = $.data(this, COMPONENT_NAME$v, new FileUpload(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$R = 'fileuploadadvanced';
+var COMPONENT_NAME$u = 'fileuploadadvanced';
 /**
 * A trigger field for uploading a single file.
 * @class FileUploadAdvanced
@@ -65076,9 +66831,7 @@ FileUploadAdvanced.prototype = {
   */
   enable: function enable() {
     this.settings.isDisabled = false;
-    this.unbind();
     this.element.find('.fileupload-wrapper').removeClass('is-disabled').find('.fileupload-adv-browse-lbl input[type="file"]').removeAttr('disabled');
-    this.handleEvents();
   },
 
   /**
@@ -65087,9 +66840,7 @@ FileUploadAdvanced.prototype = {
   */
   disable: function disable() {
     this.settings.isDisabled = true;
-    this.unbind();
     this.element.find('.fileupload-wrapper').addClass('is-disabled').find('.fileupload-adv-browse-lbl input[type="file"]').attr('disabled', 'disabled');
-    this.handleEvents();
   },
 
   /**
@@ -65128,7 +66879,7 @@ FileUploadAdvanced.prototype = {
   destroy: function destroy() {
     this.unbind();
     $('.fileupload-wrapper', this.element).remove();
-    $.removeData(this.element[0], COMPONENT_NAME$R);
+    $.removeData(this.element[0], COMPONENT_NAME$u);
   }
 };
 /*
@@ -65146,17 +66897,17 @@ https://social.technet.microsoft.com/Forums/ie/en-US/ec3c0be0-0834-4873-8e94-700
 
 $.fn.fileuploadadvanced = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$R);
+    var instance = $.data(this, COMPONENT_NAME$u);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$R, new FileUploadAdvanced(this, settings));
+      instance = $.data(this, COMPONENT_NAME$u, new FileUploadAdvanced(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$S = 'homepage';
+var COMPONENT_NAME$t = 'homepage';
 /**
 * The Homepage handles card layout at multiple breakpoints.
 *
@@ -65365,29 +67116,28 @@ Homepage.prototype = {
           // Remove button should be inserted before the header for proper alignment
           var header = card.children('.widget-header');
           removeButton.insertBefore(header).on('click.card-remove', function () {
+            var removeCard = function removeCard() {
+              card.remove();
+              homepage.refresh(false);
+              setTimeout(function () {
+                homepage.element.triggerHandler('removecard', [card, homepage.state]);
+              }, 0);
+            };
+
             if (_this.settings && typeof _this.settings.onBeforeRemoveCard === 'function') {
               var result = _this.settings.onBeforeRemoveCard(card);
 
               if (result && result.then && typeof result.then === 'function') {
                 // A promise is returned
                 result.then(function () {
-                  card.triggerHandler('removecard', [card, homepage.state]);
-                  card.remove();
-                  homepage.refresh(false);
-                  homepage.element.triggerHandler('removecard', [card, homepage.state]);
+                  return removeCard();
                 });
               } else if (result) {
                 // Boolean is returned instead of a promise
-                card.triggerHandler('removecard', [card, homepage.state]);
-                card.remove();
-                homepage.refresh(false);
-                homepage.element.triggerHandler('removecard', [card, homepage.state]);
+                removeCard();
               }
             } else {
-              card.triggerHandler('removecard', [card, homepage.state]);
-              card.remove();
-              homepage.refresh(false);
-              homepage.element.triggerHandler('removecard', [card, homepage.state]);
+              removeCard();
             }
           });
         }
@@ -65439,8 +67189,10 @@ Homepage.prototype = {
               width: ''
             });
             homepage.refresh(false);
-            card.triggerHandler('resizecard', [card, homepage.state]);
-            homepage.element.triggerHandler('resizecard', [card, homepage.state]);
+            setTimeout(function () {
+              card.triggerHandler('resizecard', [card, homepage.state]);
+              homepage.element.triggerHandler('resizecard', [card, homepage.state]);
+            }, 0);
           });
         });
         var southHandle = $('<div>').addClass('ui-resizable-handle ui-resizable-s').drag({
@@ -65482,8 +67234,10 @@ Homepage.prototype = {
               height: ''
             });
             homepage.refresh(false);
-            card.triggerHandler('resizecard', [card, homepage.state]);
-            homepage.element.triggerHandler('resizecard', [card, homepage.state]);
+            setTimeout(function () {
+              card.triggerHandler('resizecard', [card, homepage.state]);
+              homepage.element.triggerHandler('resizecard', [card, homepage.state]);
+            }, 0);
           });
         });
 
@@ -65541,8 +67295,10 @@ Homepage.prototype = {
           card.removeClass('is-dragging');
           homepage.guide.remove();
           homepage.refresh(false);
-          card.triggerHandler('reordercard', [card, homepage.state]);
-          homepage.element.triggerHandler('reordercard', [card, homepage.state]);
+          setTimeout(function () {
+            card.triggerHandler('reordercard', [card, homepage.state]);
+            homepage.element.triggerHandler('reordercard', [card, homepage.state]);
+          }, 0);
         }
       });
     } else {
@@ -65986,7 +67742,7 @@ Homepage.prototype = {
    */
   destroy: function destroy() {
     this.detachEvents();
-    $.removeData(this.element[0], COMPONENT_NAME$S);
+    $.removeData(this.element[0], COMPONENT_NAME$t);
   },
 
   /**
@@ -66014,17 +67770,17 @@ Homepage.prototype = {
 
 $.fn.homepage = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$S);
+    var instance = $.data(this, COMPONENT_NAME$t);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$S, new Homepage(this, settings));
+      instance = $.data(this, COMPONENT_NAME$t, new Homepage(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$T = 'pager'; // Selector for Pager elements that should have a tabIndex
+var COMPONENT_NAME$s = 'pager'; // Selector for Pager elements that should have a tabIndex
 
 var FOCUSABLE_SELECTOR = ['.pager-first > .btn-icon', '.pager-prev > .btn-icon', '.pager-next > .btn-icon', '.pager-last > .btn-icon', '.pager-no > .btn-icon', '.pager-count input', '.pager-pagesize button'].join(', ');
 /**
@@ -66069,6 +67825,7 @@ var FOCUSABLE_SELECTOR = ['.pager-first > .btn-icon', '.pager-prev > .btn-icon',
 * @param {boolean} [settings.lastPageTooltip = 'Last Page'] Tooltip for the first page, defaults to an internally translated tooltip.
 * @param {boolean} [settings.pageSizeMenuSettings = {}] customizable popupmenu settings for the Page Size Selector.
 * @param {string} [settings.attributes] Add extra attributes like id's to the toast element. For example `attributes: { name: 'id', value: 'my-unique-id' }`
+* @param {boolean} [settings.tabbable] If true, will use tab key to navigate instead of arrow keys.
 */
 
 var PAGER_DEFAULTS = {
@@ -66105,7 +67862,8 @@ var PAGER_DEFAULTS = {
   pageSizeMenuSettings: {
     attachToBody: false
   },
-  attributes: null
+  attributes: null,
+  tabbable: true
 };
 
 function Pager(element, settings) {
@@ -66479,7 +68237,7 @@ Pager.prototype = {
       return false;
     });
     self.pagerBar.on('keydown.pager', $(self.focusableElements), function (event) {
-      if ($('.popupmenu.is-open').length > 0) {
+      if ($('.popupmenu.is-open').length > 0 || self.settings.tabbable) {
         return true;
       }
 
@@ -67137,6 +68895,19 @@ Pager.prototype = {
     $pageSizeSelectorButton.on('selected.pager', function (e, args) {
       _this.changePageSize(args);
     });
+
+    if (this.settings.tabbable) {
+      var popupmenuApi = $pageSizeSelectorButton.data('popupmenu');
+      this.pagerBar.off("keydown.".concat(COMPONENT_NAME$s), '.pager-pagesize button').on("keydown.".concat(COMPONENT_NAME$s), '.pager-pagesize button', function (e) {
+        var key = e.which || e.keyCode || e.charCode;
+
+        if (key === 40 && popupmenuApi && !popupmenuApi.isOpen) {
+          popupmenuApi.open();
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      });
+    }
   },
 
   /**
@@ -67146,7 +68917,14 @@ Pager.prototype = {
   render: function render() {
     // Adjust Page count numbers
     var state = this.state;
-    var totalPages = state.pages;
+    var totalPages = state.pages; // Preserve the focus before render, if focus on pagesize popupmenu
+
+    this.preserveFocus = this.preserveFocus || false;
+    var isPagesizeBtnFocused = $(':focus').closest('.pager-pagesize').length > 0;
+
+    if (!this.preserveFocus && isPagesizeBtnFocused) {
+      this.preserveFocus = true;
+    }
 
     if (state.filteredPages) {
       totalPages = state.filteredPages;
@@ -67161,7 +68939,11 @@ Pager.prototype = {
     this.renderButtons();
     this.renderPageSelectorInput();
     this.renderPageSizeSelectorButton();
-    this.renderBar();
+    this.renderBar(); // Apply focus after render, if preserve focus was on pagesize popupmenu
+
+    if (this.preserveFocus) {
+      this.element.find('.pager-pagesize button').focus();
+    }
   },
 
   /**
@@ -67291,6 +69073,10 @@ Pager.prototype = {
    * @private
    */
   initTabIndexes: function initTabIndexes() {
+    if (this.settings.tabbable) {
+      return;
+    }
+
     var tabbables = $(this.focusableElements);
     tabbables.attr('tabindex', '-1');
     tabbables.filter(':not([disabled])').first().removeAttr('tabindex');
@@ -67577,15 +69363,15 @@ Pager.prototype = {
       });
     }
 
-    this.pagerBar.off(["click.".concat(COMPONENT_NAME$T), "keydown.".concat(COMPONENT_NAME$T)].join(' '));
+    this.pagerBar.off(["click.".concat(COMPONENT_NAME$s), "keydown.".concat(COMPONENT_NAME$s)].join(' '));
 
     if (this.pageSelectorInput) {
-      $(this.pageSelectorInput).off(["focus.".concat(COMPONENT_NAME$T), "blur.".concat(COMPONENT_NAME$T), "keydown.".concat(COMPONENT_NAME$T)].join(' '));
+      $(this.pageSelectorInput).off(["focus.".concat(COMPONENT_NAME$s), "blur.".concat(COMPONENT_NAME$s), "keydown.".concat(COMPONENT_NAME$s)].join(' '));
       $(this.pageSelectorInput).data('mask').destroy();
     }
 
     if (this.pageSizeSelectorButton) {
-      $(this.pageSizeSelectorButton).off("selected.".concat(COMPONENT_NAME$T));
+      $(this.pageSizeSelectorButton).off("selected.".concat(COMPONENT_NAME$s));
       this.teardownPageSizeSelector();
     }
 
@@ -67624,7 +69410,7 @@ Pager.prototype = {
       this.pagerBar.remove();
     }
 
-    $.removeData(this.element[0], COMPONENT_NAME$T);
+    $.removeData(this.element[0], COMPONENT_NAME$s);
   }
 };
 
@@ -67636,23 +69422,23 @@ Pager.prototype = {
 
 $.fn.pager = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$T);
+    var instance = $.data(this, COMPONENT_NAME$s);
 
     if (!instance) {
-      instance = $.data(this, COMPONENT_NAME$T, new Pager(this, settings));
+      instance = $.data(this, COMPONENT_NAME$s, new Pager(this, settings));
     } else {
       instance.updated(settings);
     }
   });
 };
 
-var COMPONENT_NAME$U = 'listview';
+var COMPONENT_NAME$r = 'listview';
 /**
  * Creates lists of small pieces of relevant, actionable information.
  * @class ListView
  * @constructor
  *
- * @param {jquery[]|htmlelement} element the base element
+ * @param {jquery[]|HTMLelement} element the base element
  * @param {object} [settings] incoming settings
  * @param {array} [settings.dataset] Array of data to feed the template
  * @param {string} [settings.template] Html Template String
@@ -67678,6 +69464,7 @@ var COMPONENT_NAME$U = 'listview';
  * @param {object} [settings.searchTermMinSize=1] The search term will trigger filtering only when its length is greater than or equals to the value.
  * @param {object} [settings.initializeContents=false] If true the initializer will be run on all internal contents.
  * @param {string} [settings.attributes] Add extra attributes like id's to the listview. For example `attributes: { name: 'id', value: 'my-unique-id' }`
+ * @param {boolean} [settings.attributesOverride=true] if true, will override existing the attributes key/value.
  */
 
 var LISTVIEW_DEFAULTS = {
@@ -67705,7 +69492,8 @@ var LISTVIEW_DEFAULTS = {
   },
   searchTermMinSize: 1,
   initializeContents: false,
-  attributes: null
+  attributes: null,
+  attributesOverride: null
 };
 
 function ListView(element, settings) {
@@ -67839,7 +69627,7 @@ ListView.prototype = {
     }); // Add user-defined attributes
 
     if (this.settings.attributes) {
-      utils.addAttributes(this.element, this, this.settings.attributes, 'listview');
+      utils.addAttributes(this.element, this, this.settings.attributes, 'listview', this.settings.attributesOverride);
     } // Configure Paging
 
 
@@ -68022,7 +69810,7 @@ ListView.prototype = {
 
 
       if (self.settings.attributes) {
-        utils.addAttributes(item, self, self.settings.attributes, "listview-item-".concat(i));
+        utils.addAttributes(item, self, self.settings.attributes, "listview-item-".concat(i), self.settings.attributesOverride);
       }
 
       if (isMultiselect) {
@@ -68042,6 +69830,9 @@ ListView.prototype = {
             item.prepend("<label class=\"listview-selection-checkbox l-vertical-center inline inline-checkbox\">\n              <input tabindex=\"-1\" type=\"checkbox\" class=\"checkbox\">\n              <span class=\"label-text\" role=\"presentation\">\n                <span class=\"audible\">".concat(Locale.translate('Checkbox'), " ").concat(Locale.translate('NotSelected'), ".</span>\n              </span>\n            </label>"));
           }
         }
+      } else {
+        self.element.removeClass('is-multiselect');
+        item.find('.listview-selection-checkbox').remove();
       } // Hide filtered items
 
 
@@ -68944,6 +70735,13 @@ ListView.prototype = {
    * @returns {object} component instance
    */
   updated: function updated(settings) {
+    // Remove the selected and activated state
+    // when there's a changes in selectable setting.
+    if ((settings === null || settings === void 0 ? void 0 : settings == null ? void 0 : settings.selectable) !== this.settings.selectable) {
+      var li = $(this.element.children()[0]).find('li');
+      li.removeClass('is-selected is-activated');
+    }
+
     if (settings) {
       this.settings = utils.mergeSettings(this.element, settings, this.settings);
 
@@ -68974,7 +70772,7 @@ ListView.prototype = {
   },
 
   /**
-   * Detatch all bound events.
+   * Detach all bound events.
    * @private
    * @returns {object} component instance
    */
@@ -69005,12 +70803,12 @@ ListView.prototype = {
   },
 
   /**
-   * Detatch all events and tear down data object
+   * Detach all events and tear down data object
    * @returns {void}
    */
   destroy: function destroy() {
     this.teardown();
-    this.element.removeData(COMPONENT_NAME$U);
+    this.element.removeData(COMPONENT_NAME$r);
   },
 
   /**
@@ -69119,6 +70917,10 @@ ListView.prototype = {
 
         if (target.hasClass('icon-favorite') || target.hasClass('hyperlink')) {
           return;
+        }
+
+        if (!item.hasClass('is-selected') && isFocused) {
+          isFocused = false;
         }
 
         if (!isFocused && !item.hasClass('is-disabled') && (!isMixed || isCheckbox)) {
@@ -69283,17 +71085,17 @@ $.fn.listview = function (settings) {
 
   var combinedSettings = utils.extend({}, settings, inlineOpts);
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$U);
+    var instance = $.data(this, COMPONENT_NAME$r);
 
     if (instance) {
       instance.updated(combinedSettings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$U, new ListView(this, combinedSettings));
+      instance = $.data(this, COMPONENT_NAME$r, new ListView(this, combinedSettings));
     }
   });
 };
 
-var COMPONENT_NAME$V = 'listbuilder';
+var COMPONENT_NAME$q = 'listbuilder';
 /**
  * A list of items with add/remove/delete and sort functionality.
  * @class ListBuilder
@@ -70202,7 +72004,7 @@ ListBuilder.prototype = {
    */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$V);
+    $.removeData(this.element[0], COMPONENT_NAME$q);
   }
 };
 
@@ -70214,17 +72016,17 @@ ListBuilder.prototype = {
 
 $.fn.listbuilder = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$V);
+    var instance = $.data(this, COMPONENT_NAME$q);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$V, new ListBuilder(this, settings));
+      instance = $.data(this, COMPONENT_NAME$q, new ListBuilder(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$W = 'modal'; // Possible values for the `trigger` setting
+var COMPONENT_NAME$p = 'modal'; // Possible values for the `trigger` setting
 
 var MODAL_TRIGGER_SETTINGS = ['click', 'immediate']; // Possible values for the `fullsize` setting
 
@@ -70392,7 +72194,7 @@ Modal.prototype = {
    * full size mode (uses the settings, but determined at runtime)
    */
   get currentlyNeedsFullsize() {
-    return this.settings.fullsize === 'always' || this.settings.fullsize === 'responsive' && breakpoints.isBelow(this.settings.breakpoint);
+    return this.settings.fullsize === 'always' || this.settings.fullsize === 'responsive' && breakpoints.isBelow(this.settings.breakpoint) || this.settings.fullsize === 'responsive' && this.isAndroid() && this.settings.breakpoint === 'phone-to-tablet';
   },
 
   /**
@@ -70418,7 +72220,7 @@ Modal.prototype = {
     var self = this; // Used for tracking events tied to the Window object
 
     this.id = this.element.attr('id') || parseInt($('.modal').length, 10) + 1;
-    this.namespace = "".concat(COMPONENT_NAME$W, "-").concat(this.id); // Find the button or anchor with same dialog ID
+    this.namespace = "".concat(COMPONENT_NAME$p, "-").concat(this.id); // Find the button or anchor with same dialog ID
 
     this.trigger = $("[data-modal=\"".concat(this.element.attr('id'), "\"]"));
 
@@ -70901,6 +72703,16 @@ Modal.prototype = {
   },
 
   /**
+   * Check if the device is Android.
+   * @private
+   * @returns {boolean}
+   */
+  isAndroid: function isAndroid() {
+    var os = Environment && Environment.os && Environment.os.name ? Environment.os.name : '';
+    return os === 'android';
+  },
+
+  /**
   * Size the inner content on resize.
   * @private
   * @returns {void}
@@ -71016,8 +72828,12 @@ Modal.prototype = {
     */
 
 
-    elemCanOpen = this.element.triggerHandler('beforeopen', [this]);
-    $('body').triggerHandler('beforeopen', [this]);
+    elemCanOpen = this.element.triggerHandler('beforeopen', [this]); // Only trigger on non message modals
+
+    if (!this.settings.isAlert) {
+      $('body').triggerHandler('beforeopen', [this]);
+    }
+
     this.isCancelled = false;
 
     if (elemCanOpen === false) {
@@ -71040,6 +72856,7 @@ Modal.prototype = {
       utils.addAttributes(title, this, this.settings.attributes, 'title', true);
       var messageText = this.element.find('#message-text');
       utils.addAttributes(messageText, this, this.settings.attributes, 'message', true);
+      utils.addAttributes(this.element, this, this.settings.attributes, 'modal', true);
       this.element.attr('aria-labelledby', title.attr('id'));
       this.element.attr('aria-describedby', messageText.attr('id'));
     } else {
@@ -71316,9 +73133,14 @@ Modal.prototype = {
     var matchedSubComponentAPIs = findComponentsOnElements(elems, targetProps, subComponentTypes);
     var openSubComponents = [];
     matchedSubComponentAPIs.forEach(function (matchObj) {
-      var componentAPI = matchObj.control;
+      var componentAPI = matchObj.control; // Conditions below prevent the Modal from closing:
 
-      if (typeof componentAPI.isOpen === 'function' && componentAPI.isOpen() || typeof componentAPI.isOpen === 'boolean' && componentAPI.isOpen === true || typeof componentAPI.visible === 'boolean' && componentAPI.visible === true) {
+      var isPopover = typeof componentAPI.isPopover === 'boolean' && componentAPI.isPopover === true;
+      var isOpenByFunction = typeof componentAPI.isOpen === 'function' && componentAPI.isOpen();
+      var isOpenViaProperty = typeof componentAPI.isOpen === 'boolean' && componentAPI.isOpen === true;
+      var isVisibleViaProperty = !isPopover ? false : typeof componentAPI.visible === 'boolean' && componentAPI.visible === true;
+
+      if (isOpenByFunction || isOpenViaProperty || isVisibleViaProperty) {
         openSubComponents.push(componentAPI);
       }
     });
@@ -71402,8 +73224,8 @@ Modal.prototype = {
    * @returns {void}
    */
   setFocusableElems: function setFocusableElems() {
-    var extraSelectors = ['div.dropdown', 'div.multiselect'];
-    var ignoredSelectors = ['select', 'option'];
+    var extraSelectors = [];
+    var ignoredSelectors = ['option'];
     var elems = DOM.focusableElems(this.element[0], extraSelectors, ignoredSelectors);
     this.focusableElems = elems;
     this.focusableElems.first = elems[0];
@@ -71626,12 +73448,12 @@ Modal.prototype = {
         // should match the length of time needed for the overlay to fade out
         timeoutCallback: function timeoutCallback() {
           var elem = null;
-          var modalApi = self.element ? self.element.data(COMPONENT_NAME$W) : null;
+          var modalApi = self.element ? self.element.data(COMPONENT_NAME$p) : null;
 
           if (modalApi) {
             elem = self.element[0];
           } else {
-            modalApi = self.trigger ? self.trigger.data(COMPONENT_NAME$W) : null;
+            modalApi = self.trigger ? self.trigger.data(COMPONENT_NAME$p) : null;
 
             if (modalApi) {
               elem = self.trigger[0];
@@ -71639,7 +73461,7 @@ Modal.prototype = {
           }
 
           if (elem && modalApi && modalApi.overlay) {
-            $.removeData(elem, COMPONENT_NAME$W);
+            $.removeData(elem, COMPONENT_NAME$p);
           }
         }
       });
@@ -71652,7 +73474,7 @@ Modal.prototype = {
         $.removeData(self.originalElement[0], 'modalElementLink');
       }
 
-      $.removeData(self.element[0], COMPONENT_NAME$W);
+      $.removeData(self.element[0], COMPONENT_NAME$p);
     }
 
     if (!this.visible) {
@@ -71832,11 +73654,11 @@ $.fn.message = function (settings) {
 
 $.fn.modal = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$W);
+    var instance = $.data(this, COMPONENT_NAME$p);
     var elem = $(this);
 
     if (!elem.is('.modal')) {
-      instance = elem.closest('.modal').data(COMPONENT_NAME$W);
+      instance = elem.closest('.modal').data(COMPONENT_NAME$p);
     }
 
     if (instance && settings) {
@@ -71855,7 +73677,7 @@ $.fn.modal = function (settings) {
       return;
     }
 
-    instance = $.data(this, COMPONENT_NAME$W, new Modal(this, settings));
+    instance = $.data(this, COMPONENT_NAME$p, new Modal(this, settings));
   });
 };
 
@@ -71867,17 +73689,17 @@ $.fn.modal = function (settings) {
 
 $.fn.monthview = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$A);
+    var instance = $.data(this, COMPONENT_NAME$L);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$A, new MonthView(this, settings));
+      instance = $.data(this, COMPONENT_NAME$L, new MonthView(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$X = 'multiselect'; // Component Defaults
+var COMPONENT_NAME$o = 'multiselect'; // Component Defaults
 
 var MULTISELECT_DEFAULTS = {
   closeOnSelect: false,
@@ -71970,7 +73792,7 @@ MultiSelect.prototype = {
   destroy: function destroy() {
     this.dropdown.destroy();
     this.element.off();
-    $.removeData(this.element[0], COMPONENT_NAME$X);
+    $.removeData(this.element[0], COMPONENT_NAME$o);
   }
 };
 
@@ -71982,17 +73804,17 @@ MultiSelect.prototype = {
 
 $.fn.multiselect = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$X);
+    var instance = $.data(this, COMPONENT_NAME$o);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$X, new MultiSelect(this, settings));
+      instance = $.data(this, COMPONENT_NAME$o, new MultiSelect(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$Y = 'notification';
+var COMPONENT_NAME$n = 'notification';
 var NOTIFICATION_DEFAULTS = {
   message: 'Hi! Im a notification message.',
   type: 'alert',
@@ -72070,10 +73892,7 @@ Notification.prototype = {
    */
   handleEvents: function handleEvents() {
     var self = this;
-    this.element.off("updated.".concat(COMPONENT_NAME$Y)).on("updated.".concat(COMPONENT_NAME$Y), function () {
-      self.updated();
-    });
-    $(this.notificationEl).off("click.".concat(COMPONENT_NAME$Y)).on("click.".concat(COMPONENT_NAME$Y), '.notification-close', function () {
+    $(this.notificationEl).off("click.".concat(COMPONENT_NAME$n)).on("click.".concat(COMPONENT_NAME$n), '.notification-close', function () {
       self.destroy();
     });
     return this;
@@ -72098,8 +73917,7 @@ Notification.prototype = {
    * @returns {object} The Component prototype, useful for chaining.
    */
   teardown: function teardown() {
-    this.element.off("updated.".concat(COMPONENT_NAME$Y));
-    this.element.off("click.".concat(COMPONENT_NAME$Y), '.notification-close');
+    this.element.off("click.".concat(COMPONENT_NAME$n), '.notification-close');
     return this;
   },
 
@@ -72112,7 +73930,14 @@ Notification.prototype = {
     }
 
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$Y);
+    $.removeData(this.element[0], COMPONENT_NAME$n);
+  },
+
+  /**
+   * Close and remove added markup and detatch events.
+   */
+  close: function close() {
+    this.destroy();
   }
 };
 
@@ -72124,11 +73949,11 @@ Notification.prototype = {
 
 $.fn.notification = function (settings) {
   return this.each(function () {
-    $.data(this, COMPONENT_NAME$Y, new Notification(this, settings));
+    $.data(this, COMPONENT_NAME$n, new Notification(this, settings));
   });
 };
 
-var COMPONENT_NAME$Z = 'progress'; // Default Progress Options
+var COMPONENT_NAME$m = 'progress'; // Default Progress Options
 
 var PROGRESS_DEFAULTS = {
   value: 0
@@ -72260,7 +74085,7 @@ Progress.prototype = {
   */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$Z);
+    $.removeData(this.element[0], COMPONENT_NAME$m);
   }
 };
 
@@ -72272,19 +74097,19 @@ Progress.prototype = {
 
 $.fn.progress = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$Z);
+    var instance = $.data(this, COMPONENT_NAME$m);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$Z, new Progress(this, settings));
+      instance = $.data(this, COMPONENT_NAME$m, new Progress(this, settings));
     }
   });
 };
 
 // Component Name
 
-var COMPONENT_NAME$_ = 'popdown';
+var COMPONENT_NAME$l = 'popdown';
 var loopDuration = 30;
 /**
  * The Popdown Component can be used to open an animated popdown from a button. This may in the future
@@ -73009,7 +74834,7 @@ Popdown.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$_);
+    $.removeData(this.element[0], COMPONENT_NAME$l);
   }
 };
 
@@ -73021,17 +74846,17 @@ Popdown.prototype = {
 
 $.fn.popdown = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$_);
+    var instance = $.data(this, COMPONENT_NAME$l);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$_, new Popdown(this, settings));
+      instance = $.data(this, COMPONENT_NAME$l, new Popdown(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$$ = 'rating'; // Default Rating Options
+var COMPONENT_NAME$k = 'rating'; // Default Rating Options
 
 var RATING_DEFAULTS = {};
 /**
@@ -73072,7 +74897,7 @@ Rating.prototype = {
         return el.is('.is-filled') || el.is('.is-half');
       };
 
-      thisInput.on("click.".concat(COMPONENT_NAME$$), function () {
+      thisInput.on("click.".concat(COMPONENT_NAME$k), function () {
         if (!_this.element.is('.is-readonly')) {
           _this.val(isNotEmpty(thisInput) && !isNotEmpty(nextInput) ? i : i + 1);
         }
@@ -73174,7 +74999,7 @@ Rating.prototype = {
    * @returns {object} The api
    */
   unbind: function unbind() {
-    this.element.find('input').off("click.".concat(COMPONENT_NAME$$));
+    this.element.find('input').off("click.".concat(COMPONENT_NAME$k));
     return this;
   },
 
@@ -73197,7 +75022,7 @@ Rating.prototype = {
   */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$$);
+    $.removeData(this.element[0], COMPONENT_NAME$k);
   }
 };
 
@@ -73209,17 +75034,17 @@ Rating.prototype = {
 
 $.fn.rating = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$$);
+    var instance = $.data(this, COMPONENT_NAME$k);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$$, new Rating(this, settings));
+      instance = $.data(this, COMPONENT_NAME$k, new Rating(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$10 = 'signin'; // Default SignIn Options
+var COMPONENT_NAME$j = 'signin'; // Default SignIn Options
 
 var SIGNIN_DEFAULTS = {};
 /**
@@ -73304,7 +75129,7 @@ SignIn.prototype = {
    */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$10);
+    $.removeData(this.element[0], COMPONENT_NAME$j);
   },
 
   /**
@@ -73361,17 +75186,17 @@ SignIn.prototype = {
 
 $.fn.signin = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$10);
+    var instance = $.data(this, COMPONENT_NAME$j);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$10, new SignIn(this, settings));
+      instance = $.data(this, COMPONENT_NAME$j, new SignIn(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$11 = 'slider'; // The Component Defaults
+var COMPONENT_NAME$i = 'slider'; // The Component Defaults
 
 var SLIDER_DEFAULTS = {
   value: [50],
@@ -74305,7 +76130,7 @@ Slider.prototype = {
    * @returns {string} hex value representing a color
    */
   getColorClosestToValue: function getColorClosestToValue() {
-    var currentVariant = theme.currentTheme.id.split('-')[2];
+    var currentMode = theme.currentTheme.id.split('-')[2];
     var preColors = {
       light: {
         default: '#000000',
@@ -74335,7 +76160,7 @@ Slider.prototype = {
         superior: '#397514'
       }
     };
-    var themeColors = preColors[currentVariant];
+    var themeColors = preColors[currentMode];
     var val = this.value()[0];
     var highestTickColor;
     var c;
@@ -74439,6 +76264,7 @@ Slider.prototype = {
     $.each(this.handles, function (i, handle) {
       self.enableHandleDrag(handle);
     });
+    this.wrapper.find('[tabindex]').attr('tabindex', '0');
     return this;
   },
 
@@ -74460,6 +76286,7 @@ Slider.prototype = {
         self.disableHandleDrag(handle);
       });
     });
+    this.wrapper.find('[tabindex]').attr('tabindex', '-1');
     return this;
   },
 
@@ -74564,7 +76391,7 @@ Slider.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$11);
+    $.removeData(this.element[0], COMPONENT_NAME$i);
   },
 
   /**
@@ -74610,17 +76437,17 @@ Slider.prototype = {
 
 $.fn.slider = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$11);
+    var instance = $.data(this, COMPONENT_NAME$i);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$11, new Slider(this, settings));
+      instance = $.data(this, COMPONENT_NAME$i, new Slider(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$12 = 'spinbox'; // Component Defaults
+var COMPONENT_NAME$h = 'spinbox'; // Component Defaults
 
 var SPINBOX_DEFAULTS = {
   autocorrectOnBlur: true,
@@ -74734,7 +76561,7 @@ Spinbox.prototype = {
     }
 
     if (this.element.attr('step')) {
-      this.settings.max = this.element.attr('step');
+      this.settings.step = this.element.attr('step');
     } else if (this.settings.step) {
       this.element.attr('step', this.settings.step);
     }
@@ -75282,7 +77109,7 @@ Spinbox.prototype = {
     this.buttons.down.remove();
     this.element.off('focus.spinbox blur.spinbox keydown.spinbox keyup.spinbox');
     this.element.unwrap();
-    $.removeData(this.element[0], COMPONENT_NAME$12);
+    $.removeData(this.element[0], COMPONENT_NAME$h);
   },
 
   /**
@@ -75384,17 +77211,17 @@ Spinbox.prototype = {
 
 $.fn.spinbox = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$12);
+    var instance = $.data(this, COMPONENT_NAME$h);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$12, new Spinbox(this, settings));
+      instance = $.data(this, COMPONENT_NAME$h, new Spinbox(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$13 = 'splitter'; // Default Splitter Options
+var COMPONENT_NAME$g = 'splitter'; // Default Splitter Options
 
 var SPLITTER_DEFAULTS = {
   axis: 'x',
@@ -75456,7 +77283,7 @@ Splitter.prototype = {
     var parent = splitter.parent();
     var direction = s.axis === 'x' ? 'left' : 'top';
     var thisSide = parent.is('.content') ? parent.parent() : parent;
-    var dragHandle = $("<div class=\"splitter-drag-handle\">".concat($.createIcon('drag'), "</div>"));
+    var dragHandle = splitter.find('.splitter-drag-handle');
     var defaultOffset = 299;
     var w = parent.width();
     var parentHeight;
@@ -75468,8 +77295,11 @@ Splitter.prototype = {
     this.isSplitterRightSide = splitter.is('.splitter-right') || s.axis === 'x' && s.side === 'right';
     this.isSplitterHorizontal = splitter.is('.splitter-horizontal') || s.axis === 'y';
     s.uniqueId = utils.uniqueId(this.element, 'splitter');
-    dragHandle.appendTo(splitter);
-    dragHandle.prepend("<span class=\"audible\">".concat(Locale.translate('SplitterDragHandle'), "</span>"));
+
+    if (!dragHandle.length) {
+      dragHandle = $("<div class=\"splitter-drag-handle\"><span class=\"audible\">".concat(Locale.translate('SplitterDragHandle'), "</span>").concat($.createIcon('drag'), "</div>"));
+      dragHandle.appendTo(splitter);
+    }
 
     var handleCollapseButton = function handleCollapseButton() {
       var savedOffset = 0;
@@ -75836,7 +77666,12 @@ Splitter.prototype = {
    * @returns {object} The api
    */
   unbind: function unbind() {
-    this.element.off("updated.".concat(COMPONENT_NAME$13));
+    this.element.off("updated.".concat(COMPONENT_NAME$g));
+
+    if (this.splitterCollapseButton) {
+      this.splitterCollapseButton.remove();
+    }
+
     return this;
   },
 
@@ -75848,10 +77683,9 @@ Splitter.prototype = {
   updated: function updated(settings) {
     if (typeof settings !== 'undefined') {
       this.settings = utils.mergeSettings(this.element, settings, SPLITTER_DEFAULTS);
-      return this.destroy().init();
     }
 
-    return this;
+    return this.unbind().init();
   },
 
   /**
@@ -75860,12 +77694,8 @@ Splitter.prototype = {
   */
   destroy: function destroy() {
     this.unbind();
-
-    if (this.splitterCollapseButton) {
-      this.splitterCollapseButton.remove();
-    }
-
-    $.removeData(this.element[0], COMPONENT_NAME$13);
+    $.removeData(this.element[0], COMPONENT_NAME$g);
+    return this;
   },
 
   /**
@@ -75885,7 +77715,7 @@ Splitter.prototype = {
     * @type {object}
     * @property {object} event - The jquery event object
     */
-    .on("updated.".concat(COMPONENT_NAME$13), function () {
+    .on("updated.".concat(COMPONENT_NAME$g), function () {
       _this2.updated();
     })
     /**
@@ -75896,7 +77726,7 @@ Splitter.prototype = {
     * @type {object}
     * @property {object} event - The jquery event object
     */
-    .on("keydown.".concat(COMPONENT_NAME$13), function (e) {
+    .on("keydown.".concat(COMPONENT_NAME$g), function (e) {
       // Space will toggle selection
       if (e.which === 32) {
         _this2.toggleSelection();
@@ -75924,17 +77754,17 @@ Splitter.prototype = {
 
 $.fn.splitter = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$13);
+    var instance = $.data(this, COMPONENT_NAME$g);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$13, new Splitter(this, settings));
+      instance = $.data(this, COMPONENT_NAME$g, new Splitter(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$14 = 'swaplist'; // The Component Defaults
+var COMPONENT_NAME$f = 'swaplist'; // The Component Defaults
 
 var SWAPLIST_DEFAULTS = {
   // Searchable
@@ -75958,6 +77788,7 @@ var SWAPLIST_DEFAULTS = {
     additional: true
   },
   attributes: null,
+  attributesOverride: true,
   // Template HTML
   template: '' + '<ul data-swap-handle=".handle">' + '{{#dataset}}' + '{{#text}}' + '<li data-id="{{id}}"' + '{{#value}} data-value="{{value}}"{{/value}}' + '{{#selected}} selected="selected"{{/selected}}' + '{{#disabled}} class="is-disabled"{{/disabled}}' + '>' + '<span class="handle" focusable="false" aria-hidden="true" role="presentation">&#8286;</span>' + '<div class="swaplist-item-content"><p>{{text}}</p></div>' + '</li>' + '{{/text}}' + '{{/dataset}}' + '</ul>'
 };
@@ -75979,6 +77810,7 @@ var SWAPLIST_DEFAULTS = {
 * @param {string} [settings.selectedBtnRight = '.btn-moveto-right'] A class name linking the move right button element.
 * @param {string} [settings.additionalBtn = '.btn-moveto-selected'] A class name linking the additional button element.
 * @param {string|array} [settings.attributes = null] Add extra attributes like id's to the chart elements. For example `attributes: { name: 'id', value: 'my-unique-id' }`
+* @param {boolean} [settings.attributesOverride=true] if true, will override existing the attributes key/value.
 * @param {string} [settings.template] An Html String with the mustache template for the view.
 * @param {object} [settings.draggable] An object containing boolean key/value to make container/s
 *  disable for dragging and moving items. Supported keys with draggable are "available",
@@ -76083,6 +77915,7 @@ SwapList.prototype = {
           options.forceToRenderOnEmptyDs = true;
         }
 
+        options.attributesOverride = s.attributesOverride;
         options.attributes = this.getLvAutomationAttributes(c.class);
         lv.listview(options);
       } // Add css class('is-not-droppable') to ul in this container
@@ -76164,7 +77997,7 @@ SwapList.prototype = {
 
     s.numOfSelectionsClass = 'num-of-selections';
     s.itemContentClass = 'swaplist-item-content';
-    s.itemContentTempl = $("<div><p><span class=\"".concat(s.numOfSelectionsClass, "\">###</span>\n      <span class=\"").concat(s.numOfSelectionsClass, "-text\">&nbsp;</span></p><div/>")); // Add automation attributes to header buttons
+    s.itemContentTempl = $("<div><p><span class=\"".concat(s.numOfSelectionsClass, "\">###</span>\n      <span class=\"").concat(s.numOfSelectionsClass, "-text\">&nbsp;</span></p><div/>")); // Add automation attributes to header buttons and root element
 
     if (s.attributes) {
       var autoAttr = [{
@@ -76188,8 +78021,9 @@ SwapList.prototype = {
         x.suffix = "swaplist-btn-".concat(x.suffix);
       });
       autoAttr.forEach(function (x) {
-        return utils.addAttributes(x.btn, _this3, s.attributes, x.suffix);
+        return utils.addAttributes(x.btn, _this3, s.attributes, x.suffix, s.attributesOverride);
       });
+      utils.addAttributes(this.element, this, s.attributes, 'swaplist', s.attributesOverride);
     } // Make top buttons disabled if not draggable
 
 
@@ -76981,7 +78815,7 @@ SwapList.prototype = {
    */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$14);
+    $.removeData(this.element[0], COMPONENT_NAME$f);
   },
   // Handle Events
   handleEvents: function handleEvents() {
@@ -77329,17 +79163,17 @@ SwapList.prototype = {
 
 $.fn.swaplist = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$14);
+    var instance = $.data(this, COMPONENT_NAME$f);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$14, new SwapList(this, settings));
+      instance = $.data(this, COMPONENT_NAME$f, new SwapList(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$15 = 'scrollaction'; // Default ScrollAction Options
+var COMPONENT_NAME$e = 'scrollaction'; // Default ScrollAction Options
 
 var SCROLLACTION_DEFAULTS = {
   scrollActionTarget: '.js-scroll-target',
@@ -77403,7 +79237,7 @@ ScrollAction.prototype = {
    */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$15);
+    $.removeData(this.element[0], COMPONENT_NAME$e);
   },
 
   /**
@@ -77438,17 +79272,17 @@ ScrollAction.prototype = {
 
 $.fn.scrollaction = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$15);
+    var instance = $.data(this, COMPONENT_NAME$e);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$15, new ScrollAction(this, settings));
+      instance = $.data(this, COMPONENT_NAME$e, new ScrollAction(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$16 = 'stepchart'; // Default component options
+var COMPONENT_NAME$d = 'stepchart'; // Default component options
 
 var DEFAULT_STEPCHART_OPTIONS = {
   steps: null,
@@ -77614,7 +79448,7 @@ StepChart.prototype = {
   destroy: function destroy() {
     this.element.empty();
     this.settings = null;
-    $.removeData(this.element[0], COMPONENT_NAME$16);
+    $.removeData(this.element[0], COMPONENT_NAME$d);
     return this;
   }
 };
@@ -77627,22 +79461,22 @@ StepChart.prototype = {
 
 $.fn.stepchart = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$16);
+    var instance = $.data(this, COMPONENT_NAME$d);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$16, new StepChart(this, settings));
+      instance = $.data(this, COMPONENT_NAME$d, new StepChart(this, settings));
 
       instance.destroy = function destroy() {
         this.teardown();
-        $.removeData(this, COMPONENT_NAME$16);
+        $.removeData(this, COMPONENT_NAME$d);
       };
     }
   });
 };
 
-var COMPONENT_NAME$17 = 'tabs'; // Types of possible Tab containers
+var COMPONENT_NAME$c = 'tabs'; // Types of possible Tab containers
 
 var tabContainerTypes = ['horizontal', 'vertical', 'module-tabs', 'header-tabs'];
 /**
@@ -77688,6 +79522,7 @@ var tabContainerTypes = ['horizontal', 'vertical', 'module-tabs', 'header-tabs']
  * @param {boolean} [settings.verticalResponsive=false] If Vertical Tabs & true, will automatically
  * switch to Horizontal Tabs on smaller breakpoints.
  * @param {Array} [settings.attributes=null] If set, adds additional attributes to some tabs and elements.
+ * @param {boolean} [settings.sortable=false] If true, tabs can be sortable by drag and drop.
  */
 
 var TABS_DEFAULTS = {
@@ -77708,7 +79543,8 @@ var TABS_DEFAULTS = {
   sourceArguments: {},
   tabCounts: false,
   verticalResponsive: false,
-  attributes: null
+  attributes: null,
+  sortable: false
 };
 
 function Tabs(element, settings) {
@@ -77886,7 +79722,7 @@ Tabs.prototype = {
         role: 'tab',
         'aria-expanded': 'false',
         'aria-selected': 'false',
-        tabindex: '0'
+        tabindex: '-1'
       }).parent().attr('role', 'presentation').addClass('tab');
       var dismissibleIcon;
 
@@ -77964,6 +79800,7 @@ Tabs.prototype = {
       }
 
       if (href !== undefined && href !== '#') {
+        href = href.replace(/\//g, '\\/');
         panel = $(href);
 
         if (li.is(':not(.has-popupmenu)') && !panel.length) {
@@ -78073,6 +79910,11 @@ Tabs.prototype = {
       this.element.addClass('has-toolbar');
     }
 
+    if (this.isModuleTabs() && tabs.filter('.application-menu-trigger').length > 0) {
+      tabs.find('a[tabindex="0"]').attr('tabindex', '-1');
+      tabs.filter('.application-menu-trigger').find('a').attr('tabindex', '0');
+    }
+
     this.setOverflow();
     this.positionFocusState(selectedAnchor);
 
@@ -78091,9 +79933,11 @@ Tabs.prototype = {
         _this.renderEdgeFading();
       });
       this.renderEdgeFading();
-    } // Setup a resize observer on both the tab panel container and the tab list container (if applicable)
-    // to auto-refresh the state of the Tabs on resize.  ResizeObserver doesn't work in IE.
+    } // Create sortable tabs
 
+
+    this.createSortable(); // Setup a resize observer on both the tab panel container and the tab list container (if applicable)
+    // to auto-refresh the state of the Tabs on resize.  ResizeObserver doesn't work in IE.
 
     if (typeof ResizeObserver !== 'undefined') {
       this.ro = new ResizeObserver(function () {
@@ -78107,6 +79951,74 @@ Tabs.prototype = {
     }
 
     return this;
+  },
+
+  /**
+   * Create tabs to be sortable by drag and drop.
+   * @private
+   * @returns {void}
+   */
+  createSortable: function createSortable() {
+    var _this2 = this;
+
+    var s = this.settings;
+
+    if (!s.sortable) {
+      return;
+    } // Sortable with touch devices, only support to module and vertical tabs.
+
+
+    if (Environment.features.touch && !(this.isModuleTabs() || this.isVerticalTabs())) {
+      return;
+    }
+
+    var tablist = this.tablist ? this.tablist[0] : null;
+
+    if (tablist) {
+      var excludeSel = '.is-disabled, .separator, .application-menu-trigger';
+      var excludeEl = [].slice.call(tablist.querySelectorAll(excludeSel));
+      excludeEl.forEach(function (el) {
+        return el.setAttribute('data-arrange-exclude', 'true');
+      });
+      tablist.setAttribute('data-options', '{"placeholderCssClass": "tab arrange-placeholder", "useItemDimensions": "true"}'); // Set arrange
+
+      tablist.classList.add('arrange');
+      var arrangeApi = this.tablist.data('arrange');
+
+      if (!arrangeApi) {
+        arrangeApi = this.tablist.arrange().data('arrange');
+      }
+
+      var className = 'has-placeholder';
+      var tabContainer = null;
+
+      if (!this.isModuleTabs() && !this.isVerticalTabs() && !this.isHeaderTabs()) {
+        this.tablist.on('beforearrange.tabs', function () {
+          tabContainer = $(this).closest('.tab-container')[0];
+        }).on('draggingarrange.tabs', function () {
+          var _tabContainer;
+
+          (_tabContainer = tabContainer) === null || _tabContainer === void 0 ? void 0 : _tabContainer == null ? void 0 : _tabContainer.classList.add(className);
+        });
+      }
+
+      this.tablist.on('arrangeupdate.tabs', function () {
+        var _tabContainer2;
+
+        (_tabContainer2 = tabContainer) === null || _tabContainer2 === void 0 ? void 0 : _tabContainer2 == null ? void 0 : _tabContainer2.classList.remove(className);
+
+        if (_this2.hasAnimatedBar()) {
+          var selected = _this2.tablist.find('.tab.is-selected');
+
+          _this2.focusBar(selected);
+        }
+      });
+      this.element.on('aftertabadded.tabs', function () {
+        var _arrangeApi;
+
+        (_arrangeApi = arrangeApi) === null || _arrangeApi === void 0 ? void 0 : _arrangeApi == null ? void 0 : _arrangeApi.updated();
+      });
+    }
   },
 
   /**
@@ -78201,19 +80113,21 @@ Tabs.prototype = {
     }
 
     if (appMenuTrigger.length) {
+      var _$$data;
+
       // Add extra attributes to the App Menu Trigger button, if applicable
       if (this.settings.attributes) {
         utils.addAttributes(appMenuTrigger, this, this.settings.attributes, 'appmenu-trigger-btn');
       } // Add it to the App Menu's list of triggers to adjust on open/close
 
 
-      $('#application-menu').data('applicationmenu').modifyTriggers([appMenuTrigger.children('a')]);
+      (_$$data = $('#application-menu').data('applicationmenu')) === null || _$$data === void 0 ? void 0 : _$$data == null ? void 0 : _$$data.modifyTriggers([appMenuTrigger.children('a')]);
     } // Add Tab Button
 
 
     if (this.settings.addTabButton) {
       if (!this.addTabButton || !this.addTabButton.length) {
-        this.addTabButton = $("\n          <div class=\"add-tab-button\" tabindex=\"0\" role=\"button\">\n            <span aria-hidden=\"true\" role=\"presentation\">+</span>\n            <span class=\"audible\">".concat(Locale.translate('AddNewTab'), "</span>\n          </div>\n        "));
+        this.addTabButton = $("\n          <div class=\"add-tab-button\" tabindex=\"-1\" role=\"button\">\n            <span aria-hidden=\"true\" role=\"presentation\">+</span>\n            <span class=\"audible\">".concat(Locale.translate('AddNewTab'), "</span>\n          </div>\n        "));
         this.addTabButton.insertAfter(this.moreButton);
         this.element.addClass('has-add-button');
       }
@@ -78244,7 +80158,7 @@ Tabs.prototype = {
    * @returns {this} component instance
    */
   setupEvents: function setupEvents() {
-    var _this2 = this;
+    var _this3 = this;
 
     var self = this; // Set animation bar if tabs under modal
 
@@ -78325,7 +80239,7 @@ Tabs.prototype = {
     }).on('click.tabs', 'a', routeAnchorClick).on('click.tabs', '.icon', handleIconClick).on('focus.tabs', 'a', function (e) {
       return self.handleTabFocus(e, $(this));
     }).on('blur.tabs', 'a', handleTabBlur).on('keydown.tabs', 'a', function (e) {
-      return _this2.handleTabKeyDown(e);
+      return _this3.handleTabKeyDown(e);
     }); // Setup events on Dropdown Tabs
 
     function dropdownTabEvents(i, tab) {
@@ -78898,11 +80812,13 @@ Tabs.prototype = {
       case 13:
         // Enter
         activate();
+        this.positionFocusState();
         return false;
 
       case 32:
         // Spacebar
         activate();
+        this.positionFocusState();
         return false;
 
       case 38:
@@ -78999,15 +80915,14 @@ Tabs.prototype = {
       return false;
     }
 
-    e.preventDefault();
-    this.hideFocusState();
+    e.preventDefault(); // this.hideFocusState();
 
     if (menu.hasClass('is-open')) {
-      menu.trigger('close-applicationmenu');
+      menu.trigger('close-applicationmenu', [true]);
       return false;
     }
 
-    menu.trigger('open-applicationmenu');
+    menu.trigger('open-applicationmenu', [true, true]);
     return false;
   },
 
@@ -79111,6 +81026,17 @@ Tabs.prototype = {
   },
 
   /**
+   * Trigger event aftertabadded
+   * @private
+   * @param {string} id The tab id
+   * @returns {void}
+   */
+  triggerEventAfterTabAdded: function triggerEventAfterTabAdded(id) {
+    var a = this.anchors.filter("[href=\"#".concat(id, "\"]"));
+    this.element.triggerHandler('aftertabadded', [a]);
+  },
+
+  /**
    * Handles the Add Tab button being clicked
    * @private
    * @returns {boolean|undefined} ?
@@ -79121,6 +81047,7 @@ Tabs.prototype = {
 
     if (cb && typeof cb === 'function') {
       var newTabId = cb();
+      this.triggerEventAfterTabAdded('newTabId');
       return this.anchors.filter("[href=\"#".concat(newTabId, "\"]"));
     }
 
@@ -79156,6 +81083,7 @@ Tabs.prototype = {
 
     if (!externalSettings) {
       this.add(newId, settings, newIndex);
+      this.triggerEventAfterTabAdded('newId');
       return this.anchors.filter("[href=\"#".concat(newId, "\"]"));
     }
 
@@ -79172,6 +81100,7 @@ Tabs.prototype = {
     }
 
     this.add(newId, settings, newIndex);
+    this.triggerEventAfterTabAdded('newId');
     return this.anchors.filter("[href=\"#".concat(newId, "\"]"));
   },
 
@@ -79295,6 +81224,12 @@ Tabs.prototype = {
 
     if (!selected.length || this.moreButton.is('.is-selected') || this.isTabOverflowed(selected)) {
       selected = this.moreButton;
+    }
+
+    var appMenuTrigger = this.element.find('.application-menu-trigger');
+
+    if (appMenuTrigger.length > 0 && appMenuTrigger.hasClass('is-focused')) {
+      selected = appMenuTrigger.find('a');
     }
 
     if (!selected.length) {
@@ -79849,19 +81784,12 @@ Tabs.prototype = {
       return;
     }
 
-    var isRTL = Locale.isRTL();
     var tablistContainerElem = this.tablistContainer[0];
-    var scrollLeft = tablistContainerElem.scrollLeft;
+    var scrollLeft = Math.abs(tablistContainerElem.scrollLeft);
     var scrollWidth = tablistContainerElem.scrollWidth;
     var containerWidth = parseInt(window.getComputedStyle(tablistContainerElem).getPropertyValue('width'), 10);
-
-    if (isRTL) {
-      this.element[0].classList[scrollLeft > 0 ? 'add' : 'remove']('scrolled-left');
-      this.element[0].classList[scrollWidth - scrollLeft <= containerWidth ? 'remove' : 'add']('scrolled-right');
-    } else {
-      this.element[0].classList[scrollLeft > 0 ? 'add' : 'remove']('scrolled-right');
-      this.element[0].classList[scrollWidth - scrollLeft <= containerWidth ? 'remove' : 'add']('scrolled-left');
-    }
+    this.element[0].classList[scrollLeft > 1 ? 'add' : 'remove']('scrolled-right');
+    this.element[0].classList[scrollWidth - scrollLeft - 1 <= containerWidth ? 'remove' : 'add']('scrolled-left');
   },
 
   /**
@@ -79874,7 +81802,7 @@ Tabs.prototype = {
    * or a promise object that will fire callbacks in either "success" or "failure" scenarios.
    */
   callSource: function callSource(href, anchor, isURL) {
-    var _this3 = this;
+    var _this4 = this;
 
     if ((isURL === undefined || isURL === null || isURL === false) && !this.settings.source) {
       return false;
@@ -79894,21 +81822,21 @@ Tabs.prototype = {
       htmlContent = xssUtils.sanitizeHTML(htmlContent); // Get a new random tab ID for this tab if one can't be derived from the URL string
 
       if (isURL) {
-        var containerId = _this3.element[0].id || '';
+        var containerId = _this4.element[0].id || '';
         var id = utils.uniqueId(anchor, 'tab', containerId);
         href = "#".concat(id); // Replace the original URL on this anchor now that we've loaded content.
 
         anchor[0].setAttribute('href', href);
       }
 
-      _this3.createTabPanel(href, htmlContent, true);
+      _this4.createTabPanel(href, htmlContent, true);
 
-      _this3.activate(href);
+      _this4.activate(href);
 
-      _this3.element.triggerHandler('complete'); // For Busy Indicator
+      _this4.element.triggerHandler('complete'); // For Busy Indicator
 
 
-      _this3.element.trigger('requestend', [href, htmlContent]);
+      _this4.element.trigger('requestend', [href, htmlContent]);
     };
 
     this.container.triggerHandler('start'); // For Busy Indicator
@@ -80027,10 +81955,10 @@ Tabs.prototype = {
     this.anchors.attr({
       'aria-selected': 'false',
       'aria-expanded': 'false',
-      tabindex: '0'
+      tabindex: '-1'
     });
     this.moreButton.attr({
-      tabindex: '0'
+      tabindex: '-1'
     }); // show current tab
 
     if (a.length && this.element.is(':not(.is-disabled)')) {
@@ -80125,7 +82053,7 @@ Tabs.prototype = {
 
 
     var tabHeaderMarkup = $('<li role="presentation" class="tab"></li>');
-    var anchorMarkup = $("<a href=\"#".concat(tabId, "\" role=\"tab\" aria-expanded=\"false\" aria-selected=\"false\" tabindex=\"0\">").concat(xssUtils.escapeHTML(options.name), "</a>"));
+    var anchorMarkup = $("<a href=\"#".concat(tabId, "\" role=\"tab\" aria-expanded=\"false\" aria-selected=\"false\" tabindex=\"-1\">").concat(xssUtils.escapeHTML(options.name), "</a>"));
     var tabContentMarkup = this.createTabPanel(tabId, options.content);
     var iconMarkup;
     tabHeaderMarkup.html(anchorMarkup);
@@ -80239,6 +82167,7 @@ Tabs.prototype = {
       this.focusBar(tabHeaderMarkup);
 
       if (!this.activate(anchorMarkup.attr('href'))) {
+        this.triggerEventAfterTabAdded(tabId);
         return this;
       }
 
@@ -80249,6 +82178,7 @@ Tabs.prototype = {
       this.activate(anchorMarkup.attr('href'));
     }
 
+    this.triggerEventAfterTabAdded(tabId);
     return this;
   },
 
@@ -80276,7 +82206,7 @@ Tabs.prototype = {
     var prevLi = targetLi.prev();
 
     if (!disableBeforeClose) {
-      var canClose = this.element.triggerHandler('beforeclose', [targetLi]);
+      var canClose = this.element.triggerHandler('beforeclose', [targetAnchor]);
 
       if (canClose === false) {
         return false;
@@ -80575,7 +82505,12 @@ Tabs.prototype = {
     var tab = this.doGetTab(e, tabId);
     this.activateAdjacentTab(e, tabId);
     tab.addClass('hidden');
-    this.select($(this.element.find('li.tab.is-selected')[0]).find('a')[0].hash);
+    var a = $(this.element.find('li.tab.is-selected')[0]).find('a');
+
+    if (a[0]) {
+      this.select(a[0].hash);
+    }
+
     this.focusBar();
     this.positionFocusState();
     return this;
@@ -80590,7 +82525,12 @@ Tabs.prototype = {
   show: function show(e, tabId) {
     var tab = this.doGetTab(e, tabId);
     tab.removeClass('hidden');
-    this.select($(this.element.find('li.tab.is-selected')[0]).find('a')[0].hash);
+    var a = $(this.element.find('li.tab.is-selected')[0]).find('a');
+
+    if (a[0]) {
+      this.select(a[0].hash);
+    }
+
     this.focusBar();
     this.positionFocusState();
     return this;
@@ -80628,7 +82568,7 @@ Tabs.prototype = {
   /**
    * Renames a tab and resets the focusable bar/animation.
    * @param {jQuery.Event} e the jQuery Event
-   * @param {string} tabId a string representing the HTML `id` attribute of the new tab panel.
+   * @param {string} tabId a string representing the HTML `id` attribute of the tab panel.
    * @param {string} name the new tab name
    * @returns {void}
    */
@@ -80643,9 +82583,11 @@ Tabs.prototype = {
       return;
     }
 
+    name = name.toString();
     var tab = this.doGetTab(e, tabId);
     var hasCounts = this.settings.tabCounts;
     var hasTooltip = this.settings.moduleTabsTooltips || this.settings.multiTabsTooltips;
+    var hasDismissible = tab.hasClass('dismissible');
     var anchor = tab.children('a');
     var count;
 
@@ -80653,7 +82595,20 @@ Tabs.prototype = {
       count = anchor.find('.count').clone();
     }
 
-    anchor.text(name.toString());
+    anchor.text(name); // Rename the tab inside a currently-open "More Tabs" popupmenu, if applicable
+
+    if (this.popupmenu) {
+      var moreAnchorSelector = tabId.charAt(0) !== '#' ? "#".concat(tabId) : tabId;
+      var moreAnchor = this.popupmenu.menu.find("a[href=\"".concat(moreAnchorSelector, "\"]"));
+      moreAnchor.text(name);
+
+      if (hasDismissible) {
+        moreAnchor.append($.createIconElement({
+          icon: 'close',
+          classes: 'icon close'
+        }));
+      }
+    }
 
     if (hasCounts) {
       anchor.prepend(count);
@@ -81238,7 +83193,7 @@ Tabs.prototype = {
    * @returns {boolean} whether or not the tab is overflowed.
    */
   isTabOverflowed: function isTabOverflowed(li) {
-    if (this.isVerticalTabs() || this.isScrollableTabs()) {
+    if (this.isVerticalTabs() || this.isScrollableTabs() || this.tablist.find('.arrange-dragging').length) {
       return false;
     }
 
@@ -81429,7 +83384,7 @@ Tabs.prototype = {
    * @returns {void}
    */
   positionFocusState: function positionFocusState(target, unhide) {
-    var self = this; // TODO: Recheck this and improve
+    var self = this; // Recheck this and improve
 
     if (target !== undefined) {
       target = $(target);
@@ -81438,14 +83393,6 @@ Tabs.prototype = {
     } else if (self.tablist.children('.is-selected').length > 0) {
       target = self.tablist.children('.is-selected').children('a');
     }
-    /*
-    NOTE: this used to replace the code directly above
-    target = target !== undefined ? $(target) :
-      self.moreButton.hasClass('is-selected') ? self.moreButton :
-      self.tablist.children('.is-selected').length > 0 ?
-      self.tablist.children('.is-selected').children('a') : undefined;
-    */
-
 
     if (!target || target === undefined || !target.length || target.is(this.moreButton) && this.isScrollableTabs()) {
       this.focusState.removeClass('is-visible');
@@ -81473,7 +83420,7 @@ Tabs.prototype = {
     var isNotHeaderTabs = !this.isHeaderTabs() || this.isHeaderTabs() && this.element[0].classList.contains('alternate');
     var isVerticalTabs = this.isVerticalTabs();
     var isRTL = Locale.isRTL();
-    var tabMoreWidth = !isVerticalTabs ? this.moreButton.outerWidth(true) : 0;
+    var tabMoreWidth = !isVerticalTabs ? this.moreButton.outerWidth(true) - 8 : 0;
     var parentContainer = this.element;
     var scrollingTablist = this.tablistContainer;
     var accountForPadding = scrollingTablist && this.focusState.parent().is(scrollingTablist);
@@ -81481,7 +83428,6 @@ Tabs.prototype = {
     function adjustForParentContainer(targetRectObj, parentElement, tablistContainer) {
       var parentRect = parentElement[0].getBoundingClientRect();
       var parentPadding;
-      var tablistScrollWidth;
       var tablistScrollLeft; // Adjust from the top
 
       targetRectObj.top -= parentRect.top;
@@ -81498,23 +83444,14 @@ Tabs.prototype = {
 
 
       if (tablistContainer) {
-        tablistScrollLeft = tablistContainer ? tablistContainer[0].scrollLeft : 0;
-        tablistScrollWidth = tablistContainer ? tablistContainer[0].scrollWidth : 0;
+        tablistScrollLeft = tablistContainer ? Math.abs(tablistContainer[0].scrollLeft) : 0; // Account for the container's scrolling
 
-        if (isRTL && !isVerticalTabs) {
-          // TODO: Improve this calculation because there's something off
-          var tmpLeft = targetRectObj.left;
+        targetRectObj.left += tablistScrollLeft;
+        targetRectObj.right += tablistScrollLeft; // On RTL, remove the width of the controls on the left-most side of the tab container
 
-          if (isNotHeaderTabs) {
-            tablistScrollLeft = tablistContainer ? tablistContainer[0].scrollLeft : 0;
-            tablistScrollWidth = tablistContainer ? tablistContainer[0].scrollWidth : 0;
-          } else {
-            targetRectObj.left = tablistScrollWidth - (targetRectObj.right + tablistScrollLeft + tabMoreWidth + 32);
-            targetRectObj.right = tablistScrollWidth - (tmpLeft + tablistScrollLeft + tabMoreWidth + 32);
-          }
-        } else {
-          targetRectObj.left += tablistScrollLeft;
-          targetRectObj.right += tablistScrollLeft;
+        if (isRTL && !isNotHeaderTabs) {
+          targetRectObj.left -= tabMoreWidth;
+          targetRectObj.right -= tabMoreWidth;
         }
 
         if (accountForPadding) {
@@ -81550,6 +83487,11 @@ Tabs.prototype = {
     focusStateElem.classList[selected]('is-selected');
     var doHide = unhide === true ? 'add' : 'remove';
     focusStateElem.classList[doHide]('is-visible');
+    var focusedTab = this.element.find('.application-menu-trigger, .tab');
+
+    if (focusedTab.length > 0 && focusedTab.hasClass('is-focused')) {
+      focusStateElem.classList.add('is-visible');
+    }
   },
 
   /**
@@ -81721,11 +83663,11 @@ Tabs.prototype = {
    * @param {array} tabUrlArray the Array of urls from the target popupmenu
    */
   closeDismissibleTabs: function closeDismissibleTabs(tabUrlArray) {
-    var _this4 = this;
+    var _this5 = this;
 
     tabUrlArray.forEach(function (tabUrl) {
       var tabId = tabUrl.match(/#.*/);
-      return _this4.remove(tabId[0]);
+      return _this5.remove(tabId[0]);
     });
   },
 
@@ -81775,7 +83717,7 @@ Tabs.prototype = {
       });
     }
 
-    this.element.off('focusout.tabs updated.tabs activated.tabs');
+    this.element.off('focusout.tabs updated.tabs activated.tabs aftertabadded.tabs');
     $('body').off("resize.tabs".concat(this.tabsIndex));
     this.tabsIndex = undefined;
 
@@ -81823,7 +83765,7 @@ Tabs.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$17);
+    $.removeData(this.element[0], COMPONENT_NAME$c);
   }
 };
 
@@ -81835,12 +83777,12 @@ Tabs.prototype = {
 
 $.fn.tabs = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$17);
+    var instance = $.data(this, COMPONENT_NAME$c);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$17, new Tabs(this, settings));
+      instance = $.data(this, COMPONENT_NAME$c, new Tabs(this, settings));
     }
   });
 }; // Deprecated the old Vertical Tabs code in favor of using the Tabs class.
@@ -81850,29 +83792,29 @@ $.fn.verticaltabs = $.fn.tabs;
 
 $.fn.tag = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$t);
+    var instance = $.data(this, COMPONENT_NAME$T);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$t, new Tag(this, settings));
+      instance = $.data(this, COMPONENT_NAME$T, new Tag(this, settings));
     }
   });
 };
 
 $.fn.taglist = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$u);
+    var instance = $.data(this, COMPONENT_NAME$S);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$u, new TagList(this, settings));
+      instance = $.data(this, COMPONENT_NAME$S, new TagList(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$18 = 'textarea'; // Component Options
+var COMPONENT_NAME$b = 'textarea'; // Component Options
 
 var TEXTAREA_DEFAULTS = {
   autoGrow: false,
@@ -82220,12 +84162,12 @@ Textarea.prototype = {
 
 $.fn.textarea = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$18);
+    var instance = $.data(this, COMPONENT_NAME$b);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$18, new Textarea(this, settings));
+      instance = $.data(this, COMPONENT_NAME$b, new Textarea(this, settings));
     }
   });
 };
@@ -82238,7 +84180,7 @@ $.fn.textarea = function (settings) {
 
 $.fn.toolbarsearchfield = $.fn.searchfield;
 
-var COMPONENT_NAME$19 = 'trackdirty'; // Default Trackdirty Options
+var COMPONENT_NAME$a = 'trackdirty'; // Default Trackdirty Options
 
 var TRACKDIRTY_DEFAULTS = {};
 /**
@@ -82369,7 +84311,7 @@ Trackdirty.prototype = {
    */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$19);
+    $.removeData(this.element[0], COMPONENT_NAME$a);
   },
 
   /**
@@ -82515,17 +84457,17 @@ Trackdirty.prototype = {
 
 $.fn.trackdirty = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$19);
+    var instance = $.data(this, COMPONENT_NAME$a);
 
-    if (instance) {
+    if (instance && instance instanceof Trackdirty) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$19, new Trackdirty(this, settings));
+      instance = $.data(this, COMPONENT_NAME$a, new Trackdirty(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$1a = 'tree';
+var COMPONENT_NAME$9 = 'tree';
 /**
 * The tree Component displays a hierarchical list.
 * @class Tree
@@ -83259,42 +85201,102 @@ Tree.prototype = {
   },
 
   /**
+   * Get node as jQuery wrapped element reference to a tree node.
+   * @param {string|jQuery[]|HTMLElement} node nodeID, jQuery element or HTML element.
+   * @returns {jQuery[]} a jQuery wrapped element reference to a tree node.
+   */
+  getNodeAsJQ: function getNodeAsJQ(node) {
+    if (typeof node === 'string') {
+      return $("#".concat(node));
+    }
+
+    return this.isjQuery(node) ? node : $(node);
+  },
+
+  /**
+   * Expand the given node.
+   * @param {object} node - a jQuery-wrapped element reference to a tree node.
+   * @param {boolean} isSelect - make selected if true.
+   * @returns {void}
+   */
+  expandNode: function expandNode(node, isSelect) {
+    var targetNode = this.getNodeAsJQ(node);
+    var noSelect = !this.isTrue(isSelect);
+    this.toggleNode(targetNode, null, {
+      isExpandNode: true,
+      noSelect: noSelect
+    });
+  },
+
+  /**
+   * Collaps the given node.
+   * @param {object} node - a jQuery-wrapped element reference to a tree node.
+   * @param {boolean} isSelect - make selected if true.
+   * @returns {void}
+   */
+  collapseNode: function collapseNode(node, isSelect) {
+    var targetNode = this.getNodeAsJQ(node);
+    var noSelect = !this.isTrue(isSelect);
+    this.toggleNode(targetNode, null, {
+      isExpandNode: false,
+      noSelect: noSelect
+    });
+  },
+
+  /**
    * Changes a node's open/close status to its opposite form.
    * @param {object} node - a jQuery-wrapped element reference to a tree node.
    * @param {object} e jquery event
+   * @param {object} opt The options expand/collapse node and/or selection.
    * @returns {void}
    */
-  toggleNode: function toggleNode(node, e) {
+  toggleNode: function toggleNode(node, e, opt) {
     var next = node.next();
     var self = this;
     var s = this.settings;
-    var result;
+    var result; // Check if given value is boolean type.
+
+    var isBool = function isBool(value) {
+      var r = false;
+
+      if (typeof value === 'boolean') {
+        r = true;
+      } else if (typeof value === 'string') {
+        var valueLowerCase = value.toLowerCase();
+
+        if (valueLowerCase === 'true' || valueLowerCase === 'false') {
+          r = true;
+        }
+      }
+
+      return r;
+    };
 
     if (next[0] && next[0].tagName.toLowerCase() === 'ul' && next[0].getAttribute('role') === 'group') {
-      var currentIcon = node.find('svg.icon-tree').getIconName();
+      var currentIcon = node.find('svg.icon-tree').getIconName(); // Collapse node
 
-      if (DOM.hasClass(next[0], 'is-open')) {
+      var collapseNode = function collapseNode(noSelect) {
         if (typeof s.onCollapse === 'function') {
           result = s.onCollapse(node);
 
           if (result && result.done && typeof result.done === 'function') {
             // A promise is returned
             result.done(function (continueSelectNode) {
-              if (continueSelectNode) {
+              if (continueSelectNode && !noSelect) {
                 self.selectNodeFinish(node, focus, e);
               }
             });
-          } else if (result) {
+          } else if (result && !noSelect) {
             // Boolean is returned instead of a promise
             self.selectNodeFinish(node, focus, e);
           }
-        } else if (s.expandTarget === 'icon') {
+        } else if (s.expandTarget === 'icon' && !noSelect) {
           var parent = node[0].parentNode;
 
           if (e && DOM.hasClass(e.target, 'icon') && DOM.hasClass(parent, 'folder')) {
             self.selectNodeFinish(node, focus, e);
           }
-        } else {
+        } else if (!noSelect) {
           // No Callback specified
           self.selectNodeFinish(node, focus, e);
         }
@@ -83304,7 +85306,13 @@ Tree.prototype = {
         if (currentIcon === s.folderIconOpen || s.useExpandTarget) {
           self.setFolderIcon(node, false, false, s.expandPlusminusRotate);
         } else if (/open|close/g.test(currentIcon) && !s.useExpandTarget) {
-          self.setTreeIcon(node.find('svg.icon-tree'), currentIcon.replace('open', 'closed').replace(/\s?is-selected/, ''));
+          var icon = currentIcon.replace('open', 'closed');
+
+          if (!noSelect) {
+            icon = icon.replace(/\s?is-selected/, '');
+          }
+
+          self.setTreeIcon(node.find('svg.icon-tree'), icon);
         }
 
         var parentNode = node.closest('.folder a');
@@ -83313,13 +85321,19 @@ Tree.prototype = {
           var nodeClass = parentNode.attr('class');
 
           if (/open|close/g.test(nodeClass) || s.useExpandTarget) {
-            self.setTreeIcon(parentNode.find('svg.icon-tree'), nodeClass.replace('open', 'closed').replace(/\s?is-selected/, ''));
+            var _icon = nodeClass.replace('open', 'closed');
+
+            if (!noSelect) {
+              _icon = _icon.replace(/\s?is-selected/, '');
+            }
+
+            self.setTreeIcon(parentNode.find('svg.icon-tree'), _icon);
           }
         }
 
         self.isAnimating = true;
 
-        if (!self.isMultiselect && !s.expandTarget === 'icon') {
+        if (!self.isMultiselect && !s.expandTarget === 'icon' && !noSelect) {
           self.unSelectedNode(node.parent().find('li.is-selected'), false);
           DOM.removeClass(node[0], 'is-selected');
         }
@@ -83329,28 +85343,35 @@ Tree.prototype = {
           self.isAnimating = false;
         }).animateClosed();
         node[0].setAttribute('aria-expanded', node[0].getAttribute('aria-expanded') !== 'true');
-      } else {
+        self.element.triggerHandler('collapsed', {
+          node: node,
+          data: node.data('jsonData')
+        });
+      }; // Expand node
+
+
+      var expandNode = function expandNode(noSelect) {
         if (typeof s.onExpand === 'function') {
           result = s.onExpand(node);
 
           if (result && result.done && typeof result.done === 'function') {
             // A promise is returned
             result.done(function (continueSelectNode) {
-              if (continueSelectNode) {
+              if (continueSelectNode && !noSelect) {
                 self.selectNodeFinish(node, focus, e);
               }
             });
-          } else if (result) {
+          } else if (result && !noSelect) {
             // Boolean is returned instead of a promise
             self.selectNodeFinish(node, focus, e);
           }
-        } else if (s.expandTarget === 'icon') {
-          var _parent = node[0].parentNode;
+        } else if (s.expandTarget === 'icon' && !noSelect) {
+          var parent = node[0].parentNode;
 
-          if (e && DOM.hasClass(e.target, 'icon') && DOM.hasClass(_parent, 'folder')) {
+          if (e && DOM.hasClass(e.target, 'icon') && DOM.hasClass(parent, 'folder')) {
             self.selectNodeFinish(node, focus, e);
           }
-        } else {
+        } else if (!noSelect) {
           // No Callback specified
           self.selectNodeFinish(node, focus, e);
         }
@@ -83371,16 +85392,19 @@ Tree.prototype = {
 
             nodeData.children = nodes;
             node.data('jsonData', nodeData);
+            node.data("".concat(COMPONENT_NAME$9, "Api"), self);
 
             if (DOM.hasClass(node[0].parentNode, 'folder')) {
               self.childrenCountInit(node[0].parentNode);
             }
 
-            if (!self.isMultiselect && !s.expandTarget === 'icon') {
+            if (!self.isMultiselect && !s.expandTarget === 'icon' && !noSelect) {
               self.selectNode(node, true);
             }
 
-            self.initSelected();
+            if (!noSelect) {
+              self.initSelected();
+            }
           };
 
           var args = {
@@ -83396,10 +85420,34 @@ Tree.prototype = {
         if (currentIcon === s.folderIconClosed || s.useExpandTarget) {
           self.setFolderIcon(node, true, false, s.expandPlusminusRotate);
         } else if (/open|close/g.test(currentIcon) && !s.useExpandTarget) {
-          self.setTreeIcon(node.find('svg.icon-tree'), currentIcon.replace('closed', 'open').replace(/\s?is-selected/, ''));
+          var icon = currentIcon.replace('closed', 'open');
+
+          if (!noSelect) {
+            icon = icon.replace(/\s?is-selected/, '');
+          }
+
+          self.setTreeIcon(node.find('svg.icon-tree'), icon);
         }
 
         self.accessNode(next, node);
+        self.element.triggerHandler('expanded', {
+          node: node,
+          data: node.data('jsonData')
+        });
+      };
+
+      if (_typeof(opt) === 'object' && isBool(opt.isExpandNode)) {
+        if (opt.isExpandNode) {
+          expandNode(opt.noSelect);
+          var nodes = node.parentsUntil(this.element, 'ul[role=group]');
+          this.expandAll(nodes);
+        } else {
+          collapseNode(opt.noSelect);
+        }
+      } else if (DOM.hasClass(next[0], 'is-open')) {
+        collapseNode();
+      } else {
+        expandNode();
       }
     }
   },
@@ -83462,6 +85510,7 @@ Tree.prototype = {
 
         nodeData.children = nodes;
         nodeTarget.data('jsonData', nodeData);
+        nodeTarget.data("".concat(COMPONENT_NAME$9, "Api"), self);
         self.selectNode(nodeTarget, true);
         self.initSelected();
       };
@@ -83717,6 +85766,7 @@ Tree.prototype = {
       var a = $(node);
       var data = self.jsonData[i];
       a.data('jsonData', data);
+      a.data("".concat(COMPONENT_NAME$9, "Api"), self);
 
       if (data.selected) {
         self.selectNode(a, data.focus);
@@ -84532,6 +86582,7 @@ Tree.prototype = {
       }
 
       nodeJQ.data('jsonData', entry);
+      nodeJQ.data("".concat(COMPONENT_NAME$9, "Api"), self);
     }
 
     return entry;
@@ -84593,7 +86644,7 @@ Tree.prototype = {
     }
 
     if (nodeData.text) {
-      a.textContent = xssUtils.unescapeHTML(nodeData.text);
+      a.textContent = /&#?[^\s].{1,9};/g.test(nodeData.text) ? xssUtils.unescapeHTML(nodeData.text) : nodeData.text;
     }
 
     if (nodeData.disabled) {
@@ -84743,6 +86794,7 @@ Tree.prototype = {
     }
 
     a.data('jsonData', nodeData);
+    a.data("".concat(COMPONENT_NAME$9, "Api"), self);
     this.addAutomationAttributes(a, nodeData);
     this.createSortable();
     return li;
@@ -84918,6 +86970,7 @@ Tree.prototype = {
       if (jsonData) {
         jsonData.icon = nodeData.icon;
         elem.node.data('jsonData', jsonData);
+        elem.node.data("".concat(COMPONENT_NAME$9, "Api"), this);
       }
     } else if (nodeData.children && nodeData.children.length && !DOM.hasClass(parent, 'folder')) {
       this.convertFileToFolder(elem.node);
@@ -85474,7 +87527,7 @@ Tree.prototype = {
   destroy: function destroy() {
     this.unbind();
     this.element.empty();
-    $.removeData(this.element[0], COMPONENT_NAME$1a);
+    $.removeData(this.element[0], COMPONENT_NAME$9);
   },
 
   /**
@@ -85559,19 +87612,64 @@ Tree.prototype = {
 
 $.fn.tree = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1a);
+    var instance = $.data(this, COMPONENT_NAME$9);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1a, new Tree(this, settings));
+      instance = $.data(this, COMPONENT_NAME$9, new Tree(this, settings));
     }
+  });
+};
+/**
+ * Expand or Collapse the given node.
+ * @param {HTMLElement} elem The element reference to a tree node.
+ * @param {string} method The name collapse or expand.
+ * @returns {void}
+ */
+
+
+function treeNodeExpandCollapse(elem, method) {
+  var node = $(elem);
+  var api = node.data("".concat(COMPONENT_NAME$9, "Api"));
+
+  if (api) {
+    var methods = {
+      collapse: api.collapseNode,
+      expand: api.expandNode
+    };
+
+    if (typeof methods[method] === 'function') {
+      methods[method].apply(api, node);
+    }
+  }
+}
+/**
+ * Collapse jQuery method to run on a tree node.
+ * @returns {jQuery[]} jQuery self element to make chainable.
+ */
+
+
+$.fn.collapse = function () {
+  return this.each(function () {
+    treeNodeExpandCollapse(this, 'collapse');
+  });
+};
+/**
+ * Expand jQuery method to run on a tree node.
+ * @returns {jQuery[]} jQuery self element to make chainable.
+ */
+
+
+$.fn.expand = function () {
+  return this.each(function () {
+    treeNodeExpandCollapse(this, 'expand');
   });
 };
 
 /* eslint-disable no-underscore-dangle */
 
-var COMPONENT_NAME$1b = 'treemap'; // Default Radar Options
+var COMPONENT_NAME$8 = 'treemap'; // Default Radar Options
 
 var TREEMAP_DEFAULTS = {
   dataset: [],
@@ -85780,20 +87878,20 @@ Treemap.prototype = {
   handleEvents: function handleEvents() {
     var _this2 = this;
 
-    this.element.on("updated.".concat(COMPONENT_NAME$1b), function () {
+    this.element.on("updated.".concat(COMPONENT_NAME$8), function () {
       _this2.updated();
     });
 
     if (this.settings.redrawOnResize) {
-      $('body').on("resize.".concat(COMPONENT_NAME$1b), function () {
+      $('body').on("resize.".concat(COMPONENT_NAME$8), function () {
         _this2.handleResize();
       });
-      this.element.on("resize.".concat(COMPONENT_NAME$1b), function () {
+      this.element.on("resize.".concat(COMPONENT_NAME$8), function () {
         _this2.handleResize();
       });
     }
 
-    $('html').on("themechanged.".concat(COMPONENT_NAME$1b), function () {
+    $('html').on("themechanged.".concat(COMPONENT_NAME$8), function () {
       _this2.updated();
     });
     return this;
@@ -85841,9 +87939,9 @@ Treemap.prototype = {
    * @returns {object} The Component prototype, useful for chaining.
    */
   teardown: function teardown() {
-    this.element.off("updated.".concat(COMPONENT_NAME$1b));
-    $('body').off("resize.".concat(COMPONENT_NAME$1b));
-    $('html').off("themechanged.".concat(COMPONENT_NAME$1b));
+    this.element.off("updated.".concat(COMPONENT_NAME$8));
+    $('body').off("resize.".concat(COMPONENT_NAME$8));
+    $('html').off("themechanged.".concat(COMPONENT_NAME$8));
     return this;
   },
 
@@ -85855,7 +87953,7 @@ Treemap.prototype = {
     this.element.empty().removeClass('chart-treemap');
     charts.removeTooltip();
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$1b);
+    $.removeData(this.element[0], COMPONENT_NAME$8);
   }
 };
 
@@ -85867,12 +87965,30 @@ Treemap.prototype = {
 
 $.fn.treemap = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1b);
+    var instance = $.data(this, COMPONENT_NAME$8);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1b, new Treemap(this, settings));
+      instance = $.data(this, COMPONENT_NAME$8, new Treemap(this, settings));
+    }
+  });
+};
+
+/**
+ * jQuery Component Wrapper for VirtualScroll
+ * @param {object} [settings] incoming settings
+ * @returns {jQuery[]} elements being acted on
+ */
+
+$.fn.virtualscroll = function (settings) {
+  return this.each(function () {
+    var instance = $.data(this, COMPONENT_NAME$R);
+
+    if (instance) {
+      instance.updated(settings);
+    } else {
+      instance = $.data(this, COMPONENT_NAME$R, new VirtualScroll(this, settings));
     }
   });
 };
@@ -85885,19 +88001,19 @@ $.fn.treemap = function (settings) {
 
 $.fn.weekview = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$B);
+    var instance = $.data(this, COMPONENT_NAME$K);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$B, new WeekView(this, settings));
+      instance = $.data(this, COMPONENT_NAME$K, new WeekView(this, settings));
     }
   });
 };
 
 // Component Name
 
-var COMPONENT_NAME$1c = 'wizard'; // Component Default Settings
+var COMPONENT_NAME$7 = 'wizard'; // Component Default Settings
 
 var WIZARD_DEFAULTS = {
   ticks: null,
@@ -85924,7 +88040,7 @@ Wizard.prototype = {
    */
   init: function init() {
     this.namespace = utils.uniqueId({
-      classList: [COMPONENT_NAME$1c]
+      classList: [COMPONENT_NAME$7]
     });
     this.build().handleEvents();
   },
@@ -86197,7 +88313,7 @@ Wizard.prototype = {
     label.jqEl.tooltip({
       content: label.label,
       placement: 'bottom'
-    }).on("blur.".concat(COMPONENT_NAME$1c), function () {
+    }).on("blur.".concat(COMPONENT_NAME$7), function () {
       return _this3.removeTooltip(label);
     });
   },
@@ -86212,7 +88328,7 @@ Wizard.prototype = {
     var tooltipApi = label.jqEl.data('tooltip');
 
     if (tooltipApi) {
-      tooltipApi.element.off("blur.".concat(COMPONENT_NAME$1c));
+      tooltipApi.element.off("blur.".concat(COMPONENT_NAME$7));
       tooltipApi.destroy();
     }
   },
@@ -86290,8 +88406,8 @@ Wizard.prototype = {
       label.jqEl.off().removeData();
     });
     delete this.labels;
-    this.ticks.off("click.".concat(COMPONENT_NAME$1c));
-    this.element.off("updated.".concat(COMPONENT_NAME$1c));
+    this.ticks.off("click.".concat(COMPONENT_NAME$7));
+    this.element.off("updated.".concat(COMPONENT_NAME$7));
     $('body').off("resize.".concat(this.namespace));
     this.ticks.remove();
     return this;
@@ -86401,7 +88517,7 @@ Wizard.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$1c);
+    $.removeData(this.element[0], COMPONENT_NAME$7);
   },
 
   /**
@@ -86415,10 +88531,10 @@ Wizard.prototype = {
     var _this5 = this;
 
     var self = this;
-    this.element.on("updated.".concat(COMPONENT_NAME$1c), function () {
+    this.element.on("updated.".concat(COMPONENT_NAME$7), function () {
       self.updated();
     });
-    this.ticks.on("click.".concat(COMPONENT_NAME$1c), function (e) {
+    this.ticks.on("click.".concat(COMPONENT_NAME$7), function (e) {
       self.activate(e, $(this));
     });
     $('body').on("resize.".concat(this.namespace), function () {
@@ -86436,12 +88552,12 @@ Wizard.prototype = {
 
 $.fn.wizard = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1c);
+    var instance = $.data(this, COMPONENT_NAME$7);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1c, new Wizard(this, settings));
+      instance = $.data(this, COMPONENT_NAME$7, new Wizard(this, settings));
     }
   });
 };
@@ -86798,7 +88914,7 @@ var formatters = {
     var hiddenText = "<span class=\"hidden\" aria-hidden=\"true\" role=\"presentation\"> ".concat(Locale.translate(isChecked ? 'Yes' : 'No'), "</span>");
     var animate = api.wasJustUpdated;
     api.wasJustUpdated = false;
-    return "<div class=\"datagrid-checkbox-wrapper\"><span role=\"checkbox\" aria-label=\"".concat(col.name, "\" class=\"datagrid-checkbox\n     ").concat(isChecked ? "is-checked ".concat(!animate ? ' no-animation' : ' ') : '', "\" aria-checked=\"").concat(isChecked, "\"></span>").concat(hiddenText, "</div>");
+    return "<div class=\"datagrid-checkbox-wrapper\"><span role=\"checkbox\" class=\"datagrid-checkbox".concat(isChecked ? " is-checked ".concat(!animate ? ' no-animation' : ' ') : '', "\"></span>").concat(hiddenText, "</div>");
   },
   SelectionCheckbox: function SelectionCheckbox(row, cell, value, col, item, api) {
     var isChecked = value === undefined ? false : value === true;
@@ -86816,7 +88932,7 @@ var formatters = {
     }
 
     ariaString = xssUtils.ensureAlphaNumericWithSpaces(ariaString);
-    return "<div class=\"datagrid-checkbox-wrapper\"><span role=\"checkbox\" aria-label=\"".concat(col.name ? col.name : Locale.translate('Select') + ariaString, "\" class=\"datagrid-checkbox datagrid-selection-checkbox").concat(isChecked ? ' is-checked no-animate' : '', "\" aria-checked=\"").concat(isChecked, "\"></span></div>");
+    return "<div class=\"datagrid-checkbox-wrapper\"><span role=\"checkbox\" aria-label=\"".concat(col.name ? col.name : Locale.translate('Select') + ariaString, "\" class=\"datagrid-checkbox datagrid-selection-checkbox").concat(isChecked ? ' is-checked no-animate' : '', "\"></span></div>");
   },
   Actions: function Actions(row, cell, value, col) {
     // Render an Action Formatter
@@ -87147,7 +89263,10 @@ var formatters = {
     }), "<span class=\"audible\">").concat(item.rowStatus.text, "</span>");
   },
   TargetedAchievement: function TargetedAchievement(row, cell, value, col) {
-    var perc = 100 * value;
+    var perc = Locale.formatNumber(100 * value, col.numberFormat || {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
     var text = "".concat(perc, "%");
     var ranges = formatters.ClassRange(row, cell, perc, col);
     var target = col.target;
@@ -87893,7 +90012,7 @@ aggregators.aggregate = function (items, columns) {
 
 /* eslint-disable no-underscore-dangle */
 
-var COMPONENT_NAME$1d = 'lookup'; // Lookup components are "modal" (one on-screen at any given time)
+var COMPONENT_NAME$6 = 'lookup'; // Lookup components are "modal" (one on-screen at any given time)
 
 var LOOKUP_GRID_ID = 'lookup-datagrid'; // When passing on attributes from the Lookup component to its subcomponents (modal/grid),
 // This helper appends suffixes representing those components to each attribute.
@@ -87961,6 +90080,7 @@ function addSuffixToAttributes() {
  * @param {char} [settings.delimiter=','] A character being used to separate data strings
  * @param {int} [settings.minWidth=400] Applys a minimum width to the lookup
  * @param {boolean} [settings.clearable=false] Add an ability to clear the lookup field. If "true", it will affix an "x" button to the right section of the field.
+ * @param {boolean} [settings.tabbable=true] If true, causes the Lookup's trigger icon to be focusable with the keyboard.
  */
 
 
@@ -87981,7 +90101,8 @@ var LOOKUP_DEFAULTS = {
   delimiter: ',',
   minWidth: null,
   clearable: false,
-  attributes: null
+  attributes: null,
+  tabbable: true
 };
 
 function Lookup(element, settings) {
@@ -88050,13 +90171,6 @@ Lookup.prototype = {
 
     if (this.element.is('.has-actions')) {
       cssClass += ' has-actions-wrapper';
-    } // Add Button
-
-
-    this.icon = $('<span class="trigger"></span>').append($.createIcon(this.settings.icon));
-
-    if (this.settings.icon !== 'icon-search-list') {
-      this.icon.addClass('has-custom-icon');
     }
 
     if (this.isInlineLabel) {
@@ -88070,6 +90184,22 @@ Lookup.prototype = {
         lookup.add(fieldOptionsTrigger).add(fieldOptionsTrigger.next('.popupmenu')).wrapAll(this.container);
       } else {
         lookup.wrap(this.container);
+      }
+    } // Add Button
+
+
+    var next = this.element.next();
+
+    if (next.is('button.trigger')) {
+      this.icon = next;
+    } else {
+      this.icon = $("<button class=\"btn-icon trigger\" type=\"button\">\n        <span class=\"audible\"></span>\n        ".concat($.createIcon(this.settings.icon), "\n      </button>"));
+      var iconEl = this.icon.children('.icon');
+
+      if (this.settings.icon !== 'icon-search-list') {
+        iconEl.addClass('has-custom-icon');
+      } else if (Environment.rtl) {
+        iconEl.addClass('icon-rtl-rotate');
       }
     }
 
@@ -88096,10 +90226,17 @@ Lookup.prototype = {
       this.disable();
     }
 
+    if (!this.settings.editable) {
+      this.element.attr('readonly', 'true').addClass('is-not-editable');
+    }
+
+    this.makeTabbable(this.settings.tabbable);
+
     if (this.settings.clearable) {
       lookup.searchfield({
         clearable: true,
-        attributes: this.settings.attributes
+        attributes: this.settings.attributes,
+        tabbable: false
       });
     }
 
@@ -88107,10 +90244,6 @@ Lookup.prototype = {
       lookup.on('cleared', function (e) {
         _this.settings.clear(e, _this, _this.settings.clearArguments);
       });
-    }
-
-    if (!this.settings.editable) {
-      this.element.attr('readonly', 'true').addClass('is-not-editable');
     } // Fix field options in case lookup is initialized after
 
 
@@ -88139,8 +90272,19 @@ Lookup.prototype = {
    * @returns {void}
    */
   addAria: function addAria() {
-    var self = this;
-    self.label = self.isInlineLabel ? self.inlineLabelText : $("label[for=\"".concat(self.element.attr('id'), "\"]"));
+    this.label = this.isInlineLabel ? this.inlineLabelText : $("label[for=\"".concat(this.element.attr('id'), "\"]"));
+    var pressDownMsg = "".concat(Locale.translate('Lookup'), ". ").concat(Locale.translate('PressDown'));
+    var span = this.label.children('span.audible');
+
+    if (span.length) {
+      span.text(pressDownMsg);
+    } else {
+      this.label.append("<span class=\"audible\">".concat(pressDownMsg, "</span>"));
+    } // Add audible text to the trigger button
+
+
+    var triggerBtnText = Locale.translate('LookupTriggerButton');
+    this.icon.children('span.audible').text(triggerBtnText);
   },
 
   /**
@@ -88371,13 +90515,13 @@ Lookup.prototype = {
       buttons = [{
         text: Locale.translate('Cancel'),
         click: function click(e, modal) {
-          modal.oldActive = self.element;
+          modal.oldActive = self.icon;
           modal.close();
         }
       }, {
         text: Locale.translate('Apply'),
         click: function click(e, modal) {
-          modal.oldActive = self.element;
+          modal.oldActive = self.icon;
           modal.close();
           self.insertRows();
         },
@@ -88389,13 +90533,13 @@ Lookup.prototype = {
       buttons = [{
         text: Locale.translate('Cancel'),
         click: function click(e, modal) {
-          modal.oldActive = self.element;
+          modal.oldActive = self.icon;
           modal.close();
         }
       }, {
         text: Locale.translate('Apply'),
         click: function click(e, modal) {
-          modal.oldActive = self.element;
+          modal.oldActive = self.icon;
           modal.close();
           self.insertRows();
         },
@@ -88584,8 +90728,16 @@ Lookup.prototype = {
     }
 
     if (this.settings.options) {
-      lookupGrid.on('selected.lookup', function (e, selectedRows) {
-        // Only proceed if a row is selected
+      lookupGrid.on('selected.lookup', function (e, selectedRows, op, rowData) {
+        if (op === 'deselect') {
+          if (!self.grid.recentlyRemoved) {
+            self.grid.recentlyRemoved = [];
+          }
+
+          self.grid.recentlyRemoved.push(rowData);
+        } // Only proceed if a row is selected
+
+
         if (!selectedRows || selectedRows.length === 0) {
           return;
         }
@@ -88655,26 +90807,43 @@ Lookup.prototype = {
     if (selectedId.indexOf(this.settings.delimiter) > 1) {
       var selectedIds = selectedId.split(this.settings.delimiter);
       var isFound = false;
+      var isRemoved = false;
 
       for (var _i = 0; _i < selectedIds.length; _i++) {
+        if (this.grid.recentlyRemoved) {
+          for (var j = 0; j < this.grid.recentlyRemoved.length; j++) {
+            if (this.grid.recentlyRemoved[j][this.settings.field].toString() === selectedIds[_i].toString()) {
+              isRemoved = true;
+            }
+          }
+        }
+
+        if (isRemoved) {
+          continue;
+        }
+
         isFound = this.selectRowByValue(this.settings.field, selectedIds[_i]);
 
         if (this.grid && this.settings.options.source && !isFound) {
-          var data = {};
           var foundInData = false;
 
-          for (var j = 0; j < this.grid._selectedRows.length; j++) {
-            if (this.grid._selectedRows[j].data[this.settings.field].toString() === selectedIds[_i].toString()) {
+          for (var _j = 0; _j < this.grid._selectedRows.length; _j++) {
+            if (this.grid._selectedRows[_j].data[this.settings.field].toString() === selectedIds[_i].toString()) {
               foundInData = true;
             }
           }
 
-          if (!foundInData) {
-            data[this.settings.field] = selectedIds[_i];
+          if (this.grid.recentlyRemoved) {
+            for (var _j2 = 0; _j2 < this.grid.recentlyRemoved.length; _j2++) {
+              if (this.grid.recentlyRemoved[_j2][this.settings.field].toString() === selectedIds[_i].toString()) {
+                foundInData = true;
+              }
+            }
+          }
 
-            this.grid._selectedRows.push({
-              data: data
-            });
+          if (!foundInData) {
+            var data = {};
+            data[this.settings.field] = selectedIds[_i];
           }
 
           adjust = true;
@@ -88694,29 +90863,54 @@ Lookup.prototype = {
       _selectedIds.push(selectedId);
 
       var _isFound = false;
+      var _isRemoved = false;
 
       for (var _i2 = 0; _i2 < _selectedIds.length; _i2++) {
+        if (this.grid.recentlyRemoved) {
+          for (var _j3 = 0; _j3 < this.grid.recentlyRemoved.length; _j3++) {
+            if (this.grid.recentlyRemoved[_j3][this.settings.field].toString() === _selectedIds[_i2].toString()) {
+              _isRemoved = true;
+            }
+          }
+        }
+
+        if (_isRemoved) {
+          continue;
+        }
+
         _isFound = this.selectRowByValue(this.settings.field, _selectedIds[_i2]);
 
         if (this.grid && this.settings.options.source && !_isFound) {
-          var _data = {};
           var _foundInData = false;
 
-          for (var _j = 0; _j < this.grid._selectedRows.length; _j++) {
-            if (this.grid._selectedRows[_j].data[this.settings.field].toString() === _selectedIds[_i2].toString()) {
+          for (var _j4 = 0; _j4 < this.grid._selectedRows.length; _j4++) {
+            if (this.grid._selectedRows[_j4].data[this.settings.field].toString() === _selectedIds[_i2].toString()) {
               _foundInData = true;
             }
           }
 
-          if (!_foundInData) {
-            _data[this.settings.field] = _selectedIds[_i2];
+          if (this.grid.recentlyRemoved) {
+            for (var _j5 = 0; _j5 < this.grid.recentlyRemoved.length; _j5++) {
+              if (this.grid.recentlyRemoved[_j5][this.settings.field].toString() === _selectedIds[_i2].toString()) {
+                _foundInData = true;
+              }
+            }
+          }
 
-            this.grid._selectedRows.push({
-              data: _data
-            });
+          if (!_foundInData) {
+            var _data = {};
+            _data[this.settings.field] = _selectedIds[_i2];
           }
 
           adjust = true;
+        }
+
+        if (_isFound && this.grid.recentlyRemoved) {
+          for (var _j6 = 0; _j6 < this.grid.recentlyRemoved.length; _j6++) {
+            if (this.grid.recentlyRemoved[_j6][this.settings.field].toString() === _selectedIds[_i2].toString()) {
+              adjust = false;
+            }
+          }
         }
       } // There are rows selected off page. Update the count.
 
@@ -88833,8 +91027,9 @@ Lookup.prototype = {
    * @returns {void}
    */
   enable: function enable() {
-    this.element.prop('disabled', false).prop('readonly', false);
+    this.element.prop('disabled', false).prop('readonly', false).removeClass('is-not-editable');
     this.element.parent().removeClass('is-disabled');
+    this.icon.prop('disabled', false);
   },
 
   /**
@@ -88844,6 +91039,7 @@ Lookup.prototype = {
   disable: function disable() {
     this.element.prop('disabled', true);
     this.element.parent().addClass('is-disabled');
+    this.icon.prop('disabled', true);
   },
 
   /**
@@ -88852,6 +91048,7 @@ Lookup.prototype = {
    */
   readonly: function readonly() {
     this.element.prop('readonly', true);
+    this.icon.prop('disabled', false);
   },
 
   /**
@@ -88908,6 +91105,13 @@ Lookup.prototype = {
   },
 
   /**
+   * @param {boolean} val if true, sets the trigger button to a focusable tab index
+   */
+  makeTabbable: function makeTabbable(val) {
+    this.icon.attr('tabIndex', val ? 0 : -1);
+  },
+
+  /**
    * Updates the lookup instance with new settings
    * @param {object} settings incoming settings
    * @returns {void}
@@ -88960,7 +91164,7 @@ Lookup.prototype = {
       }
     }
 
-    $.removeData(this.element[0], COMPONENT_NAME$1d);
+    $.removeData(this.element[0], COMPONENT_NAME$6);
   }
 };
 
@@ -88972,12 +91176,12 @@ Lookup.prototype = {
 
 $.fn.lookup = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1d);
+    var instance = $.data(this, COMPONENT_NAME$6);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1d, new Lookup(this, settings));
+      instance = $.data(this, COMPONENT_NAME$6, new Lookup(this, settings));
     }
   });
 };
@@ -89086,6 +91290,10 @@ var editors = {
       if (column && column.numberFormat && column.numberFormat.style === 'percent') {
         thisValue = this.input.val().trim().replace(/(\s%?|%)$/g, '');
         return Locale.parseNumber(thisValue) / 100;
+      }
+
+      if (column.numberFormat) {
+        return Locale.parseNumber(this.input.val(), column.numberFormat);
       }
 
       return this.input.val();
@@ -89517,9 +91725,20 @@ var editors = {
 
     this.init = function () {
       this.input = $('<input class="datepicker" autocomplete="off"/>').appendTo(container);
-      this.input.datepicker(column.editorOptions || {
-        dateFormat: column.dateFormat
-      });
+
+      if (!column.editorOptions) {
+        column.editorOptions = {};
+      }
+
+      if (!column.editorOptions.dateFormat) {
+        column.editorOptions.dateFormat = column.dateFormat;
+      }
+
+      if (typeof column.editorOptions.tabbable !== 'boolean') {
+        column.editorOptions.tabbable = false;
+      }
+
+      this.input.datepicker(column.editorOptions);
     };
 
     this.val = function (v) {
@@ -89547,11 +91766,9 @@ var editors = {
 
       if (event.type === 'click' && $(event.target).is('.icon')) {
         this.input.parent().find('.icon').trigger('click');
-        this.input.closest('td').addClass('is-focused');
       }
 
       this.input.on('listclosed', function () {
-        self.input.closest('td').removeClass('is-focused');
         setTimeout(function () {
           self.input.trigger('focusout');
           container.parent().focus();
@@ -89725,7 +91942,16 @@ var editors = {
 
     this.init = function () {
       this.input = $('<input class="timepicker" autocomplete="off" />').appendTo(container);
-      this.api = this.input.timepicker(column.editorOptions || '').data('timepicker');
+
+      if (!column.editorOptions) {
+        column.editorOptions = {};
+      }
+
+      if (typeof column.editorOptions.tabbable !== 'boolean') {
+        column.editorOptions.tabbable = false;
+      }
+
+      this.api = this.input.timepicker(column.editorOptions).data('timepicker');
     };
 
     this.val = function (v) {
@@ -89748,11 +91974,9 @@ var editors = {
 
       if (event.type === 'click' && $(event.target).is('.icon')) {
         this.input.parent().find('.icon').trigger('click');
-        this.input.closest('td').addClass('is-focused');
       }
 
       this.api.trigger.on('hide.editortime', function () {
-        self.input.closest('td').removeClass('is-focused');
         setTimeout(function () {
           self.input.trigger('focusout');
           container.parent().focus();
@@ -89798,6 +92022,10 @@ var editors = {
 
       if (!column.editorOptions.options.toolbar.title) {
         column.editorOptions.options.toolbar.title = column.name;
+      }
+
+      if (column.editorOptions.tabbable === undefined) {
+        column.editorOptions.tabbable = false;
       }
 
       this.input.lookup(column.editorOptions);
@@ -90044,7 +92272,7 @@ var editors = {
   }
 };
 
-var COMPONENT_NAME$1e = 'datagrid';
+var COMPONENT_NAME$5 = 'datagrid';
 /**
  * The Datagrid Component displays and process data in tabular format.
  * @class Datagrid
@@ -90063,13 +92291,13 @@ var COMPONENT_NAME$1e = 'datagrid';
  * @param {array}    [settings.dataset=[]] An array of data objects
  * @param {boolean}  [settings.columnReorder=false] Allow Column reorder
  * @param {boolean}  [settings.saveColumns=false] Save Column Reorder and resize, this is deprecated, use saveUserSettings
- * @param {object}   [settings.saveUserSettings]
- * @param {object}   [settings.saveUserSettings.columns=true]
- * @param {object}   [settings.saveUserSettings.rowHeight=true]
- * @param {object}   [settings.saveUserSettings.sortOrdertrue]
- * @param {object}   [settings.saveUserSettings.pageSize=true]
- * @param {object}   [settings.saveUserSettings.activePage=true]
- * @param {object}   [settings.saveUserSettings.filter=true]
+ * @param {object}   [settings.saveUserSettings] Save various settings (in local storage by default)
+ * @param {object}   [settings.saveUserSettings.columns=true] Save the column widths and order
+ * @param {object}   [settings.saveUserSettings.rowHeight=true] Save the row height setting
+ * @param {object}   [settings.saveUserSettings.sortOrder=true] Save the sort column
+ * @param {object}   [settings.saveUserSettings.pagesize=true] Save the page size dropdown value
+ * @param {object}   [settings.saveUserSettings.activePage=true] Save the active page on the pager
+ * @param {object}   [settings.saveUserSettings.filter=true] Save the filter conditions
  * @param {boolean}  [settings.focusAfterSort=false] If true will focus the active cell after sorting.
  * @param {boolean}  [settings.editable=false] Enable editing in the grid, requires column editors.
  * @param {boolean}  [settings.selectOnEdit=true] if true, will select the cell text soon get to edit mode.
@@ -90146,6 +92374,8 @@ var COMPONENT_NAME$1e = 'datagrid';
  * icon: 'icon-empty-no-data', button: {text: 'Button Text', click: <function>}, height: null|'small'} set this to null for no message
  * or will default to 'No Data Found with an icon.'
  * height: The empty message container height. If set to 'small' will show only title and all other will not be render (like: icon, button, info)
+ * @param {boolean} [settings.allowChildExpandOnMatchOnly=false] If set to true, it will only expand children from matching node. If false will show children for all matching nodes.
+ * Note: Only effective if set allowChildExpandOnMatch: true
  * @param {boolean} [settings.allowChildExpandOnMatch=false] Used with filter
  * if true:
  * and if only parent has a match then add all children nodes too
@@ -90155,6 +92385,7 @@ var COMPONENT_NAME$1e = 'datagrid';
  * and do not add any children nodes
  * or if one or more child node got match then add parent node and only matching children nodes
  * @param {string} [settings.attributes] Add extra attributes like id's to the toast element. For example `attributes: { name: 'id', value: 'my-unique-id' }`
+ * @param {boolean} [settings.allowPasteFromExcel=false] If true will allow data copy/paste from excel
 */
 
 var DATAGRID_DEFAULTS = {
@@ -90289,8 +92520,10 @@ var DATAGRID_DEFAULTS = {
     height: null
   },
   searchExpandableRow: true,
+  allowChildExpandOnMatchOnly: false,
   allowChildExpandOnMatch: false,
-  attributes: null
+  attributes: null,
+  allowPasteFromExcel: false
 };
 
 function Datagrid(element, settings) {
@@ -91416,7 +93649,7 @@ Datagrid.prototype = {
         ids = "id=\"".concat(id, "\"");
       }
 
-      headerRows[container] += "<th scope=\"col\" role=\"columnheader\" ".concat(ids, " data-column-id=\"").concat(column.id, "\"").concat(column.field ? " data-field=\"".concat(column.field, "\"") : '').concat(column.headerTooltip ? " title=\"".concat(column.headerTooltip, "\"") : '').concat(column.reorderable === false ? ' data-reorder="false"' : '').concat(colGroups ? " headers=\"".concat(self.getColumnGroup(j), "\"") : '', " data-exportable=\"").concat(isExportable ? 'yes' : 'no', "\"").concat(cssClass, ">");
+      headerRows[container] += "<th scope=\"col\" role=\"columnheader\" ".concat(ids, " ").concat(isSelection ? ' aria-checked= "false"' : '', " data-column-id=\"").concat(column.id, "\"").concat(column.field ? " data-field=\"".concat(column.field, "\"") : '').concat(column.headerTooltip ? " title=\"".concat(column.headerTooltip, "\"") : '').concat(column.reorderable === false ? ' data-reorder="false"' : '').concat(colGroups ? " headers=\"".concat(self.getColumnGroup(j), "\"") : '', " data-exportable=\"").concat(isExportable ? 'yes' : 'no', "\"").concat(cssClass, ">");
       var sortIndicator = '';
 
       if (isSortable) {
@@ -91433,9 +93666,9 @@ Datagrid.prototype = {
 
       if (isSelection) {
         if (self.settings.showSelectAllCheckBox) {
-          headerRows[container] += '<span aria-checked="false" class="datagrid-checkbox" aria-label="Selection" role="checkbox" tabindex="0"></span>';
+          headerRows[container] += '<span class="datagrid-checkbox" aria-label="Selection" role="checkbox" tabindex="0"></span>';
         } else {
-          headerRows[container] += '<span aria-checked="false" class="datagrid-checkbox" aria-label="Selection" role="checkbox" style="display:none" tabindex="0"></span>';
+          headerRows[container] += '<span class="datagrid-checkbox" aria-label="Selection" role="checkbox" style="display:none" tabindex="0"></span>';
         }
       } // Note the space in classname.
       // Place sortIndicator via concatenation if
@@ -91460,15 +93693,15 @@ Datagrid.prototype = {
 
     if (self.headerRow === undefined) {
       if (self.hasLeftPane) {
-        self.headerRowLeft = $("<thead class=\"datagrid-header left\">".concat(headerRows.left, "</thead>"));
+        self.headerRowLeft = $("<thead class=\"datagrid-header left\" role=\"rowgroup\">".concat(headerRows.left, "</thead>"));
         self.tableLeft.find('colgroup').after(self.headerRowLeft);
       }
 
-      self.headerRow = $("<thead class=\"datagrid-header center\">".concat(headerRows.center, "</thead>"));
+      self.headerRow = $("<thead class=\"datagrid-header center\"> role=\"rowgroup\"".concat(headerRows.center, "</thead>"));
       self.table.find('colgroup').after(self.headerRow);
 
       if (self.hasRightPane) {
-        self.headerRowRight = $("<thead class=\"datagrid-header right\">".concat(headerRows.right, "</thead>"));
+        self.headerRowRight = $("<thead class=\"datagrid-header right\" role=\"rowgroup\">".concat(headerRows.right, "</thead>"));
         self.tableRight.find('colgroup').after(self.headerRowRight);
       }
     } else {
@@ -91733,7 +93966,7 @@ Datagrid.prototype = {
   * @private
   */
   attachFilterRowEvents: function attachFilterRowEvents() {
-    var _this2 = this;
+    var _this3 = this;
 
     var self = this;
 
@@ -91745,10 +93978,13 @@ Datagrid.prototype = {
 
     if (this.settings.twoLineHeader) {
       this.element.addClass('has-two-line-header');
-    } // Attach Keyboard support
+    }
 
+    var activeMenu = null; // Attach Keyboard support
 
     this.element.off('click.datagrid-filter').on('click.datagrid-filter', '.btn-filter', function () {
+      var _this2 = this;
+
       var filterBtn = $(this);
       var popupOpts = {
         trigger: 'immediate',
@@ -91764,11 +94000,17 @@ Datagrid.prototype = {
       if (popupmenu) {
         popupmenu.close(true, true);
       } else {
-        filterBtn.off('beforeopen.datagrid-filter').on('beforeopen.datagrid-filter', function () {
-          var menu = filterBtn.next('.popupmenu-wrapper');
-          utils.fixSVGIcons(menu);
+        filterBtn.off('beforeopen.datagrid-filter').on('beforeopen.datagrid-filter', function (e, menu, api) {
           self.hideTooltip();
+          activeMenu = api;
         }).popupmenu(popupOpts).off('selected.datagrid-filter').on('selected.datagrid-filter', function () {
+          var data = $(_this2).data('popupmenu');
+
+          if (data) {
+            data.destroy();
+          }
+
+          activeMenu = null;
           var rowElem = filterBtn.closest('th[role="columnheader"]');
           var col = self.columnById(rowElem.attr('data-column-id'))[0]; // Set datepicker and numbers filter with range/single
 
@@ -91805,12 +94047,6 @@ Datagrid.prototype = {
           }
 
           self.applyFilter(null, 'selected');
-        }).off('close.datagrid-filter').on('close.datagrid-filter', function () {
-          var data = $(this).data('popupmenu');
-
-          if (data) {
-            data.destroy();
-          }
         });
       }
 
@@ -91830,6 +94066,17 @@ Datagrid.prototype = {
 
       return true;
     });
+    this.element.off('focus.datagrid-filter-focus').on('focus.datagrid-filter-focus', '.datagrid-filter-wrapper input', function () {
+      var _activeMenu;
+
+      (_activeMenu = activeMenu) === null || _activeMenu === void 0 ? void 0 : _activeMenu == null ? void 0 : _activeMenu.close();
+      var dropdownId = $('#dropdown-list').attr('data-element-id');
+      var dropdown = $("#".concat(dropdownId)).data('dropdown');
+
+      if (dropdown && dropdown.isOpen()) {
+        dropdown.closeList('click');
+      }
+    });
 
     if (this.settings.filterWhenTyping) {
       this.element.off('keyup.datagrid-filter-input').on('keyup.datagrid-filter-input', '.datagrid-filter-wrapper input', function (e) {
@@ -91837,8 +94084,8 @@ Datagrid.prototype = {
           return;
         }
 
-        if (_this2.activeCell && _this2.activeCell.isFocused) {
-          _this2.activeCell.isFocused = false;
+        if (_this3.activeCell && _this3.activeCell.isFocused) {
+          _this3.activeCell.isFocused = false;
         }
 
         clearTimeout(typingTimer);
@@ -91884,12 +94131,12 @@ Datagrid.prototype = {
         };
       });
       elem.find('select.multiselect').each(function () {
-        var _this3 = this;
+        var _this4 = this;
 
         var multiselect = $(this);
         multiselect.multiselect(col.editorOptions).on('selected.datagrid', function () {
           // Wierd Hack - Sync to "sync" up the filter row
-          var ddElem = $(_this3);
+          var ddElem = $(_this4);
           $("#".concat(ddElem.attr('id'))).val(ddElem.val());
           self.applyFilter(null, 'selected');
         }); // Append the Dropdown's sourceArguments with some row/col meta-data
@@ -92155,6 +94402,8 @@ Datagrid.prototype = {
   * @param {string} [trigger] A string to identify the triggering action.
   */
   applyFilter: function applyFilter(conditions, trigger) {
+    var _this5 = this;
+
     var self = this;
     var filterChanged = false; // Remove all nested key/value `_isFilteredOut` from given dataset
 
@@ -92519,16 +94768,37 @@ Datagrid.prototype = {
             var isChildFiltered = true;
 
             if (nodeData.children) {
-              isChildFiltered = checkNodes(nodeData.children);
+              if (_this5.settings.allowChildExpandOnMatch && _this5.settings.allowChildExpandOnMatchOnly) {
+                var isParentMatch = checkRow(nodeData);
 
-              if (isChildFiltered) {
-                nodeData._isFilteredOut = !checkRow(nodeData);
+                if (!isParentMatch) {
+                  isChildFiltered = checkNodes(nodeData.children);
+                }
 
-                if (!nodeData._isFilteredOut) {
+                if (isParentMatch) {
+                  nodeData._isFilteredOut = false;
+                  isFiltered = false;
+                } else if (isChildFiltered) {
+                  nodeData._isFilteredOut = !checkRow(nodeData);
+
+                  if (!nodeData._isFilteredOut) {
+                    isFiltered = false;
+                  }
+                } else {
                   isFiltered = false;
                 }
               } else {
-                isFiltered = false;
+                isChildFiltered = checkNodes(nodeData.children);
+
+                if (isChildFiltered) {
+                  nodeData._isFilteredOut = !checkRow(nodeData);
+
+                  if (!nodeData._isFilteredOut) {
+                    isFiltered = false;
+                  }
+                } else {
+                  isFiltered = false;
+                }
               }
             } else {
               nodeData._isFilteredOut = !checkRow(nodeData);
@@ -92555,9 +94825,9 @@ Datagrid.prototype = {
           return isEmpty;
         };
 
-        if (isFilterEmpty()) {
-          removeFilteredOut(this.settings.dataset);
-        } else {
+        removeFilteredOut(this.settings.dataset);
+
+        if (!isFilterEmpty()) {
           checkNodes(this.settings.dataset);
         }
       } else if (this.settings.groupable) {
@@ -92672,7 +94942,7 @@ Datagrid.prototype = {
 
           if (childrenLen) {
             if (!node._isFilteredOut) {
-              if (s.allowChildExpandOnMatch) {
+              if (s.allowChildExpandOnMatch && !s.allowChildExpandOnMatchOnly) {
                 for (var i2 = 0; i2 < childrenLen; i2++) {
                   children[i2]._isFilteredOut = false;
                 }
@@ -93560,15 +95830,15 @@ Datagrid.prototype = {
 
     if (body.length === 0) {
       if (self.hasLeftPane) {
-        self.tableBodyLeft = $('<tbody></tbody>');
+        self.tableBodyLeft = $('<tbody role="rowgroup"></tbody>');
         self.tableLeft.append(self.tableBodyLeft);
       }
 
-      self.tableBody = $('<tbody></tbody>');
+      self.tableBody = $('<tbody role="rowgroup"></tbody>');
       self.table.append(self.tableBody);
 
       if (self.hasRightPane) {
-        self.tableBodyRight = $('<tbody></tbody>');
+        self.tableBodyRight = $('<tbody role="rowgroup"></tbody>');
         self.tableRight.append(self.tableBodyRight);
       }
     }
@@ -93854,7 +96124,7 @@ Datagrid.prototype = {
   * @private
   */
   afterRender: function afterRender() {
-    var _this4 = this;
+    var _this6 = this;
 
     var self = this;
 
@@ -93997,7 +96267,7 @@ Datagrid.prototype = {
         pager: self.pagerAPI
       });
 
-      _this4.activateFirstCell();
+      _this6.activateFirstCell();
     });
   },
 
@@ -94021,7 +96291,7 @@ Datagrid.prototype = {
   * @private
   */
   triggerDestroyCell: function triggerDestroyCell() {
-    var _this5 = this;
+    var _this7 = this;
 
     var self = this;
 
@@ -94038,7 +96308,7 @@ Datagrid.prototype = {
       }
 
       var _loop3 = function _loop3(i) {
-        var col = _this5.settings.columns[i];
+        var col = _this7.settings.columns[i];
 
         if (col.component) {
           rows.each(function () {
@@ -94360,7 +96630,7 @@ Datagrid.prototype = {
     containerHtml.right = containerHtml.center;
 
     for (j = 0; j < self.settings.columns.length; j++) {
-      var _this$settings$attrib, _col$id3;
+      var _this$settings$attrib, _col$id3, _col$formatter, _col$formatter2;
 
       var col = self.settings.columns[j];
       var container = this.getContainer(col.id);
@@ -94425,6 +96695,10 @@ Datagrid.prototype = {
 
 
       var ariaReadonly = col.id !== 'selectionCheckbox' && (col.readonly || col.editor === undefined) ? 'aria-readonly="true"' : '';
+
+      if (cssClass.indexOf('is-readonly') > -1) {
+        ariaReadonly = 'aria-readonly="true"';
+      }
 
       if (col.isReadonly && !col.readonly && col.id !== 'selectionCheckbox') {
         var _fieldVal = self.fieldValue(rowData, self.settings.columns[j].field);
@@ -94540,7 +96814,25 @@ Datagrid.prototype = {
         return a.name === 'id';
       });
       var ariaDescribedby = "aria-describedby=\"".concat((idProp === null || idProp === void 0 ? void 0 : idProp == null ? void 0 : idProp.length) === 1 ? "".concat(idProp[0].value, "-col-").concat((_col$id3 = col.id) === null || _col$id3 === void 0 ? void 0 : _col$id3 == null ? void 0 : _col$id3.toLowerCase()) : self.uniqueId("-header-".concat(j)), "\"");
-      containerHtml[container] += "<td role=\"gridcell\" ".concat(ariaReadonly, " aria-colindex=\"").concat(j + 1, "\"") + " ".concat(ariaDescribedby).concat(isSelected ? ' aria-selected="true"' : '').concat(cssClass ? " class=\"".concat(cssClass, "\"") : '').concat(colspan ? " colspan=\"".concat(colspan, "\"") : '').concat(col.tooltip && typeof col.tooltip === 'string' ? " title=\"".concat(col.tooltip.replace('{{value}}', cellValue), "\"") : '').concat(self.settings.columnGroups ? "headers = \"".concat(self.uniqueId("-header-".concat(j)), " ").concat(self.getColumnGroup(j), "\"") : '').concat(rowspan || '', ">").concat(rowStatus.svg, "<div class=\"datagrid-cell-wrapper\">");
+      var ariaChecked = ''; // Set aria-checkbox attribute
+
+      if (((_col$formatter = col.formatter) === null || _col$formatter === void 0 ? void 0 : _col$formatter == null ? void 0 : _col$formatter.toString().indexOf('function Checkbox')) === 0) {
+        var isChecked = void 0; // Use isChecked function if exists
+
+        if (col.isChecked) {
+          isChecked = col.isChecked(cellValue);
+        } else {
+          isChecked = cellValue === undefined ? false : cellValue === true || parseInt(cellValue, 10) === 1;
+        }
+
+        ariaChecked = " aria-checked=\"".concat(isChecked, "\"");
+      }
+
+      if (((_col$formatter2 = col.formatter) === null || _col$formatter2 === void 0 ? void 0 : _col$formatter2 == null ? void 0 : _col$formatter2.toString().indexOf('function SelectionCheckbox(')) === 0) {
+        ariaChecked = " aria-checked=\"".concat(this.isRowSelected(rowData), "\"");
+      }
+
+      containerHtml[container] += "<td role=\"gridcell\" ".concat(ariaReadonly, " aria-colindex=\"").concat(j + 1, "\"") + " ".concat(ariaDescribedby).concat(ariaChecked).concat(isSelected ? ' aria-selected="true"' : '').concat(cssClass ? " class=\"".concat(cssClass, "\"") : '').concat(colspan ? " colspan=\"".concat(colspan, "\"") : '').concat(col.tooltip && typeof col.tooltip === 'string' ? " title=\"".concat(col.tooltip.replace('{{value}}', cellValue), "\"") : '').concat(self.settings.columnGroups ? "headers = \"".concat(self.uniqueId("-header-".concat(j)), " ").concat(self.getColumnGroup(j), "\"") : '').concat(rowspan || '', ">").concat(rowStatus.svg, "<div class=\"datagrid-cell-wrapper\">");
 
       if (col.contentVisible) {
         var canShow = col.contentVisible(dataRowIdx + 1, j, cellValue, col, rowData);
@@ -94828,14 +97120,15 @@ Datagrid.prototype = {
     // if given, use cached canvas for better performance, else, create new canvas
     this.canvas = this.canvas || (this.canvas = document.createElement('canvas'));
     var context = this.canvas.getContext('2d');
+    var isNewTheme = theme.currentTheme.id.indexOf('uplift') > -1 || theme.currentTheme.id.indexOf('new') > -1;
 
     if (!this.fontCached || !this.fontHeaderCached) {
-      this.fontCached = theme.currentTheme.id && theme.currentTheme.id.indexOf('uplift') > -1 ? '400 16px arial' : '400 14px arial';
-      this.fontHeaderCached = theme.currentTheme.id && theme.currentTheme.id.indexOf('uplift') > -1 ? '600 14px arial' : '700 12px arial';
+      this.fontCached = theme.currentTheme.id && isNewTheme ? '400 16px arial' : '400 14px arial';
+      this.fontHeaderCached = theme.currentTheme.id && isNewTheme ? '600 14px arial' : '700 12px arial';
 
       if (this.settings.rowHeight === 'extra-small') {
-        this.fontCached = theme.currentTheme.id && theme.currentTheme.id.indexOf('uplift') > -1 ? '400 14px arial' : '400 12px arial';
-        this.fontHeaderCached = theme.currentTheme.id && theme.currentTheme.id.indexOf('uplift') > -1 ? '600 14px arial' : '700 12px arial';
+        this.fontCached = theme.currentTheme.id && isNewTheme ? '400 14px arial' : '400 12px arial';
+        this.fontHeaderCached = theme.currentTheme.id && isNewTheme ? '600 14px arial' : '700 12px arial';
       }
     }
 
@@ -94856,7 +97149,7 @@ Datagrid.prototype = {
     var height = parseInt(this.bodyWrapperCenter[0].offsetHeight, 10);
     var headerHeight = this.headerRow ? this.headerRow[0].offsetHeight : 0;
     var tableHeight = parseInt(this.tableBody[0].offsetHeight, 10);
-    this.element.removeClass('has-vertical-scroll has-visible-last-row');
+    this.element.removeClass('has-vertical-scroll has-visible-last-row has-horizontal-scroll');
 
     if (tableHeight < height - headerHeight) {
       this.element.addClass('has-visible-last-row');
@@ -94967,7 +97260,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   calculateColumnWidth: function calculateColumnWidth(col, index) {
-    var _col$formatter, _col$formatter$toStri;
+    var _col$formatter3, _col$formatter3$toStr;
 
     var colPercWidth;
     var visibleColumns = this.visibleColumns(true);
@@ -95032,7 +97325,7 @@ Datagrid.prototype = {
       col.width = colWidth;
     }
 
-    if (!col.width && ((_col$formatter = col.formatter) === null || _col$formatter === void 0 ? void 0 : (_col$formatter$toStri = _col$formatter == null ? void 0 : _col$formatter.toString()) === null || _col$formatter$toStri === void 0 ? void 0 : _col$formatter$toStri == null ? void 0 : _col$formatter$toStri.indexOf('ProcessIndicator')) > -1) {
+    if (!col.width && ((_col$formatter3 = col.formatter) === null || _col$formatter3 === void 0 ? void 0 : (_col$formatter3$toStr = _col$formatter3 == null ? void 0 : _col$formatter3.toString()) === null || _col$formatter3$toStr === void 0 ? void 0 : _col$formatter3$toStr == null ? void 0 : _col$formatter3$toStr.indexOf('ProcessIndicator')) > -1) {
       colWidth = 155;
       col.width = colWidth;
     }
@@ -95067,20 +97360,23 @@ Datagrid.prototype = {
       colWidth = col.maxWidth;
     }
 
-    this.totalWidths[container] += col.hidden ? 0 : colWidth;
-
-    if (this.settings.stretchColumn !== 'last' && this.settings.stretchColumn !== null && this.settings.stretchColumn === col.id) {
-      this.stretchColumnIdx = index;
-      this.stretchColumnWidth = colWidth;
-      return ' style="width: 99%"';
-    } // For the last column stretch it if it doesnt fit the area
-
+    this.totalWidths[container] += col.hidden ? 0 : colWidth; // For the last column stretch it if it doesnt fit the area
 
     if (lastColumn) {
       var diff = this.elemWidth - this.totalWidths[container];
 
       if (this.settings.stretchColumn !== 'last' && this.settings.stretchColumn !== null) {
         this.stretchColumnDiff = diff;
+      }
+
+      if (this.settings.stretchColumn === 'last' || this.settings.stretchColumn === col.id) {
+        this.stretchColumnIdx = index;
+
+        if (diff < colWidth) {
+          this.stretchColumnWidth = colWidth;
+        } else {
+          this.stretchColumnDiff = colWidth = diff;
+        }
       }
 
       if (this.hasLeftPane) {
@@ -95090,6 +97386,12 @@ Datagrid.prototype = {
       if (this.hasRightPane) {
         this.tableRight.css('width', this.totalWidths.right);
       }
+    }
+
+    if (this.settings.stretchColumn !== 'last' && this.settings.stretchColumn !== null && this.settings.stretchColumn === col.id) {
+      this.stretchColumnIdx = index;
+      this.stretchColumnWidth = colWidth;
+      return ' style="width: 99%"';
     }
 
     if (!this.widthPercent && colWidth === undefined) {
@@ -95851,7 +98153,7 @@ Datagrid.prototype = {
   * @private
   */
   personalizeColumns: function personalizeColumns() {
-    var _this6 = this;
+    var _this8 = this;
 
     var self = this;
     var markup = "<div class=\"listview-search alternate-bg\"><label class=\"audible\" for=\"gridfilter\">Search</label><input class=\"searchfield\" placeholder=\"".concat(Locale.translate('SearchColumnName'), "\" name=\"searchfield\" id=\"gridfilter\"></div>");
@@ -95874,10 +98176,11 @@ Datagrid.prototype = {
 
       self.isColumnsChanged = false;
       modal.element.find('.searchfield').searchfield({
-        clearable: true
+        clearable: true,
+        tabbable: false
       });
       modal.element.find('.listview').listview({
-        source: _this6.settings.columns,
+        source: _this8.settings.columns,
         template: "\n            <ul>\n            {{#dataset}}\n              {{#name}}\n              <li>\n                <a href=\"#\" target=\"_self\" tabindex=\"-1\">\n                  <label class=\"inline\">\n                    <input tabindex=\"-1\" type=\"checkbox\" class=\"checkbox\" {{^hideable}}disabled{{/hideable}} {{^hidden}}checked{{/hidden}} data-column-id=\"{{id}}\"/>\n                    <span class=\"label-text\">{{name}}</span>\n                  </label>\n                </a>\n              </li>\n              {{/name}}\n            {{/dataset}}\n            </ul>",
         searchable: true,
         selectOnFocus: false,
@@ -96048,7 +98351,7 @@ Datagrid.prototype = {
   * @private
   */
   createResizeHandle: function createResizeHandle() {
-    var _this7 = this;
+    var _this9 = this;
 
     var self = this;
 
@@ -96099,13 +98402,13 @@ Datagrid.prototype = {
       var node = self.currentHeader;
       var idx = node.index();
       var isLeftPane = self.getContainer(node.attr('data-column-id')) === 'left';
-      _this7.dragging = true;
+      _this9.dragging = true;
       var left = ui.left + 5;
 
-      var currentCol = _this7.bodyColGroup.find('col').eq(idx)[0];
+      var currentCol = _this9.bodyColGroup.find('col').eq(idx)[0];
 
       if (isLeftPane) {
-        currentCol = _this7.bodyColGroupLeft.find('col').eq(idx)[0];
+        currentCol = _this9.bodyColGroupLeft.find('col').eq(idx)[0];
       }
 
       var currentColWidth = parseInt(self.currentHeader.width(), 10);
@@ -96137,19 +98440,19 @@ Datagrid.prototype = {
       }
 
       currentCol.style.width = "".concat(widthToSet, "px");
-      var inRange = idx === _this7.settings.frozenColumns.left.length - 1 || idx <= _this7.settings.frozenColumns.left.length - 1 && diff > 0;
+      var inRange = idx === _this9.settings.frozenColumns.left.length - 1 || idx <= _this9.settings.frozenColumns.left.length - 1 && diff > 0;
 
-      if (inRange && _this7.getContainer(columnId) === 'left') {
-        _this7.totalWidths.left += diff < 0 ? Math.abs(diff) : -diff;
+      if (inRange && _this9.getContainer(columnId) === 'left') {
+        _this9.totalWidths.left += diff < 0 ? Math.abs(diff) : -diff;
 
-        _this7.tableLeft.css('width', _this7.totalWidths.left);
+        _this9.tableLeft.css('width', _this9.totalWidths.left);
       }
 
       if (keyboard.pressedKeys.get('Shift')) {
         usingShiftKey = true;
       }
 
-      if (_this7.settings.resizeMode === 'fit' && !usingShiftKey || _this7.settings.resizeMode === 'flex' && usingShiftKey) {
+      if (_this9.settings.resizeMode === 'fit' && !usingShiftKey || _this9.settings.resizeMode === 'flex' && usingShiftKey) {
         var nextIdx = Locale.isRTL() ? idx + 1 : idx - 1;
         var nextColSettings = self.settings.columns[nextIdx];
 
@@ -96183,7 +98486,7 @@ Datagrid.prototype = {
         nextCol.style.width = "".concat(nextWidthToSet, "px");
       }
     }).on('dragend.datagrid', function () {
-      _this7.dragging = false;
+      _this9.dragging = false;
 
       if (self.isEllipsisActiveHeader(column)) {
         self.activeEllipsisHeader(self.currentHeader[0]);
@@ -96191,7 +98494,7 @@ Datagrid.prototype = {
 
       self.setColumnWidth(columnId, widthToSet);
 
-      if (nextColumnId && (_this7.settings.resizeMode === 'fit' && !usingShiftKey || _this7.settings.resizeMode === 'flex' && usingShiftKey)) {
+      if (nextColumnId && (_this9.settings.resizeMode === 'fit' && !usingShiftKey || _this9.settings.resizeMode === 'flex' && usingShiftKey)) {
         self.setColumnWidth(nextColumnId, nextWidthToSet);
       }
     });
@@ -96448,7 +98751,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   handleEvents: function handleEvents() {
-    var _this8 = this;
+    var _this10 = this;
 
     var self = this; // Set Focus on rows
 
@@ -96464,15 +98767,16 @@ Datagrid.prototype = {
 
 
     if (this.settings.paging) {
-      this.tableBody.on("page.".concat(COMPONENT_NAME$1e), function (e, pagingInfo) {
-        if (pagingInfo.type === 'filtered' && _this8.settings.source) {
+      this.tableBody.on("page.".concat(COMPONENT_NAME$5), function (e, pagingInfo) {
+        if (pagingInfo.type === 'filtered' && _this10.settings.source) {
           return;
         }
 
         self.saveUserSettings();
         self.render(null, pagingInfo);
         self.afterPaging(pagingInfo);
-      }).on("pagesizechange.".concat(COMPONENT_NAME$1e), function (e, pagingInfo) {
+      }).on("pagesizechange.".concat(COMPONENT_NAME$5), function (e, pagingInfo) {
+        pagingInfo.preserveSelected = true;
         self.render(null, pagingInfo);
         self.afterPaging(pagingInfo);
       });
@@ -96527,6 +98831,12 @@ Datagrid.prototype = {
           self.renderRows();
         }
       });
+    }
+
+    if (self.settings.frozenColumns.left.length) {
+      $('body').on('resize.frozencolumns', function () {
+        self.setScrollClass();
+      });
     } // Handle Sorting
 
 
@@ -96551,7 +98861,7 @@ Datagrid.prototype = {
       }
     }); // Add a paste event for handling pasting from excel
 
-    if (self.settings.editable) {
+    if (self.settings.allowPasteFromExcel && self.settings.editable) {
       this.element.off('paste.datagrid').on('paste.datagrid', function (e) {
         var pastedData;
 
@@ -96654,7 +98964,7 @@ Datagrid.prototype = {
         }
       }
 
-      if (canSelect && self.settings.selectable === 'multiple' && e.shiftKey) {
+      if (canSelect && (self.settings.selectable === 'multiple' || self.settings.selectable === 'mixed') && e.shiftKey) {
         self.selectRowsBetweenIndexes([self.lastSelectedRow, target.closest('tr').attr('aria-rowindex') - 1]);
         e.preventDefault();
       } else if (canSelect) {
@@ -96671,8 +98981,7 @@ Datagrid.prototype = {
 
       var isEditable = self.makeCellEditable(self.activeCell.rowIndex, self.activeCell.cell, e);
 
-      if (col.click && typeof col.click === 'function' && target.is('button, input[checkbox], a, a.search-mode i') || target.parent().is('button')) {
-        //eslint-disable-line
+      if (col.click && typeof col.click === 'function' && target.is('button, input[checkbox], a, a.search-mode i') || target.parent().is('button:not(.trigger)')) {
         var rowElem = $(this).closest('tr');
         var rowIdx = self.actualRowIndex(rowElem);
         dataRowIdx = self.dataRowIndex(rowElem);
@@ -96752,12 +99061,12 @@ Datagrid.prototype = {
 
     if (this.stretchColumn !== 'last') {
       $(window).on('orientationchange.datagrid', function () {
-        _this8.rerender();
+        _this10.rerender();
       });
       $(window).on('resize.datagrid', function () {
         var j = 0;
 
-        _this8.clearCache();
+        _this10.clearCache();
 
         for (j = 0; j < self.settings.columns.length; j++) {
           var col = self.settings.columns[j];
@@ -96766,7 +99075,7 @@ Datagrid.prototype = {
 
         if (self.stretchColumnDiff > 0 || self.stretchColumnWidth > 0) {
           var currentCol = self.bodyColGroup.find('col').eq(self.getStretchColumnIdx())[0];
-          currentCol.style.width = "".concat(self.stretchColumnDiff > 0 ? '99%' : "".concat(self.stretchColumnWidth, "px"));
+          currentCol.style.width = "".concat(self.stretchColumnDiff > 0 ? "".concat(self.stretchColumnDiff, "px") : "".concat(self.stretchColumnWidth, "px"));
         }
       });
     }
@@ -97169,7 +99478,7 @@ Datagrid.prototype = {
     }
 
     var selectHandler = function selectHandler(e, args, args2) {
-      var action = args.attr ? args.attr('data-option') : args2.attr('data-option');
+      var action = args !== null && args !== void 0 && (args == null ? void 0 : args.attr) ? args === null || args === void 0 ? void 0 : args == null ? void 0 : args.attr('data-option') : args2 === null || args2 === void 0 ? void 0 : args2 == null ? void 0 : args2.attr('data-option');
 
       if (!action) {
         return;
@@ -97472,7 +99781,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   highlightSearchRows: function highlightSearchRows(term) {
-    var _this9 = this;
+    var _this11 = this;
 
     var self = this;
 
@@ -97485,7 +99794,7 @@ Datagrid.prototype = {
       rowNodes.toArray().forEach(function (row) {
         [].slice.call(row.querySelectorAll('td')).forEach(function (cell) {
           var cellText = cell.innerText.toLowerCase();
-          var isSearchExpandableRow = self.settings.searchExpandableRow ? true : !DOM.hasClass(_this9, 'datagrid-expandable-row');
+          var isSearchExpandableRow = self.settings.searchExpandableRow ? true : !DOM.hasClass(_this11, 'datagrid-expandable-row');
 
           if (cellText.indexOf(term) > -1 && isSearchExpandableRow) {
             found = true;
@@ -97630,8 +99939,12 @@ Datagrid.prototype = {
     }); //eslint-disable-line
     // Sync the Ui and call the events
 
-    this.dontSyncUi = false;
-    this._selectedRows = [];
+    this.dontSyncUi = false; // It should not clear the selectedRows in lookup
+
+    var isLookup = this.element.closest('.lookup-modal');
+    this._selectedRows = isLookup.length === 1 ? this._selectedRows : []; // Update the display counts when unselecting all rows
+
+    this.displayCounts();
 
     if (!nosync) {
       this.syncSelectedUI();
@@ -97650,15 +99963,15 @@ Datagrid.prototype = {
   */
   unSelectAllRowsCurrentPage: function unSelectAllRowsCurrentPage(nosync) {
     var _this$currentPageRows,
-        _this10 = this,
+        _this12 = this,
         _this$currentPageRows2;
 
     var s = this.settings;
     this.dontSyncUi = true;
     (_this$currentPageRows = this.currentPageRows) === null || _this$currentPageRows === void 0 ? void 0 : _this$currentPageRows == null ? void 0 : _this$currentPageRows.forEach(function (row) {
-      var idx = s.groupable ? row.dataIndex : _this10.pagingRowIndex(row.dataIndex);
+      var idx = s.groupable ? row.dataIndex : _this12.pagingRowIndex(row.dataIndex);
 
-      _this10.unselectRow(idx, true, true);
+      _this12.unselectRow(idx, true, true);
     });
     var dataset = this.getActiveDataset();
     var arrIdx = ((_this$currentPageRows2 = this.currentPageRows) === null || _this$currentPageRows2 === void 0 ? void 0 : _this$currentPageRows2 == null ? void 0 : _this$currentPageRows2.map(function (x) {
@@ -97675,6 +99988,8 @@ Datagrid.prototype = {
     if (!nosync) {
       this.syncSelectedUI();
     }
+
+    this.element.triggerHandler('selected', [this._selectedRows, 'deselectall']);
   },
 
   /**
@@ -97733,7 +100048,8 @@ Datagrid.prototype = {
 
     checkbox = elem.find('.datagrid-selection-checkbox').closest('td');
     elem.addClass(selectClasses).attr('aria-selected', 'true');
-    checkbox.find('.datagrid-cell-wrapper .datagrid-checkbox').addClass('is-checked').attr('aria-checked', 'true').attr('aria-label', 'Selected');
+    checkbox.attr('aria-checked', 'true');
+    checkbox.find('.datagrid-cell-wrapper .datagrid-checkbox').addClass('is-checked');
 
     if (data) {
       data._selected = true;
@@ -97748,7 +100064,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   selectRow: function selectRow(idx, nosync, noTrigger) {
-    var _this11 = this;
+    var _this13 = this;
 
     var rowNode = null;
     var dataRowIndex;
@@ -97792,7 +100108,7 @@ Datagrid.prototype = {
     };
 
     var isExists = function isExists(i, elem) {
-      return !!_this11._selectedRows.filter(function (n) {
+      return !!_this13._selectedRows.filter(function (n) {
         return isMatch(i, elem, n);
       }).length;
     };
@@ -98104,19 +100420,19 @@ Datagrid.prototype = {
    * @returns {void}
    */
   syncSelectedRows: function syncSelectedRows() {
-    var _this12 = this;
+    var _this14 = this;
 
     var s = this.settings;
     var dataset = s.groupable && this.originalDataset ? this.originalDataset : s.dataset;
     var idx = null;
 
     var selectNode = function selectNode(i) {
-      var elem = s.groupable ? _this12.dataRowNode(idx) : _this12.visualRowNode(idx);
+      var elem = s.groupable ? _this14.dataRowNode(idx) : _this14.visualRowNode(idx);
 
       if (elem[0]) {
-        _this12._selectedRows[i].elem = elem;
+        _this14._selectedRows[i].elem = elem;
 
-        _this12.selectNode(elem, idx, dataset[idx], true);
+        _this14.selectNode(elem, idx, dataset[idx], true);
       }
     };
 
@@ -98242,7 +100558,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   syncSelectedUI: function syncSelectedUI() {
-    var _this13 = this;
+    var _this15 = this;
 
     var dataset = this.getActiveDataset();
     var currentRows = dataset; // Selected all only on active page
@@ -98278,13 +100594,13 @@ Datagrid.prototype = {
 
     if (this._selectedRows.length === 0) {
       this.contextualToolbar.one('animateclosedcomplete.datagrid', function () {
-        _this13.contextualToolbar.css('display', 'none');
+        _this15.contextualToolbar.css('display', 'none');
       }).animateClosed();
     }
 
     if (this._selectedRows.length > 0 && this.contextualToolbar.height() === 0) {
       this.contextualToolbar.css('display', 'block').one('animateopencomplete.datagrid', function () {
-        $(this).triggerHandler('recalculate-buttons');
+        $(this).removeClass('is-hidden').triggerHandler('recalculate-buttons');
       }).animateOpen();
     }
   },
@@ -98410,7 +100726,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   activateAllRowNodes: function activateAllRowNodes(idx, dataset) {
-    var _this14 = this;
+    var _this16 = this;
 
     if (typeof idx !== 'number' || idx < 0) {
       return;
@@ -98428,7 +100744,7 @@ Datagrid.prototype = {
     }];
 
     var doRowactivated = function doRowactivated() {
-      var rowNodes = s.paging && s.source && s.selectable === 'mixed' ? _this14.rowNodesByDataIndex(idx).toArray() : _this14.rowNodes(idx).toArray();
+      var rowNodes = s.paging && s.source && s.selectable === 'mixed' ? _this16.rowNodesByDataIndex(idx).toArray() : _this16.rowNodes(idx).toArray();
       rowNodes.forEach(function (rowElem) {
         rowElem.classList.add('is-rowactivated');
       });
@@ -98447,7 +100763,7 @@ Datagrid.prototype = {
        * @property {object} args.item The current sort column.
        */
 
-      _this14.element.triggerHandler('rowactivated', args);
+      _this16.element.triggerHandler('rowactivated', args);
     };
 
     if (dataset[idx]) {
@@ -98611,6 +100927,8 @@ Datagrid.prototype = {
       return;
     }
 
+    var rowData = s.dataset[idx];
+
     var getSelUniqueRowID = function getSelUniqueRowID(node) {
       return node ? node.uniqueRowID : null;
     }; // Unselect it
@@ -98651,7 +100969,8 @@ Datagrid.prototype = {
 
       if (self.columnIdxById('selectionCheckbox') !== -1) {
         checkbox = self.cellNode(elem, self.columnIdxById('selectionCheckbox'));
-        checkbox.find('.datagrid-cell-wrapper .datagrid-checkbox').removeClass('is-checked no-animate').attr('aria-checked', 'false').removeAttr('aria-label');
+        checkbox.attr('aria-checked', 'false');
+        checkbox.find('.datagrid-cell-wrapper .datagrid-checkbox').removeClass('is-checked no-animate').removeAttr('aria-label');
       }
 
       if (s.treeGrid) {
@@ -98668,7 +100987,6 @@ Datagrid.prototype = {
         }
       } else {
         var selIdx = elem.length ? self.dataRowIndex(elem) : index;
-        var rowData;
 
         if (selIdx !== undefined && selIdx > -1) {
           rowData = s.dataset[selIdx];
@@ -98728,7 +101046,7 @@ Datagrid.prototype = {
     }
 
     if (!noTrigger) {
-      self.element.triggerHandler('selected', [self._selectedRows, 'deselect']);
+      self.element.triggerHandler('selected', [self._selectedRows, 'deselect', rowData]);
     }
   },
 
@@ -98744,10 +101062,12 @@ Datagrid.prototype = {
     var nodes; // Not multiselect
 
     if (!isMultiselect) {
-      checkbox.find('.datagrid-cell-wrapper .datagrid-checkbox').removeClass('is-checked is-partial').attr('aria-checked', 'false');
+      checkbox.find('.datagrid-cell-wrapper .datagrid-checkbox').removeClass('is-checked is-partial');
+      checkbox.attr('aria-checked', 'false');
 
       if (node.is('.is-selected')) {
         checkbox.find('.datagrid-cell-wrapper .datagrid-checkbox').addClass('is-checked').attr('aria-checked', 'true');
+        checkbox.attr('aria-checked', 'true');
       }
 
       return;
@@ -98758,12 +101078,15 @@ Datagrid.prototype = {
         var nodeToUse = $(this);
         var checkboxToUse = self.cellNode(nodeToUse, self.columnIdxById('selectionCheckbox'));
         var status = self.getSelectedStatus(nodeToUse, isFirstSkipped);
-        checkboxToUse.find('.datagrid-cell-wrapper .datagrid-checkbox').removeClass('is-checked is-partial').attr('aria-checked', 'false');
+        checkboxToUse.find('.datagrid-cell-wrapper .datagrid-checkbox').removeClass('is-checked is-partial');
+        checkboxToUse.attr('aria-checked', 'false');
 
         if (status === 'mixed') {
           checkboxToUse.find('.datagrid-cell-wrapper .datagrid-checkbox').addClass('is-checked is-partial').attr('aria-checked', 'mixed');
+          checkboxToUse.attr('aria-checked', 'mixed');
         } else if (status) {
-          checkboxToUse.find('.datagrid-cell-wrapper .datagrid-checkbox').addClass('is-checked').attr('aria-checked', 'true');
+          checkboxToUse.find('.datagrid-cell-wrapper .datagrid-checkbox').addClass('is-checked');
+          checkboxToUse.attr('aria-checked', 'true');
         }
       });
     }; // Multiselect
@@ -98994,7 +101317,7 @@ Datagrid.prototype = {
   * @returns {void}
   */
   handleKeys: function handleKeys() {
-    var _this15 = this;
+    var _this17 = this;
 
     var self = this;
     var checkbox = $('th .datagrid-checkbox', self.headerRow); // Handle header navigation
@@ -99004,21 +101327,38 @@ Datagrid.prototype = {
       var th = $(this);
       var index = self.columnIdxById(th.attr('data-column-id'));
       var last = self.visibleColumns().length - 1;
+      var targetJq = $(e.target);
       var triggerEl;
       var move;
 
-      if ($(e.target).closest('.popupmenu').length > 0) {
+      if (targetJq.closest('.popupmenu').length > 0) {
         return;
       } // Enter or Space
 
 
       if (key === 13 || key === 32) {
         triggerEl = self.settings.selectable === 'multiple' && index === 0 ? $('.datagrid-checkbox', th) : th;
-        triggerEl.trigger('click.datagrid').focus();
-        var selectionCheckbox = triggerEl[0].dataset.columnId === 'selectionCheckbox' || triggerEl.prevObject[0].dataset.columnId === 'selectionCheckbox';
 
-        if ((self.settings.selectable === 'multiple' || this.settings.selectable === 'mixed') && selectionCheckbox) {
-          checkbox.addClass('is-checked').removeClass('is-partial').attr('aria-checked', 'true');
+        if (targetJq.is('.btn-menu.btn-filter')) {
+          triggerEl.trigger('click.datagrid');
+          return;
+        }
+
+        var isSelCheckbox = function isSelCheckbox(el) {
+          var _el$;
+
+          return el && ((_el$ = el[0]) === null || _el$ === void 0 ? void 0 : _el$ == null ? void 0 : _el$.dataset.columnId) === 'selectionCheckbox';
+        };
+
+        var selectionCheckbox = isSelCheckbox(triggerEl) || isSelCheckbox(triggerEl.prevObject);
+
+        if (targetJq.is('th.is-sortable')) {
+          self.setSortColumn($(this).attr('data-column-id'));
+        }
+
+        if ((self.settings.selectable === 'multiple' || self.settings.selectable === 'mixed') && selectionCheckbox) {
+          checkbox.addClass('is-checked').removeClass('is-partial');
+          checkbox.closest('th').attr('aria-checked', 'true');
 
           if (self.recordCount === self._selectedRows.length) {
             if (self.settings.selectAllCurrentPage) {
@@ -99081,7 +101421,7 @@ Datagrid.prototype = {
       var handled = false; // F2 - toggles actionableMode "true" and "false"
       // Force to not toggle, if "inlineMode: true"
 
-      if (key === 113 && !_this15.inlineMode) {
+      if (key === 113 && !_this17.inlineMode) {
         self.settings.actionableMode = !self.settings.actionableMode;
         handled = true;
       }
@@ -99183,6 +101523,12 @@ Datagrid.prototype = {
           e.preventDefault();
           return;
         }
+      } // Open Context Menu
+
+
+      if (key === 121 && e.shiftKey) {
+        // Shift F10
+        target.trigger('contextmenu');
       } // Tab, Left, Up, Right and Down arrow keys.
 
 
@@ -99359,7 +101705,7 @@ Datagrid.prototype = {
           return;
         }
 
-        if (self.settings.selectable === 'multiple' && e.shiftKey) {
+        if ((self.settings.selectable === 'multiple' || self.settings.selectable === 'mixed') && e.shiftKey) {
           self.selectRowsBetweenIndexes([self.lastSelectedRow, row.attr('aria-rowindex') - 1]);
         } else {
           self.toggleRowSelection(row);
@@ -99430,7 +101776,8 @@ Datagrid.prototype = {
 
 
       if ((self.settings.selectable === 'multiple' || self.settings.selectable === 'mixed') && !self.editor && (e.ctrlKey || e.metaKey) && key === 65) {
-        checkbox.addClass('is-checked').removeClass('is-partial').attr('aria-checked', 'true');
+        checkbox.addClass('is-checked').removeClass('is-partial');
+        checkbox.closest('th').attr('aria-checked', 'true');
 
         if (self.recordCount === self._selectedRows.length) {
           if (self.settings.selectAllCurrentPage) {
@@ -99600,7 +101947,7 @@ Datagrid.prototype = {
    * @returns {boolean} returns true if the cell is editable
    */
   makeCellEditable: function makeCellEditable(row, cell, event) {
-    var _this$editor;
+    var _col$formatter4, _this$editor;
 
     if (this.activeCell.node.closest('tr').hasClass('datagrid-summary-row')) {
       return;
@@ -99705,7 +102052,13 @@ Datagrid.prototype = {
     this.editor = new col.editor(idx, cell, cellValue, cellNode, col, event, this, rowData); // eslint-disable-line
 
     this.editor.row = idx;
-    this.editor.cell = cell;
+    this.editor.cell = cell; // Certain types we just use contents
+
+    var formatterStr = ((_col$formatter4 = col.formatter) === null || _col$formatter4 === void 0 ? void 0 : _col$formatter4 == null ? void 0 : _col$formatter4.toString()) || '';
+
+    if (formatterStr.indexOf('function Badge') === 0 || formatterStr.indexOf('function Alert') === 0) {
+      this.editor.useValue = true;
+    }
 
     if (this.settings.onEditCell) {
       this.settings.onEditCell(this.editor);
@@ -99898,7 +102251,7 @@ Datagrid.prototype = {
    */
   validateCell: function validateCell(row, cell) {
     var _$,
-        _this16 = this;
+        _this18 = this;
 
     var self = this;
     var column = this.columnSettings(cell);
@@ -99976,13 +102329,13 @@ Datagrid.prototype = {
         if (messageText !== '') {
           self.showCellError(row, cell, messageText, validationType.type);
 
-          var rowNode = _this16.dataRowNode(row);
+          var rowNode = _this18.dataRowNode(row);
 
           self.element.trigger("cell".concat(validationType.type), {
             row: row,
             cell: cell,
             message: messageText,
-            target: _this16.cellNode(rowNode, cell),
+            target: _this18.cellNode(rowNode, cell),
             value: cellValue,
             column: column
           });
@@ -100049,7 +102402,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   showNonVisibleCellErrors: function showNonVisibleCellErrors() {
-    var _this17 = this;
+    var _this19 = this;
 
     // Create empty toolbar
     if (!this.toolbar) {
@@ -100068,11 +102421,11 @@ Datagrid.prototype = {
       var _loop4 = function _loop4(props) {
         // eslint-disable-line
         var validationType = $.fn.validation.ValidationTypes[props].type;
-        var errors = $.grep(_this17.nonVisibleCellErrors, function (error) {
+        var errors = $.grep(_this19.nonVisibleCellErrors, function (error) {
           return error.type === validationType;
         });
 
-        _this17.showNonVisibleCellErrorType(errors, validationType);
+        _this19.showNonVisibleCellErrorType(errors, validationType);
       };
 
       // process via type
@@ -100884,6 +103237,15 @@ Datagrid.prototype = {
       cellNode[0].classList.add('is-dirty-cell');
       this.setDirtyIndicator(row, cell, true);
     }
+
+    if (typeof d.originalVal === 'string' || d.originalVal instanceof String) {
+      var _d$originalVal, _d$value;
+
+      if (((_d$originalVal = d.originalVal) === null || _d$originalVal === void 0 ? void 0 : _d$originalVal == null ? void 0 : _d$originalVal.trim()) === ((_d$value = d.value) === null || _d$value === void 0 ? void 0 : _d$value == null ? void 0 : _d$value.trim())) {
+        this.dirtyArray[row][cell].isDirty = false;
+        this.setDirtyIndicator(row, cell, false);
+      }
+    }
   },
 
   /**
@@ -101570,8 +103932,8 @@ Datagrid.prototype = {
           right: detail.eq(2)[0]
         };
         var changedEventStr = {
-          theme: "themechanged.".concat(COMPONENT_NAME$1e),
-          rowheight: "rowheightchanged.".concat(COMPONENT_NAME$1e)
+          theme: "themechanged.".concat(COMPONENT_NAME$5),
+          rowheight: "rowheightchanged.".concat(COMPONENT_NAME$5)
         };
         $('html').off(changedEventStr.theme).on(changedEventStr.theme, function () {
           self.frozenExpandRowSetHeight(elms);
@@ -101662,7 +104024,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   frozenExpandRowAcrossAllCells: function frozenExpandRowAcrossAllCells() {
-    var _this18 = this;
+    var _this20 = this;
 
     if (this.settings.frozenColumns.left.length || this.settings.frozenColumns.right.length) {
       // Selector
@@ -101708,11 +104070,11 @@ Datagrid.prototype = {
             setTimeout(function () {
               elms.rows.center.classList.add(cssClass);
 
-              _this18.frozenExpandRowSetHeight(elms.details);
+              _this20.frozenExpandRowSetHeight(elms.details);
 
               elms.padding.style.opacity = '';
               $(window).on('resize.datagrid.expandedfrozen', function () {
-                _this18.frozenExpandRowSetHeight(elms.details);
+                _this20.frozenExpandRowSetHeight(elms.details);
               });
             }, 10);
           }
@@ -101959,7 +104321,7 @@ Datagrid.prototype = {
   */
   syncDatasetWithSelectedRows: function syncDatasetWithSelectedRows() {
     var _s$columnIds,
-        _this19 = this;
+        _this21 = this;
 
     var s = this.settings;
 
@@ -101972,7 +104334,7 @@ Datagrid.prototype = {
     var idx = -1;
 
     var _loop5 = function _loop5(i, _data) {
-      if (s.groupable && !_this19.originalDataset) {
+      if (s.groupable && !_this21.originalDataset) {
         // Object.values is not supported in IE11; hence usage of Object.keys and Map
         for (var k = 0; k < Object.keys(dataset[i]).length; k++) {
           idx++;
@@ -101980,28 +104342,28 @@ Datagrid.prototype = {
             return dataset[i][v];
           });
 
-          if (_this19.isRowSelected(_data)) {
-            _this19._selectedRows.push({
+          if (_this21.isRowSelected(_data)) {
+            _this21._selectedRows.push({
               idx: idx,
               data: _data,
-              elem: _this19.dataRowNode(idx),
+              elem: _this21.dataRowNode(idx),
               group: dataset[i],
-              page: _this19.pagerAPI ? _this19.pagerAPI.activePage : 1,
+              page: _this21.pagerAPI ? _this21.pagerAPI.activePage : 1,
               pagingIdx: idx,
-              pagesize: _this19.settings.pagesize
+              pagesize: _this21.settings.pagesize
             });
           }
         }
       } else {
         _data = s.treeGrid ? dataset[i].node : dataset[i];
 
-        if (_this19.isRowSelected(_data)) {
-          _this19._selectedRows.push({
+        if (_this21.isRowSelected(_data)) {
+          _this21._selectedRows.push({
             idx: i,
             data: _data,
-            elem: _this19.visualRowNode(i),
-            pagesize: _this19.settings.pagesize,
-            page: _this19.pagerAPI ? _this19.pagerAPI.activePage : 1,
+            elem: _this21.visualRowNode(i),
+            pagesize: _this21.settings.pagesize,
+            page: _this21.pagerAPI ? _this21.pagerAPI.activePage : 1,
             pagingIdx: i
           });
         }
@@ -102176,7 +104538,7 @@ Datagrid.prototype = {
   * @returns {void}
   */
   appendTooltip: function appendTooltip(extraClass) {
-    var _this20 = this;
+    var _this22 = this;
 
     var defaultClass = 'grid-tooltip';
     var regExp = new RegExp("\\b".concat(defaultClass, "\\b"), 'g'); // Set default css class
@@ -102201,7 +104563,7 @@ Datagrid.prototype = {
       if (this.isTouch) {
         this.tooltip.style.pointerEvents = 'auto';
         $(this.tooltip).on('touchend.gridtooltip', function () {
-          _this20.hideTooltip();
+          _this22.hideTooltip();
         });
       }
     }
@@ -102403,7 +104765,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   showTooltip: function showTooltip(options) {
-    var _this21 = this;
+    var _this23 = this;
 
     if (this.tooltip) {
       var tooltip = $(this.tooltip);
@@ -102421,7 +104783,7 @@ Datagrid.prototype = {
 
         if (options.extraClassList) {
           options.extraClassList.map(function (className) {
-            return _this21.tooltip.classList.add(className);
+            return _this23.tooltip.classList.add(className);
           });
         }
 
@@ -102443,9 +104805,9 @@ Datagrid.prototype = {
         }
 
         tooltip.one('afterplace.gridtooltip', function (e, placementObj) {
-          _this21.handleAfterPlaceTooltip(e, tooltip, placementObj);
+          _this23.handleAfterPlaceTooltip(e, tooltip, placementObj);
         }).on('click.gridtooltip', function () {
-          _this21.hideTooltip();
+          _this23.hideTooltip();
         }); // If not already have place instance
 
         if (!tooltip.data('place')) {
@@ -102458,7 +104820,7 @@ Datagrid.prototype = {
         tooltip.data('gridtooltip', true); // Hide the tooltip when the page scrolls.
 
         $('body, .scrollable').off('scroll.gridtooltip').on('scroll.gridtooltip', function () {
-          _this21.hideTooltip();
+          _this23.hideTooltip();
         });
       }
     }
@@ -102487,7 +104849,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   hideTooltip: function hideTooltip() {
-    var _this22 = this;
+    var _this24 = this;
 
     if (this.tooltip) {
       this.removeTooltipData(this.tooltip); // Remove flag as gridtooltip
@@ -102499,7 +104861,7 @@ Datagrid.prototype = {
 
 
     $('body, .scrollable').off('scroll.gridtooltip', function () {
-      _this22.hideTooltip();
+      _this24.hideTooltip();
     });
   },
 
@@ -102542,7 +104904,7 @@ Datagrid.prototype = {
    * @returns {void}
    */
   removeTooltip: function removeTooltip() {
-    var _this23 = this;
+    var _this25 = this;
 
     if (this.tooltip) {
       var tooltip = $(this.tooltip); // Set selector
@@ -102572,7 +104934,7 @@ Datagrid.prototype = {
 
       var nodes = [].slice.call(this.element[0].querySelectorAll(selector.str));
       nodes.forEach(function (node) {
-        return _this23.removeTooltipData(node);
+        return _this25.removeTooltipData(node);
       });
 
       if (this.tooltip.parentNode) {
@@ -102584,18 +104946,18 @@ Datagrid.prototype = {
   },
 
   /**
-  * Unwrap the grid back to a simple div, and destory all events and pointers.
+  * Unwrap the grid back to a simple div, and destroy all events and pointers.
   * @returns {object} The plugin api for chaining.
   */
   destroy: function destroy() {
     // Remove grid tooltip
     this.removeTooltip();
-    $('html').off("themechanged.".concat(COMPONENT_NAME$1e)); // Unbind context menu events
+    $('html').off("themechanged.".concat(COMPONENT_NAME$5)); // Unbind context menu events
 
     this.element.add(this.element.find('*')).off('selected.gridpopupth close.gridpopupth selected.gridpopuptr close.gridpopuptr selected.gridpopupbtn close.gridpopupbtn'); // UnBind the pager
 
     if (this.pagerAPI) {
-      this.tableBody.off("page.".concat(COMPONENT_NAME$1e, " pagesizechange.").concat(COMPONENT_NAME$1e));
+      this.tableBody.off("page.".concat(COMPONENT_NAME$5, " pagesizechange.").concat(COMPONENT_NAME$5));
       this.pagerAPI.destroy();
     } // Remove the toolbar, clean the div out and remove the pager
 
@@ -102628,10 +104990,10 @@ Datagrid.prototype = {
     }
 
     this.element.next('.pager-toolbar').remove();
-    $.removeData(this.element[0], COMPONENT_NAME$1e);
+    $.removeData(this.element[0], COMPONENT_NAME$5);
     this.element.off();
     $(document).off('touchstart.datagrid touchend.datagrid touchcancel.datagrid click.datagrid touchmove.datagrid');
-    $('body').off('resize.vtable resize.datagrid');
+    $('body').off('resize.vtable resize.datagrid resize.frozencolumns');
     $(window).off('orientationchange.datagrid');
     $(window).off('resize.datagrid');
     return this;
@@ -102677,17 +105039,17 @@ Datagrid.prototype = {
 
 $.fn.datagrid = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1e);
+    var instance = $.data(this, COMPONENT_NAME$5);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1e, new Datagrid(this, settings));
+      instance = $.data(this, COMPONENT_NAME$5, new Datagrid(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$1f = 'formcompact'; // Settings
+var COMPONENT_NAME$4 = 'formcompact'; // Settings
 
 var FORMCOMPACT_DEFAULTS = {}; // Others
 
@@ -102748,9 +105110,9 @@ FormCompact.prototype = {
   handleEvents: function handleEvents() {
     var _this2 = this;
 
-    $(this.form).on("focusin.".concat(COMPONENT_NAME$1f), 'input', function (e) {
+    $(this.form).on("focusin.".concat(COMPONENT_NAME$4), 'input', function (e) {
       return _this2.handleFocusIn(e);
-    }).on("focusout.".concat(COMPONENT_NAME$1f), 'input', function (e) {
+    }).on("focusout.".concat(COMPONENT_NAME$4), 'input', function (e) {
       return _this2.handleFocusOut(e);
     }); // Listen to attribute changes (disabled/readonly) on cells
 
@@ -102845,7 +105207,7 @@ FormCompact.prototype = {
   teardown: function teardown() {
     this.inputsObserver.disconnect();
     delete this.inputsObserver;
-    $(this.form).off(["focusin.".concat(COMPONENT_NAME$1f), "focusout.".concat(COMPONENT_NAME$1f)].join(' '));
+    $(this.form).off(["focusin.".concat(COMPONENT_NAME$4), "focusout.".concat(COMPONENT_NAME$4)].join(' '));
     delete this.form;
     delete this.inputs;
   },
@@ -102855,7 +105217,7 @@ FormCompact.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element, COMPONENT_NAME$1f);
+    $.removeData(this.element, COMPONENT_NAME$4);
   }
 };
 
@@ -102867,17 +105229,17 @@ FormCompact.prototype = {
 
 $.fn.formcompact = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1f);
+    var instance = $.data(this, COMPONENT_NAME$4);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1f, new FormCompact(this, settings));
+      instance = $.data(this, COMPONENT_NAME$4, new FormCompact(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$1g = 'header';
+var COMPONENT_NAME$3 = 'header';
 /**
  * Special Header with Toolbar at the top of the page used to faciliate IDS Enterprise Nav Patterns
  * @class Header
@@ -103301,16 +105663,16 @@ Header.prototype = {
     var _this = this;
 
     var self = this;
-    this.element.on("updated.".concat(COMPONENT_NAME$1g), function (e, settings) {
+    this.element.on("updated.".concat(COMPONENT_NAME$3), function (e, settings) {
       self.updated(settings);
-    }).on("reset.".concat(COMPONENT_NAME$1g), function () {
+    }).on("reset.".concat(COMPONENT_NAME$3), function () {
       self.reset();
-    }).on("drilldown.".concat(COMPONENT_NAME$1g), function (e, viewTitle) {
+    }).on("drilldown.".concat(COMPONENT_NAME$3), function (e, viewTitle) {
       self.drilldown(viewTitle);
-    }).on("drillup.".concat(COMPONENT_NAME$1g), function (e, viewTitle) {
+    }).on("drillup.".concat(COMPONENT_NAME$3), function (e, viewTitle) {
       self.drillup(viewTitle);
     });
-    $('html').on("themechanged.".concat(COMPONENT_NAME$1g), function () {
+    $('html').on("themechanged.".concat(COMPONENT_NAME$3), function () {
       _this.updatePageChanger();
     }); // Events for the title button.  e.preventDefault(); stops Application Menu
     // functionality while drilled
@@ -103318,7 +105680,7 @@ Header.prototype = {
     this.handleTitleButtonEvents(); // Popupmenu Events
 
     if (this.titlePopup && this.titlePopup.length) {
-      this.titlePopup.on("selected.".concat(COMPONENT_NAME$1g), function (e, anchor) {
+      this.titlePopup.on("selected.".concat(COMPONENT_NAME$3), function (e, anchor) {
         var text;
 
         if (!(anchor instanceof $)) {
@@ -103347,7 +105709,7 @@ Header.prototype = {
       return;
     }
 
-    this.titleButton.bindFirst("click.".concat(COMPONENT_NAME$1g), function (e) {
+    this.titleButton.bindFirst("click.".concat(COMPONENT_NAME$3), function (e) {
       if (_this2.levelsDeep.length > 1) {
         e.stopImmediatePropagation();
 
@@ -103391,18 +105753,18 @@ Header.prototype = {
 
       if (link !== undefined && !(link instanceof $) && link.element instanceof HTMLElement) {
         link = $(link.element);
-      } // Change Theme with Variant
+      } // Change Theme with Mode
 
 
       var themeNameAttr = link.attr('data-theme-name');
-      var themeVariantAttr = link.attr('data-theme-variant');
+      var themeModeAttr = link.attr('data-theme-mode');
 
-      if (themeNameAttr || themeVariantAttr) {
+      if (themeNameAttr || themeModeAttr) {
         var name = menu.find('.is-checked a[data-theme-name]').attr('data-theme-name');
-        var variant = menu.find('.is-checked a[data-theme-variant]').attr('data-theme-variant');
+        var mode = menu.find('.is-checked a[data-theme-mode]').attr('data-theme-mode');
 
-        if (name && variant) {
-          personalization.setTheme("".concat(name, "-").concat(variant));
+        if (name && mode) {
+          personalization.setTheme("".concat(name, "-").concat(mode));
         }
 
         return;
@@ -103430,12 +105792,12 @@ Header.prototype = {
 
     var currentTheme = theme.currentTheme;
 
-    if (currentTheme.id !== 'theme-soho-light') {
+    if (currentTheme.id !== 'theme-new-light' || currentTheme.id !== 'theme-uplift-light') {
       var themeParts = currentTheme.id.split('-');
       $('body').find('.popupmenu [data-theme-name]').parent().removeClass('is-checked');
       $('body').find(".popupmenu [data-theme-name=\"".concat(themeParts[0], "-").concat(themeParts[1], "\"]")).parent().addClass('is-checked');
-      $('body').find('.popupmenu [data-theme-variant]').parent().removeClass('is-checked');
-      $('body').find(".popupmenu [data-theme-variant=\"".concat(themeParts[2], "\"]")).parent().addClass('is-checked');
+      $('body').find('.popupmenu [data-theme-mode]').parent().removeClass('is-checked');
+      $('body').find(".popupmenu [data-theme-mode=\"".concat(themeParts[2], "\"]")).parent().addClass('is-checked');
     }
 
     if (personalization.settings.colors) {
@@ -103582,7 +105944,7 @@ Header.prototype = {
         appMenu.modifyTriggers([this.titleButton], true, true);
       }
 
-      this.titleButton.off("click.".concat(COMPONENT_NAME$1g)).remove();
+      this.titleButton.off("click.".concat(COMPONENT_NAME$3)).remove();
       this.titleButton = $(); // Need to trigger an update on the toolbar control to make sure
       // tabindexes and events are all firing on the button
 
@@ -103753,15 +106115,15 @@ Header.prototype = {
    */
   unbind: function unbind() {
     if (this.titleButton && this.titleButton.length) {
-      this.titleButton.off("click.".concat(COMPONENT_NAME$1g));
+      this.titleButton.off("click.".concat(COMPONENT_NAME$3));
     }
 
     if (this.titlePopup && this.titlePopup.length) {
-      this.titlePopup.off("updated.".concat(COMPONENT_NAME$1g));
+      this.titlePopup.off("updated.".concat(COMPONENT_NAME$3));
     }
 
-    this.element.off(["updated.".concat(COMPONENT_NAME$1g), "reset.".concat(COMPONENT_NAME$1g), "drilldown.".concat(COMPONENT_NAME$1g), "drillup.".concat(COMPONENT_NAME$1g)].join(' '));
-    $('html').off("themechanged.".concat(COMPONENT_NAME$1g));
+    this.element.off(["updated.".concat(COMPONENT_NAME$3), "reset.".concat(COMPONENT_NAME$3), "drilldown.".concat(COMPONENT_NAME$3), "drillup.".concat(COMPONENT_NAME$3)].join(' '));
+    $('html').off("themechanged.".concat(COMPONENT_NAME$3));
     return this;
   },
 
@@ -103800,7 +106162,7 @@ Header.prototype = {
       delete this.changer;
     }
 
-    $.removeData(this.element[0], COMPONENT_NAME$1g);
+    $.removeData(this.element[0], COMPONENT_NAME$3);
   }
 };
 
@@ -103812,17 +106174,17 @@ Header.prototype = {
 
 $.fn.header = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1g);
+    var instance = $.data(this, COMPONENT_NAME$3);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1g, new Header(this, settings));
+      instance = $.data(this, COMPONENT_NAME$3, new Header(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$1h = 'multitabs'; // Default Settings for MultiTabs
+var COMPONENT_NAME$2 = 'multitabs'; // Default Settings for MultiTabs
 
 var MULTITABS_DEFAULTS = {
   tabContainers: []
@@ -104169,7 +106531,7 @@ MultiTabs.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element[0], COMPONENT_NAME$1h);
+    $.removeData(this.element[0], COMPONENT_NAME$2);
   }
 };
 
@@ -104181,17 +106543,17 @@ MultiTabs.prototype = {
 
 $.fn.multitabs = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1h);
+    var instance = $.data(this, COMPONENT_NAME$2);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1h, new MultiTabs(this, settings));
+      instance = $.data(this, COMPONENT_NAME$2, new MultiTabs(this, settings));
     }
   });
 };
 
-var COMPONENT_NAME$1i = 'listdetail'; // Available breakpoint types for Edge Bleeding
+var COMPONENT_NAME$1 = 'listdetail'; // Available breakpoint types for Edge Bleeding
 
 var LIST_DETAIL_EDGE_BLEED_BREAKPOINTS = ['phone', 'tablet'];
 /**
@@ -104207,6 +106569,7 @@ var LIST_DETAIL_EDGE_BLEED_BREAKPOINTS = ['phone', 'tablet'];
  * @param {HTMLElement} [settings.listElement] the base element for the Soho component that will be used as the "List" to be chosen from.
  * Must implement a Soho Accordion or Listview element.
  * @param {HTMLElement} [settings.listCloseElement]  defines a trigger button element that can be used to collapse a bleeding-edge list drawer.
+ * @param {HTMLElement} [settings.toggleElement] defines a trigger button that will be used to "toggle" the display of the listElement.
  * @param {HTMLElement} [settings.detailElement] the base element for the Soho component that will be used as "detail" or content area that can
  * change based on what is picked from the list.
  */
@@ -104217,6 +106580,7 @@ var LIST_DETAIL_DEFAULTS = {
   edgeBleedBreakpoint: LIST_DETAIL_EDGE_BLEED_BREAKPOINTS[0],
   listElement: undefined,
   listCloseElement: undefined,
+  toggleElement: undefined,
   detailElement: undefined
 }; // Available Soho Elements to be used as the list
 
@@ -104290,15 +106654,17 @@ ListDetail.prototype = {
     });
     this.setInternalElementReference('detailElement');
     this.setInternalElementReference('backElement');
-    this.setInternalElementReference('listCloseElement'); // Single sanity-check for showing the detail area.
+    this.setInternalElementReference('listCloseElement');
+    this.setInternalElementReference('toggleElement'); // Single confidence check for showing the detail area.
 
     this.showDetail = false;
 
     if (this.element.classList.contains('show-detail')) {
       this.showDetail = true;
-    } // If a proper listElement has been provided, set a flag on its Component API
-    // that notifies the API that it's controlling an adjacent detail area.
+    }
 
+    this.showSidebar = true; // If a proper listElement has been provided, set a flag on its Component API
+    // that notifies the API that it's controlling an adjacent detail area.
 
     if (this.listElement) {
       this.listComponentType = getListType(this.listElement);
@@ -104325,6 +106691,19 @@ ListDetail.prototype = {
       }
 
       this.detailContainsBackElement = this.detailElement.contains(this.backElement);
+    }
+
+    if (this.toggleElement) {
+      this.mainElement = this.element.querySelector('.main');
+      this.sidebarElement = this.element.querySelector('.sidebar');
+      this.toggleElement.classList.add('list-detail-toggle-button'); // If it's an icon button, get a reference to the icon so we can change its state.
+
+      var _hasIcon = this.toggleElement.querySelector('.icon');
+
+      if (_hasIcon) {
+        this.toggleElementIcon = _hasIcon;
+        this.toggleElementIcon.classList.add('go-back');
+      }
     } // Gets children list/detail components
 
 
@@ -104399,11 +106778,11 @@ ListDetail.prototype = {
   handleEvents: function handleEvents() {
     var _this2 = this;
 
-    $(this.element).on("drilldown.".concat(COMPONENT_NAME$1i), function (e, item) {
+    $(this.element).on("drilldown.".concat(COMPONENT_NAME$1), function (e, item) {
       e.stopPropagation();
 
       _this2.drilldown(item, e.target);
-    }).on("drillup.".concat(COMPONENT_NAME$1i), function (e) {
+    }).on("drillup.".concat(COMPONENT_NAME$1), function (e) {
       e.stopPropagation();
 
       _this2.drillup();
@@ -104413,12 +106792,16 @@ ListDetail.prototype = {
       this.backElement.addEventListener('click', this.handleBackClick.bind(this));
     }
 
+    if (this.toggleElement) {
+      this.toggleElement.addEventListener('click', this.handleToggleClick.bind(this));
+    }
+
     if (this.listCloseElement) {
       this.listCloseElement.addEventListener('click', this.handleClose.bind(this));
     } // Run certain responsive checks on page resize
 
 
-    $('body').off("resize.".concat(COMPONENT_NAME$1i)).on("resize.".concat(COMPONENT_NAME$1i), function () {
+    $('body').off("resize.".concat(COMPONENT_NAME$1)).on("resize.".concat(COMPONENT_NAME$1), function () {
       _this2.handleResize();
     });
   },
@@ -104493,6 +106876,19 @@ ListDetail.prototype = {
       this.backElementIcon.classList.remove('go-back');
     }
   },
+  toggleSidebar: function toggleSidebar(hide) {
+    if (hide) {
+      this.sidebarElement.classList.add('hidden');
+      this.mainElement.style.width = '100%';
+      this.toggleElementIcon.classList.remove('go-back');
+    } else {
+      this.sidebarElement.classList.remove('hidden');
+      this.mainElement.style.width = '';
+      this.toggleElementIcon.classList.add('go-back');
+    }
+
+    this.showSidebar = !hide;
+  },
 
   /**
    * Handles `click` events passed to the `backElement`.
@@ -104529,7 +106925,7 @@ ListDetail.prototype = {
 
     if (this.childrenListDetailElements) {
       this.childrenListDetailElements.forEach(function (elem) {
-        var api = $(elem).data(COMPONENT_NAME$1i);
+        var api = $(elem).data(COMPONENT_NAME$1);
 
         if (api && typeof api.drillup === 'function') {
           api.drillup();
@@ -104539,6 +106935,14 @@ ListDetail.prototype = {
 
     cancelClick();
     return false;
+  },
+
+  /**
+   * Handler for the listCloseElement's `click` event.
+   * @returns {void}
+   */
+  handleToggleClick: function handleToggleClick() {
+    this.toggleSidebar(this.showSidebar);
   },
 
   /**
@@ -104576,6 +106980,10 @@ ListDetail.prototype = {
       this.removeBackElementIconContext();
     } else {
       this.addBackElementIconContext();
+
+      if (this.toggleElement) {
+        this.toggleSidebar(false);
+      }
     } // Make sure the list is always re-enabled on desktop
 
 
@@ -104656,8 +107064,8 @@ ListDetail.prototype = {
    * @returns {void}
    */
   teardown: function teardown() {
-    $('body').off("resize.".concat(COMPONENT_NAME$1i));
-    $(this.element).off("drilldown.".concat(COMPONENT_NAME$1i, " drillup.").concat(COMPONENT_NAME$1i));
+    $('body').off("resize.".concat(COMPONENT_NAME$1));
+    $(this.element).off("drilldown.".concat(COMPONENT_NAME$1, " drillup.").concat(COMPONENT_NAME$1));
 
     if (this.backElement) {
       this.backElement.removeEventListener('click', this.handleBackClick.bind(this));
@@ -104679,11 +107087,16 @@ ListDetail.prototype = {
     delete this.detailElement;
     delete this.backElement;
     delete this.backElementIcon;
+    delete this.mainElement;
+    delete this.sidebarElement;
+    delete this.toggleElement;
+    delete this.toggleElementIcon;
     delete this.edgeBleed;
     delete this.listContainsBackElement;
     delete this.detailContainsBackElement;
     delete this.childrenListDetailElements;
     delete this.showDetail;
+    delete this.showSidebar;
   },
 
   /**
@@ -104692,7 +107105,7 @@ ListDetail.prototype = {
    */
   destroy: function destroy() {
     this.teardown();
-    $.removeData(this.element, COMPONENT_NAME$1i);
+    $.removeData(this.element, COMPONENT_NAME$1);
   }
 };
 
@@ -104704,22 +107117,22 @@ ListDetail.prototype = {
 
 $.fn.listdetail = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1i);
+    var instance = $.data(this, COMPONENT_NAME$1);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1i, new ListDetail(this, settings));
+      instance = $.data(this, COMPONENT_NAME$1, new ListDetail(this, settings));
 
       instance.destroy = function destroy() {
         this.teardown();
-        $.removeData(this, COMPONENT_NAME$1i);
+        $.removeData(this, COMPONENT_NAME$1);
       };
     }
   });
 };
 
-var COMPONENT_NAME$1j = 'stepprocess'; // Default Stepprocess Options
+var COMPONENT_NAME = 'stepprocess'; // Default Stepprocess Options
 
 var STEPPROCESS_DEFAULTS = {
   linearProgression: false,
@@ -105517,7 +107930,7 @@ Stepprocess.prototype = {
    */
   destroy: function destroy() {
     this.unbind();
-    $.removeData(this.element[0], COMPONENT_NAME$1j);
+    $.removeData(this.element[0], COMPONENT_NAME);
   }
 };
 
@@ -105529,12 +107942,12 @@ Stepprocess.prototype = {
 
 $.fn.stepprocess = function (settings) {
   return this.each(function () {
-    var instance = $.data(this, COMPONENT_NAME$1j);
+    var instance = $.data(this, COMPONENT_NAME);
 
     if (instance) {
       instance.updated(settings);
     } else {
-      instance = $.data(this, COMPONENT_NAME$1j, new Stepprocess(this, settings));
+      instance = $.data(this, COMPONENT_NAME, new Stepprocess(this, settings));
     }
   });
 };
@@ -105639,7 +108052,21 @@ var PLUGIN_MAPPINGS = [// Inline text translations by Locale, via the `data-tran
 }], // Hide Focus
 ['hideFocus', 'a.hide-focus, a.tick, .checkbox, .radio, .switch'], // Circle Pager
 ['circlepager'], // Clear x
-['clearable', '[data-clearable="true"]'], // Text Area
+['clearable', ['[data-clearable="true"]'].join(', '), function (rootElem, pluginName, selector) {
+  matchedItems(rootElem, selector).each(function (i, item) {
+    var tabbable = $(item).attr('data-tabbable');
+
+    if (tabbable === undefined) {
+      $(item).clearable({
+        tabbable: true
+      });
+    } else {
+      $(item).clearable({
+        tabbable: tabbable === 'true'
+      });
+    }
+  });
+}], // Text Area
 ['textarea', 'textarea'], // Spinbox
 ['spinbox'], // sort drag and drop
 ['arrange'], // Swap List
@@ -105649,7 +108076,8 @@ var PLUGIN_MAPPINGS = [// Inline text translations by Locale, via the `data-tran
 ['timepicker'], // Tag
 ['tag'], // Busy Indicator
 ['busyindicator', '.busy, .busy-xs, .busy-sm'], ['header'], ['fileupload', 'input.fileupload:not(.fileupload-background-transparent):not([type="text"])'], ['fileuploadadvanced', '.fileupload-advanced'], ['fieldfilter', '.field-filter'], ['fieldoptions', '.field-options'], ['about'], ['contextualactionpanel', '.contextual-action-panel-trigger'], ['expandablearea', '.expandable-area'], ['signin'], ['homepage'], ['lookup', '.lookup:not([data-init])'], ['wizard'], ['popdown', '[data-popdown]'], ['stepchart', '.step-chart'], ['calendar', '.calendar'], ['calendartoolbar', '.calendar-toolbar'], ['monthview', '.monthview'], ['weekview', '.week-view'], ['listview'], // Track Dirty
-['trackdirty', '[data-trackdirty="true"]'], // Context Menus - Popupmenu Components with no trigger buttons
+['trackdirty', '[data-trackdirty="true"]'], // Virtual Scroll
+['virtualscroll', '.virtual-scroll'], // Context Menus - Popupmenu Components with no trigger buttons
 ['popupmenu', '[data-popupmenu]:not(.btn-actions, .btn-filter, .btn-menu)', function (rootElem, pluginName, selector) {
   matchedItems(rootElem, selector).each(function (i, item) {
     var popupElem = $(item);
@@ -106075,6 +108503,7 @@ var components = /*#__PURE__*/Object.freeze({
   Tree: Tree,
   Treemap: Treemap,
   Validator: Validator,
+  VirtualScroll: VirtualScroll,
   Wizard: Wizard,
   Calendar: Calendar,
   CalendarToolbar: CalendarToolbar,
