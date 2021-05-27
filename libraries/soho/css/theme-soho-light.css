@@ -30172,7 +30172,8 @@ html[dir='rtl'] .list-detail .card-header {
     display: block;
     height: 90px;
     margin: 0 auto 40px;
-    width: 90px; }
+    width: 90px;
+    }
   .signin .error-message .message-text {
     text-align: left; }
 
