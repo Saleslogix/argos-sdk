@@ -88,6 +88,21 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     };
   };
 
+  window.mergeConfiguration = function mergeConfiguration(baseConfiguration, moduleConfiguration) {
+    console.warn('mergeConfiguration is deprecated. If you wish to modify the base configuration, see the argos-sample here: https://github.com/Saleslogix/argos-sample/blob/master/configuration/development.js'); // eslint-disable-line
+    if (baseConfiguration) {
+      if (baseConfiguration.modules && moduleConfiguration.modules) {
+        baseConfiguration.modules = baseConfiguration.modules.concat(moduleConfiguration.modules);
+      }
+
+      if (baseConfiguration.connections && moduleConfiguration.connections) {
+        baseConfiguration.connections = Object.assign(baseConfiguration.connections, moduleConfiguration.connections);
+      }
+    }
+
+    return baseConfiguration;
+  };
+
   /**
    * @alias module:argos/Application
    * @classdesc Application is a nexus that provides many routing and global application services that may be used
