@@ -1,4 +1,4 @@
-# Infor CRM Argos Platform SDK
+# Infor CRM SLX Argos Platform SDK
 argos-sdk is a JavaScript and HTML5 mobile SDK built on top of the [dojo library](http://dojotoolkit.org/). Out of the box it comes with a [SData client library](https://github.com/Saleslogix/SDataJavaScriptClientLib) for communicating to [SData](http://sage.github.io/SData-2.0/pages/core/0100/) endpoints.
 
 ## Installation
