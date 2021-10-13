@@ -17,12 +17,12 @@ define('argos/_ServiceMixin', ['module', 'exports', 'dojo/_base/declare'], funct
    * @alias module:argos/_ServiceMixin
    * @deprecated
    */
-  var __class = (0, _declare2.default)('argos._ServiceMixin', null, {
+  const __class = (0, _declare2.default)('argos._ServiceMixin', null, {
     serviceMap: null,
     constructor: function constructor() {
-      var map = this.serviceMap;
+      const map = this.serviceMap;
       if (map) {
-        for (var property in map) {
+        for (const property in map) {
           if (map.hasOwnProperty(property)) {
             if (this[property]) {
               continue; /* skip any that were explicitly mixed in */

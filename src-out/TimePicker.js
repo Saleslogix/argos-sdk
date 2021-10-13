@@ -19,7 +19,7 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
     };
   }
 
-  var resource = (0, _I18n2.default)('timePicker');
+  const resource = (0, _I18n2.default)('timePicker');
 
   /**
    * @class
@@ -44,11 +44,18 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
   /**
    * @module argos/TimePicker
    */
-  var __class = (0, _declare2.default)('argos.TimePicker', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/TimePicker.prototype */{
+  const __class = (0, _declare2.default)('argos.TimePicker', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/TimePicker.prototype */{
     widgetTemplate: new Simplate(['<div class="time-select panel">', '<div class="time-parts">', '{%! $.hourSelectTemplate %}', ' : ', '{%! $.minuteSelectTemplate %}', '{%! $.meridiemSelectTemplate %}', '</div>', '{% if ($.showSetTime) { %}', '<div class="button tertiary">{%= $.setTimeText %}</div>', '{% } %}', '</div>']),
     hourSelectTemplate: new Simplate(['<div data-dojo-attach-point="hourNode">', '</div>']),
     minuteSelectTemplate: new Simplate(['<div data-dojo-attach-point="minuteNode">', '</div>']),
-    meridiemSelectTemplate: new Simplate(['<div class="switch" data-dojo-attach-point="meridiemNode">\n        <input\n          type="checkbox"\n          name="AMPMToggleNode"\n          id="AMPMToggleNode"\n          class="switch" />\n        <label class="toggleAMPM" for="AMPMToggleNode">{%= $.amText %}</label>\n      </div>']),
+    meridiemSelectTemplate: new Simplate([`<div class="switch" data-dojo-attach-point="meridiemNode">
+        <input
+          type="checkbox"
+          name="AMPMToggleNode"
+          id="AMPMToggleNode"
+          class="switch" />
+        <label class="toggleAMPM" for="AMPMToggleNode">{%= $.amText %}</label>
+      </div>`]),
     listStartTemplate: new Simplate(['<ul class="list">']),
     listEndTemplate: new Simplate(['</ul>']),
     listItemTemplate: new Simplate(['<li class="list-item" data-action="{$.action}">', '{%= $.value }', '</li>']),
@@ -72,24 +79,24 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
     minuteValues: null,
     createHourLayout: function createHourLayout() {
       if (!this.hourValues) {
-        var totalHours = App.is24HourClock() ? 24 : 12;
+        const totalHours = App.is24HourClock() ? 24 : 12;
         this.hourValues = [];
         this.hourValues = totalHours === 24 ? this.create24HourList(totalHours) : this.createHourList(totalHours);
       }
       return this.hourValues;
     },
     createHourList: function createHourList(totalHours) {
-      var hourValues = [];
-      for (var i = 0; i < totalHours; i++) {
-        var dispVal = (i + 1).toString();
+      const hourValues = [];
+      for (let i = 0; i < totalHours; i++) {
+        const dispVal = (i + 1).toString();
         hourValues.push({ value: dispVal, key: dispVal });
       }
       return hourValues;
     },
     create24HourList: function create24HourList(totalHours) {
-      var hourValues = [];
-      for (var i = 0; i < totalHours; i++) {
-        var dispVal = ('' + i).padStart(2, '0');
+      const hourValues = [];
+      for (let i = 0; i < totalHours; i++) {
+        const dispVal = `${i}`.padStart(2, '0');
         hourValues.push({ value: dispVal, key: dispVal });
       }
       return hourValues;
@@ -97,8 +104,8 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
     createMinuteLayout: function createMinuteLayout() {
       if (!this.minuteValues) {
         this.minuteValues = [];
-        for (var i = 0; i < 60; i += 5) {
-          var dispVal = ('' + i).padStart(2, '0');
+        for (let i = 0; i < 60; i += 5) {
+          const dispVal = `${i}`.padStart(2, '0');
           this.minuteValues.push({ value: dispVal, key: i.toString() });
         }
       }
@@ -108,14 +115,14 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
       if (!this._hourDropdown) {
         this.createHourLayout();
         this._hourDropdown = new _Dropdown2.default({ id: 'hour-dropdown', itemMustExist: true, dropdownClass: 'dropdown-mx' });
-        this._hourDropdown.createList({ items: this.hourValues, defaultValue: '' + initial });
+        this._hourDropdown.createList({ items: this.hourValues, defaultValue: `${initial}` });
         $(this.hourNode).replaceWith(this._hourDropdown.domNode);
       }
       return this;
     },
     createMinuteDropdown: function createMinuteDropdown(initial) {
-      var tempValue = Math.ceil(initial / 1) * 1;
-      var value = initial;
+      const tempValue = Math.ceil(initial / 1) * 1;
+      let value = initial;
       if (tempValue >= 60) {
         value = '59';
       }
@@ -126,7 +133,7 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
       if (!this._minuteDropdown) {
         this.createMinuteLayout();
         this._minuteDropdown = new _Dropdown2.default({ id: 'minute-modal', itemMustExist: true, dropdownClass: 'dropdown-mx' });
-        this._minuteDropdown.createList({ items: this.minuteValues, defaultValue: '' + value });
+        this._minuteDropdown.createList({ items: this.minuteValues, defaultValue: `${value}` });
         $(this.minuteNode).replaceWith(this._minuteDropdown.domNode);
       }
       return this;
@@ -155,8 +162,8 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
     setTimeValue: function setTimeValue() {
       if (!this._isTimeless()) {
         if (App.is24HourClock()) {
-          var hourVal = parseInt(this._hourDropdown.getValue(), 10);
-          var isPm = false;
+          const hourVal = parseInt(this._hourDropdown.getValue(), 10);
+          let isPm = false;
           if (hourVal >= 12) {
             isPm = true;
           }
@@ -172,15 +179,13 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
       }
       return this;
     },
-    show: function show() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    show: function show(options = {}) {
       this.timeValue = {
         isPM: false
       };
-      var date = moment(options.date) || moment();
-      var hour = date.hours();
-      var meridiemToggled = false;
+      const date = moment(options.date) || moment();
+      let hour = date.hours();
+      let meridiemToggled = false;
       if (hour >= 12) {
         if (hour !== 12 && !App.is24HourClock()) {
           hour = hour % 12;
@@ -190,13 +195,13 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
       if (hour === 0 && !App.is24HourClock()) {
         hour = 12;
       }
-      var minutes = date.minutes() || 0;
+      let minutes = date.minutes() || 0;
       if (minutes < 10) {
-        minutes = '' + minutes;
+        minutes = `${minutes}`;
         minutes = Array(2).join('0') + minutes;
       }
       this.timeValue.seconds = date.seconds();
-      (App.is24HourClock() ? this.createHourDropdown(('' + hour).padStart(2, '0')) : this.createHourDropdown('' + hour)).createMinuteDropdown('' + minutes);
+      (App.is24HourClock() ? this.createHourDropdown(`${hour}`.padStart(2, '0')) : this.createHourDropdown(`${hour}`)).createMinuteDropdown(`${minutes}`);
       if (!App.is24HourClock()) {
         this.setMeridiem(meridiemToggled, this.meridiemNode.children[0]);
         $(this.meridiemNode.children[0]).on('click', this.toggleMeridiem.bind(this));
@@ -204,9 +209,7 @@ define('argos/TimePicker', ['module', 'exports', 'dojo/_base/declare', 'dijit/_W
         $(this.meridiemNode).hide();
       }
     },
-    toggleMeridiem: function toggleMeridiem(_ref) {
-      var target = _ref.target;
-
+    toggleMeridiem: function toggleMeridiem({ target }) {
       this._showAM = !this._showAM;
       this.setMeridiem(this._showAM, target);
     },

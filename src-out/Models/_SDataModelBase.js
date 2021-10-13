@@ -32,7 +32,7 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
    * @alias module:argos/Models/SDataModelBase
    * @extends module:argos/Models/_ModelBase
    */
-  var __class = (0, _declare2.default)('argos.Models.SDataModelBase', [_ModelBase3.default], /** @lends module:argos/Models/SDataModelBase.prototype */{
+  const __class = (0, _declare2.default)('argos.Models.SDataModelBase', [_ModelBase3.default], /** @lends module:argos/Models/SDataModelBase.prototype */{
     queryModels: null,
     ModelType: _Types2.default.SDATA,
 
@@ -41,21 +41,17 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
         console.warn('No query Models defined'); // eslint-disable-line
       }
 
-      var results = this.queryModels.filter(function (model) {
-        return model.name === name;
-      });
+      const results = this.queryModels.filter(model => model.name === name);
       return results[0];
     },
     init: function init() {
-      var _this = this;
-
       this.inherited(init, arguments);
 
       if (!this.queryModels) {
         this.queryModels = this._createCustomizedLayout(this.createQueryModels(), 'queryModel');
-        this.queryModels.forEach(function (queryModel) {
-          queryModel.querySelect = _this._createCustomizedLayout(queryModel.querySelect, queryModel.name + '/querySelect');
-          queryModel.queryInclude = _this._createCustomizedLayout(queryModel.queryInclude, queryModel.name + '/queryInclude');
+        this.queryModels.forEach(queryModel => {
+          queryModel.querySelect = this._createCustomizedLayout(queryModel.querySelect, `${queryModel.name}/querySelect`);
+          queryModel.queryInclude = this._createCustomizedLayout(queryModel.queryInclude, `${queryModel.name}/queryInclude`);
         });
       }
     },
@@ -63,7 +59,7 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
       return [];
     },
     getOptions: function getOptions(options) {
-      var tempOptions = {};
+      const tempOptions = {};
       if (options) {
         if (options.select) tempOptions.select = options.select;
         if (options.include) tempOptions.include = options.include;
@@ -86,13 +82,13 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
       return App.picklistService.requestPicklistsFromArray(this.picklists);
     },
     buildQueryExpression: function _buildQueryExpression(query, options) {
-      var passed = options && (options.query || options.where);
+      const passed = options && (options.query || options.where);
       return passed ? query ? '(' + _Utility2.default.expand(this, passed) + ') and (' + query + ')' : '(' + _Utility2.default.expand(this, passed) + ')' : query; // eslint-disable-line
     },
     createStore: function createStore(type, service) {
-      var app = this.get('app');
-      var config = this;
-      var typedConfig = this._getQueryModelByName(type);
+      const app = this.get('app');
+      const config = this;
+      const typedConfig = this._getQueryModelByName(type);
 
       return new _SData2.default({
         service: service || app.getService(false),
@@ -116,25 +112,23 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
       });
     },
     insertEntry: function insertEntry(entry, options) {
-      var store = this.createStore('detail');
+      const store = this.createStore('detail');
       return store.add(entry, options);
     },
     updateEntry: function updateEntry(entry, options) {
-      var _this2 = this;
-
-      var store = this.createStore('edit');
-      var def = new _Deferred2.default();
+      const store = this.createStore('edit');
+      const def = new _Deferred2.default();
       if (!store) {
         throw new Error('No store set.');
       }
-      this.validate(entry).then(function () {
-        store.put(entry, options).then(function (result) {
-          _this2.onEntryUpdated(result, entry);
+      this.validate(entry).then(() => {
+        store.put(entry, options).then(result => {
+          this.onEntryUpdated(result, entry);
           def.resolve(result);
-        }, function (err) {
+        }, err => {
           def.reject(err);
         });
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       return def.promise;
@@ -148,7 +142,7 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
      * @returns Promise
      */
     validate: function validate(entry) {
-      var def = new _Deferred2.default();
+      const def = new _Deferred2.default();
       if (entry) {
         def.resolve(true);
       }
@@ -157,39 +151,33 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
       return def.promise;
     },
     getEntry: function getEntry(entityId, options) {
-      var queryResults = void 0;
-      var relatedRequests = void 0;
-      var queryModelName = options && options.queryModelName ? options.queryModelName : 'detail';
-      var store = this.createStore(queryModelName);
-      var def = new _Deferred2.default();
-      var includeRelated = options && options.includeRelated ? options.includeRelated : false;
-      var queryOptions = this.getOptions(options);
+      let queryResults;
+      let relatedRequests;
+      const queryModelName = options && options.queryModelName ? options.queryModelName : 'detail';
+      const store = this.createStore(queryModelName);
+      const def = new _Deferred2.default();
+      const includeRelated = options && options.includeRelated ? options.includeRelated : false;
+      const queryOptions = this.getOptions(options);
       if (store) {
         relatedRequests = [];
         queryResults = store.get(entityId, queryOptions);
         (0, _when2.default)(queryResults, function (relatedFeed) {
-          var _this3 = this;
-
           // eslint-disable-line
-          var entry = queryResults.results[0];
+          const entry = queryResults.results[0];
           if (includeRelated) {
             relatedRequests = this.getRelatedRequests(entry);
           }
           if (relatedRequests.length > 0) {
-            (0, _all2.default)(relatedRequests).then(function (relatedResults) {
-              _this3.applyRelatedResults(entry, relatedResults);
-              (0, _all2.default)(_this3.getPicklists()).then(function () {
-                return def.resolve(entry);
-              }, function (err) {
-                return def.reject(err);
-              });
-            }, function (err) {
+            (0, _all2.default)(relatedRequests).then(relatedResults => {
+              this.applyRelatedResults(entry, relatedResults);
+              (0, _all2.default)(this.getPicklists()).then(() => def.resolve(entry), err => def.reject(err));
+            }, err => {
               def.reject(err);
             });
           } else {
             def.resolve(entry);
           }
-        }.bind(this), function (err) {
+        }.bind(this), err => {
           def.reject(err);
         });
 
@@ -197,28 +185,28 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
       }
     },
     getEntries: function getEntries(query, options) {
-      var queryModelName = options && options.queryModelName ? options.queryModelName : 'list';
-      var def = new _Deferred2.default();
-      var store = this.createStore(queryModelName);
-      var queryOptions = this.getOptions(options);
-      var queryExpression = this.buildQueryExpression(query, options);
+      const queryModelName = options && options.queryModelName ? options.queryModelName : 'list';
+      const def = new _Deferred2.default();
+      const store = this.createStore(queryModelName);
+      const queryOptions = this.getOptions(options);
+      const queryExpression = this.buildQueryExpression(query, options);
 
-      var queryResults = store.query(queryExpression, queryOptions);
+      const queryResults = store.query(queryExpression, queryOptions);
       if (options && options.returnQueryResults) {
         return queryResults;
       }
-      (0, _when2.default)(queryResults, function (entities) {
+      (0, _when2.default)(queryResults, entities => {
         def.resolve(entities);
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       return def.promise;
     },
     getRelatedRequests: function getRelatedRequests(entry) {
-      var self = this;
-      var requests = [];
-      this.relationships.forEach(function (rel) {
-        var request = null;
+      const self = this;
+      const requests = [];
+      this.relationships.forEach(rel => {
+        let request = null;
         if (!rel.disabled) {
           request = self.getRelatedRequest(entry, rel);
           if (request) {
@@ -229,25 +217,25 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
       return requests;
     },
     getRelatedRequest: function getRelatedRequest(entry, relationship, options) {
-      var queryOptions = void 0;
-      var queryResults = void 0;
-      var def = new _Deferred2.default();
-      var model = App.ModelManager.getModel(relationship.relatedEntity, _Types2.default.SDATA);
+      let queryOptions;
+      let queryResults;
+      const def = new _Deferred2.default();
+      const model = App.ModelManager.getModel(relationship.relatedEntity, _Types2.default.SDATA);
       if (model) {
         queryOptions = this.getRelatedQueryOptions(entry, relationship, options);
         if (queryOptions) {
           queryResults = model.getEntries(null, queryOptions);
-          (0, _when2.default)(queryResults, function (entities) {
-            var results = {
+          (0, _when2.default)(queryResults, entities => {
+            const results = {
               entityName: model.entityName,
               entityDisplayName: model.entityDisplayName,
               entityDisplayNamePlural: model.entityDisplayNamePlural,
-              relationship: relationship,
+              relationship,
               count: entities.length,
-              entities: entities
+              entities
             };
             def.resolve(results);
-          }, function (err) {
+          }, err => {
             def.reject(err);
           });
           return def.promise;
@@ -255,15 +243,15 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
       }
     },
     getRelatedQueryOptions: function getRelatedQueryOptions(entry, relationship, options) {
-      var parentDataPath = void 0;
-      var relatedDataPath = void 0;
-      var optionsTemp = options;
+      let parentDataPath;
+      let relatedDataPath;
+      let optionsTemp = options;
 
       if (!optionsTemp) {
         optionsTemp = {};
       }
 
-      var queryOptions = {
+      const queryOptions = {
         count: optionsTemp.count ? optionsTemp.count : null,
         start: optionsTemp.start ? optionsTemp.start : null,
         where: optionsTemp.where ? optionsTemp.where : null,
@@ -274,7 +262,7 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
       if (relationship.parentProperty) {
         parentDataPath = relationship.parentDataPath ? relationship.parentDataPath : relationship.parentProperty;
         if (relationship.parentPropertyType && relationship.parentPropertyType === 'object') {
-          parentDataPath = relationship.parentProperty + '.$key';
+          parentDataPath = `${relationship.parentProperty}.$key`;
         }
       } else {
         parentDataPath = this.idProperty;
@@ -283,14 +271,14 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
       if (relationship.relatedProperty) {
         relatedDataPath = relationship.relatedDataPath ? relationship.relatedDataPath : relationship.relatedProperty;
         if (relationship.relatedPropertyType && relationship.relatedPropertyType === 'object') {
-          relatedDataPath = relationship.relatedProperty + '.Id';
+          relatedDataPath = `${relationship.relatedProperty}.Id`;
         }
       } else {
         relatedDataPath = 'Id';
       }
 
-      var relatedValue = _Utility2.default.getValue(entry, parentDataPath);
-      var where = "${0} eq '${1}'";
+      const relatedValue = _Utility2.default.getValue(entry, parentDataPath);
+      const where = "${0} eq '${1}'";
       if (!relatedValue) {
         return null;
       }
@@ -299,14 +287,14 @@ define('argos/Models/_SDataModelBase', ['module', 'exports', 'dojo/_base/declare
         if (typeof relationship.where === 'function') {
           queryOptions.where = relationship.where.apply(this, [entry]);
         } else {
-          queryOptions.where = queryOptions.where + ' and ' + relationship.where;
+          queryOptions.where = `${queryOptions.where} and ${relationship.where}`;
         }
       }
       return queryOptions;
     },
     applyRelatedResults: function applyRelatedResults(entry, relatedResults) {
-      var relatedEntities = [];
-      relatedResults.forEach(function (result) {
+      const relatedEntities = [];
+      relatedResults.forEach(result => {
         relatedEntities.push(result);
       });
       entry.$relatedEntities = relatedEntities;

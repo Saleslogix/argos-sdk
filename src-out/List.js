@@ -43,7 +43,7 @@ define('argos/List', ['module', 'exports', 'dojo/_base/declare', './_ListBase', 
   /**
    * @module argos/List
    */
-  var __class = (0, _declare2.default)('argos.List', [_ListBase3.default, _SDataListMixin3.default, _RelatedViewWidgetListMixin2.default], {});
+  const __class = (0, _declare2.default)('argos.List', [_ListBase3.default, _SDataListMixin3.default, _RelatedViewWidgetListMixin2.default], {});
   exports.default = __class;
   module.exports = exports['default'];
 });

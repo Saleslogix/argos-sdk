@@ -29,9 +29,9 @@ define('argos/_LegacySDataEditMixin', ['module', 'exports', 'dojo/_base/declare'
    * @classdesc Enables legacy SData operations for the Edit view.
    *
    */
-  var __class = (0, _declare2.default)('argos._LegacySDataEditMixin', [_SDataDetailMixin3.default], /** @lends module:argos/_LegacySDataEditMixin.prototype */{
+  const __class = (0, _declare2.default)('argos._LegacySDataEditMixin', [_SDataDetailMixin3.default], /** @lends module:argos/_LegacySDataEditMixin.prototype */{
     requestData: function requestData() {
-      var request = this.createRequest();
+      const request = this.createRequest();
       if (request) {
         request.read({
           success: this.onRequestDataSuccess,
@@ -73,11 +73,11 @@ define('argos/_LegacySDataEditMixin', ['module', 'exports', 'dojo/_base/declare'
      * @return {Object} Sage.SData.Client.SDataSingleResourceRequest instance.
      */
     createRequest: function createRequest() {
-      var request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
-      var key = this.entry && this.entry.$key || this.options.key;
+      const request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
+      const key = this.entry && this.entry.$key || this.options.key;
 
       if (key) {
-        request.setResourceSelector('\'' + key + '\'');
+        request.setResourceSelector(`'${key}'`);
       }
 
       if (this.contractName) {
@@ -103,8 +103,8 @@ define('argos/_LegacySDataEditMixin', ['module', 'exports', 'dojo/_base/declare'
       return request;
     },
     onUpdate: function onUpdate(values) {
-      var entry = this.createEntryForUpdate(values);
-      var request = this.createRequest();
+      const entry = this.createEntryForUpdate(values);
+      const request = this.createRequest();
       if (request) {
         request.update(entry, {
           success: this.onUpdateSuccess,
@@ -156,7 +156,7 @@ define('argos/_LegacySDataEditMixin', ['module', 'exports', 'dojo/_base/declare'
      * @return {Object} SData entry/payload
      */
     createEntry: function createEntry() {
-      var values = this.getValues();
+      const values = this.getValues();
       return this.inserting ? this.createEntryForInsert(values) : this.createEntryForUpdate(values);
     },
     /**
@@ -165,7 +165,7 @@ define('argos/_LegacySDataEditMixin', ['module', 'exports', 'dojo/_base/declare'
      * @return {Object} Object with added properties
      */
     createEntryForUpdate: function createEntryForUpdate(v) {
-      var values = this.convertValues(v);
+      const values = this.convertValues(v);
 
       return _lang2.default.mixin(values, {
         $key: this.entry.$key,
@@ -179,7 +179,7 @@ define('argos/_LegacySDataEditMixin', ['module', 'exports', 'dojo/_base/declare'
      * @return {Object} Object with added properties
      */
     createEntryForInsert: function createEntryForInsert(v) {
-      var values = this.convertValues(v);
+      const values = this.convertValues(v);
       return _lang2.default.mixin(values, {
         $name: this.entityName
       });
@@ -191,7 +191,7 @@ define('argos/_LegacySDataEditMixin', ['module', 'exports', 'dojo/_base/declare'
      * @return {Object} Entry with string dates
      */
     convertValues: function convertValues(values) {
-      for (var n in values) {
+      for (const n in values) {
         if (values[n] instanceof Date) {
           values[n] = this.getService().isJsonEnabled() ? _Convert2.default.toJsonStringFromDate(values[n]) : _Convert2.default.toIsoStringFromDate(values[n]);
         }
@@ -211,8 +211,8 @@ define('argos/_LegacySDataEditMixin', ['module', 'exports', 'dojo/_base/declare'
       });
     },
     onInsert: function onInsert(values) {
-      var entry = this.createEntryForInsert(values);
-      var request = this.createRequest();
+      const entry = this.createEntryForInsert(values);
+      const request = this.createRequest();
 
       if (request) {
         request.create(entry, {

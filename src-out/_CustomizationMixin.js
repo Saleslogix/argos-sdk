@@ -11,7 +11,7 @@ define('argos/_CustomizationMixin', ['module', 'exports', 'dojo/_base/declare'],
     };
   }
 
-  var customization = ICRMCustomizationSDK;
+  const customization = ICRMCustomizationSDK;
 
   /**
    * @class
@@ -47,7 +47,7 @@ define('argos/_CustomizationMixin', ['module', 'exports', 'dojo/_base/declare'],
   /**
    * @module argos/_CustomizationMixin
    */
-  var __class = (0, _declare2.default)('argos._CustomizationMixin', null, /** @lends module:argos/_CustomizationMixin.prototype */{
+  const __class = (0, _declare2.default)('argos._CustomizationMixin', null, /** @lends module:argos/_CustomizationMixin.prototype */{
 
     /**
      * id of object taking on customizations. In most cases this will be the view's id.
@@ -69,7 +69,7 @@ define('argos/_CustomizationMixin', ['module', 'exports', 'dojo/_base/declare'],
      * @private
      */
     _getCustomizationsFor: function _getCustomizationsFor(customizationSet, customizationSubSet, id) {
-      var set = customizationSubSet ? customizationSet + '/' + customizationSubSet : customizationSet;
+      const set = customizationSubSet ? `${customizationSet}/${customizationSubSet}` : customizationSet;
       return App.getCustomizationsFor(set, id);
     },
 
@@ -79,7 +79,7 @@ define('argos/_CustomizationMixin', ['module', 'exports', 'dojo/_base/declare'],
      * @param {String} customizationSubSet
      */
     _createCustomizedLayout: function _createCustomizedLayout(layout, customizationSubSet) {
-      var customizations = this._getCustomizationsFor(this.customizationSet, customizationSubSet, this.id);
+      const customizations = this._getCustomizationsFor(this.customizationSet, customizationSubSet, this.id);
       if (this.enableCustomizations) {
         return customization.createCustomizedLayout(layout, customizations, this.customizationSet, this.id, customizationSubSet);
       }

@@ -26,7 +26,7 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
    * @mixes module:argos/_ActionMixin
    * @extends module:argos/_Templated
    */
-  var __class = (0, _declare2.default)('argos.Toolbar', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Toolbar.prototype */{
+  const __class = (0, _declare2.default)('argos.Toolbar', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Toolbar.prototype */{
     _ActionMixin: null,
     /**
      * @property {Simplate}
@@ -39,9 +39,7 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
      */
     enabled: true,
     managed: true,
-    constructor: function constructor() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    constructor: function constructor(options = {}) {
       this.app = options.app || window.App;
     },
     postCreate: function postCreate() {
@@ -70,14 +68,14 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
      * @param {HTMLElement} node The html element that was clicked.
      */
     invokeTool: function invokeTool(parameters, evt, node) {
-      var id = parameters && parameters.tool;
-      var tool = this.tools && this.tools[id];
-      var source = tool && tool.source;
+      const id = parameters && parameters.tool;
+      const tool = this.tools && this.tools[id];
+      const source = tool && tool.source;
       if (source && tool.enabled) {
         if (source.fn) {
           source.fn.call(source.scope || this, source);
         } else if (source.action) {
-          var view = this.app.getPrimaryActiveView();
+          const view = this.app.getPrimaryActiveView();
           if (view && view.hasAction(source.action)) {
             view.invokeAction(source.action, _lang2.default.mixin(parameters, {
               $tool: source
@@ -125,7 +123,7 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
      * @param {String} id The id of the tool to enable
      */
     enableTool: function enableTool(id) {
-      var tool = this.tools && this.tools[id];
+      const tool = this.tools && this.tools[id];
       if (tool) {
         tool.enabled = true;
       }
@@ -135,7 +133,7 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
      * @param {String} id The id of the tool to disable
      */
     disableTool: function disableTool(id) {
-      var tool = this.tools && this.tools[id];
+      const tool = this.tools && this.tools[id];
       if (tool) {
         tool.enabled = false;
       }
@@ -145,7 +143,7 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
      * @param {String} id The id of the tool to indicate busy
      */
     indicateToolBusy: function indicateToolBusy(id) {
-      var tool = this.tools && this.tools[id];
+      const tool = this.tools && this.tools[id];
       if (tool) {
         tool.busy = true;
       }
@@ -155,7 +153,7 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
      * @param {String} id The id of the tool to set as not busy
      */
     clearToolBusy: function clearToolBusy(id) {
-      var tool = this.tools && this.tools[id];
+      const tool = this.tools && this.tools[id];
       if (tool) {
         tool.busy = false;
       }
@@ -179,8 +177,8 @@ define('argos/Toolbar', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/
         return;
       }
 
-      for (var i = 0; i < tools.length; i++) {
-        var tool = {
+      for (let i = 0; i < tools.length; i++) {
+        const tool = {
           busy: false,
           enabled: typeof tools[i].enabled !== 'undefined' ? tools[i].enabled : true,
           source: tools[i]

@@ -32,7 +32,7 @@ define('argos/Fields/SelectField', ['module', 'exports', 'dojo/_base/declare', '
    * }
    * @extends module:argos/Fields/LookupField
    */
-  var control = (0, _declare2.default)('argos.Fields.SelectField', [_LookupField2.default], /** @lends module:argos/Fields/SelectField.prototype */{
+  const control = (0, _declare2.default)('argos.Fields.SelectField', [_LookupField2.default], /** @lends module:argos/Fields/SelectField.prototype */{
     /**
      * @property {Boolean}
      * Overrides the {@link LookupField LookupField} default to explicitly set it to false forcing
@@ -55,7 +55,7 @@ define('argos/Fields/SelectField', ['module', 'exports', 'dojo/_base/declare', '
      * hidden and optionally pass data defined on the field.
      */
     createNavigationOptions: function createNavigationOptions() {
-      var options = this.inherited(createNavigationOptions, arguments);
+      const options = this.inherited(createNavigationOptions, arguments);
       options.hideSearch = true;
       options.enableActions = false;
       options.data = this.expandExpression(this.data);

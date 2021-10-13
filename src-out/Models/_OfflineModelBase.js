@@ -51,8 +51,8 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
   /**
    * @module argos/Models/_OfflineModelBase
    */
-  var databaseName = 'crm-offline';
-  var _store = new _PouchDB2.default(databaseName);
+  const databaseName = 'crm-offline';
+  const _store = new _PouchDB2.default(databaseName);
 
   /**
    * @class
@@ -60,7 +60,7 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
    * @extends module:argos/Models/_ModelBase
    * @extends module:argos/_CustomizationMixin
    */
-  var __class = (0, _declare2.default)('argos.Models.Offline.OfflineModelBase', [_ModelBase3.default, _CustomizationMixin3.default], /** @lends module:argos/Models/_OfflineModelBase.prototype */{
+  const __class = (0, _declare2.default)('argos.Models.Offline.OfflineModelBase', [_ModelBase3.default, _CustomizationMixin3.default], /** @lends module:argos/Models/_OfflineModelBase.prototype */{
 
     store: null,
     modelType: _Types2.default.OFFLINE,
@@ -69,7 +69,7 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
       this.createNamedQueries();
     },
     createNamedQueries: function createNamedQueries() {
-      var store = this.getStore();
+      const store = this.getStore();
       // TODO: This is a shared named query, and probably doesn't belong here (will be called multiple times)
       store.createNamedQuery({
         _id: '_design/entities',
@@ -93,136 +93,128 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
       return this.getEntityId(entry);
     },
     getEntry: function getEntry(entityId) {
-      var _this = this;
-
-      var def = new _Deferred2.default();
-      this.getEntryDoc(entityId).then(function (doc) {
-        def.resolve(_this.unWrap(doc));
-      }, function (err) {
+      const def = new _Deferred2.default();
+      this.getEntryDoc(entityId).then(doc => {
+        def.resolve(this.unWrap(doc));
+      }, err => {
         def.reject(err);
       });
       return def;
     },
     getEntryDoc: function getEntry(entityId) {
-      var store = this.getStore();
-      var def = new _Deferred2.default();
-      store.get(entityId).then(function (results) {
+      const store = this.getStore();
+      const def = new _Deferred2.default();
+      store.get(entityId).then(results => {
         def.resolve(results);
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       return def;
     },
     saveEntry: function saveEntity(entry, options) {
-      var _this2 = this;
-
-      var def = new _Deferred2.default();
-      this.updateEntry(entry, options).then(function (updateResult) {
-        var odef = def;
-        _this2.saveRelatedEntries(entry, options).then(function () {
+      const def = new _Deferred2.default();
+      this.updateEntry(entry, options).then(updateResult => {
+        const odef = def;
+        this.saveRelatedEntries(entry, options).then(() => {
           odef.resolve(updateResult);
-        }, function (err) {
+        }, err => {
           odef.reject(err);
         });
-      }, function () {
+      }, () => {
         // Fetching the doc/entity failed, so we will insert a new doc instead.
-        _this2.insertEntry(entry, options).then(function (insertResult) {
-          var odef = def;
-          _this2.saveRelatedEntries(entry, options).then(function () {
+        this.insertEntry(entry, options).then(insertResult => {
+          const odef = def;
+          this.saveRelatedEntries(entry, options).then(() => {
             odef.resolve(insertResult);
-          }, function (err) {
+          }, err => {
             odef.reject(err);
           });
-        }, function (err) {
+        }, err => {
           def.reject(err);
         });
       });
       return def.promise;
     },
     insertEntry: function insertEntry(entry, options) {
-      var store = this.getStore();
-      var def = new _Deferred2.default();
-      var doc = this.wrap(entry, options);
-      store.add(doc).then(function (result) {
+      const store = this.getStore();
+      const def = new _Deferred2.default();
+      const doc = this.wrap(entry, options);
+      store.add(doc).then(result => {
         def.resolve(result);
-      }, function (err) {
-        def.reject('error inserting entity: ' + err);
+      }, err => {
+        def.reject(`error inserting entity: ${err}`);
       });
       return def.promise;
     },
     updateEntry: function updateEntity(entry, options) {
-      var _this3 = this;
-
-      var store = this.getStore();
-      var def = new _Deferred2.default();
-      var entityId = this.getEntityId(entry, options);
-      this.getEntryDoc(entityId).then(function (doc) {
-        var odef = def;
+      const store = this.getStore();
+      const def = new _Deferred2.default();
+      const entityId = this.getEntityId(entry, options);
+      this.getEntryDoc(entityId).then(doc => {
+        const odef = def;
         doc.entity = entry;
         doc.modifyDate = moment().toDate();
-        doc.description = _this3.getEntityDescription(entry);
-        store.put(doc).then(function (result) {
+        doc.description = this.getEntityDescription(entry);
+        store.put(doc).then(result => {
           odef.resolve(result);
-        }, function (err) {
-          odef.reject('error updating entity: ' + err);
+        }, err => {
+          odef.reject(`error updating entity: ${err}`);
         });
-      }, function (err) {
-        def.reject('entity not found to update:' + err);
+      }, err => {
+        def.reject(`entity not found to update:${err}`);
       });
       return def.promise;
     },
     createEntry: function createEntry() {
-      var entry = {}; // need to dynamicly create Properties;
+      const entry = {}; // need to dynamicly create Properties;
       entry.Id = null;
       entry.CreateDate = moment().toDate();
       entry.ModifyDate = moment().toDate();
       return entry;
     },
     deleteEntry: function deleteEntry(entityId) {
-      var _this4 = this;
-
-      var def = new _Deferred2.default();
-      var store = this.getStore();
-      store.get(entityId).then(function (doc) {
-        var odef = def;
-        _this4._removeDoc(doc).then(function (result) {
-          _this4.onEntryDelete(entityId);
+      const def = new _Deferred2.default();
+      const store = this.getStore();
+      store.get(entityId).then(doc => {
+        const odef = def;
+        this._removeDoc(doc).then(result => {
+          this.onEntryDelete(entityId);
           odef.resolve(result);
-        }, function (err) {
+        }, err => {
           odef.reject(err);
         });
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       return def.promise;
     },
     _removeDoc: function _removeDoc(doc) {
-      var def = new _Deferred2.default();
-      var store = this.getStore();
-      store.remove(doc._id, doc._rev).then(function (result) {
+      const def = new _Deferred2.default();
+      const store = this.getStore();
+      store.remove(doc._id, doc._rev).then(result => {
         def.resolve(result);
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       return def.promise;
     },
     onEntryDelete: function onEntryDelete() {},
     saveRelatedEntries: function saveRelatedEntries(parentEntry, options) {
-      var entries = parentEntry && parentEntry.$relatedEntities ? parentEntry.$relatedEntities : [];
-      var relatedPromises = [];
-      var def = new _Deferred2.default();
-      entries.forEach(function (related) {
-        var model = App.ModelManager.getModel(related.entityName, _Types2.default.OFFLINE);
+      const entries = parentEntry && parentEntry.$relatedEntities ? parentEntry.$relatedEntities : [];
+      let relatedPromises = [];
+      const def = new _Deferred2.default();
+      entries.forEach(related => {
+        const model = App.ModelManager.getModel(related.entityName, _Types2.default.OFFLINE);
         if (model && related.entities) {
-          relatedPromises = related.entities.map(function (relatedEntry) {
+          relatedPromises = related.entities.map(relatedEntry => {
             return model.saveEntry(relatedEntry, options);
           });
         }
       });
       if (relatedPromises.length > 0) {
-        (0, _all2.default)(relatedPromises).then(function (relatedResults) {
+        (0, _all2.default)(relatedPromises).then(relatedResults => {
           def.resolve(relatedResults);
-        }, function (err) {
+        }, err => {
           def.reject(err);
         });
       } else {
@@ -231,7 +223,7 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
       return def.promise;
     },
     wrap: function wrap(entry) {
-      var doc = {
+      const doc = {
         _id: this.getDocId(entry),
         entity: entry,
         entityId: this.getEntityId(entry),
@@ -251,18 +243,16 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
       return doc.entity;
     },
     getEntries: function getEntries(query, options) {
-      var _this5 = this;
-
-      var store = this.getStore();
-      var def = new _Deferred2.default();
-      var queryOptions = this.buildQueryOptions();
+      const store = this.getStore();
+      const def = new _Deferred2.default();
+      const queryOptions = this.buildQueryOptions();
       _lang2.default.mixin(queryOptions, options);
-      var queryExpression = this.buildQueryExpression(query, queryOptions);
-      var queryResults = store.query(queryExpression, queryOptions);
-      (0, _when2.default)(queryResults, function (docs) {
-        var entities = _this5.processEntries(_this5.unWrapEntities(docs), queryOptions, docs);
+      const queryExpression = this.buildQueryExpression(query, queryOptions);
+      const queryResults = store.query(queryExpression, queryOptions);
+      (0, _when2.default)(queryResults, docs => {
+        const entities = this.processEntries(this.unWrapEntities(docs), queryOptions, docs);
         def.resolve(entities);
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       if (queryOptions && queryOptions.returnQueryResults) {
@@ -293,25 +283,21 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
       return 'entities/by_name';
     },
     unWrapEntities: function unWrapEntities(docs) {
-      var _this6 = this;
-
-      return docs.map(function (doc) {
-        return _this6.unWrap(doc.doc);
-      });
+      return docs.map(doc => this.unWrap(doc.doc));
     },
     getRelatedCount: function getRelatedCount(relationship, entry) {
-      var def = new _Deferred2.default();
-      var model = App.ModelManager.getModel(relationship.relatedEntity, _Types2.default.OFFLINE);
+      const def = new _Deferred2.default();
+      const model = App.ModelManager.getModel(relationship.relatedEntity, _Types2.default.OFFLINE);
       if (model) {
-        var queryOptions = {
+        const queryOptions = {
           returnQueryResults: true,
           include_docs: true,
           filter: this.buildRelatedQueryExpression(relationship, entry),
           key: relationship.relatedEntity
         };
-        model.getEntries(null, queryOptions).then(function (result) {
+        model.getEntries(null, queryOptions).then(result => {
           def.resolve(result.length);
-        }, function () {
+        }, () => {
           def.resolve(-1);
         });
       } else {
@@ -320,31 +306,29 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
       return def.promise;
     },
     buildRelatedQueryExpression: function buildRelatedQueryExpression(relationship, entry) {
-      var _this7 = this;
-
-      return function (entity) {
-        var parentDataPath = void 0;
-        var relatedDataPath = void 0;
-        var relatedValue = void 0;
+      return entity => {
+        let parentDataPath;
+        let relatedDataPath;
+        let relatedValue;
         if (relationship.parentProperty) {
           parentDataPath = relationship.parentDataPath ? relationship.parentDataPath : relationship.parentProperty;
           if (relationship.parentPropertyType && relationship.parentPropertyType === 'object') {
-            parentDataPath = relationship.parentProperty + '.$key';
+            parentDataPath = `${relationship.parentProperty}.$key`;
           }
         } else {
-          parentDataPath = _this7.idProperty;
+          parentDataPath = this.idProperty;
         }
 
         if (relationship.relatedProperty) {
           relatedDataPath = relationship.relatedDataPath ? relationship.relatedDataPath : relationship.relatedProperty;
           if (relationship.relatedPropertyType && relationship.relatedPropertyType === 'object') {
-            relatedDataPath = relationship.relatedProperty + '.$key';
+            relatedDataPath = `${relationship.relatedProperty}.$key`;
           }
         } else {
           relatedDataPath = '$key';
         }
 
-        var parentValue = _Utility2.default.getValue(entry, parentDataPath);
+        const parentValue = _Utility2.default.getValue(entry, parentDataPath);
         if (entity) {
           relatedValue = _Utility2.default.getValue(entity, relatedDataPath);
         }
@@ -356,94 +340,84 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
       };
     },
     getUsage: function getUsage() {
-      var _this8 = this;
-
-      var store = this.getStore();
-      var def = new _Deferred2.default();
-      var queryOptions = {
+      const store = this.getStore();
+      const def = new _Deferred2.default();
+      const queryOptions = {
         include_docs: true,
         descending: false,
         key: this.entityName
       };
 
-      var queryExpression = 'entities/by_name';
-      var queryResults = store.query(queryExpression, queryOptions);
-      (0, _when2.default)(queryResults, function (docs) {
-        var usage = {};
-        var size = _this8._getDocSize(docs[0]);
-        usage.iconClass = _this8.iconClass;
-        usage.entityName = _this8.entityName;
-        usage.description = _this8.entityDisplayNamePlural;
+      const queryExpression = 'entities/by_name';
+      const queryResults = store.query(queryExpression, queryOptions);
+      (0, _when2.default)(queryResults, docs => {
+        const usage = {};
+        const size = this._getDocSize(docs[0]);
+        usage.iconClass = this.iconClass;
+        usage.entityName = this.entityName;
+        usage.description = this.entityDisplayNamePlural;
         usage.oldestDate = docs[0] ? moment(docs[0].doc.modifyDate).toDate() : null; // see decending = false;
         usage.newestDate = docs[docs.length - 1] ? moment(docs[docs.length - 1].doc.modifyDate).toDate() : null;
         usage.count = docs.length;
         usage.sizeAVG = size;
         usage.size = usage.count * (size ? size : 10);
         def.resolve(usage);
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       return def.promise;
     },
     _getDocSize: function _getDocSize(doc) {
-      var size = 0;
-      var charSize = 2; // 2 bytes
+      let size = 0;
+      const charSize = 2; // 2 bytes
       if (doc) {
-        var jsonString = JSON.stringify(doc);
+        const jsonString = JSON.stringify(doc);
         size = charSize * jsonString.length;
       }
       return size;
     },
     clearAllData: function clearAllData() {
-      var _this9 = this;
-
-      var store = this.getStore();
-      var def = new _Deferred2.default();
-      var queryOptions = {
+      const store = this.getStore();
+      const def = new _Deferred2.default();
+      const queryOptions = {
         include_docs: true,
         descending: true,
         key: this.entityName
       };
-      var queryExpression = 'entities/by_name';
-      var queryResults = store.query(queryExpression, queryOptions);
-      (0, _when2.default)(queryResults, function (docs) {
-        var odef = def;
-        var deleteRequests = docs.map(function (doc) {
-          return _this9._removeDoc(doc.doc);
+      const queryExpression = 'entities/by_name';
+      const queryResults = store.query(queryExpression, queryOptions);
+      (0, _when2.default)(queryResults, docs => {
+        const odef = def;
+        const deleteRequests = docs.map(doc => {
+          return this._removeDoc(doc.doc);
         });
         if (deleteRequests.length > 0) {
-          (0, _all2.default)(deleteRequests).then(function (results) {
+          (0, _all2.default)(deleteRequests).then(results => {
             odef.resolve(results);
-          }, function (err) {
+          }, err => {
             odef.reject(err);
           });
         } else {
           def.resolve();
         }
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       return def.promise;
     },
-    clearDataOlderThan: function clearAllData() {
-      var _this10 = this;
-
-      var days = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-
-      var store = this.getStore();
-      var def = new _Deferred2.default();
-      var queryOptions = {
+    clearDataOlderThan: function clearAllData(days = 0) {
+      const store = this.getStore();
+      const def = new _Deferred2.default();
+      const queryOptions = {
         include_docs: true,
         descending: true,
         key: this.entityName
       };
-      var queryExpression = 'entities/by_name';
-      var queryResults = store.query(queryExpression, queryOptions);
-      (0, _when2.default)(queryResults, function (docs) {
-        var odef = def;
-        var deleteRequests = docs.filter(function (_ref) {
-          var doc = _ref.doc;
-
+      const queryExpression = 'entities/by_name';
+      const queryResults = store.query(queryExpression, queryOptions);
+      (0, _when2.default)(queryResults, docs => {
+        const odef = def;
+        const deleteRequests = docs.filter(({ doc }) => {
           if (!doc.modifyDate) {
             return true;
           }
@@ -452,36 +426,36 @@ define('argos/Models/_OfflineModelBase', ['module', 'exports', 'dojo/_base/decla
             return true;
           }
 
-          var recordDate = moment(_Convert2.default.toDateFromString(doc.modifyDate));
-          var currentDate = moment();
-          var diff = currentDate.diff(recordDate, 'days');
+          const recordDate = moment(_Convert2.default.toDateFromString(doc.modifyDate));
+          const currentDate = moment();
+          const diff = currentDate.diff(recordDate, 'days');
           if (diff > days) {
             return true;
           }
 
           return false;
-        }).map(function (doc) {
-          return _this10._removeDoc(doc.doc);
+        }).map(doc => {
+          return this._removeDoc(doc.doc);
         });
 
         if (deleteRequests.length > 0) {
-          (0, _all2.default)(deleteRequests).then(function (results) {
+          (0, _all2.default)(deleteRequests).then(results => {
             odef.resolve(results);
-          }, function (err) {
+          }, err => {
             odef.reject(err);
           });
         } else {
           def.resolve();
         }
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       return def.promise;
     },
     removeFromAuxiliaryEntities: function removeFromAuxiliaryEntities(entityId) {
-      var def = new _Deferred2.default();
-      var rvModel = App.ModelManager.getModel('RecentlyViewed', _Types2.default.OFFLINE);
-      var bcModel = App.ModelManager.getModel('Briefcase', _Types2.default.OFFLINE);
+      const def = new _Deferred2.default();
+      const rvModel = App.ModelManager.getModel('RecentlyViewed', _Types2.default.OFFLINE);
+      const bcModel = App.ModelManager.getModel('Briefcase', _Types2.default.OFFLINE);
       if (rvModel) {
         rvModel.deleteEntryByEntityContext(entityId, this.entityName);
       }

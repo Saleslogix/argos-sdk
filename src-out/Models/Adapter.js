@@ -15,7 +15,7 @@ define('argos/Models/Adapter', ['module', 'exports', './Manager', './Types'], fu
 
   exports.default = /** @lends module:argos/Models/Adapter */{
     getModel: function getModel(entityName) {
-      var Ctor = void 0;
+      let Ctor;
       if (App.onLine) {
         Ctor = _Manager2.default.get(entityName, _Types2.default.SDATA);
       } else {

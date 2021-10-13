@@ -19,7 +19,7 @@ define('argos/Dialogs/Modal', ['module', 'exports', 'dojo/_base/declare', 'dojo/
     };
   }
 
-  var resource = (0, _I18n2.default)('modal');
+  const resource = (0, _I18n2.default)('modal');
 
   /**
    * @class
@@ -44,7 +44,7 @@ define('argos/Dialogs/Modal', ['module', 'exports', 'dojo/_base/declare', 'dojo/
   /**
    * @module argos/Dialogs/Modal
    */
-  var __class = (0, _declare2.default)('argos.Dialogs.Modal', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Dialogs/Modal.prototype */{
+  const __class = (0, _declare2.default)('argos.Dialogs.Modal', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Dialogs/Modal.prototype */{
     widgetTemplate: new Simplate(['<div class="modal__container" data-dojo-attach-point="modalContainer">', '{%! $.modalTemplate %}', '{%! $.modalOverlayTemplate %}', '</div>']),
     dialogContentTemplate: new Simplate(['<div class="modal__header__title">{%: $.title %}</div>', '<p class="modal__content__text">{%: $.content %}</p>']),
     modalContentTemplate: new Simplate(['<div class="modal__content">', '</div>']),
@@ -113,11 +113,7 @@ define('argos/Dialogs/Modal', ['module', 'exports', 'dojo/_base/declare', 'dojo/
      * In order to get the promise data you must pass an item with action 'resolve'
      * To hide the modal pass a toolbar item with action 'cancel'
     */
-    add: function add() {
-      var content = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var toolbarActions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-      var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
-
+    add: function add(content = {}, toolbarActions = [], options = {}) {
       content._deferred = new _Deferred2.default();
       if (toolbarActions.length) {
         this.showToolbar = true;
@@ -133,51 +129,43 @@ define('argos/Dialogs/Modal', ['module', 'exports', 'dojo/_base/declare', 'dojo/
       $(this.modalContainer).on('click', this.onContainerClick.bind(this));
       return this;
     },
-    createModalToolbar: function createModalToolbar() {
-      var _this = this;
-
-      var toolbarActions = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
+    createModalToolbar: function createModalToolbar(toolbarActions = []) {
       if (this.showToolbar) {
-        var toolbar = $(this.modalToolbarTemplate.apply(this));
-        toolbarActions.forEach(function (toolbarItem) {
-          if (_this.defaultToolbarActions[toolbarItem.action]) {
-            toolbarItem.action = _this.defaultToolbarActions[toolbarItem.action].bind(_this)();
-            toolbarItem.context = _this;
+        const toolbar = $(this.modalToolbarTemplate.apply(this));
+        toolbarActions.forEach(toolbarItem => {
+          if (this.defaultToolbarActions[toolbarItem.action]) {
+            toolbarItem.action = this.defaultToolbarActions[toolbarItem.action].bind(this)();
+            toolbarItem.context = this;
           }
-          var item = $(_this.buttonTemplate.apply(toolbarItem, _this));
+          const item = $(this.buttonTemplate.apply(toolbarItem, this));
           $(item).on('click', toolbarItem.action.bind(toolbarItem.context));
-          _this._actionListeners.push($(item));
+          this._actionListeners.push($(item));
           $(toolbar).append(item);
         });
         $(this.modalNode).append(toolbar);
       }
       return this;
     },
-    createSimpleAlert: function createSimpleAlert() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      var dialog = {
+    createSimpleAlert: function createSimpleAlert(options = {}) {
+      const dialog = {
         title: this.defaultHeaderText[options.title] || options.title,
         content: options.content,
         getContent: options.getContent
       };
-      var toolbar = [{
+      const toolbar = [{
         action: 'resolve',
         className: 'button--flat button--flat--split',
         text: resource.okayText
       }];
       return this.add(dialog, toolbar);
     },
-    createSimpleDialog: function createSimpleDialog() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      var dialog = {
+    createSimpleDialog: function createSimpleDialog(options = {}) {
+      const dialog = {
         title: this.defaultHeaderText[options.title] || options.title,
         content: options.content,
         getContent: options.getContent
       };
-      var toolbar = [{
+      const toolbar = [{
         action: 'cancel',
         className: 'button--flat button--flat--split',
         text: this.defaultToolbarText[options.leftButton] || resource.cancelText
@@ -247,7 +235,7 @@ define('argos/Dialogs/Modal', ['module', 'exports', 'dojo/_base/declare', 'dojo/
     },
     removeActionListeners: function removeActionListeners() {
       if (this._actionListeners) {
-        this._actionListeners.forEach(function (listener) {
+        this._actionListeners.forEach(listener => {
           listener.off();
         });
 
@@ -256,7 +244,7 @@ define('argos/Dialogs/Modal', ['module', 'exports', 'dojo/_base/declare', 'dojo/
       return this;
     },
     resolveDeferred: function resolveDeferred() {
-      var data = {};
+      let data = {};
       if (this._content && this._content.getContent) {
         data = this._content.getContent();
       } else {
@@ -283,29 +271,27 @@ define('argos/Dialogs/Modal', ['module', 'exports', 'dojo/_base/declare', 'dojo/
       }
       return this;
     },
-    showContent: function showContent() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    showContent: function showContent(options = {}) {
       if (this._content && this._content.show) {
         this._content.show(options);
-        var content = $(this.modalContentTemplate.apply(this));
+        const content = $(this.modalContentTemplate.apply(this));
         $(content).append(this._content.domNode || this._content);
         $(this.modalNode).append(content);
       } else {
         if (this.isNotSimpleDialog()) {
           console.log('Current modal content does not have a show function, did you forget to add this?'); // eslint-disable-line
         } else {
-          var _content = $(this.modalContentTemplate.apply(this));
-          var simpleDialog = $(this.dialogContentTemplate.apply(this._content, this));
-          $(_content).append(simpleDialog);
-          $(this.modalNode).append(_content);
+          const content = $(this.modalContentTemplate.apply(this));
+          const simpleDialog = $(this.dialogContentTemplate.apply(this._content, this));
+          $(content).append(simpleDialog);
+          $(this.modalNode).append(content);
         }
       }
       return this;
     },
     updateZIndex: function updateZIndex(above) {
       if (above) {
-        var value = $(above).css('zIndex');
+        let value = $(above).css('zIndex');
         if (!value || value === 'auto') {
           value = 0;
         }

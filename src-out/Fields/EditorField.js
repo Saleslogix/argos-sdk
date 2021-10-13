@@ -35,7 +35,7 @@ define('argos/Fields/EditorField', ['module', 'exports', 'dojo/_base/declare', '
   /**
    * @module argos/Fields/EditorField
    */
-  var resource = (0, _I18n2.default)('dateField');
+  const resource = (0, _I18n2.default)('dateField');
 
   /**
    * @class
@@ -50,7 +50,7 @@ define('argos/Fields/EditorField', ['module', 'exports', 'dojo/_base/declare', '
    * the address parts and takes the user to an address_edit with all the street/city/postal etc.
    * @extends module:argos/Fields/_Field
    */
-  var __class = (0, _declare2.default)('argos.Fields.EditorField', [_Field3.default], /** @lends module:argos/Fields/EditorField.prototype */{
+  const __class = (0, _declare2.default)('argos.Fields.EditorField', [_Field3.default], /** @lends module:argos/Fields/EditorField.prototype */{
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:
@@ -73,7 +73,22 @@ define('argos/Fields/EditorField', ['module', 'exports', 'dojo/_base/declare', '
      * * `$$` => Owner View instance
      *
      */
-    widgetTemplate: new Simplate(['<label for="{%= $.name %}"\n      {% if ($.required) { %}\n          class="required"\n      {% } %}>\n      {%: $.label %}\n    </label>\n    <div class="field field-control-wrapper">\n      <button\n        class="button simpleSubHeaderButton field-control-trigger"\n        aria-label="{%:  $.lookupLabelText %}">\n        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>\n        </svg>\n      </button>\n      <input data-dojo-attach-point="inputNode" type="text" />\n    </div>']),
+    widgetTemplate: new Simplate([`<label for="{%= $.name %}"
+      {% if ($.required) { %}
+          class="required"
+      {% } %}>
+      {%: $.label %}
+    </label>
+    <div class="field field-control-wrapper">
+      <button
+        class="button simpleSubHeaderButton field-control-trigger"
+        aria-label="{%:  $.lookupLabelText %}">
+        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+        </svg>
+      </button>
+      <input data-dojo-attach-point="inputNode" type="text" />
+    </div>`]),
 
     iconClass: 'edit',
     /**
@@ -185,8 +200,8 @@ define('argos/Fields/EditorField', ['module', 'exports', 'dojo/_base/declare', '
         return;
       }
 
-      var view = App.getView(this.view);
-      var options = this.createNavigationOptions();
+      const view = App.getView(this.view);
+      const options = this.createNavigationOptions();
 
       if (view && options) {
         if (options.title) {
@@ -212,8 +227,8 @@ define('argos/Fields/EditorField', ['module', 'exports', 'dojo/_base/declare', '
      * `this.validationValue`.
      */
     getValuesFromView: function getValuesFromView() {
-      var view = App.getPrimaryActiveView();
-      var values = view && view.getValues();
+      const view = App.getPrimaryActiveView();
+      const values = view && view.getValues();
 
       if (view && values) {
         if (this.applyTo) {
@@ -239,7 +254,7 @@ define('argos/Fields/EditorField', ['module', 'exports', 'dojo/_base/declare', '
      *
      */
     complete: function complete() {
-      var view = App.getPrimaryActiveView();
+      const view = App.getPrimaryActiveView();
 
       if (view instanceof argos.Edit) {
         view.hideValidationSummary();

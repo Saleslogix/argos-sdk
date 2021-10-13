@@ -20,7 +20,7 @@ define('argos/_RelatedViewWidgetDetailMixin', ['module', 'exports', 'dojo/_base/
    * @mixin
    * @alias module:argos/_RelatedViewWidgetDetailMixin
    */
-  var __class = (0, _declare2.default)('argos._RelatedViewWidgetDetailMixin', null, /** @lends module:argos/_RelatedViewWidgetDetailMixin.prototype */{
+  const __class = (0, _declare2.default)('argos._RelatedViewWidgetDetailMixin', null, /** @lends module:argos/_RelatedViewWidgetDetailMixin.prototype */{
     cls: null,
     /**
      * @property {Simplate}
@@ -32,7 +32,7 @@ define('argos/_RelatedViewWidgetDetailMixin', ['module', 'exports', 'dojo/_base/
     relatedContentViewsTemplate: new Simplate(['<li class="related-view-detail-content {%= $.cls %}">', '<li id="related-content-views"></li>', '</li>']),
     contextSnapShotTemplate: new Simplate(['<h4>{%: $["$descriptor"] %}</h4>']),
     createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
-      var rowNode = void 0;
+      let rowNode;
       if (layout.relatedView) {
         rowNode = $('#related-content-views', sectionNode)[0];
         if (!rowNode) {
@@ -40,7 +40,7 @@ define('argos/_RelatedViewWidgetDetailMixin', ['module', 'exports', 'dojo/_base/
           $(sectionNode).append(rowNode);
         }
 
-        var docfrag = document.createDocumentFragment();
+        const docfrag = document.createDocumentFragment();
         $(docfrag).append(rowNode);
         this.onProcessRelatedViews(layout.relatedView, rowNode, entry);
         if (docfrag.childNodes.length > 0) {
@@ -53,7 +53,7 @@ define('argos/_RelatedViewWidgetDetailMixin', ['module', 'exports', 'dojo/_base/
       return rowNode;
     },
     getRelatedViewId: function getRelatedViewId(relatedView) {
-      return this.id + '_' + relatedView.id;
+      return `${this.id}_${relatedView.id}`;
     },
     /**
      * Gets the related view manager for a related view definition.
@@ -65,15 +65,15 @@ define('argos/_RelatedViewWidgetDetailMixin', ['module', 'exports', 'dojo/_base/
         this.relatedViewManagers = {};
       }
 
-      var relatedViewManager = void 0;
+      let relatedViewManager;
       if (this.relatedViewManagers[relatedView.id]) {
         relatedViewManager = this.relatedViewManagers[relatedView.id];
       } else {
         relatedView.id = this.getRelatedViewId(relatedView);
-        var relatedViewOptions = {};
+        const relatedViewOptions = {};
         _lang2.default.mixin(relatedViewOptions, relatedView);
 
-        var options = {
+        const options = {
           id: relatedView.id,
           relatedViewConfig: relatedViewOptions
         };
@@ -90,7 +90,7 @@ define('argos/_RelatedViewWidgetDetailMixin', ['module', 'exports', 'dojo/_base/
         }
 
         if (relatedView.enabled) {
-          var relatedViewManager = this.getRelatedViewManager(relatedView);
+          const relatedViewManager = this.getRelatedViewManager(relatedView);
           if (relatedViewManager) {
             relatedViewManager.addView(entry, rowNode, this);
           }
@@ -104,7 +104,7 @@ define('argos/_RelatedViewWidgetDetailMixin', ['module', 'exports', 'dojo/_base/
      */
     destroyRelatedViewWidgets: function destroyRelatedViewWidgets() {
       if (this.relatedViewManagers) {
-        for (var relatedViewId in this.relatedViewManagers) {
+        for (const relatedViewId in this.relatedViewManagers) {
           if (this.relatedViewManagers.hasOwnProperty(relatedViewId)) {
             this.relatedViewManagers[relatedViewId].destroyViews();
           }
@@ -126,8 +126,8 @@ define('argos/_RelatedViewWidgetDetailMixin', ['module', 'exports', 'dojo/_base/
      * Returns a rendered html snap shot of the entry.
      */
     getContextSnapShot: function getContextSnapShot() {
-      var entry = this.entry;
-      var snapShot = void 0;
+      const entry = this.entry;
+      let snapShot;
       if (entry) {
         snapShot = this.contextSnapShotTemplate.apply(entry, this);
       }

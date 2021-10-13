@@ -35,7 +35,7 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
   /**
    * @module argos/Views/Signature
    */
-  var resource = (0, _I18n2.default)('signature');
+  const resource = (0, _I18n2.default)('signature');
 
   /**
    * @class
@@ -44,7 +44,7 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
    * It goes hand-in-hand with {@link SignatureField SignatureField}
    * @extends module:argos/View
    */
-  var __class = (0, _declare2.default)('argos.Views.Signature', [_View2.default], /** @lends module:argos/Views/Signature.prototype */{
+  const __class = (0, _declare2.default)('argos.Views.Signature', [_View2.default], /** @lends module:argos/Views/Signature.prototype */{
     // Localization
     /**
      * @property {String}
@@ -199,7 +199,7 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
      * @return Number[]
      */
     _getCoords: function _getCoords(e) {
-      var offset = $(this.signatureNode).position();
+      const offset = $(this.signatureNode).position();
       return e.touches ? [e.touches[0].pageX - offset.left, e.touches[0].pageY - offset.top] : [e.clientX - offset.left, e.clientY - offset.top];
     },
     /**
@@ -279,11 +279,11 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
      * @param e
      */
     onResize: function onResize() /* e*/{
-      var oldWidth = this.canvasNodeWidth;
-      var oldHeight = this.canvasNodeHeight;
+      const oldWidth = this.canvasNodeWidth;
+      const oldHeight = this.canvasNodeHeight;
       this._sizeCanvas();
 
-      var newScale = Math.min(this.canvasNodeWidth / oldWidth, this.canvasNodeHeight / oldHeight);
+      const newScale = Math.min(this.canvasNodeWidth / oldWidth, this.canvasNodeHeight / oldHeight);
 
       this.signature = this.rescale(newScale);
       this.redraw(this.signature, this.signatureNode, this.config);
@@ -303,10 +303,10 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
      * @return {Number[][]} Rescaled signature array
      */
     rescale: function rescale(scale) {
-      var rescaled = [];
-      for (var i = 0; i < this.signature.length; i++) {
+      const rescaled = [];
+      for (let i = 0; i < this.signature.length; i++) {
         rescaled.push([]);
-        for (var j = 0; j < this.signature[i].length; j++) {
+        for (let j = 0; j < this.signature[i].length; j++) {
           rescaled[i].push([this.signature[i][j][0] * scale, this.signature[i][j][1] * scale]);
         }
       }
@@ -317,9 +317,9 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
      * @return {Number[][]} Optimized signature
      */
     optimizeSignature: function optimizeSignature() {
-      var optimized = [];
+      const optimized = [];
 
-      for (var i = 0; i < this.signature.length; i++) {
+      for (let i = 0; i < this.signature.length; i++) {
         optimized.push(this.optimize(this.signature[i]));
       }
 
@@ -336,19 +336,19 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
         return vector;
       }
 
-      var result = [];
-      var minA = 0.95;
-      var maxL = 15.0; // 15.0, 10.0 works well
-      var rootP = vector[0];
-      var lastP = vector[1];
-      var rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]];
-      var rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]);
+      const result = [];
+      const minA = 0.95;
+      const maxL = 15.0; // 15.0, 10.0 works well
+      let rootP = vector[0];
+      let lastP = vector[1];
+      let rootV = [lastP[0] - rootP[0], lastP[1] - rootP[1]];
+      let rootL = Math.sqrt(rootV[0] * rootV[0] + rootV[1] * rootV[1]);
 
-      for (var i = 2; i < vector.length; i++) {
-        var currentP = vector[i];
-        var currentV = [currentP[0] - rootP[0], currentP[1] - rootP[1]];
-        var currentL = Math.sqrt(currentV[0] * currentV[0] + currentV[1] * currentV[1]);
-        var dotProduct = (rootV[0] * currentV[0] + rootV[1] * currentV[1]) / (rootL * currentL);
+      for (let i = 2; i < vector.length; i++) {
+        const currentP = vector[i];
+        const currentV = [currentP[0] - rootP[0], currentP[1] - rootP[1]];
+        const currentL = Math.sqrt(currentV[0] * currentV[0] + currentV[1] * currentV[1]);
+        const dotProduct = (rootV[0] * currentV[0] + rootV[1] * currentV[1]) / (rootL * currentL);
 
         if (dotProduct < minA || currentL > maxL) {
           result.push(rootP);

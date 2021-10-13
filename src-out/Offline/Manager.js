@@ -19,7 +19,7 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
    * @class
    * @alias module:argos/Offline/Manager
    */
-  var __class = /** @lends module:argos/Offline/Manager */{
+  const __class = /** @lends module:argos/Offline/Manager */{
 
     defaultClearOlderThan: 2,
     /**
@@ -28,23 +28,23 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
      * @returns {Promise}
      */
     saveDetailView: function saveDetailView(view) {
-      var def = new _Deferred2.default();
+      const def = new _Deferred2.default();
       if (!view) {
         def.reject('A detail view must be specified.');
         return def.promise;
       }
-      var onlineModel = view.getModel();
-      var offlineModel = App.ModelManager.getModel(onlineModel.entityName, _Types2.default.OFFLINE);
-      var rvModel = App.ModelManager.getModel('RecentlyViewed', _Types2.default.OFFLINE);
-      var rvEntry = rvModel.createEntry(view.id, view.entry, onlineModel);
-      rvModel.saveEntry(rvEntry).then(function (rvResult) {
-        var odef = def;
-        offlineModel.saveEntry(view.entry).then(function () {
+      const onlineModel = view.getModel();
+      const offlineModel = App.ModelManager.getModel(onlineModel.entityName, _Types2.default.OFFLINE);
+      const rvModel = App.ModelManager.getModel('RecentlyViewed', _Types2.default.OFFLINE);
+      const rvEntry = rvModel.createEntry(view.id, view.entry, onlineModel);
+      rvModel.saveEntry(rvEntry).then(rvResult => {
+        const odef = def;
+        offlineModel.saveEntry(view.entry).then(() => {
           odef.resolve(rvResult);
-        }, function (err) {
+        }, err => {
           odef.reject(err);
         });
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       return def.promise;
@@ -55,49 +55,49 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
      * @returns {window.Promise}
      */
     removeDetailView: function removeDetailView(view) {
-      var def = new _Deferred2.default();
+      const def = new _Deferred2.default();
       if (!view) {
         def.reject('A detail view must be specified.');
         return def.promise;
       }
-      var id = view.entry[view.idProperty || '$key'];
-      var rvModel = App.ModelManager.getModel('RecentlyViewed', _Types2.default.OFFLINE);
+      const id = view.entry[view.idProperty || '$key'];
+      const rvModel = App.ModelManager.getModel('RecentlyViewed', _Types2.default.OFFLINE);
       return rvModel.deleteEntry(id);
     },
     /**
      * @param {String} briefcaseId
      */
     removeBriefcase: function removeBriefcase(briefcaseId) {
-      var def = new _Deferred2.default();
+      const def = new _Deferred2.default();
       if (!briefcaseId) {
         def.reject('A briefcase id view must be specified.');
         return def.promise;
       }
-      var bcModel = App.ModelManager.getModel('Briefcase', _Types2.default.OFFLINE);
-      bcModel.getEntry(briefcaseId).then(function (briefcase) {
+      const bcModel = App.ModelManager.getModel('Briefcase', _Types2.default.OFFLINE);
+      bcModel.getEntry(briefcaseId).then(briefcase => {
         if (briefcase) {
-          var entityName = briefcase.entityName;
-          var entityId = briefcase.entityId;
-          var odef = def;
-          bcModel.deleteEntry(briefcaseId).then(function () {
-            var entityModel = App.ModelManager.getModel(entityName, _Types2.default.OFFLINE);
-            var oodef = odef;
+          const entityName = briefcase.entityName;
+          const entityId = briefcase.entityId;
+          const odef = def;
+          bcModel.deleteEntry(briefcaseId).then(() => {
+            const entityModel = App.ModelManager.getModel(entityName, _Types2.default.OFFLINE);
+            const oodef = odef;
             if (entityModel) {
-              entityModel.deleteEntry(entityId).then(function (result) {
+              entityModel.deleteEntry(entityId).then(result => {
                 oodef.resolve(result);
-              }, function (err) {
+              }, err => {
                 oodef.reject(err);
               });
             } else {
-              odef.reject('Entity model not found:' + entityName);
+              odef.reject(`Entity model not found:${entityName}`);
             }
-          }, function (err) {
+          }, err => {
             def.reject(err);
           });
         } else {
           def.reject('briefcase not found');
         }
-      }, function (err) {
+      }, err => {
         def.reject(err);
       });
       return def.promise;
@@ -106,37 +106,37 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
      *
      */
     briefCaseEntity: function briefCaseEntity(entityName, entityId, options, defProgress) {
-      var onlineModel = null;
-      var offlineModel = null;
-      var entityPromise = void 0;
-      var def = new _Deferred2.default();
+      let onlineModel = null;
+      let offlineModel = null;
+      let entityPromise;
+      const def = new _Deferred2.default();
 
       onlineModel = App.ModelManager.getModel(entityName, _Types2.default.SDATA);
       offlineModel = App.ModelManager.getModel(entityName, _Types2.default.OFFLINE);
 
       if (onlineModel && offlineModel) {
         entityPromise = onlineModel.getEntry(entityId, options);
-        entityPromise.then(function (entry) {
+        entityPromise.then(entry => {
           if (entry) {
-            var briefcaseModel = App.ModelManager.getModel('Briefcase', _Types2.default.OFFLINE);
-            var briefcaseEntry = briefcaseModel.createEntry(entry, onlineModel, options);
-            briefcaseModel.saveEntry(briefcaseEntry).then(function () {
-              var odef = def;
-              offlineModel.saveEntry(entry, options).then(function (result) {
+            const briefcaseModel = App.ModelManager.getModel('Briefcase', _Types2.default.OFFLINE);
+            const briefcaseEntry = briefcaseModel.createEntry(entry, onlineModel, options);
+            briefcaseModel.saveEntry(briefcaseEntry).then(() => {
+              const odef = def;
+              offlineModel.saveEntry(entry, options).then(result => {
                 odef.resolve(result);
                 if (defProgress) {
                   defProgress.progress();
                 }
-              }, function (err) {
+              }, err => {
                 odef.reject(err);
               });
-            }, function (err) {
+            }, err => {
               def.reject(err);
             });
           } else {
             def.reject('entity not found.');
           }
-        }, function (err) {
+        }, err => {
           def.reject(err);
         });
       } else {
@@ -148,20 +148,18 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
      *
      */
     briefCaseEntities: function briefCaseEntities(entities) {
-      var _this = this;
-
-      var def = new _Deferred2.default();
-      var briefcaseRequests = [];
-      briefcaseRequests = entities.map(function (entity) {
-        var entityName = entity.entityName;
-        var entityId = entity.entityId;
-        var requestOptions = entity.options;
-        return _this.briefCaseEntity(entityName, entityId, requestOptions, def);
+      const def = new _Deferred2.default();
+      let briefcaseRequests = [];
+      briefcaseRequests = entities.map(entity => {
+        const entityName = entity.entityName;
+        const entityId = entity.entityId;
+        const requestOptions = entity.options;
+        return this.briefCaseEntity(entityName, entityId, requestOptions, def);
       });
       if (briefcaseRequests.length > 0) {
-        (0, _all2.default)(briefcaseRequests).then(function (results) {
+        (0, _all2.default)(briefcaseRequests).then(results => {
           def.resolve(results);
-        }, function (err) {
+        }, err => {
           def.reject(err);
         });
       } else {
@@ -173,24 +171,22 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
      *
      */
     getUsage: function getUsage() {
-      var _this2 = this;
+      const def = new _Deferred2.default();
+      let usageRequests = [];
 
-      var def = new _Deferred2.default();
-      var usageRequests = [];
-
-      var models = App.ModelManager.getModels(_Types2.default.OFFLINE).filter(function (model) {
+      const models = App.ModelManager.getModels(_Types2.default.OFFLINE).filter(model => {
         return model && !model.isSystem;
       });
 
-      usageRequests = models.map(function (model) {
+      usageRequests = models.map(model => {
         return model.getUsage();
       });
 
       if (usageRequests.length > 0) {
-        (0, _all2.default)(usageRequests).then(function (results) {
-          var usage = _this2._calculateUsage(results);
+        (0, _all2.default)(usageRequests).then(results => {
+          const usage = this._calculateUsage(results);
           def.resolve(usage);
-        }, function (err) {
+        }, err => {
           def.reject(err);
         });
       } else {
@@ -199,18 +195,18 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
       return def.promise;
     },
     _calculateUsage: function _calculateUsage(entityUsage) {
-      var usage = {};
+      const usage = {};
       usage.count = 0;
       usage.size = 0;
       usage.sizeAVG = 0;
       usage.entities = entityUsage;
       usage.oldestDate = null;
       usage.newestDate = null;
-      entityUsage.forEach(function (item) {
+      entityUsage.forEach(item => {
         if (item) {
           usage.count = usage.count + item.count;
           usage.size = usage.size + item.size;
-          var avg = usage.size / usage.count;
+          const avg = usage.size / usage.count;
           usage.sizeAVG = Number.isNaN(avg) ? 0 : avg;
           if (item.newestDate) {
             if (!usage.newestDate || usage.newestDate.valueOf() < item.newestDate.valueOf()) {
@@ -225,7 +221,7 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
           }
         }
       });
-      entityUsage.forEach(function (item) {
+      entityUsage.forEach(item => {
         if (item) {
           item.countPercent = usage.count ? item.count / usage.count : 0;
           item.sizePercent = usage.size ? item.size / usage.size : 0;
@@ -237,11 +233,9 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
      *
      */
     clearAllData: function clearAllData() {
-      var _this3 = this;
-
-      var def = new _Deferred2.default();
-      var requests = [];
-      var models = App.ModelManager.getModels(_Types2.default.OFFLINE).filter(function (model) {
+      const def = new _Deferred2.default();
+      let requests = [];
+      const models = App.ModelManager.getModels(_Types2.default.OFFLINE).filter(model => {
         if (!model) {
           return false;
         }
@@ -252,16 +246,16 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
 
         return false;
       });
-      requests = models.map(function (model) {
+      requests = models.map(model => {
         return model.clearAllData();
       });
       if (requests.length > 0) {
-        (0, _all2.default)(requests).then(function (results) {
-          var prefOptions = _this3.getOptions();
+        (0, _all2.default)(requests).then(results => {
+          const prefOptions = this.getOptions();
           prefOptions.lastClearedDate = moment().toDate();
-          _this3.saveOptions(prefOptions);
+          this.saveOptions(prefOptions);
           def.resolve(results);
-        }, function (err) {
+        }, err => {
           def.reject(err);
         });
       } else {
@@ -273,8 +267,8 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
      *
      */
     getOlderThan: function getOlderThan(days) {
-      var options = this.getOptions();
-      var results = parseInt(days, 10);
+      const options = this.getOptions();
+      const results = parseInt(days, 10);
       if (results >= 0) {
         return results;
       }
@@ -285,28 +279,28 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
      *
      */
     clearRecentData: function clearRecentData(days) {
-      var recentModel = App.ModelManager.getModel('RecentlyViewed', _Types2.default.OFFLINE);
+      const recentModel = App.ModelManager.getModel('RecentlyViewed', _Types2.default.OFFLINE);
       return this.clearOlderThan(recentModel, days);
     },
     /**
      *
      */
     clearBriefcaseData: function clearBriefcaseData(days) {
-      var briefcaseModel = App.ModelManager.getModel('Briefcase', _Types2.default.OFFLINE);
+      const briefcaseModel = App.ModelManager.getModel('Briefcase', _Types2.default.OFFLINE);
       return this.clearOlderThan(briefcaseModel, days);
     },
     /**
      *
      */
     clearOlderThan: function clearOlderThan(model, days) {
-      var daysParsed = this.getOlderThan(days);
+      const daysParsed = this.getOlderThan(days);
       return model.clearDataOlderThan(daysParsed);
     },
     /**
      *
      */
     getOptions: function getOptions() {
-      var options = void 0;
+      let options;
       if (!App.preferences.offlineOptions) {
         options = this.getDefaultOptions();
         App.preferences.offlineOptions = options;
@@ -330,7 +324,7 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
      *
      */
     getDefaultOptions: function getDefaultOptions() {
-      var options = {
+      const options = {
         clearOlderThan: this.defaultClearOlderThan
       };
       return options;
@@ -339,7 +333,7 @@ define('argos/Offline/Manager', ['module', 'exports', 'dojo/Deferred', 'dojo/pro
      *
      */
     getClearOlderThanValues: function getClearOlderThanValues() {
-      var values = [{
+      const values = [{
         key: 0,
         value: 0
       }, {

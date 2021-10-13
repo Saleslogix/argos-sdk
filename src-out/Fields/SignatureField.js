@@ -19,7 +19,7 @@ define('argos/Fields/SignatureField', ['module', 'exports', 'dojo/_base/declare'
     };
   }
 
-  var resource = (0, _I18n2.default)('signatureField');
+  const resource = (0, _I18n2.default)('signatureField');
 
   /**
    * @class
@@ -54,7 +54,7 @@ define('argos/Fields/SignatureField', ['module', 'exports', 'dojo/_base/declare'
   /**
    * @module argos/Fields/SignatureField
    */
-  var control = (0, _declare2.default)('argos.Fields.SignatureField', [_EditorField2.default], /** @lends module:argos/Fields/SignatureField.prototype */{
+  const control = (0, _declare2.default)('argos.Fields.SignatureField', [_EditorField2.default], /** @lends module:argos/Fields/SignatureField.prototype */{
     // Localization
     /**
      * @property {String}
@@ -106,7 +106,7 @@ define('argos/Fields/SignatureField', ['module', 'exports', 'dojo/_base/declare'
      * @return {Object} Navigation options
      */
     createNavigationOptions: function createNavigationOptions() {
-      var options = this.inherited(createNavigationOptions, arguments);
+      const options = this.inherited(createNavigationOptions, arguments);
       options.signature = this.signature;
       return options;
     },
@@ -114,10 +114,10 @@ define('argos/Fields/SignatureField', ['module', 'exports', 'dojo/_base/declare'
      * Complete override that gets the editor view, gets the values and calls set value on the field
      */
     getValuesFromView: function getValuesFromView() {
-      var app = this.app;
-      var view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
+      const app = this.app;
+      const view = app && app.getPrimaryActiveView && app.getPrimaryActiveView();
       if (view) {
-        var value = view.getValues();
+        const value = view.getValues();
         this.currentValue = this.validationValue = value;
         this.setValue(this.currentValue, false);
       }

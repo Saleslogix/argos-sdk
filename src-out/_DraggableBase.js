@@ -36,7 +36,7 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
   /**
    * @module argos/_DraggableBase
    */
-  var __class = (0, _declare2.default)('argos._DraggableBase', null, /** @lends module:argos/_DraggableBase.prototype */{
+  const __class = (0, _declare2.default)('argos._DraggableBase', null, /** @lends module:argos/_DraggableBase.prototype */{
     _container: null,
     _isScrolling: null,
     _scrollingTouch: null,
@@ -71,8 +71,8 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
       return 0;
     },
     applyInitialStyling: function applyInitialStyling() {
-      var containerZ = $(this._container).css('zIndex');
-      var containerHeight = $(this._container).css('height');
+      const containerZ = $(this._container).css('zIndex');
+      const containerHeight = $(this._container).css('height');
       if (!this.zIndex) {
         if (containerZ > 0) {
           $(this._source).css({
@@ -92,7 +92,7 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
         opacity: '0.6',
         position: 'absolute',
         width: $(this._source).css('width'),
-        top: this._position.y - this._position.offset + 'px'
+        top: `${this._position.y - this._position.offset}px`
       });
       if (this._scroller) {
         $(this._scroller).css({
@@ -104,7 +104,7 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
         });
       }
       $(this._container).css({
-        height: containerHeight + this._position.h + 'px'
+        height: `${containerHeight + this._position.h}px`
       });
       this.applyStyling();
       return this;
@@ -135,9 +135,7 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
       }
       return false;
     },
-    checkScroll: function checkScroll() {
-      var touch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    checkScroll: function checkScroll(touch = {}) {
       if (touch.pageY - this._scrollerPos.offset > this._scrollerPos.h * (1 - this.scrollAt)) {
         this._scrollingTouch = touch;
         if (!this._isScrolling) {
@@ -182,25 +180,23 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
       });
       this.clearScrollTimer();
     },
-    computeMovement: function computeMovement(_ref) {
-      var pageY = _ref.pageY;
-
-      var sourceTop = pageY - this._position.h / 2;
+    computeMovement: function computeMovement({ pageY }) {
+      let sourceTop = pageY - this._position.h / 2;
       if (this.checkAtTop(sourceTop)) {
         sourceTop = this._position.offset;
       }
       this.computePrevNext(sourceTop);
       $(this._source).css({
-        top: sourceTop - this._position.offset + 'px'
+        top: `${sourceTop - this._position.offset}px`
       });
       this._position = this.getPositionOf(this._source);
       return this;
     },
     computePrevNext: function computePrevNext(sourceTop) {
-      var sourceBot = sourceTop + this._position.h;
+      const sourceBot = sourceTop + this._position.h;
       if (this._previousElement) {
         // This is the case where the selected element is the last element of the container
-        var prevPosition = this.getPositionOf(this._previousElement);
+        const prevPosition = this.getPositionOf(this._previousElement);
         if (!(sourceTop > prevPosition.y + prevPosition.h / 2)) {
           this.resetMargins(this._previousElement, 'bottom');
           this._nextElement = this._previousElement;
@@ -211,7 +207,7 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
           this.applyStyling();
         } else if (this._nextElement) {
           // This is the case where the selected element is between two elements in the container
-          var nextPosition = this.getPositionOf(this._nextElement);
+          const nextPosition = this.getPositionOf(this._nextElement);
           if (!(sourceBot < nextPosition.y + nextPosition.h / 2 + this.accountForAnimation())) {
             this.resetMargins(this._previousElement, 'bottom');
             this._previousElement = this._nextElement;
@@ -224,8 +220,8 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
         }
       } else {
         // This is the case where the selected element is the first in the container
-        var _nextPosition = this.getPositionOf(this._nextElement);
-        if (!(sourceBot < _nextPosition.y + _nextPosition.h / 2 + this.accountForAnimation())) {
+        const nextPosition = this.getPositionOf(this._nextElement);
+        if (!(sourceBot < nextPosition.y + nextPosition.h / 2 + this.accountForAnimation())) {
           this.resetMargins(this._nextElement, 'top');
           this._previousElement = this._nextElement;
           this._nextElement = this._nextElement.nextSibling;
@@ -236,10 +232,7 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
         }
       }
     },
-    findByClass: function findByClass() {
-      var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var byClass = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
+    findByClass: function findByClass(element = {}, byClass = {}) {
       if (element === this._container) {
         return false;
       }
@@ -248,10 +241,7 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
       }
       return this.findByClass(element.parentNode, byClass);
     },
-    findByType: function findByType() {
-      var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var byType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
+    findByType: function findByType(element = {}, byType = {}) {
       if (element === this._container) {
         return null;
       }
@@ -260,10 +250,8 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
       }
       return this.findByType(element.parentNode, byType);
     },
-    findSource: function findSource() {
-      var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      var source = void 0;
+    findSource: function findSource(element = {}) {
+      let source;
       if (this._class) {
         source = this.findByClass(element, this._class);
         if (source && this._parentClassToDrag) {
@@ -281,10 +269,8 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
       }
       return source;
     },
-    getPositionOf: function getPositionOf() {
-      var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-      var position = _domGeometry2.default.position(element, this.includeScroll);
+    getPositionOf: function getPositionOf(element = {}) {
+      const position = _domGeometry2.default.position(element, this.includeScroll);
       if (position.y !== element.offsetTop) {
         position.offset = position.y - element.offsetTop;
       } else {
@@ -292,9 +278,7 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
       }
       return position;
     },
-    onTouchStart: function onTouchStart() {
-      var touch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    onTouchStart: function onTouchStart(touch = {}) {
       this._source = this.findSource(touch.target);
       if (!this._scrollerPos) {
         if (this._scroller) {
@@ -312,11 +296,9 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
         touch.preventDefault();
       }
     },
-    onTouchMove: function onTouchMove() {
-      var touch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    onTouchMove: function onTouchMove(touch = {}) {
       if (this._source) {
-        var touchMovement = void 0;
+        let touchMovement;
         if (touch.type === 'mousemove') {
           touchMovement = touch;
         } else {
@@ -332,9 +314,7 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
         }
       }
     },
-    onTouchEnd: function onTouchEnd() {
-      var touch = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    onTouchEnd: function onTouchEnd(touch = {}) {
       if (this._source) {
         this.placeItem(touch).removeStyling().clearValues();
       }
@@ -370,26 +350,20 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
       }
       return this;
     },
-    resetMargins: function resetMargins() {
-      var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var marginType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
+    resetMargins: function resetMargins(element = {}, marginType = {}) {
       if (marginType === 'bottom') {
         $(element).css({
-          'margin-bottom': element.previousMargin + 'px'
+          'margin-bottom': `${element.previousMargin}px`
         });
       } else if (marginType === 'top') {
         $(element).css({
-          'margin-top': element.previousMargin + 'px'
+          'margin-top': `${element.previousMargin}px`
         });
       }
       return this;
     },
-    scrollSmooth: function scrollSmooth() {
-      var toScroll = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var speed = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      var currentScrollTop = toScroll.scrollTop;
+    scrollSmooth: function scrollSmooth(toScroll = {}, speed = {}) {
+      const currentScrollTop = toScroll.scrollTop;
       if (speed < 0) {
         if (currentScrollTop >= Math.abs(speed)) {
           toScroll.scrollTop = currentScrollTop + speed;
@@ -409,9 +383,9 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
       }
     },
     scrollTimer: function scrollTimer() {
-      var scrollSpeed = 0;
+      let scrollSpeed = 0;
       if (this._scrollDirection === 'down' && this._source.offsetTop < this._container.lastChild.offsetTop + this._position.h && this._source !== this._container.lastChild) {
-        var x = (this._scrollingTouch.pageY - this._scrollerPos.offset - this._scrollerPos.h * (1 - this.scrollAt)) / (this._scrollerPos.h * this.scrollAt); // (this._scrollerPos.h - this._scrollerPos.h * (1 - this.scrollAt))
+        let x = (this._scrollingTouch.pageY - this._scrollerPos.offset - this._scrollerPos.h * (1 - this.scrollAt)) / (this._scrollerPos.h * this.scrollAt); // (this._scrollerPos.h - this._scrollerPos.h * (1 - this.scrollAt))
         if (x < 0) {
           x = 0;
         }
@@ -423,11 +397,11 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
         }
       } else if (this._scrollDirection === 'up' && this._position.y > this._container.firstChild.offsetTop) {
         // (this._scroller.scrollTop > 0 || this._container.scrollTop > 0)
-        var _x15 = 1 - (this._scrollingTouch.pageY - this._scrollerPos.offset) / (this._scrollerPos.h * this.scrollAt);
-        if (_x15 < 0) {
-          _x15 = 1;
+        let x = 1 - (this._scrollingTouch.pageY - this._scrollerPos.offset) / (this._scrollerPos.h * this.scrollAt);
+        if (x < 0) {
+          x = 1;
         }
-        scrollSpeed = -1 * _x15 * _x15 * this.scrollSpeed;
+        scrollSpeed = -1 * x * x * this.scrollSpeed;
         if (this._scroller) {
           this.scrollSmooth(this._scroller, scrollSpeed);
         } else {
@@ -435,52 +409,38 @@ define('argos/_DraggableBase', ['module', 'exports', 'dojo/_base/declare', 'dojo
         }
       }
     },
-    setClass: function setClass() {
-      var className = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    setClass: function setClass(className = {}) {
       this._class = className;
       return this;
     },
-    setMargins: function setMargins() {
-      var element = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var marginType = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      var sourceMargins = this._source.previousMarginBottom + this._source.previousMarginTop;
+    setMargins: function setMargins(element = {}, marginType = {}) {
+      let sourceMargins = this._source.previousMarginBottom + this._source.previousMarginTop;
       if (!(sourceMargins > 0)) {
         sourceMargins = 0;
       }
       if (marginType === 'bottom') {
         $(element).css({
-          'margin-bottom': element.previousMargin + sourceMargins + this._position.h + 'px'
+          'margin-bottom': `${element.previousMargin + sourceMargins + this._position.h}px`
         });
       } else if (marginType === 'top') {
         $(element).css({
-          'margin-top': element.previousMargin + sourceMargins + this._position.h + 'px'
+          'margin-top': `${element.previousMargin + sourceMargins + this._position.h}px`
         });
       }
       return this;
     },
-    setParentTypeToDrag: function setParentTypeToDrag() {
-      var parentType = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    setParentTypeToDrag: function setParentTypeToDrag(parentType = {}) {
       this._parentTypeToDrag = parentType;
       return this;
     },
-    setParentClassToDrag: function setParentClassToDrag() {
-      var parentClass = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    setParentClassToDrag: function setParentClassToDrag(parentClass = {}) {
       this._parentClassToDrag = parentClass;
     },
-    setType: function setType() {
-      var type = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    setType: function setType(type = {}) {
       this._type = type;
       return this;
     },
-    setupDraggable: function setupDraggable() {
-      var container = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-      var scroller = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
+    setupDraggable: function setupDraggable(container = {}, scroller = {}) {
       if (container) {
         this._container = container;
         if (scroller) {

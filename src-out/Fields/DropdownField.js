@@ -39,7 +39,7 @@ define('argos/Fields/DropdownField', ['module', 'exports', 'dojo/_base/declare',
   /**
    * @module argos/Fields/DropdownField
    */
-  var __class = (0, _declare2.default)('argos.DropdownField', [_Field3.default, _Dropdown2.default], /** @lends module:argos/Fields/DropdownField.prototype */{
+  const __class = (0, _declare2.default)('argos.DropdownField', [_Field3.default, _Dropdown2.default], /** @lends module:argos/Fields/DropdownField.prototype */{
     widgetTemplate: new Simplate(['<div data-dojo-attach-point="dropdownNode">', '<label>{%: $.label %}</label>', '<input readOnly data-dojo-attach-point="dropdownInput"></input>', '<span class="{%: $.icon %}" style="position: absolute;color: #383838;font-size: 14px;height: 14px;width: 14px;margin-top: 15px;margin-left: -15px;tex-align: center;"></span>', '<select class="dropdown__select--hidden" data-dojo-attach-point="dropdownSelect"></select>', '</div>', '</div>']), // TODO: Remove the inline styling applied here... only organized way to override the nested styling occurring.
     onClick: function onClick(evt) {
       this.scrollToDropdown();

@@ -26,7 +26,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
    * Extends the SDataDetail Mixin by providing functions for $template requests.
    * @mixes module:argos/_SDataDetailMixin
    */
-  var __class = (0, _declare2.default)('argos._SDataEditMixin', [_SDataDetailMixin3.default], /** @lends module:argos/_SDataEditMixin.prototype */{
+  const __class = (0, _declare2.default)('argos._SDataEditMixin', [_SDataDetailMixin3.default], /** @lends module:argos/_SDataEditMixin.prototype */{
     /**
      * @property {Object}
      * The saved SData response.
@@ -41,8 +41,8 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
     diffPropertyIgnores: ['$etag', '$updated'],
 
     _buildRefreshMessage: function _buildRefreshMessage() {
-      var message = this.inherited(_buildRefreshMessage, arguments);
-      var model = this.getModel();
+      const message = this.inherited(_buildRefreshMessage, arguments);
+      const model = this.getModel();
       return _lang2.default.mixin(message, {
         resourceKind: model && model.resourceKind || this.resourceKind
       });
@@ -58,7 +58,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
       }
     },
     createEntryForUpdate: function createEntryForUpdate(v) {
-      var values = v;
+      let values = v;
       values = this.inherited(createEntryForUpdate, arguments);
       values = _lang2.default.mixin(values, {
         $key: this.entry.$key,
@@ -73,7 +73,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
       return values;
     },
     createEntryForInsert: function createEntryForInsert(v) {
-      var values = v;
+      let values = v;
       values = this.inherited(createEntryForInsert, arguments);
       return _lang2.default.mixin(values, {
         $name: this.entityName
@@ -104,7 +104,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
      * @return {Object} Sage.SData.Client.SDataTemplateResourceRequest instance.
      */
     createTemplateRequest: function createTemplateRequest() {
-      var request = new Sage.SData.Client.SDataTemplateResourceRequest(this.getService());
+      const request = new Sage.SData.Client.SDataTemplateResourceRequest(this.getService());
 
       if (this.resourceKind) {
         request.setResourceKind(this.resourceKind);
@@ -128,7 +128,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
      * Initiates the SData request for the template (default values).
      */
     requestTemplate: function requestTemplate() {
-      var request = this.createTemplateRequest();
+      const request = this.createTemplateRequest();
       if (request) {
         request.read({
           success: this.onRequestTemplateSuccess,
@@ -188,7 +188,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
      * @return {Object} Entry with string dates
      */
     convertValues: function convertValues(values) {
-      for (var n in values) {
+      for (const n in values) {
         if (values[n] instanceof Date) {
           values[n] = this.getService().isJsonEnabled() ? _Convert2.default.toJsonStringFromDate(values[n]) : _Convert2.default.toIsoStringFromDate(values[n]);
         }
@@ -202,7 +202,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
      * @return {Object} Entry with actual Date objects
      */
     convertEntry: function convertEntry(entry) {
-      for (var n in entry) {
+      for (const n in entry) {
         if (_Convert2.default.isDateString(entry[n])) {
           entry[n] = _Convert2.default.toDateFromString(entry[n]);
         }
@@ -211,17 +211,15 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
       return entry;
     },
     resetInteractionState: function resetInteractionState() {
-      var _this = this;
-
       if (this._previousFieldState === null) {
         this._previousFieldState = {};
         return;
       }
 
       // Restore the previous state of each field before the security was applied
-      Object.keys(this._previousFieldState).forEach(function (k) {
-        var field = _this.fields[k];
-        var previousState = _this._previousFieldState[k];
+      Object.keys(this._previousFieldState).forEach(k => {
+        const field = this.fields[k];
+        const previousState = this._previousFieldState[k];
 
         if (previousState.disabled) {
           field.disable();
@@ -240,25 +238,20 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
     },
     _previousFieldState: null,
     processFieldLevelSecurity: function processFieldLevelSecurity(entry) {
-      var _this2 = this;
-
       this.resetInteractionState();
-      var permissions = entry.$permissions;
-
+      const { $permissions: permissions } = entry;
       // permissions is an array of objects:
       // { name: "FieldName", access: "ReadOnly" }
       if (permissions && permissions.length) {
-        permissions.forEach(function (p) {
-          var name = p.name,
-              access = p.access;
-
-          var field = _this2.fields[name];
+        permissions.forEach(p => {
+          const { name, access } = p;
+          const field = this.fields[name];
           if (!field) {
             return;
           }
 
           // Capture the current state before we apply the changes
-          _this2._previousFieldState[name] = {
+          this._previousFieldState[name] = {
             disabled: field.isDisabled(),
             hidden: field.isHidden()
           };
@@ -273,7 +266,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
       }
     },
     _applyStateToPutOptions: function _applyStateToPutOptions(putOptions) {
-      var store = this.get('store');
+      const store = this.get('store');
 
       if (this._isConcurrencyCheckEnabled()) {
         // The SData store will take the version and apply it to the etag
@@ -289,7 +282,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
       return App && App.enableConcurrencyCheck;
     },
     initModel: function initModel() {
-      var model = this.getModel();
+      const model = this.getModel();
       if (model) {
         this._model = model;
         this._model.init();
@@ -303,7 +296,7 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
         return;
       }
 
-      var queryModel = model._getQueryModelByName('detail');
+      const queryModel = model._getQueryModelByName('detail');
       if (this.resourceKind) {
         model.resourceKind = this.resourceKind;
       }
@@ -318,54 +311,54 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
       // was to modify the protoype of the view's querySelect array.
       if (this.querySelect && this.querySelect.length) {
         /* eslint-disable */
-        console.warn('A view\'s querySelect is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's querySelect is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         if (!queryModel.querySelect) {
           queryModel.querySelect = [];
         }
 
-        queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter(function (item) {
+        queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter(item => {
           return queryModel.querySelect.indexOf(item) < 0;
         }));
       }
 
       if (this.queryInclude && this.queryInclude.length) {
         /* eslint-disable */
-        console.warn('A view\'s queryInclude is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's queryInclude is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         if (!queryModel.queryInclude) {
           queryModel.queryInclude = [];
         }
 
-        queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter(function (item) {
+        queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter(item => {
           return queryModel.queryInclude.indexOf(item) < 0;
         }));
       }
 
       if (this.queryWhere) {
         /* eslint-disable */
-        console.warn('A view\'s queryWhere is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's queryWhere is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         queryModel.queryWhere = this.queryWhere;
       }
 
       if (this.queryArgs) {
         /* eslint-disable */
-        console.warn('A view\'s queryArgs is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's queryArgs is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         queryModel.queryArgs = _lang2.default.mixin({}, queryModel.queryArgs, this.queryArgs);
       }
 
       if (this.queryOrderBy && this.queryOrderBy.length) {
         /* eslint-disable */
-        console.warn('A view\'s queryOrderBy is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's queryOrderBy is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         if (Array.isArray(this.queryOrderBy)) {
           if (!queryModel.queryOrderBy) {
             queryModel.queryOrderBy = [];
           }
 
-          queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter(function (item) {
+          queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter(item => {
             return queryModel.queryOrderBy.indexOf(item) < 0;
           }));
         } else {
@@ -375,14 +368,14 @@ define('argos/_SDataEditMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
 
       if (this.resourceProperty) {
         /* eslint-disable */
-        console.warn('A view\'s resourceProperty is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's resourceProperty is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         queryModel.resourceProperty = this.resourceProperty;
       }
 
       if (this.resourcePredicate) {
         /* eslint-disable */
-        console.warn('A view\'s resourcePredicate is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's resourcePredicate is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         queryModel.resourcePredicate = this.resourcePredicate;
       }
