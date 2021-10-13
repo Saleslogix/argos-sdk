@@ -21,12 +21,12 @@ define('argos/_LegacySDataDetailMixin', ['module', 'exports', 'dojo/_base/declar
    * @classdesc Enables legacy SData operations for the Detail view.
    *
    */
-  const __class = (0, _declare2.default)('argos._LegacySDataDetailMixin', null, /** @lends module:argos/_LegacySDataDetailMixin.prototype */{
+  var __class = (0, _declare2.default)('argos._LegacySDataDetailMixin', null, /** @lends module:argos/_LegacySDataDetailMixin.prototype */{
     /**
      * Initiates the SData request.
      */
     requestData: function requestData() {
-      const request = this.createRequest();
+      var request = this.createRequest();
 
       if (request) {
         request.read({
@@ -47,14 +47,14 @@ define('argos/_LegacySDataDetailMixin', ['module', 'exports', 'dojo/_base/declar
      * @return {Object} Sage.SData.Client.SDataSingleResourceRequest instance.
      */
     createRequest: function createRequest() {
-      const request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
+      var request = new Sage.SData.Client.SDataSingleResourceRequest(this.getService());
 
       /* test for complex selector */
       /* todo: more robust test required? */
       if (/(\s+)/.test(this.options.key)) {
         request.setResourceSelector(this.options.key);
       } else {
-        request.setResourceSelector(`'${this.options.key}'`);
+        request.setResourceSelector('\'' + this.options.key + '\'');
       }
 
       if (this.resourceKind) {

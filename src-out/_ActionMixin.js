@@ -27,7 +27,7 @@ define('argos/_ActionMixin', ['module', 'exports'], function (module, exports) {
     };
   }();
 
-  let _ActionMixin = function () {
+  var _ActionMixin = function () {
     function _ActionMixin() {
       _classCallCheck(this, _ActionMixin);
 
@@ -38,6 +38,8 @@ define('argos/_ActionMixin', ['module', 'exports'], function (module, exports) {
     _createClass(_ActionMixin, [{
       key: 'postCreate',
       value: function postCreate(container) {
+        var _this = this;
+
         // todo: add delegation
         if (!container) {
           return;
@@ -45,26 +47,26 @@ define('argos/_ActionMixin', ['module', 'exports'], function (module, exports) {
 
         this.container = container;
         this.actionsFrom = this.container.actionsFrom || this.actionsFrom;
-        this.actionsFrom.split(',').forEach(evt => {
-          $(this.container.domNode).on(evt, this._initiateActionFromEvent.bind(this));
+        this.actionsFrom.split(',').forEach(function (evt) {
+          $(_this.container.domNode).on(evt, _this._initiateActionFromEvent.bind(_this));
         });
       }
     }, {
       key: '_isValidElementForAction',
       value: function _isValidElementForAction(el) {
-        const domNode = this.container.domNode;
-        const contained = domNode.contains ? domNode !== el && domNode.contains(el) : !!(domNode.compareDocumentPosition(el) & 16);
+        var domNode = this.container.domNode;
+        var contained = domNode.contains ? domNode !== el && domNode.contains(el) : !!(domNode.compareDocumentPosition(el) & 16);
 
         return domNode === el || contained;
       }
     }, {
       key: '_initiateActionFromEvent',
       value: function _initiateActionFromEvent(evt) {
-        const el = $(evt.target).closest('[data-action]').get(0);
-        const action = $(el).attr('data-action');
+        var el = $(evt.target).closest('[data-action]').get(0);
+        var action = $(el).attr('data-action');
 
         if (action && this._isValidElementForAction(el) && this.onCheckAction(action, evt, el)) {
-          const parameters = this._getParametersForAction(action, evt, el);
+          var parameters = this._getParametersForAction(action, evt, el);
           this.onInvokeAction(action, parameters, evt, el);
           evt.stopPropagation();
         }
@@ -72,7 +74,7 @@ define('argos/_ActionMixin', ['module', 'exports'], function (module, exports) {
     }, {
       key: '_getParametersForAction',
       value: function _getParametersForAction(name, evt, el) {
-        const parameters = {
+        var parameters = {
           $event: evt,
           $source: el
         };
@@ -81,8 +83,8 @@ define('argos/_ActionMixin', ['module', 'exports'], function (module, exports) {
           return $1.toUpperCase() + $2;
         }
 
-        for (let i = 0, attrLen = el.attributes.length; i < attrLen; i++) {
-          const attributeName = el.attributes[i].name;
+        for (var i = 0, attrLen = el.attributes.length; i < attrLen; i++) {
+          var attributeName = el.attributes[i].name;
           if (/^((?=data-action)|(?!data))/.test(attributeName)) {
             continue;
           }
@@ -90,7 +92,7 @@ define('argos/_ActionMixin', ['module', 'exports'], function (module, exports) {
           /* transform hyphenated names to pascal case, minus the data segment, to be in line with HTML5 dataset naming conventions */
           /* see: http://dev.w3.org/html5/spec/elements.html#embedding-custom-non-visible-data */
           /* todo: remove transformation and use dataset when browser support is there */
-          const parameterName = attributeName.substr('data-'.length).replace(/-(\w)(\w+)/g, replace);
+          var parameterName = attributeName.substr('data-'.length).replace(/-(\w)(\w+)/g, replace);
           parameters[parameterName] = $(el).attr(attributeName);
         }
 

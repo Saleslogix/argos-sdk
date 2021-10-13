@@ -19,7 +19,7 @@ define('argos/_RelatedViewWidgetBase', ['module', 'exports', 'dojo/_base/declare
     };
   }
 
-  const resource = (0, _I18n2.default)('relatedViewWidgetBase');
+  var resource = (0, _I18n2.default)('relatedViewWidgetBase');
 
   /**
    * @class
@@ -44,7 +44,7 @@ define('argos/_RelatedViewWidgetBase', ['module', 'exports', 'dojo/_base/declare
   /**
    * @module argos/_RelatedViewWidgetBase
    */
-  const __class = (0, _declare2.default)('argos._RelatedViewWidgetBase', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/_RelatedViewWidgetBase.prototype */{
+  var __class = (0, _declare2.default)('argos._RelatedViewWidgetBase', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/_RelatedViewWidgetBase.prototype */{
     cls: null,
     loadingText: resource.loadingText,
     /**

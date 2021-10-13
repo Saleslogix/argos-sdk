@@ -19,7 +19,7 @@ define('argos/Offline/_ListOfflineMixin', ['module', 'exports', 'dojo/_base/decl
     };
   }
 
-  const resource = (0, _I18n2.default)('_listOfflineMixin');
+  var resource = (0, _I18n2.default)('_listOfflineMixin');
 
   /**
    * @class
@@ -50,7 +50,7 @@ define('argos/Offline/_ListOfflineMixin', ['module', 'exports', 'dojo/_base/decl
       if (this.tools) {
         return this.tools;
       }
-      const tools = this.inherited(createToolLayout, arguments);
+      var tools = this.inherited(createToolLayout, arguments);
       if (tools && tools.tbar && this.enableOffline && App.enableOfflineSupport) {
         tools.tbar.push({
           id: 'briefCase',
@@ -63,66 +63,70 @@ define('argos/Offline/_ListOfflineMixin', ['module', 'exports', 'dojo/_base/decl
       return tools;
     },
     briefCaseList: function briefCaseList(action, selection) {
+      var _this = this;
+
       // eslint-disable-line
       // Start busy indicator modal
-      const busyIndicator = this.createBusyModal(Object.keys(this.entries).length);
+      var busyIndicator = this.createBusyModal(Object.keys(this.entries).length);
       // Start briefcasing
-      const entities = [];
+      var entities = [];
       if (this.entries) {
-        for (const entryId in this.entries) {
+        for (var entryId in this.entries) {
           if (this.entries.hasOwnProperty(entryId)) {
             entities.push(this.createBriefcaseEntity(this.entries[entryId]));
           }
         }
       }
-      _Manager2.default.briefCaseEntities(entities).then(result => {
+      _Manager2.default.briefCaseEntities(entities).then(function (result) {
         // Show complete modal dialog
-        if (!this.autoNavigateToBriefcase) {
-          const modalPromise = this.createCompleteDialog(busyIndicator, result);
-          modalPromise.then(this.onListBriefcased.bind(this));
+        if (!_this.autoNavigateToBriefcase) {
+          var modalPromise = _this.createCompleteDialog(busyIndicator, result);
+          modalPromise.then(_this.onListBriefcased.bind(_this));
         } else {
           App.modal.disableClose = false;
           App.modal.showToolbar = true;
           busyIndicator.complete(true);
           App.modal.hide();
-          this.onListBriefcased();
+          _this.onListBriefcased();
         }
-      }, err => {
+      }, function (err) {
         // Show complete modal dialog
-        this.createAlertDialog(busyIndicator);
-        _ErrorManager2.default.addSimpleError(`${resource.errorBriefcasingText} ${this.id}`, err);
-      }, () => {
+        _this.createAlertDialog(busyIndicator);
+        _ErrorManager2.default.addSimpleError(resource.errorBriefcasingText + ' ' + _this.id, err);
+      }, function () {
         busyIndicator.updateProgress();
       });
     },
     briefCaseItem: function briefCaseItem(briefcaseItem) {
+      var _this2 = this;
+
       // eslint-disable-line
       // Start busy indicator modal
-      const busyIndicator = this.createBusyModal(1);
+      var busyIndicator = this.createBusyModal(1);
       // Start briefcasing
-      const entity = this.createBriefcaseEntity(briefcaseItem);
-      _Manager2.default.briefCaseEntity(entity.entityName, entity.entityId, entity.options).then(result => {
+      var entity = this.createBriefcaseEntity(briefcaseItem);
+      _Manager2.default.briefCaseEntity(entity.entityName, entity.entityId, entity.options).then(function (result) {
         // Show complete modal dialog
-        if (!this.autoNavigateToBriefcase) {
-          const modalPromise = this.createCompleteDialog(busyIndicator, result);
-          modalPromise.then(this.onListBriefcased.bind(this));
+        if (!_this2.autoNavigateToBriefcase) {
+          var modalPromise = _this2.createCompleteDialog(busyIndicator, result);
+          modalPromise.then(_this2.onListBriefcased.bind(_this2));
         } else {
           App.modal.disableClose = false;
           App.modal.showToolbar = true;
           busyIndicator.complete(true);
           App.modal.hide();
-          this.onListBriefcased();
+          _this2.onListBriefcased();
         }
-      }, err => {
+      }, function (err) {
         // Show complete modal dialog
-        this.createAlertDialog(busyIndicator);
-        _ErrorManager2.default.addSimpleError(`${resource.errorBriefcasingText} ${this.id}`, err);
-      }, () => {
+        _this2.createAlertDialog(busyIndicator);
+        _ErrorManager2.default.addSimpleError(resource.errorBriefcasingText + ' ' + _this2.id, err);
+      }, function () {
         busyIndicator.updateProgress();
       });
     },
     createBriefcaseEntity: function createBriefcaseEntity(entry) {
-      const entity = {
+      var entity = {
         entityId: this.getIdentity(entry),
         entityName: this.entityName,
         options: {
@@ -139,14 +143,14 @@ define('argos/Offline/_ListOfflineMixin', ['module', 'exports', 'dojo/_base/decl
       busyIndicator.complete(true);
       App.modal.resolveDeferred(true);
       // Attach resolve to move to briefcase list (if user hits okay)
-      return App.modal.createSimpleDialog({ title: 'alert', content: resource.interruptedText, getContent: () => {
+      return App.modal.createSimpleDialog({ title: 'alert', content: resource.interruptedText, getContent: function getContent() {
           return;
         }, leftButton: 'cancel', rightButton: 'confirm' });
     },
     createBusyModal: function createBusyModal(count) {
       App.modal.disableClose = true;
       App.modal.showToolbar = false;
-      const busyIndicator = new _BusyIndicator2.default({
+      var busyIndicator = new _BusyIndicator2.default({
         id: 'busyIndicator__offline-list-briefcase',
         label: resource.briefcasingText
       });
@@ -154,22 +158,24 @@ define('argos/Offline/_ListOfflineMixin', ['module', 'exports', 'dojo/_base/decl
       busyIndicator.start({ isAsync: false, total: count });
       return busyIndicator;
     },
-    createCompleteDialog: function createCompleteDialog(busyIndicator, result = {}) {
+    createCompleteDialog: function createCompleteDialog(busyIndicator) {
+      var result = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
       App.modal.disableClose = false;
       App.modal.showToolbar = true;
       busyIndicator.complete(true);
       App.modal.resolveDeferred(true);
       // Attach resolve to move to briefcase list (if user hits okay)
-      return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToListViewText, getContent: () => {
+      return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToListViewText, getContent: function getContent() {
           return result;
         }, leftButton: 'cancel', rightButton: 'okay' });
     },
     getOfflineIcon: function getOfflineIcon() {
-      const model = this.getModel();
+      var model = this.getModel();
       return model.getIconClass();
     },
     onListBriefcased: function onListBriefcased() {
-      const view = this.app.getView('briefcase_list');
+      var view = this.app.getView('briefcase_list');
       if (view) {
         view.show({});
       }

@@ -35,7 +35,7 @@ define('argos/Groups/_GroupBySection', ['module', 'exports', 'dojo/_base/declare
   /**
    * @module argos/Groups/_GroupBySection
    */
-  const __class = (0, _declare2.default)('argos.Groups._GroupBySection', null, /** @lends module:argos/Groups/_GroupBySection.prototype */{
+  var __class = (0, _declare2.default)('argos.Groups._GroupBySection', null, /** @lends module:argos/Groups/_GroupBySection.prototype */{
     /**
      * @property {String}
      * The unique (within the current form) name of the field
@@ -59,7 +59,7 @@ define('argos/Groups/_GroupBySection', ['module', 'exports', 'dojo/_base/declare
     init: function init() {},
     getGroupSection: function getGroupSection() /* entry*/{},
     getOrderByQuery: function getOrderByQuery() {
-      return `${this.groupByProperty} ${this.sortDirection}`;
+      return this.groupByProperty + ' ' + this.sortDirection;
     }
   });
 

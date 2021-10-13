@@ -53,7 +53,7 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
   /**
    * @module argos/Fields/DecimalField
    */
-  const control = (0, _declare2.default)('argos.Fields.DecimalField', [_TextField2.default], /** @lends modules:argos/Fields/DecimalField.prototype */{
+  var control = (0, _declare2.default)('argos.Fields.DecimalField', [_TextField2.default], /** @lends modules:argos/Fields/DecimalField.prototype */{
     /**
      * @cfg {Number}
      * Defines how many decimal places to format when setting the value.
@@ -72,10 +72,10 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
      * @param {Number/String} val Value to be set
      */
     setValue: function setValue(val) {
-      const precision = this.getPrecision();
-      let parsed = _Utility2.default.roundNumberTo(parseFloat(val), precision);
+      var precision = this.getPrecision();
+      var parsed = _Utility2.default.roundNumberTo(parseFloat(val), precision);
       parsed = Number.isNaN(parsed) ? 0 : parsed;
-      const newVal = Soho.Locale.formatNumber(parsed, {
+      var newVal = Soho.Locale.formatNumber(parsed, {
         style: 'decimal',
         minimumFractionDigits: precision,
         maximumFractionDigits: precision,
@@ -90,8 +90,8 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
      * @return {Number}
      */
     getValue: function getValue() {
-      let value = this.inherited(getValue, arguments);
-      const data = Soho.Locale.currentLocale.data;
+      var value = this.inherited(getValue, arguments);
+      var data = Soho.Locale.currentLocale.data;
       // // SData (and other functions) expect American formatted numbers
       value = value.replace(data.currencySign, '').replace(data.numbers.percentSign, '').replace(new RegExp(data.numbers.group, 'ig'), '').replace(data.numbers.decimal, '.');
       return parseFloat(value);
@@ -101,7 +101,7 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
      * @return {Number}
      */
     getPrecision: function getPrecision() {
-      const precision = Number(this.precision);
+      var precision = Number(this.precision);
 
       if (this.precision === null || typeof this.precision === 'undefined') {
         return 2;

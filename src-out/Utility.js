@@ -11,7 +11,7 @@ define('argos/Utility', ['module', 'exports', 'dojo/_base/lang'], function (modu
     };
   }
 
-  const util = ICRMCommonSDK.utility;
+  var util = ICRMCommonSDK.utility;
 
   /**
    * @class
@@ -36,7 +36,7 @@ define('argos/Utility', ['module', 'exports', 'dojo/_base/lang'], function (modu
   /**
    * @module argos/Utility
    */
-  const __class = _lang2.default.setObject('argos.Utility', /** @lends module:argos/Utility */{
+  var __class = _lang2.default.setObject('argos.Utility', /** @lends module:argos/Utility */{
     /**
      * Replaces a single `"` with two `""` for proper SData query expressions.
      * @param {String} searchQuery Search expression to be escaped.

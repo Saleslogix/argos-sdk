@@ -53,8 +53,8 @@ define('argos/Store/PouchDB', ['module', 'exports', 'dojo/_base/declare', 'dojo/
       this.data = [];
     },
     get: function get(id, options) {
-      const deferred = new _Deferred2.default();
-      this._db.get(id, options || {}, (err, doc) => {
+      var deferred = new _Deferred2.default();
+      this._db.get(id, options || {}, function (err, doc) {
         if (!err) {
           deferred.resolve(doc);
         } else {
@@ -76,8 +76,10 @@ define('argos/Store/PouchDB', ['module', 'exports', 'dojo/_base/declare', 'dojo/
      * @returns {dojo.store.api.Store.QueryResults}
      *
      */
-    query: function query(q, queryOptions = {}) {
-      const deferred = new _Deferred2.default();
+    query: function query(q) {
+      var queryOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+      var deferred = new _Deferred2.default();
       deferred.total = -1;
 
       // The dojo store interface says query should accept start, count, and sort properties on the queryOptions object
@@ -93,7 +95,7 @@ define('argos/Store/PouchDB', ['module', 'exports', 'dojo/_base/declare', 'dojo/
       // Query is sorted by key on CouchDB, queryOptions.descending can be set to true.
       // There is no queryOptions.sort array like a dojo store would expect.
 
-      this._db.query(q, queryOptions, (err, response) => {
+      this._db.query(q, queryOptions, function (err, response) {
         if (!err) {
           deferred.total = response.total_rows;
           deferred.resolve(response.rows);
@@ -115,7 +117,7 @@ define('argos/Store/PouchDB', ['module', 'exports', 'dojo/_base/declare', 'dojo/
      * @returns {String|Number}
      */
     put: function put(object, putOptions) {
-      const deferred = new _Deferred2.default();
+      var deferred = new _Deferred2.default();
       function callback(err, response) {
         if (err) {
           deferred.reject(err);
@@ -138,7 +140,9 @@ define('argos/Store/PouchDB', ['module', 'exports', 'dojo/_base/declare', 'dojo/
      * @param {Object} addOptions Additional directives for creating objects
      * @param {Boolean} addOptions.overwrite
      */
-    add: function add(object, addOptions = {}) {
+    add: function add(object) {
+      var addOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
       addOptions.overwrite = false;
       return this.put(object, addOptions);
     },
@@ -148,8 +152,10 @@ define('argos/Store/PouchDB', ['module', 'exports', 'dojo/_base/declare', 'dojo/
      * @returns {window.Promise}
      */
     remove: function remove(id) {
-      return this._db.get(id).then(doc => {
-        return this._db.remove(doc);
+      var _this = this;
+
+      return this._db.get(id).then(function (doc) {
+        return _this._db.remove(doc);
       });
     },
     /**
@@ -202,7 +208,9 @@ define('argos/Store/PouchDB', ['module', 'exports', 'dojo/_base/declare', 'dojo/
     createNamedQuery: function createNamedQuery(doc) {
       this._db.put(doc, {
         force: true
-      }).catch(err => console.error(err)); // eslint-disable-line
+      }).catch(function (err) {
+        return console.error(err);
+      }); // eslint-disable-line
     }
   });
   module.exports = exports['default'];

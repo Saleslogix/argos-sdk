@@ -35,14 +35,14 @@ define('argos/Dialogs/BusyIndicator', ['module', 'exports', 'dojo/_base/declare'
   /**
    * @module argos/Dialogs/BusyIndicator
    */
-  const resource = (0, _I18n2.default)('busyIndicator');
+  var resource = (0, _I18n2.default)('busyIndicator');
 
   /**
    * @class
    * @alias module:argos/Dialogs/BusyIndicator
    * @extends module:argos/_Templated
    */
-  const __class = (0, _declare2.default)('argos.Dialogs.BusyIndicator', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Dialogs/BusyIndicator.prototype */{
+  var __class = (0, _declare2.default)('argos.Dialogs.BusyIndicator', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Dialogs/BusyIndicator.prototype */{
     widgetTemplate: new Simplate(['<div class="busyIndicator__container {%: $.containerClass %}" aria-live="polite" data-dojo-attach-point="busyIndicatorNode">', '{%! $.busyIndicatorTemplate %}', '{%! $.progressBarTemplate %}', '</div>']),
     busyIndicatorTemplate: new Simplate(['<div class="busy-{%: $.size %}" style="height: 100%; width: 100%;">', '<div class="busy-indicator-container" aria-live="polite" role="status">', '<div class="busy-indicator active">', '<div class="bar one"></div>', '<div class="bar two"></div>', '<div class="bar three"></div>', '<div class="bar four"></div>', '<div class="bar five"></div>', '</div>', '<span data-dojo-attach-point="labelNode">{%: $.label %}</span>', '</div>', '</div>']),
     progressBarTemplate: new Simplate(['<div class="busyIndicator__progress" data-dojo-attach-point="progressNode">', '</div>']),
@@ -62,23 +62,29 @@ define('argos/Dialogs/BusyIndicator', ['module', 'exports', 'dojo/_base/declare'
     size: '', // sm, xs, blank for normal
     totalProgress: null,
 
-    complete: function complete(result = {}) {
+    complete: function complete() {
+      var result = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
       $(this.busyIndicatorNode).removeClass('busyIndicator--active');
       this._busyDeferred(result);
     },
     show: function show() {},
-    start: function start(options = {}) {
-      return new Promise(resolve => {
-        this._busyDeferred = resolve;
-        $(this.busyIndicatorNode).addClass('busyIndicator--active');
+    start: function start() {
+      var _this = this;
 
-        if (!this.isAsync || options.isAsync !== undefined && !options.isAsync) {
-          this._progressBar = $(this.barTemplate.apply(this));
-          this.progressLabelNode = $(this.progressLabelTemplate.apply(this));
-          $(this.progressNode).append(this.progressLabelNode);
-          $(this.progressNode).append(this._progressBar);
-          this.currentProgress = options.current || 0;
-          this.totalProgress = options.total || options.count || 0;
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+      return new Promise(function (resolve) {
+        _this._busyDeferred = resolve;
+        $(_this.busyIndicatorNode).addClass('busyIndicator--active');
+
+        if (!_this.isAsync || options.isAsync !== undefined && !options.isAsync) {
+          _this._progressBar = $(_this.barTemplate.apply(_this));
+          _this.progressLabelNode = $(_this.progressLabelTemplate.apply(_this));
+          $(_this.progressNode).append(_this.progressLabelNode);
+          $(_this.progressNode).append(_this._progressBar);
+          _this.currentProgress = options.current || 0;
+          _this.totalProgress = options.total || options.count || 0;
         }
       });
     },
@@ -86,7 +92,7 @@ define('argos/Dialogs/BusyIndicator', ['module', 'exports', 'dojo/_base/declare'
       this.currentProgress = this.currentProgress + 1;
       if (this._progressBar) {
         this._progressBar.css({
-          width: `${100 * this.currentProgress / this.totalProgress}%`
+          width: 100 * this.currentProgress / this.totalProgress + '%'
         });
       }
     }

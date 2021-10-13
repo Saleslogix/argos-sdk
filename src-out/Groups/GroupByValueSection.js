@@ -35,14 +35,14 @@ define('argos/Groups/GroupByValueSection', ['module', 'exports', 'dojo/_base/dec
   /**
    * @module argos/Groups/GroupByValueSection
    */
-  const resource = (0, _I18n2.default)('groupByValueSection');
+  var resource = (0, _I18n2.default)('groupByValueSection');
 
   /**
    * @class
    * @alias module:argos/Groups/GroupByValueSection
    * @extends module:argos/Groups/_GroupBySection
    */
-  const __class = (0, _declare2.default)('argos.Groups.GroupByValueSection', [_GroupBySection3.default], /** @lends module:argos/Groups/GroupByValueSection.prototype */{
+  var __class = (0, _declare2.default)('argos.Groups.GroupByValueSection', [_GroupBySection3.default], /** @lends module:argos/Groups/GroupByValueSection.prototype */{
     name: 'DateTimeSectionFilter',
     displayNameText: resource.displayNameText,
     width: 0,
@@ -59,7 +59,7 @@ define('argos/Groups/GroupByValueSection', ['module', 'exports', 'dojo/_base/dec
     },
     getSection: function getSection(entry) {
       if (this.groupByProperty && entry) {
-        let value = _Utility2.default.getValue(entry, this.groupByProperty);
+        var value = _Utility2.default.getValue(entry, this.groupByProperty);
         value = this._getValueFromWidth(value, this.width);
         if (value) {
           return {

@@ -22,11 +22,9 @@ define('argos/DraggableList', ['module', 'exports', 'dojo/_base/declare', './_Li
    * @extends module:argos/_ListBase
    * @extends module:argos/_DraggableBase
    */
-  const __class = (0, _declare2.default)('argos.DraggableList', [_ListBase3.default, _DraggableBase3.default], /** @lends module:argos/DraggableList.prototype */{
+  var __class = (0, _declare2.default)('argos.DraggableList', [_ListBase3.default, _DraggableBase3.default], /** @lends module:argos/DraggableList.prototype */{
     isCardView: false,
-    liRowTemplate: new Simplate(['<li role="option" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}" class="list-item-draggable">', '<button type="button" class="btn-icon hide-focus list-item-selector" data-action="selectEntry">', `<svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-        <use xlink:href="#icon-{%= $$.selectIcon %}" />
-      </svg>`, '</button>', '<div class="list-item-content">{%! $$.itemTemplate %}</div>', '</li>']),
+    liRowTemplate: new Simplate(['<li role="option" data-action="activateEntry" data-key="{%= $[$$.idProperty] %}" data-descriptor="{%: $[$$.labelProperty] %}" class="list-item-draggable">', '<button type="button" class="btn-icon hide-focus list-item-selector" data-action="selectEntry">', '<svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n        <use xlink:href="#icon-{%= $$.selectIcon %}" />\n      </svg>', '</button>', '<div class="list-item-content">{%! $$.itemTemplate %}</div>', '</li>']),
     show: function show() {
       this.setupDraggable(this.contentNode, this.scrollerNode).setClass('draggable').setParentClassToDrag('list-item-draggable');
       this.inherited(show, arguments);

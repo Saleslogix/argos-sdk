@@ -24,8 +24,8 @@ define('argos/actions/index', ['exports'], function (exports) {
    */
 
   // action Types
-  const SET_MAX_VIEWPORTS = exports.SET_MAX_VIEWPORTS = 'SET_MAX_VIEWPORTS';
-  const INSERT_HISTORY = exports.INSERT_HISTORY = 'INSERT_HISTORY';
+  var SET_MAX_VIEWPORTS = exports.SET_MAX_VIEWPORTS = 'SET_MAX_VIEWPORTS';
+  var INSERT_HISTORY = exports.INSERT_HISTORY = 'INSERT_HISTORY';
 
   /*
   
@@ -51,7 +51,7 @@ define('argos/actions/index', ['exports'], function (exports) {
     return {
       type: SET_MAX_VIEWPORTS,
       payload: {
-        max
+        max: max
       }
     };
   }
@@ -63,7 +63,7 @@ define('argos/actions/index', ['exports'], function (exports) {
     return {
       type: INSERT_HISTORY,
       payload: {
-        data
+        data: data
       }
     };
   }

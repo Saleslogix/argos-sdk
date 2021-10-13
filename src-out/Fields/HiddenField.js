@@ -30,7 +30,7 @@ define('argos/Fields/HiddenField', ['module', 'exports', 'dojo/_base/declare', '
    * }
    * @extends module:argos/Fields/TextField
    */
-  const control = (0, _declare2.default)('argos.Fields.HiddenField', [_TextField2.default], /** @lends module:argos/Fields/HiddenField.prototype */{
+  var control = (0, _declare2.default)('argos.Fields.HiddenField', [_TextField2.default], /** @lends module:argos/Fields/HiddenField.prototype */{
     propertyTemplate: new Simplate(['<div style="display: none;" data-field="{%= $.name || $.property %}" data-field-type="{%= $.type %}">', '</div>']),
 
     /**

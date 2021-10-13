@@ -23,7 +23,7 @@ define('argos/_LegacySDataListMixin', ['module', 'exports', 'dojo/_base/declare'
    * Adds the original SData operations to the view, use this in addition to _SDataListMixin.
    *
    */
-  const __class = (0, _declare2.default)('argos._LegacySDataListMixin', null, /** @lends module:argos/_LegacySDataListMixin.prototype */{
+  var __class = (0, _declare2.default)('argos._LegacySDataListMixin', null, /** @lends module:argos/_LegacySDataListMixin.prototype */{
     feed: null,
 
     /**
@@ -33,7 +33,7 @@ define('argos/_LegacySDataListMixin', ['module', 'exports', 'dojo/_base/declare'
       $(this.domNode).addClass('list-loading');
       this.listLoading = true;
 
-      const request = this.createRequest();
+      var request = this.createRequest();
       request.read({
         success: this.onRequestDataSuccess,
         failure: this.onRequestDataFailure,
@@ -111,15 +111,15 @@ define('argos/_LegacySDataListMixin', ['module', 'exports', 'dojo/_base/declare'
       if (this.feed.$totalResults === 0) {
         this.set('listContent', this.noDataTemplate.apply(this));
       } else if (feed.$resources) {
-        const docfrag = document.createDocumentFragment();
-        let row = [];
-        const count = feed.$resources.length;
-        for (let i = 0; i < count; i++) {
-          const entry = feed.$resources[i];
+        var docfrag = document.createDocumentFragment();
+        var row = [];
+        var count = feed.$resources.length;
+        for (var i = 0; i < count; i++) {
+          var entry = feed.$resources[i];
           entry.$descriptor = entry.$descriptor || feed.$descriptor;
           this.entries[entry.$key] = entry;
 
-          let rowNode;
+          var rowNode = void 0;
           if (this.isCardView) {
             rowNode = $(this.rowTemplate.apply(entry, this));
           } else {
@@ -127,15 +127,17 @@ define('argos/_LegacySDataListMixin', ['module', 'exports', 'dojo/_base/declare'
           }
 
           if (this.isCardView && this.multiColumnView) {
-            const column = $(`<div class="${this.multiColumnClass} columns">`).append(rowNode);
+            var column = $('<div class="' + this.multiColumnClass + ' columns">').append(rowNode);
             row.push(column);
             if ((i + 1) % this.multiColumnCount === 0 || i === count - 1) {
-              const rowTemplate = $('<div class="row"></div>');
-              row.forEach(element => {
-                rowTemplate.append(element);
-              });
-              docfrag.appendChild(rowTemplate.get(0));
-              row = [];
+              (function () {
+                var rowTemplate = $('<div class="row"></div>');
+                row.forEach(function (element) {
+                  rowTemplate.append(element);
+                });
+                docfrag.appendChild(rowTemplate.get(0));
+                row = [];
+              })();
             }
           } else {
             docfrag.appendChild(rowNode.get(0));
@@ -154,7 +156,7 @@ define('argos/_LegacySDataListMixin', ['module', 'exports', 'dojo/_base/declare'
 
       // todo: add more robust handling when $totalResults does not exist, i.e., hide element completely
       if (typeof this.feed.$totalResults !== 'undefined') {
-        const remaining = this.feed.$totalResults - (this.feed.$startIndex + this.feed.$itemsPerPage - 1);
+        var remaining = this.feed.$totalResults - (this.feed.$startIndex + this.feed.$itemsPerPage - 1);
         this.set('remainingContent', _string2.default.substitute(this.remainingText, [remaining]));
       }
 
@@ -185,49 +187,49 @@ define('argos/_LegacySDataListMixin', ['module', 'exports', 'dojo/_base/declare'
      * @deprecated
      */
     createRequest: function createRequest() /* o*/{
-      const where = [];
-      const options = this.options;
-      const pageSize = this.pageSize;
-      const startIndex = this.feed && this.feed.$startIndex > 0 && this.feed.$itemsPerPage > 0 ? this.feed.$startIndex + this.feed.$itemsPerPage : 1;
+      var where = [];
+      var options = this.options;
+      var pageSize = this.pageSize;
+      var startIndex = this.feed && this.feed.$startIndex > 0 && this.feed.$itemsPerPage > 0 ? this.feed.$startIndex + this.feed.$itemsPerPage : 1;
 
-      const request = new Sage.SData.Client.SDataResourceCollectionRequest(this.getService()).setCount(pageSize).setStartIndex(startIndex);
+      var request = new Sage.SData.Client.SDataResourceCollectionRequest(this.getService()).setCount(pageSize).setStartIndex(startIndex);
 
-      const contractName = this.expandExpression(options && options.contractName || this.contractName);
+      var contractName = this.expandExpression(options && options.contractName || this.contractName);
       if (contractName) {
         request.setContractName(contractName);
       }
 
-      const resourceKindExpr = this.expandExpression(options && options.resourceKind || this.resourceKind);
+      var resourceKindExpr = this.expandExpression(options && options.resourceKind || this.resourceKind);
       if (resourceKindExpr) {
         request.setResourceKind(resourceKindExpr);
       }
 
-      const resourcePropertyExpr = this.expandExpression(options && options.resourceProperty || this.resourceProperty);
+      var resourcePropertyExpr = this.expandExpression(options && options.resourceProperty || this.resourceProperty);
       if (resourcePropertyExpr) {
         request.getUri().setPathSegment(Sage.SData.Client.SDataUri.ResourcePropertyIndex, resourcePropertyExpr);
       }
 
-      const resourcePredicateExpr = this.expandExpression(options && options.resourcePredicate || this.resourcePredicate);
+      var resourcePredicateExpr = this.expandExpression(options && options.resourcePredicate || this.resourcePredicate);
       if (resourcePredicateExpr) {
         request.getUri().setCollectionPredicate(resourcePredicateExpr);
       }
 
-      const querySelectExpr = this.expandExpression(options && options.select || this.querySelect);
+      var querySelectExpr = this.expandExpression(options && options.select || this.querySelect);
       if (querySelectExpr) {
         request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Select, querySelectExpr.join(','));
       }
 
-      const queryIncludeExpr = this.expandExpression(this.queryInclude);
+      var queryIncludeExpr = this.expandExpression(this.queryInclude);
       if (queryIncludeExpr) {
         request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.Include, queryIncludeExpr.join(','));
       }
 
-      const queryOrderByExpr = this.expandExpression(options && options.orderBy || this.queryOrderBy);
+      var queryOrderByExpr = this.expandExpression(options && options.orderBy || this.queryOrderBy);
       if (queryOrderByExpr) {
         request.setQueryArg(Sage.SData.Client.SDataUri.QueryArgNames.OrderBy, queryOrderByExpr);
       }
 
-      const queryWhereExpr = this.expandExpression(options && options.where || this.queryWhere);
+      var queryWhereExpr = this.expandExpression(options && options.where || this.queryWhere);
       if (queryWhereExpr) {
         where.push(queryWhereExpr);
       }
@@ -244,9 +246,9 @@ define('argos/_LegacySDataListMixin', ['module', 'exports', 'dojo/_base/declare'
     },
     hasMoreData: function hasMoreData() {
       if (this.feed && this.feed.$startIndex > 0 && this.feed.$itemsPerPage > 0 && this.feed.$totalResults >= 0) {
-        const start = this.feed.$startIndex;
-        const count = this.feed.$itemsPerPage;
-        const total = this.feed.$totalResults;
+        var start = this.feed.$startIndex;
+        var count = this.feed.$itemsPerPage;
+        var total = this.feed.$totalResults;
 
         return start + count <= total;
       }

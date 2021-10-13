@@ -31,14 +31,14 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
   /**
    * @module argos/_PullToRefreshMixin
    */
-  const resource = (0, _I18n2.default)('pullToRefreshMixin');
+  var resource = (0, _I18n2.default)('pullToRefreshMixin');
 
   /**
    * @class
    * @alias module:argos/_PullToRefreshMixin
    * @mixin
    */
-  const __class = (0, _declare2.default)('argos._PullToRefreshMixin', null, /** @lends module:argos/_PullToRefreshMixin.prototype */{
+  var __class = (0, _declare2.default)('argos._PullToRefreshMixin', null, /** @lends module:argos/_PullToRefreshMixin.prototype */{
     /**
      * @property {external:Simplate}
      * @memberof module:argos/_PullToRefreshMixin
@@ -51,24 +51,14 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
      * @memberof module:argos/_PullToRefreshMixin
      * @static
      */
-    pullRefreshTemplate: new Simplate([`<button type="button" class="btn-icon hide-focus">
-          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-down-arrow"></use>
-          </svg>
-      </button>
-      <p>{%= $$._getText("pullRefreshText") %}</p>`]),
+    pullRefreshTemplate: new Simplate(['<button type="button" class="btn-icon hide-focus">\n          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-down-arrow"></use>\n          </svg>\n      </button>\n      <p>{%= $$._getText("pullRefreshText") %}</p>']),
 
     /**
      * @property {Simplate}
      * @memberof module:argos/_PullToRefreshMixin
      * @static
      */
-    pullReleaseTemplate: new Simplate([`<button type="button" class="btn-icon hide-focus">
-          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-up-arrow"></use>
-          </svg>
-      </button>
-      <p>{%= $$._getText("pullReleaseText") %}</p>`]),
+    pullReleaseTemplate: new Simplate(['<button type="button" class="btn-icon hide-focus">\n          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n              <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-up-arrow"></use>\n          </svg>\n      </button>\n      <p>{%= $$._getText("pullReleaseText") %}</p>']),
 
     /**
      * @property {String}
@@ -115,6 +105,8 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
      * @param {DOMNode} dragNode The node that the user will drag. Defaults to scrollerNode if not specified.
      */
     initPullToRefresh: function initPullToRefresh(scrollerNode, dragNode) {
+      var _this = this;
+
       if (!this.enablePullToRefresh || !window.App.supportsTouch() || !scrollerNode) {
         return;
       }
@@ -131,9 +123,9 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
       // Pull down to refresh touch handles
       this.scrollerNode = scrollerNode;
 
-      let distance; // current dragged distance
-      let maxDistance; // required distance to trigger a refresh
-      let data = {
+      var distance = void 0; // current dragged distance
+      var maxDistance = void 0; // required distance to trigger a refresh
+      var data = {
         bannerHeight: 0,
         topCss: '',
         top: 0,
@@ -142,25 +134,25 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
         pulling: false
       };
 
-      $(dragNode).on('touchstart', e => {
-        if (!this.shouldStartPullToRefresh(this.scrollerNode)) {
+      $(dragNode).on('touchstart', function (e) {
+        if (!_this.shouldStartPullToRefresh(_this.scrollerNode)) {
           data.pulling = false;
           return;
         }
 
-        const evt = e.touches[0];
-        $(this.pullRefreshBanner).css({
-          top: `${this._initPosition.top}px`
+        var evt = e.touches[0];
+        $(_this.pullRefreshBanner).css({
+          top: _this._initPosition.top + 'px'
         });
-        $(this.dragNode).removeClass(this.animateCls);
-        const bannerHeight = $(this.pullRefreshBanner).height();
+        $(_this.dragNode).removeClass(_this.animateCls);
+        var bannerHeight = $(_this.pullRefreshBanner).height();
 
-        const style = {
+        var style = {
           top: $(dragNode).position().top
         };
 
         data = {
-          bannerHeight,
+          bannerHeight: bannerHeight,
           topCss: style.top,
           top: parseInt(style.top, 10),
           startTop: parseInt(style.top, 10),
@@ -169,13 +161,13 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
         };
       });
 
-      $(dragNode).on('touchmove', evt => {
+      $(dragNode).on('touchmove', function (evt) {
         if (!data.pulling) {
           return;
         }
 
-        const touches = evt.touches[0];
-        const weight = 2; // slow the drag
+        var touches = evt.touches[0];
+        var weight = 2; // slow the drag
         distance = (touches.clientY - data.y) / weight;
         maxDistance = data.bannerHeight + 20;
 
@@ -186,40 +178,40 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
         data.top = data.startTop + distance;
 
         evt.preventDefault();
-        $(this.dragNode).css({
-          top: `${data.top}px`
+        $(_this.dragNode).css({
+          top: data.top + 'px'
         });
-        $(this.pullRefreshBanner).css({
+        $(_this.pullRefreshBanner).css({
           visibility: 'visible',
-          top: `${data.top + this._initPosition.top}px`
+          top: data.top + _this._initPosition.top + 'px'
         });
         if (distance > maxDistance) {
-          this.pullRefreshBanner.innerHTML = this.pullReleaseTemplate.apply(this);
+          _this.pullRefreshBanner.innerHTML = _this.pullReleaseTemplate.apply(_this);
         } else {
-          this.pullRefreshBanner.innerHTML = this.pullRefreshTemplate.apply(this);
+          _this.pullRefreshBanner.innerHTML = _this.pullRefreshTemplate.apply(_this);
         }
       });
 
-      const touchend = () => {
+      var touchend = function touchend() {
         // We should restore the UI state and invoke callbacks here.
-        $(this.dragNode).css({
+        $(_this.dragNode).css({
           top: data.topCss,
           'overflow-y': data.overflowCssY,
           'overflow-x': data.overflowCssX
         });
-        $(this.pullRefreshBanner).css({
+        $(_this.pullRefreshBanner).css({
           visibility: 'hidden',
-          top: `${this._initPosition.top}px`
+          top: _this._initPosition.top + 'px'
         });
-        $(this.dragNode).addClass(this.animateCls);
+        $(_this.dragNode).addClass(_this.animateCls);
 
         data.pulling = false;
         // Check if we dragged over the threshold (maxDistance),
         // if so, fire the callbacks the views will implement.
         if (distance > maxDistance) {
-          this.onPullToRefreshComplete();
+          _this.onPullToRefreshComplete();
         } else {
-          this.onPullToRefreshCancel();
+          _this.onPullToRefreshCancel();
         }
       };
 
@@ -233,7 +225,7 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
      * @returns {Boolean}
      */
     shouldStartPullToRefresh: function shouldStartPullToRefresh(scrollerNode) {
-      const scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
+      var scrollTop = scrollerNode.scrollTop; // How far we are scrolled down, this should be 0 before we start dragging the pull refresh
       return scrollTop === 0;
     },
     /**

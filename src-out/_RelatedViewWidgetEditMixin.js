@@ -20,7 +20,7 @@ define('argos/_RelatedViewWidgetEditMixin', ['module', 'exports', 'dojo/_base/de
    * @mixin
    * @alias module:argos/_RelatedViewWidgetEditMixin
    */
-  const __class = (0, _declare2.default)('argos._RelatedViewWidgetEditMixin', null, /** @lends module:argos/_RelatedViewWidgetEditMixin.prototype */{
+  var __class = (0, _declare2.default)('argos._RelatedViewWidgetEditMixin', null, /** @lends module:argos/_RelatedViewWidgetEditMixin.prototype */{
     cls: null,
     /**
      * @property {Simplate}
@@ -43,15 +43,17 @@ define('argos/_RelatedViewWidgetEditMixin', ['module', 'exports', 'dojo/_base/de
       this.inherited(processData, arguments);
     },
     createRelatedViews: function createRelatedViews(layout, entry) {
-      layout.forEach(item => {
+      var _this = this;
+
+      layout.forEach(function (item) {
         if (item.relatedView) {
-          const node = $(`#${item.relatedView.id}`, this.contentNode)[0];
+          var node = $('#' + item.relatedView.id, _this.contentNode)[0];
           if (node) {
-            this.onProcessRelatedViews(item.relatedView, node, entry);
+            _this.onProcessRelatedViews(item.relatedView, node, entry);
           }
         }
         if (item.children) {
-          this.createRelatedViews(item.children, entry);
+          _this.createRelatedViews(item.children, entry);
         }
       });
     },
@@ -65,15 +67,15 @@ define('argos/_RelatedViewWidgetEditMixin', ['module', 'exports', 'dojo/_base/de
         this.relatedViewManagers = {};
       }
 
-      let relatedViewManager;
+      var relatedViewManager = void 0;
 
       if (this.relatedViewManagers[relatedView.id]) {
         relatedViewManager = this.relatedViewManagers[relatedView.id];
       } else {
-        const relatedViewOptions = {};
+        var relatedViewOptions = {};
         _lang2.default.mixin(relatedViewOptions, relatedView);
 
-        const options = {
+        var options = {
           id: relatedView.id,
           relatedViewConfig: relatedViewOptions
         };
@@ -89,7 +91,7 @@ define('argos/_RelatedViewWidgetEditMixin', ['module', 'exports', 'dojo/_base/de
         }
 
         if (relatedView.enabled) {
-          const relatedViewManager = this.getRelatedViewManager(relatedView);
+          var relatedViewManager = this.getRelatedViewManager(relatedView);
           if (relatedViewManager) {
             relatedViewManager.addView(entry, rowNode, this);
           }
@@ -103,7 +105,7 @@ define('argos/_RelatedViewWidgetEditMixin', ['module', 'exports', 'dojo/_base/de
      */
     destroyRelatedViewWidgets: function destroyRelatedViewWidgets() {
       if (this.relatedViewManagers) {
-        for (const relatedViewId in this.relatedViewManagers) {
+        for (var relatedViewId in this.relatedViewManagers) {
           if (this.relatedViewManagers.hasOwnProperty(relatedViewId)) {
             this.relatedViewManagers[relatedViewId].destroyViews();
           }

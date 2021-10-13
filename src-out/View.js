@@ -25,28 +25,28 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
     };
   }
 
-  const resource = (0, _I18n2.default)('view'); /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
-                                                 *
-                                                 * Licensed under the Apache License, Version 2.0 (the "License");
-                                                 * you may not use this file except in compliance with the License.
-                                                 * You may obtain a copy of the License at
-                                                 *
-                                                 *     http://www.apache.org/licenses/LICENSE-2.0
-                                                 *
-                                                 * Unless required by applicable law or agreed to in writing, software
-                                                 * distributed under the License is distributed on an "AS IS" BASIS,
-                                                 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                 * See the License for the specific language governing permissions and
-                                                 * limitations under the License.
-                                                 */
+  var resource = (0, _I18n2.default)('view'); /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+                                               *
+                                               * Licensed under the Apache License, Version 2.0 (the "License");
+                                               * you may not use this file except in compliance with the License.
+                                               * You may obtain a copy of the License at
+                                               *
+                                               *     http://www.apache.org/licenses/LICENSE-2.0
+                                               *
+                                               * Unless required by applicable law or agreed to in writing, software
+                                               * distributed under the License is distributed on an "AS IS" BASIS,
+                                               * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                               * See the License for the specific language governing permissions and
+                                               * limitations under the License.
+                                               */
 
   /**
     * @module argos/View
     */
 
-  const errorResource = (0, _I18n2.default)('errorHandleMixin');
+  var errorResource = (0, _I18n2.default)('errorHandleMixin');
 
-  const __class = (0, _declare2.default)('argos.View', [_WidgetBase3.default, _CustomizationMixin3.default, _Templated3.default], /** @lends module:argos/View.prototype */{
+  var __class = (0, _declare2.default)('argos.View', [_WidgetBase3.default, _CustomizationMixin3.default, _Templated3.default], /** @lends module:argos/View.prototype */{
 
     _ActionMixin: null,
     postCreate: function postCreate() {
@@ -206,7 +206,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
      * @return {Object} The toolbar layout
      */
     getTools: function getTools() {
-      const tools = this._createCustomizedLayout(this.createToolLayout(), 'tools');
+      var tools = this._createCustomizedLayout(this.createToolLayout(), 'tools');
       this.onToolLayoutCreated(tools);
       return tools;
     },
@@ -242,7 +242,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
 
       this.initModel();
 
-      const oldState = this.connectionState;
+      var oldState = this.connectionState;
       this.connectionState = state;
       if (oldState !== null) {
         this.onConnectionStateChange(state);
@@ -251,7 +251,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
     onConnectionStateChange: function onConnectionStateChange(state) {// eslint-disable-line
     },
     _onStateChange: function _onStateChange() {
-      const state = this.appStore.getState();
+      var state = this.appStore.getState();
       this._updateConnectionState(state.sdk.online);
       this.onStateChange(state);
       this.previousState = state;
@@ -261,7 +261,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
      * Initializes the model instance that is returned with the current view.
      */
     initModel: function initModel() {
-      const model = this.getModel();
+      var model = this.getModel();
       if (model) {
         this._model = model;
         this._model.init();
@@ -271,7 +271,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
      * Returns a new instance of a model for the view.
      */
     getModel: function getModel() {
-      const model = _Adapter2.default.getModel(this.modelName);
+      var model = _Adapter2.default.getModel(this.modelName);
       return model;
     },
     /**
@@ -314,19 +314,21 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
      * @param {Error} error Error to pass to the errorHandlers
      */
     handleError: function handleError(error) {
+      var _this = this;
+
       if (!error) {
         return;
       }
 
       function noop() {}
 
-      const matches = this.errorHandlers.filter(handler => {
-        return handler.test && handler.test.call(this, error);
+      var matches = this.errorHandlers.filter(function (handler) {
+        return handler.test && handler.test.call(_this, error);
       });
 
-      const len = matches.length;
+      var len = matches.length;
 
-      const getNext = function getNext(index) {
+      var getNext = function getNext(index) {
         // next() chain has ended, return a no-op so calling next() in the last chain won't error
         if (index === len) {
           return noop;
@@ -335,8 +337,8 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
         // Return a closure with index and matches captured.
         // The handle function can call its "next" param to continue the chain.
         return function next() {
-          const nextHandler = matches[index];
-          const nextFn = nextHandler && nextHandler.handle;
+          var nextHandler = matches[index];
+          var nextFn = nextHandler && nextHandler.handle;
 
           nextFn.call(this, error, getNext.call(this, index + 1));
         }.bind(this);
@@ -351,7 +353,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
      * Gets the general error message, or the error message for the status code.
      */
     getErrorMessage: function getErrorMessage(error) {
-      let message = this.errorText.general || '';
+      var message = this.errorText.general || '';
 
       if (error) {
         message = this.errorText.status[error.status] || message;
@@ -438,12 +440,12 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
         this.set('title', this.titleText);
       }
 
-      const tag = this.getTag();
-      const data = this.getContext();
+      var tag = this.getTag();
+      var data = this.getContext();
 
-      const to = _lang2.default.mixin(transitionOptions || {}, {
-        tag,
-        data
+      var to = _lang2.default.mixin(transitionOptions || {}, {
+        tag: tag,
+        data: data
       });
       this._transitionOptions = to;
       page(this.buildRoute());
@@ -455,7 +457,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
         this.currentHash = location.hash;
 
         if (options.trimmed !== true) {
-          const data = {
+          var data = {
             hash: this.currentHash,
             page: this.id,
             tag: options.tag,
@@ -541,8 +543,8 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
     *   scroll: False if the transition should not scroll to the top, True otherwise.
     */
     open: function open() {
-      const p = this.domNode;
-      const options = this._transitionOptions || {};
+      var p = this.domNode;
+      var options = this._transitionOptions || {};
 
       if (!p) {
         return;
@@ -551,8 +553,8 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
       this.setPrimaryTitle();
 
       if (options.track !== false) {
-        const count = App.context.history.length;
-        let position = count - 1;
+        var count = App.context.history.length;
+        var position = count - 1;
 
         if (options.returnTo) {
           if (typeof options.returnTo === 'function') {
@@ -587,7 +589,7 @@ define('argos/View', ['module', 'exports', 'dojo/_base/declare', 'dojo/_base/lan
         type: 'load'
       });
 
-      const from = App.getCurrentPage();
+      var from = App.getCurrentPage();
 
       if (from) {
         $(from).trigger({

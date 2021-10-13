@@ -9,7 +9,7 @@ define("argos/Scene", ["module", "exports"], function (module, exports) {
     }
   }
 
-  let Scene = function Scene(store) {
+  var Scene = function Scene(store) {
     _classCallCheck(this, Scene);
 
     this.viewset = [];

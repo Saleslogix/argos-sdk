@@ -30,7 +30,7 @@ define('argos/Fields/BooleanField', ['module', 'exports', 'dojo/_base/declare', 
    *
    * @extends module:argos/Fields/_Field
    */
-  const control = (0, _declare2.default)('argos.Fields.BooleanField', [_Field2.default], /** @lends module:argos/Fields/BooleanField.prototype */{
+  var control = (0, _declare2.default)('argos.Fields.BooleanField', [_Field2.default], /** @lends module:argos/Fields/BooleanField.prototype */{
     /**
      * @property {Simplate}
      * Simplate that defines the fields HTML Markup
@@ -39,16 +39,7 @@ define('argos/Fields/BooleanField', ['module', 'exports', 'dojo/_base/declare', 
      * * `$$` => Owner View instance
      *
      */
-    widgetTemplate: new Simplate([`
-      <div class="switch">
-        <input
-          data-dojo-attach-point="toggleNode"
-          type="checkbox" {% if($.checked) { %}checked{% } %}
-          id="{%= $.id %}_{%= $.name %}"
-          name="{%= $.name %}" class="switch" />
-        <label for="{%= $.id %}_{%= $.name %}">{%: $.label %}</label>
-      </div>
-    `]),
+    widgetTemplate: new Simplate(['\n      <div class="switch">\n        <input\n          data-dojo-attach-point="toggleNode"\n          type="checkbox" {% if($.checked) { %}checked{% } %}\n          id="{%= $.id %}_{%= $.name %}"\n          name="{%= $.name %}" class="switch" />\n        <label for="{%= $.id %}_{%= $.name %}">{%: $.label %}</label>\n      </div>\n    ']),
     /**
      * @property {HTMLElement}
      * The div node that holds the toggled attribute
@@ -86,7 +77,7 @@ define('argos/Fields/BooleanField', ['module', 'exports', 'dojo/_base/declare', 
         return;
       }
 
-      const toggledValue = this.getValue();
+      var toggledValue = this.getValue();
       this.setValue(toggledValue);
     },
     /**
@@ -105,7 +96,7 @@ define('argos/Fields/BooleanField', ['module', 'exports', 'dojo/_base/declare', 
      * @param {Boolean} initial If true sets the value as the original value and is later used for dirty/modified detection.
      */
     setValue: function setValue(val, initial) {
-      const newVal = typeof val === 'string' ? /^(true|t|0)$/i.test(val) : !!val;
+      var newVal = typeof val === 'string' ? /^(true|t|0)$/i.test(val) : !!val;
 
       if (initial) {
         this.originalValue = newVal;
@@ -121,7 +112,7 @@ define('argos/Fields/BooleanField', ['module', 'exports', 'dojo/_base/declare', 
      * @param {Boolean} flag Signifies if the cleared value should be set as modified (true) or initial (false/undefined)
      */
     clearValue: function clearValue(flag) {
-      const initial = flag !== true;
+      var initial = flag !== true;
       this.setValue(this.checked, initial);
     },
     /**

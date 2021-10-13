@@ -35,14 +35,14 @@ define('argos/Views/ConfigureQuickActions', ['module', 'exports', 'dojo/_base/de
   /**
    * @module argos/Views/ConfigureQuickActions
    */
-  const resource = (0, _I18n2.default)('configureQuickActions');
+  var resource = (0, _I18n2.default)('configureQuickActions');
 
   /**
    * @class
    * @alias module:argos/Views/ConfigureQuickActions
    * @extends module:argos/_ConfigureBase
    */
-  const __class = (0, _declare2.default)('argos.Views.ConfigureQuickActions', [_ConfigureBase3.default], /** @lends module:argos/Views/ConfigureQuickActions.prototype */{
+  var __class = (0, _declare2.default)('argos.Views.ConfigureQuickActions', [_ConfigureBase3.default], /** @lends module:argos/Views/ConfigureQuickActions.prototype */{
     // Localization
     titleText: resource.titleText,
 
@@ -55,10 +55,10 @@ define('argos/Views/ConfigureQuickActions', ['module', 'exports', 'dojo/_base/de
       return App.getView(this.options.viewId);
     },
     onSave: function onSave() {
-      const selected = this.getSelectedKeys();
-      const all = this._sortActions(this.options.actions, this.getOrderedKeys());
+      var selected = this.getSelectedKeys();
+      var all = this._sortActions(this.options.actions, this.getOrderedKeys());
 
-      const save = all.map(action => {
+      var save = all.map(function (action) {
         if (selected.indexOf(action.id) >= 0) {
           action.visible = true;
         } else {
@@ -73,7 +73,7 @@ define('argos/Views/ConfigureQuickActions', ['module', 'exports', 'dojo/_base/de
 
       App.persistPreferences();
 
-      const view = this.getConfiguredView();
+      var view = this.getConfiguredView();
       if (view) {
         view.clear();
         view.refreshRequired = true;
@@ -82,9 +82,9 @@ define('argos/Views/ConfigureQuickActions', ['module', 'exports', 'dojo/_base/de
       ReUI.back();
     },
     _sortActions: function _sortActions(actions, order) {
-      return actions.sort((a, b) => {
-        const i = order.indexOf(a.id);
-        const j = order.indexOf(b.id);
+      return actions.sort(function (a, b) {
+        var i = order.indexOf(a.id);
+        var j = order.indexOf(b.id);
 
         if (i < j) {
           return -1;
@@ -106,13 +106,15 @@ define('argos/Views/ConfigureQuickActions', ['module', 'exports', 'dojo/_base/de
       this.inherited(show, arguments);
     },
     createStore: function createStore() {
-      let list = [];
-      const all = this.options.actions.map(action => action.id);
-      const order = this.getSavedOrderedKeys();
+      var list = [];
+      var all = this.options.actions.map(function (action) {
+        return action.id;
+      });
+      var order = this.getSavedOrderedKeys();
 
       // De-dup id's
-      const combined = order.concat(all);
-      let reduced = combined.reduce((previous, current) => {
+      var combined = order.concat(all);
+      var reduced = combined.reduce(function (previous, current) {
         if (previous.indexOf(current) === -1) {
           previous.push(current);
         }
@@ -121,11 +123,11 @@ define('argos/Views/ConfigureQuickActions', ['module', 'exports', 'dojo/_base/de
       }, []);
 
       // The order array could have had stale id's
-      reduced = reduced.filter(key => {
+      reduced = reduced.filter(function (key) {
         return all.indexOf(key) !== -1;
       });
 
-      list = this._sortActions(this.options.actions, this.getSavedOrderedKeys()).map(action => {
+      list = this._sortActions(this.options.actions, this.getSavedOrderedKeys()).map(function (action) {
         if (reduced.indexOf(action.id) > -1) {
           return {
             $key: action.id,
@@ -135,7 +137,7 @@ define('argos/Views/ConfigureQuickActions', ['module', 'exports', 'dojo/_base/de
         return null;
       });
 
-      list = list.filter(item => {
+      list = list.filter(function (item) {
         return item !== null;
       });
 
@@ -144,18 +146,18 @@ define('argos/Views/ConfigureQuickActions', ['module', 'exports', 'dojo/_base/de
       });
     },
     getSavedOrderedKeys: function getSavedOrderedKeys() {
-      const save = this._getQuickActionPrefs();
-      return save.map(action => {
+      var save = this._getQuickActionPrefs();
+      return save.map(function (action) {
         return action.id;
       });
     },
     getSavedSelectedKeys: function getSavedSelectedKeys() {
-      let save = this._getQuickActionPrefs();
-      save = save.filter(action => {
+      var save = this._getQuickActionPrefs();
+      save = save.filter(function (action) {
         return action.visible === true;
       });
 
-      return save.map(action => {
+      return save.map(function (action) {
         return action.id;
       });
     },

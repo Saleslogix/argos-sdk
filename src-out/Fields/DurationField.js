@@ -39,7 +39,7 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
   /**
    * @module argos/Fields/DurationField
    */
-  const resource = (0, _I18n2.default)('durationField');
+  var resource = (0, _I18n2.default)('durationField');
 
   /**
    * @class
@@ -68,7 +68,7 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
    *
    * @extends module:argos/Fields/LookupField
    */
-  const control = (0, _declare2.default)('argos.Fields.DurationField', [_LookupField2.default], /** @lends module:argos/Fields/DurationField.prototype */{
+  var control = (0, _declare2.default)('argos.Fields.DurationField', [_LookupField2.default], /** @lends module:argos/Fields/DurationField.prototype */{
     /**
      * Maps various attributes of nodes to setters.
      */
@@ -97,19 +97,7 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * * `$$` => Owner View instance
      *
      */
-    widgetTemplate: new Simplate([`<label for="{%= $.name %}">{%: $.label %}</label>
-    <div class="field field-control-wrapper">
-      <div class="autoComplete-watermark" data-dojo-attach-point="autoCompleteNode"></div>
-      <button
-        class="button field-control-trigger simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}"
-        data-dojo-attach-event="onclick:navigateToListView"
-        aria-label="{%: $.lookupLabelText %}">
-        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
-          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
-        </svg>
-      </button>
-      <input data-dojo-attach-point="inputNode" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>
-    </div>`]),
+    widgetTemplate: new Simplate(['<label for="{%= $.name %}">{%: $.label %}</label>\n    <div class="field field-control-wrapper">\n      <div class="autoComplete-watermark" data-dojo-attach-point="autoCompleteNode"></div>\n      <button\n        class="button field-control-trigger simpleSubHeaderButton {% if ($$.iconClass) { %} {%: $$.iconClass %} {% } %}"\n        data-dojo-attach-event="onclick:navigateToListView"\n        aria-label="{%: $.lookupLabelText %}">\n        <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>\n        </svg>\n      </button>\n      <input data-dojo-attach-point="inputNode" data-dojo-attach-event="onkeyup: _onKeyUp, onblur: _onBlur, onfocus: _onFocus" class="" type="{%: $.inputType %}" name="{%= $.name %}" {% if ($.readonly) { %} readonly {% } %}>\n    </div>']),
     iconClass: 'more',
 
     // Localization
@@ -183,7 +171,7 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
     init: function init() {
       // do not use lookups connects
 
-      const numberDecimalSeparator = Soho.Locale.currentLocale.data.numbers.decimal;
+      var numberDecimalSeparator = Soho.Locale.currentLocale.data.numbers.decimal;
 
       this.autoCompletePhraseRE = new RegExp(_string2.default.substitute('^((?:\\d+(?:\\${0}\\d*)?|\\${0}\\d+)\\s*?)(.+)', [numberDecimalSeparator]));
 
@@ -196,15 +184,15 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * @private
      */
     _onKeyUp: function _onKeyUp() /* evt*/{
-      const val = this.inputNode.value.toString();
-      const match = this.autoCompletePhraseRE.exec(val);
+      var val = this.inputNode.value.toString();
+      var match = this.autoCompletePhraseRE.exec(val);
 
       if (!match || val.length < 1) {
         this.hideAutoComplete();
         return true;
       }
 
-      for (const key in this.autoCompleteText) {
+      for (var key in this.autoCompleteText) {
         if (this.isWordMatch(match[2], this.autoCompleteText[key])) {
           this.currentKey = this.autoCompleteText[key];
           this.showAutoComplete(match[1] + this.autoCompleteText[key]);
@@ -227,8 +215,8 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * @return {Boolean} True if they are equal.
      */
     isWordMatch: function isWordMatch(val, word) {
-      let newVal = typeof val === 'string' ? val.trim() : '';
-      let newWord = typeof word === 'string' ? word.trim() : '';
+      var newVal = typeof val === 'string' ? val.trim() : '';
+      var newWord = typeof word === 'string' ? word.trim() : '';
 
       if (newVal.length > newWord.length) {
         newVal = newVal.slice(0, newWord.length);
@@ -258,10 +246,10 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * @private
      */
     _onBlur: function _onBlur() /* evt*/{
-      const val = this.inputNode.value.toString();
-      const match = this.autoCompleteValueRE.exec(val);
-      const multiplier = this.getMultiplier(this.currentKey);
-      let newValue = 0;
+      var val = this.inputNode.value.toString();
+      var match = this.autoCompleteValueRE.exec(val);
+      var multiplier = this.getMultiplier(this.currentKey);
+      var newValue = 0;
 
       if (val.length < 1) {
         return true;
@@ -279,7 +267,7 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * @return {Number}
      */
     getMultiplier: function getMultiplier(key) {
-      let k;
+      var k = void 0;
       for (k in this.autoCompleteText) {
         if (this.autoCompleteText.hasOwnProperty(k) && key === this.autoCompleteText[k]) {
           break;
@@ -299,8 +287,10 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * @param {Number} val Number of minutes
      * @param init
      */
-    setValue: function setValue(val = 0 /* , init*/) {
-      let newVal = val;
+    setValue: function setValue() /* , init*/{
+      var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+      var newVal = val;
       if (newVal === null) {
         newVal = 0;
       }
@@ -324,12 +314,12 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * @return {String}
      */
     textFormat: function textFormat(val) {
-      let finalUnit = 1;
-      const autoCompleteValues = this.autoCompleteText;
+      var finalUnit = 1;
+      var autoCompleteValues = this.autoCompleteText;
 
-      for (const key in autoCompleteValues) {
+      for (var key in autoCompleteValues) {
         if (autoCompleteValues.hasOwnProperty(key)) {
-          const stepValue = parseInt(key, 10);
+          var stepValue = parseInt(key, 10);
           if (val === 0 && stepValue === 1) {
             this.currentKey = autoCompleteValues[key];
             break;
@@ -359,7 +349,7 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * @return {string}
      */
     formatUnit: function formatUnit(unit) {
-      let sval;
+      var sval = void 0;
       if (isNaN(unit)) {
         sval = '0';
       } else {
@@ -374,7 +364,7 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
           }
         }
       }
-      return `${sval} ${this.currentKey}`;
+      return sval + ' ' + this.currentKey;
     },
     /**
      * Extends the {@link LookupField#createNavigationOptions parent implementation} to explicitly set hide search
@@ -382,7 +372,7 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * @return {Object} Navigation options object to be passed
      */
     createNavigationOptions: function createNavigationOptions() {
-      const options = this.inherited(createNavigationOptions, arguments);
+      var options = this.inherited(createNavigationOptions, arguments);
       options.hideSearch = true;
       options.data = this.expandExpression(this.data);
       return options;
@@ -392,8 +382,8 @@ define('argos/Fields/DurationField', ['module', 'exports', 'dojo/_base/declare',
      * @return {Boolean} False for no-errors, true for error.
      */
     validate: function validate() {
-      const val = this.inputNode.value.toString();
-      const phraseMatch = this.autoCompletePhraseRE.exec(val);
+      var val = this.inputNode.value.toString();
+      var phraseMatch = this.autoCompletePhraseRE.exec(val);
 
       if (!phraseMatch) {
         $(this.containerNode).addClass('row-error');

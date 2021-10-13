@@ -19,7 +19,7 @@ define('argos/Offline/_DetailOfflineMixin', ['module', 'exports', 'dojo/_base/de
     };
   }
 
-  const resource = (0, _I18n2.default)('_detailOfflineMixin');
+  var resource = (0, _I18n2.default)('_detailOfflineMixin');
 
   /**
    * @class
@@ -50,7 +50,7 @@ define('argos/Offline/_DetailOfflineMixin', ['module', 'exports', 'dojo/_base/de
       if (this.tools) {
         return this.tools;
       }
-      const tools = this.inherited(createToolLayout, arguments);
+      var tools = this.inherited(createToolLayout, arguments);
       if (tools && tools.tbar && this.enableOffline && App.enableOfflineSupport) {
         tools.tbar.push({
           id: 'briefCase',
@@ -63,24 +63,26 @@ define('argos/Offline/_DetailOfflineMixin', ['module', 'exports', 'dojo/_base/de
       return tools;
     },
     briefCaseEntity: function briefCaseEntity(action, selection) {
+      var _this = this;
+
       // eslint-disable-line
       // Start busy indicator modal
-      const busyIndicator = this.createBusyModal();
+      var busyIndicator = this.createBusyModal();
 
       // Start briefcasing
-      const entityName = this.modelName;
-      const entityId = this.entry.$key; // thie should be resolved from the model or adapter.
-      const options = {
+      var entityName = this.modelName;
+      var entityId = this.entry.$key; // thie should be resolved from the model or adapter.
+      var options = {
         includeRelated: true,
         viewId: this.id
       };
-      _Manager2.default.briefCaseEntity(entityName, entityId, options).then(result => {
+      _Manager2.default.briefCaseEntity(entityName, entityId, options).then(function (result) {
         // Show complete modal dialog
-        const modalPromise = this.createCompleteDialog(busyIndicator, result);
-        modalPromise.then(this.onEntityBriefcased.bind(this));
-      }, error => {
-        _ErrorManager2.default.addSimpleError(`${resource.errorBriefcasingText} ${this.id}`, error);
-        this.createAlertDialog(busyIndicator);
+        var modalPromise = _this.createCompleteDialog(busyIndicator, result);
+        modalPromise.then(_this.onEntityBriefcased.bind(_this));
+      }, function (error) {
+        _ErrorManager2.default.addSimpleError(resource.errorBriefcasingText + ' ' + _this.id, error);
+        _this.createAlertDialog(busyIndicator);
       });
     },
     createAlertDialog: function createAlertDialog(busyIndicator) {
@@ -89,14 +91,14 @@ define('argos/Offline/_DetailOfflineMixin', ['module', 'exports', 'dojo/_base/de
       busyIndicator.complete(true);
       App.modal.resolveDeferred(true);
       // Attach resolve to move to briefcase list (if user hits okay)
-      return App.modal.createSimpleDialog({ title: 'alert', content: resource.interruptedText, getContent: () => {
+      return App.modal.createSimpleDialog({ title: 'alert', content: resource.interruptedText, getContent: function getContent() {
           return;
         }, leftButton: 'cancel', rightButton: 'confirm' });
     },
     createBusyModal: function createBusyModal() {
       App.modal.disableClose = true;
       App.modal.showToolbar = false;
-      const busyIndicator = new _BusyIndicator2.default({
+      var busyIndicator = new _BusyIndicator2.default({
         id: 'busyIndicator__offline-list-briefcase',
         label: resource.briefcasingText
       });
@@ -104,13 +106,15 @@ define('argos/Offline/_DetailOfflineMixin', ['module', 'exports', 'dojo/_base/de
       busyIndicator.start();
       return busyIndicator;
     },
-    createCompleteDialog: function createCompleteDialog(busyIndicator, result = {}) {
+    createCompleteDialog: function createCompleteDialog(busyIndicator) {
+      var result = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
       App.modal.disableClose = false;
       App.modal.showToolbar = true;
       busyIndicator.complete(true);
       App.modal.resolveDeferred(true);
       // Attach resolve to move to briefcase list (if user hits okay)
-      return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToDetailViewText, getContent: () => {
+      return App.modal.createSimpleDialog({ title: 'complete', content: resource.goToDetailViewText, getContent: function getContent() {
           return result;
         }, leftButton: 'cancel', rightButton: 'okay' });
     },
@@ -130,8 +134,8 @@ define('argos/Offline/_DetailOfflineMixin', ['module', 'exports', 'dojo/_base/de
     },
     saveOffline: function saveOffline() {
       if (App.enableOfflineSupport) {
-        _Manager2.default.saveDetailView(this).then(() => {}, function err(error) {
-          _ErrorManager2.default.addSimpleError(`${resource.errorSavingOfflineViewText} ${this.id}`, error);
+        _Manager2.default.saveDetailView(this).then(function () {}, function err(error) {
+          _ErrorManager2.default.addSimpleError(resource.errorSavingOfflineViewText + ' ' + this.id, error);
         });
       }
     },
@@ -139,11 +143,11 @@ define('argos/Offline/_DetailOfflineMixin', ['module', 'exports', 'dojo/_base/de
       return this.entry.$descriptor;
     },
     getOfflineIcon: function getOfflineIcon() {
-      const model = this.getModel();
+      var model = this.getModel();
       return model.getIconClass();
     },
     onEntityBriefcased: function onEntityBriefcased() {
-      const view = this.app.getView('briefcase_list');
+      var view = this.app.getView('briefcase_list');
       if (view) {
         view.show({});
       }

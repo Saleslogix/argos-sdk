@@ -36,7 +36,7 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
    *
    * @extends module:argos/Fields/_Field
    */
-  const control = (0, _declare2.default)('argos.Fields.RadioField', [_Field2.default], /** @lends module:argos/Fields/RadioField.prototype */{
+  var control = (0, _declare2.default)('argos.Fields.RadioField', [_Field2.default], /** @lends module:argos/Fields/RadioField.prototype */{
     options: null,
     mixedOptions: null,
     getOptions: null,
@@ -49,11 +49,7 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
      * * `$$` => Owner View instance
      *
      */
-    widgetTemplate: new Simplate([`
-      <fieldset class="radio-group">
-        <legend>{%: $.label %}</legend>
-      </div>
-    `]),
+    widgetTemplate: new Simplate(['\n      <fieldset class="radio-group">\n        <legend>{%: $.label %}</legend>\n      </div>\n    ']),
     /**
      * @property {Simplate}
      * Simplate that defines the radio HTML Markup
@@ -62,11 +58,7 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
      * * `$$` => Field instance
      *
      */
-    radioTemplate: new Simplate([`
-    <input type="radio" class="radio" name="{%: $$.name %}" id="{%: $.generatedId %}" data-automation-id="{%: $.generatedId %}" value="{%: $.value %}" {% if ($.checked) { %} checked {% } %}/>
-    <label for="{%: $.generatedId %}" class="radio-label">{%: $.label %}</label>
-    <br />
-  `]),
+    radioTemplate: new Simplate(['\n    <input type="radio" class="radio" name="{%: $$.name %}" id="{%: $.generatedId %}" data-automation-id="{%: $.generatedId %}" value="{%: $.value %}" {% if ($.checked) { %} checked {% } %}/>\n    <label for="{%: $.generatedId %}" class="radio-label">{%: $.label %}</label>\n    <br />\n  ']),
 
     /**
      * Value used during dirty/modified comparison
@@ -76,12 +68,14 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
     initSoho: function initSoho() {},
 
     postCreate: function postCreate() {
-      this.inherited(postCreate, arguments);
-      const options = this.options || [];
+      var _this = this;
 
-      const mixedOptions = options.map(option => {
-        const mixedOption = Object.assign({}, option, {
-          generatedId: this.generateOptionId(option)
+      this.inherited(postCreate, arguments);
+      var options = this.options || [];
+
+      var mixedOptions = options.map(function (option) {
+        var mixedOption = Object.assign({}, option, {
+          generatedId: _this.generateOptionId(option)
         });
 
         return mixedOption;
@@ -89,16 +83,16 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
 
       this.mixedOptions = mixedOptions;
 
-      const radios = mixedOptions.map(mixedOption => {
-        return this.radioTemplate.apply(mixedOption, this);
+      var radios = mixedOptions.map(function (mixedOption) {
+        return _this.radioTemplate.apply(mixedOption, _this);
       });
 
-      const parent = $(this.domNode);
+      var parent = $(this.domNode);
       parent.append(radios.join(''));
     },
 
     generateOptionId: function generateOptionId(option) {
-      return `${this.name}_${option.id}`;
+      return this.name + '_' + option.id;
     },
 
     /**
@@ -121,14 +115,14 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
         this.originalValue = val;
       }
 
-      const radioNode = $(`input[value="${val}"]`, this.domNode).get(0);
+      var radioNode = $('input[value="' + val + '"]', this.domNode).get(0);
 
       // We were passed a value that matched one of our radios,
       // so we will set that to checked.
       if (radioNode) {
         radioNode.checked = true;
       } else if (val === '' && !initial) {
-        $('input', this.domNode).each((_, elem) => {
+        $('input', this.domNode).each(function (_, elem) {
           elem.checked = false;
         });
       }
@@ -141,7 +135,7 @@ define('argos/Fields/RadioField', ['module', 'exports', 'dojo/_base/declare', '.
      * @param {Boolean} flag Signifies if the cleared value should be set as modified (true) or initial (false/undefined)
      */
     clearValue: function clearValue(flag) {
-      const initial = flag !== true;
+      var initial = flag !== true;
       this.setValue('', initial);
     },
     /**

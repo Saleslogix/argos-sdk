@@ -54,7 +54,7 @@ define('argos/Fields/TextField', ['module', 'exports', 'dojo/_base/declare', 'do
   /**
    * @module argos/Fields/TextField
    */
-  const control = (0, _declare2.default)('argos.Fields.TextField', [_Field3.default], /** @lends module:argos/Fields/TextField.prototype */{
+  var control = (0, _declare2.default)('argos.Fields.TextField', [_Field3.default], /** @lends module:argos/Fields/TextField.prototype */{
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:
@@ -76,27 +76,7 @@ define('argos/Fields/TextField', ['module', 'exports', 'dojo/_base/declare', 'do
      * * `$$` => Owner View instance
      *
      */
-    widgetTemplate: new Simplate([`
-      <div class="field">
-        <label for="{%= $.name %}"
-          {% if ($.required) { %}
-          class="required"
-          {% } %}
-          >{%: $.label %}</label>
-        <input
-          data-dojo-attach-point="inputNode"
-          type="{%: $.inputType %}"
-          id="{%= $.name %}"
-          name="{%= $.name %}"
-          placeholder="{%: $.placeHolderText %}"
-          {% if ($.required) { %}
-            data-validate="required"
-            class="required"
-          {% } %}
-          {% if ($.readonly) { %} readonly {% } %}
-          >
-      </div>
-    `]),
+    widgetTemplate: new Simplate(['\n      <div class="field">\n        <label for="{%= $.name %}"\n          {% if ($.required) { %}\n          class="required"\n          {% } %}\n          >{%: $.label %}</label>\n        <input\n          data-dojo-attach-point="inputNode"\n          type="{%: $.inputType %}"\n          id="{%= $.name %}"\n          name="{%= $.name %}"\n          placeholder="{%: $.placeHolderText %}"\n          {% if ($.required) { %}\n            data-validate="required"\n            class="required"\n          {% } %}\n          {% if ($.readonly) { %} readonly {% } %}\n          >\n      </div>\n    ']),
     /**
      * @property {HTMLElement}
      * The dojo-attach-point reference to the input element
@@ -196,7 +176,7 @@ define('argos/Fields/TextField', ['module', 'exports', 'dojo/_base/declare', 'do
      * @param {Event} evt
      */
     _onKeyPress: function _onKeyPress(evt) {
-      const v = this.getValue() + evt.keyChar;
+      var v = this.getValue() + evt.keyChar;
       if (this.validate(v)) {
         _event2.default.stop(evt);
         return false;
@@ -242,7 +222,7 @@ define('argos/Fields/TextField', ['module', 'exports', 'dojo/_base/declare', 'do
      * @param {Event} evt
      */
     onNotificationTrigger: function onNotificationTrigger() /* evt*/{
-      const currentValue = this.getValue();
+      var currentValue = this.getValue();
 
       if (this.previousValue !== currentValue) {
         this.previousValue = currentValue;
@@ -273,7 +253,10 @@ define('argos/Fields/TextField', ['module', 'exports', 'dojo/_base/declare', 'do
      * @param {String} val Value to be set
      * @param {Boolean} initial True if the value is the default/clean value, false if it is a meant as a dirty value
      */
-    setValue: function setValue(val = '', initial) {
+    setValue: function setValue() {
+      var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      var initial = arguments[1];
+
       if (initial) {
         this.originalValue = val;
       }
@@ -297,7 +280,7 @@ define('argos/Fields/TextField', ['module', 'exports', 'dojo/_base/declare', 'do
      * existing value and should then be detected as modified/dirty.
      */
     clearValue: function clearValue(asDirty) {
-      const initial = asDirty !== true;
+      var initial = asDirty !== true;
       this.setValue('', initial);
     },
     /**

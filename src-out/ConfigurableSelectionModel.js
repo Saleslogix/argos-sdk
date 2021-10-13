@@ -37,7 +37,7 @@ define('argos/ConfigurableSelectionModel', ['module', 'exports', 'dojo/_base/dec
   /**
    * @module argos/ConfigurableSelectionModel
    */
-  const __class = (0, _declare2.default)('argos.ConfigurableSelectionModel', [_SelectionModel2.default], /** @lends module:argos/ConfigurableSelectionModel.prototype */{
+  var __class = (0, _declare2.default)('argos.ConfigurableSelectionModel', [_SelectionModel2.default], /** @lends module:argos/ConfigurableSelectionModel.prototype */{
     /**
      * @property {Boolean}
      * Flag that controls if only one item is selectable at a time. Meaning if this is true

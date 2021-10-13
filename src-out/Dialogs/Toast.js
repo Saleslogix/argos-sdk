@@ -27,7 +27,7 @@ define('argos/Dialogs/Toast', ['module', 'exports'], function (module, exports) 
     };
   }();
 
-  let Toast = function () {
+  var Toast = function () {
     function Toast(options) {
       _classCallCheck(this, Toast);
 
@@ -36,8 +36,10 @@ define('argos/Dialogs/Toast', ['module', 'exports'], function (module, exports) 
 
     _createClass(Toast, [{
       key: 'add',
-      value: function add(options = {}) {
-        const sohoToastOptions = {
+      value: function add() {
+        var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+        var sohoToastOptions = {
           title: '',
           message: '',
           position: 'top right',
@@ -45,7 +47,7 @@ define('argos/Dialogs/Toast', ['module', 'exports'], function (module, exports) 
         };
 
         // Convert our toast options to soho.
-        const convertedOptions = Object.assign({}, sohoToastOptions, {
+        var convertedOptions = Object.assign({}, sohoToastOptions, {
           title: options.title,
           message: options.message,
           timeout: options.toastTime

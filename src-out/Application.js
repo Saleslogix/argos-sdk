@@ -27,6 +27,24 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     };
   }
 
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  };
+
+  function _toConsumableArray(arr) {
+    if (Array.isArray(arr)) {
+      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
+        arr2[i] = arr[i];
+      }
+
+      return arr2;
+    } else {
+      return Array.from(arr);
+    }
+  }
+
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
@@ -51,11 +69,11 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     };
   }();
 
-  const resource = (0, _I18n2.default)('sdkApplication');
+  var resource = (0, _I18n2.default)('sdkApplication');
 
   Function.prototype.bindDelegate = function bindDelegate(scope) {
     //eslint-disable-line
-    const self = this;
+    var self = this;
 
     if (arguments.length === 1) {
       return function bound() {
@@ -63,9 +81,9 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       };
     }
 
-    const optional = Array.prototype.slice.call(arguments, 1);
+    var optional = Array.prototype.slice.call(arguments, 1);
     return function boundWArgs() {
-      const called = Array.prototype.slice.call(arguments, 0);
+      var called = Array.prototype.slice.call(arguments, 0);
       return self.apply(scope || this, called.concat(optional));
     };
   };
@@ -93,7 +111,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
    * It provides a shortcut alias to `window.App` (`App`) with the most common usage being `App.getView(id)`.
    */
 
-  let Application = function () {
+  var Application = function () {
     function Application() {
       _classCallCheck(this, Application);
 
@@ -112,13 +130,15 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
           }
           if (this.app.context && this.app.context.history && this.app.context.history.length > 0) {
             // Note: PageJS will push the page back onto the stack once viewed
-            const from = this.app.context.history.pop();
+            var from = this.app.context.history.pop();
             page.len--;
 
-            const returnTo = from.data && from.data.options && from.data.options.returnTo;
+            var returnTo = from.data && from.data.options && from.data.options.returnTo;
 
             if (returnTo) {
-              let returnIndex = [...this.app.context.history].reverse().findIndex(val => val.page === returnTo);
+              var returnIndex = [].concat(_toConsumableArray(this.app.context.history)).reverse().findIndex(function (val) {
+                return val.page === returnTo;
+              });
               // Since want to find last index of page, must reverse index
               if (returnIndex !== -1) {
                 returnIndex = this.app.context.history.length - 1 - returnIndex;
@@ -128,7 +148,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
               return;
             }
 
-            const to = this.app.context.history.pop();
+            var to = this.app.context.history.pop();
             page.redirect(to.page);
             return;
           }
@@ -300,7 +320,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'initHash',
       value: function initHash() {
-        const h = location.hash;
+        var h = location.hash;
         if (h !== '') {
           this.redirectHash = h;
         }
@@ -350,13 +370,15 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'initConnects',
       value: function initConnects() {
+        var _this = this;
+
         $(window).on('resize', this.onResize.bind(this));
         $('body').on('beforetransition', this._onBeforeTransition.bind(this));
         $('body').on('aftertransition', this._onAfterTransition.bind(this));
         $('body').on('show', this._onActivate.bind(this));
-        $(document).ready(() => {
-          window.addEventListener('online', this._onOnline.bind(this));
-          window.addEventListener('offline', this._onOffline.bind(this));
+        $(document).ready(function () {
+          window.addEventListener('online', _this._onOnline.bind(_this));
+          window.addEventListener('offline', _this._onOffline.bind(_this));
         });
 
         this.ping();
@@ -364,14 +386,20 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: '_ping',
       value: function _ping() {
-        return new Promise(resolve => {
-          const xhr = new XMLHttpRequest();
-          xhr.ontimeout = () => resolve(false);
-          xhr.onerror = () => resolve(false);
-          xhr.onload = () => {
-            const DONE = 4;
-            const HTTP_OK = 200;
-            const HTTP_NOT_MODIFIED = 304;
+        var _this2 = this;
+
+        return new Promise(function (resolve) {
+          var xhr = new XMLHttpRequest();
+          xhr.ontimeout = function () {
+            return resolve(false);
+          };
+          xhr.onerror = function () {
+            return resolve(false);
+          };
+          xhr.onload = function () {
+            var DONE = 4;
+            var HTTP_OK = 200;
+            var HTTP_NOT_MODIFIED = 304;
 
             if (xhr.readyState === DONE) {
               if (xhr.status === HTTP_OK || xhr.status === HTTP_NOT_MODIFIED) {
@@ -381,20 +409,24 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
               }
             }
           };
-          xhr.open('GET', `${this.PING_RESOURCE}?cache=${Math.random()}`);
-          xhr.timeout = this.PING_TIMEOUT;
+          xhr.open('GET', _this2.PING_RESOURCE + '?cache=' + Math.random());
+          xhr.timeout = _this2.PING_TIMEOUT;
           xhr.send();
         });
       }
     }, {
       key: 'initAppState',
       value: function initAppState() {
-        return new Promise((resolve, reject) => {
-          const sequences = [];
-          this._appStatePromises.forEach(item => {
-            let seq;
+        var _this3 = this;
+
+        return new Promise(function (resolve, reject) {
+          var sequences = [];
+          _this3._appStatePromises.forEach(function (item) {
+            var seq = void 0;
             if (typeof item === 'function') {
-              seq = sequences.find(x => x.seq === 0);
+              seq = sequences.find(function (x) {
+                return x.seq === 0;
+              });
               if (!seq) {
                 seq = {
                   seq: 0,
@@ -410,9 +442,11 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
               });
             } else {
               if (item.seq && item.items) {
-                seq = sequences.find(x => x.seq === (item.seq ? item.seq : 0));
+                seq = sequences.find(function (x) {
+                  return x.seq === (item.seq ? item.seq : 0);
+                });
                 if (seq) {
-                  item.items.forEach(_item => {
+                  item.items.forEach(function (_item) {
                     seq.items.push(_item);
                   });
                 } else {
@@ -422,7 +456,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
             }
           });
           // Sort the sequence ascending so we can processes them in the right order.
-          sequences.sort((a, b) => {
+          sequences.sort(function (a, b) {
             if (a.seq > b.seq) {
               return 1;
             }
@@ -434,16 +468,16 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
             return 0;
           });
 
-          this._initAppStateSequence(0, sequences).then(results => {
+          _this3._initAppStateSequence(0, sequences).then(function (results) {
             try {
-              this.clearAppStatePromises();
-              this.initModulesDynamic();
+              _this3.clearAppStatePromises();
+              _this3.initModulesDynamic();
               resolve(results);
             } catch (e) {
               reject(e);
             }
-          }, err => {
-            this.clearAppStatePromises();
+          }, function (err) {
+            _this3.clearAppStatePromises();
             reject(err);
           });
         });
@@ -451,39 +485,41 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: '_initAppStateSequence',
       value: function _initAppStateSequence(index, sequences) {
-        return new Promise((resolve, reject) => {
-          const seq = sequences[index];
+        var _this4 = this;
+
+        return new Promise(function (resolve, reject) {
+          var seq = sequences[index];
           if (seq) {
             // We need to send an observable and get ride of the ui element.
-            const indicator = new _BusyIndicator2.default({
-              id: `busyIndicator__appState_${seq.seq}`,
-              label: `${resource.initializingText} ${seq.description}`
+            var indicator = new _BusyIndicator2.default({
+              id: 'busyIndicator__appState_' + seq.seq,
+              label: resource.initializingText + ' ' + seq.description
             });
-            this.modal.disableClose = true;
-            this.modal.showToolbar = false;
-            this.modal.add(indicator);
+            _this4.modal.disableClose = true;
+            _this4.modal.showToolbar = false;
+            _this4.modal.add(indicator);
             indicator.start();
-            const promises = seq.items.map(item => {
+            var promises = seq.items.map(function (item) {
               return item.fn();
             });
 
-            Promise.all(promises).then(() => {
+            Promise.all(promises).then(function () {
               indicator.complete(true);
-              this.modal.disableClose = false;
-              this.modal.hide();
-              this._initAppStateSequence(index + 1, sequences).then(results => {
+              _this4.modal.disableClose = false;
+              _this4.modal.hide();
+              _this4._initAppStateSequence(index + 1, sequences).then(function (results) {
                 resolve(results);
-              }, err => {
+              }, function (err) {
                 indicator.complete(true);
-                this.modal.disableClose = false;
-                this.modal.hide();
+                _this4.modal.disableClose = false;
+                _this4.modal.hide();
                 reject(err);
               });
-            }, err => {
+            }, function (err) {
               _ErrorManager2.default.addSimpleError(indicator.label, err);
               indicator.complete(true);
-              this.modal.disableClose = false;
-              this.modal.hide();
+              _this4.modal.disableClose = false;
+              _this4.modal.hide();
               reject(err);
             });
           } else {
@@ -508,7 +544,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'initServices',
       value: function initServices() {
-        for (const name in this.connections) {
+        for (var name in this.connections) {
           if (this.connections.hasOwnProperty(name)) {
             this.registerService(name, this.connections[name]);
           }
@@ -517,7 +553,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'initModules',
       value: function initModules() {
-        for (let i = 0; i < this.modules.length; i++) {
+        for (var i = 0; i < this.modules.length; i++) {
           this.modules[i].init(this);
         }
       }
@@ -527,7 +563,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
         if (this.isDynamicInitialized) {
           return;
         }
-        for (let i = 0; i < this.modules.length; i++) {
+        for (var i = 0; i < this.modules.length; i++) {
           this.modules[i].initDynamic(this);
         }
         this.isDynamicInitialized = true;
@@ -535,7 +571,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'initToolbars',
       value: function initToolbars() {
-        for (const n in this.bars) {
+        for (var n in this.bars) {
           if (this.bars.hasOwnProperty(n)) {
             this.bars[n].init(); // todo: change to startup
           }
@@ -570,18 +606,20 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'initServiceWorker',
       value: function initServiceWorker() {
+        var _this5 = this;
+
         try {
           if ('serviceWorker' in navigator && typeof this.serviceWorkerPath === 'string') {
-            navigator.serviceWorker.register(this.serviceWorkerPath, this.serviceWorkerRegistrationOptions).then(registration => {
+            navigator.serviceWorker.register(this.serviceWorkerPath, this.serviceWorkerRegistrationOptions).then(function (registration) {
               console.log('Serviceworker registered with scope: ', registration.scope); // eslint-disable-line
-            }, err => {
+            }, function (err) {
               console.error('Service worker registration failed: ', err); // eslint-disable-line
               _ErrorManager2.default.addSimpleError('Error in service worker registration', err);
-              this.showServiceWorkerError();
+              _this5.showServiceWorkerError();
             });
 
-            navigator.serviceWorker.addEventListener('message', event => {
-              this.onServiceWorkerMessage(event);
+            navigator.serviceWorker.addEventListener('message', function (event) {
+              _this5.onServiceWorkerMessage(event);
             });
           }
         } catch (err) {
@@ -603,18 +641,18 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'sendServiceWorkerMessage',
       value: function sendServiceWorkerMessage(message) {
-        return new Promise((resolve, reject) => {
-          const channel = new MessageChannel();
-          channel.port1.onmessage = event => {
+        return new Promise(function (resolve, reject) {
+          var channel = new MessageChannel();
+          channel.port1.onmessage = function (event) {
             resolve(event.data);
           };
 
-          channel.port1.onerror = err => {
+          channel.port1.onerror = function (err) {
             reject(err);
           };
 
-          navigator.serviceWorker.ready.then(reg => {
-            const serviceWorker = reg.active;
+          navigator.serviceWorker.ready.then(function (reg) {
+            var serviceWorker = reg.active;
             serviceWorker.postMessage(message, [channel.port2]);
           });
         });
@@ -627,25 +665,27 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'initSoho',
       value: function initSoho() {
-        const container = this.getAppContainerNode();
-        const menu = $('.application-menu', container).first();
-        const closeMenuHeader = $('.application-menu-header').first();
+        var _this6 = this;
+
+        var container = this.getAppContainerNode();
+        var menu = $('.application-menu', container).first();
+        var closeMenuHeader = $('.application-menu-header').first();
 
         menu.applicationmenu();
         this.applicationmenu = menu.data('applicationmenu');
-        menu.on('applicationmenuopen', () => {
+        menu.on('applicationmenuopen', function () {
           _connect2.default.publish('/app/menuopen', [true]);
         });
 
-        menu.on('applicationmenuclose', () => {
+        menu.on('applicationmenuclose', function () {
           _connect2.default.publish('/app/menuclose', [true]);
         });
 
-        closeMenuHeader.on('click', () => {
-          this.hideApplicationMenu();
+        closeMenuHeader.on('click', function () {
+          _this6.hideApplicationMenu();
         });
 
-        const viewSettingsModal = $('.modal.view-settings', container).first();
+        var viewSettingsModal = $('.modal.view-settings', container).first();
         viewSettingsModal.modal();
         this.viewSettingsModal = viewSettingsModal.data('modal');
       }
@@ -668,7 +708,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: '_onStateChange',
       value: function _onStateChange() {
-        const state = this.store.getState();
+        var state = this.store.getState();
 
         if (this.previousState === null) {
           this.previousState = state;
@@ -676,8 +716,8 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
 
         this.onStateChange(state);
 
-        const sdkState = state && state.sdk;
-        const previousSdkState = this.previousState && this.previousState.sdk;
+        var sdkState = state && state.sdk;
+        var previousSdkState = this.previousState && this.previousState.sdk;
 
         if (sdkState && previousSdkState && sdkState.online !== previousSdkState.online) {
           this._updateConnectionState(sdkState.online);
@@ -729,34 +769,36 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'initPing',
       value: function initPing() {
+        var _this7 = this;
+
         // this.ping will be set if ping was passed as an options to the ctor
         if (this.ping) {
           return;
         }
 
-        this.ping = _Utility2.default.debounce(() => {
-          this.toast.add({
+        this.ping = _Utility2.default.debounce(function () {
+          _this7.toast.add({
             message: resource.checkingText,
             title: resource.connectionToastTitleText,
-            toastTime: this.PING_TIMEOUT
+            toastTime: _this7.PING_TIMEOUT
           });
 
-          let attempts = 1;
-          const handle = setInterval(() => {
-            this._ping().then(online => {
+          var attempts = 1;
+          var handle = setInterval(function () {
+            _this7._ping().then(function (online) {
               if (online) {
-                this.store.dispatch((0, _connection.setConnectionState)(true));
+                _this7.store.dispatch((0, _connection.setConnectionState)(true));
                 clearInterval(handle);
                 return;
               }
 
               attempts++;
-              if (attempts > this.PING_RETRY) {
-                this.store.dispatch((0, _connection.setConnectionState)(false));
+              if (attempts > _this7.PING_RETRY) {
+                _this7.store.dispatch((0, _connection.setConnectionState)(false));
                 clearInterval(handle);
               }
             });
-          }, this.PING_TIMEOUT);
+          }, _this7.PING_TIMEOUT);
         }, this.PING_DEBOUNCE);
       }
     }, {
@@ -835,7 +877,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: '_startupConnections',
       value: function _startupConnections() {
-        for (const name in this.connections) {
+        for (var name in this.connections) {
           if (this.connections.hasOwnProperty(name)) {
             if (this.connections.hasOwnProperty(name)) {
               this.registerConnection(name, this.connections[name]);
@@ -867,8 +909,10 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       value: function isOnFirstView() {}
     }, {
       key: 'registerService',
-      value: function registerService(name, service, options = {}) {
-        const instance = service instanceof Sage.SData.Client.SDataService ? service : new Sage.SData.Client.SDataService(service);
+      value: function registerService(name, service) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+        var instance = service instanceof Sage.SData.Client.SDataService ? service : new Sage.SData.Client.SDataService(service);
 
         this.services[name] = instance;
 
@@ -882,8 +926,10 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       }
     }, {
       key: 'registerConnection',
-      value: function registerConnection(name, definition, options = {}) {
-        const instance = definition instanceof Sage.SData.Client.SDataService ? definition : new Sage.SData.Client.SDataService(definition);
+      value: function registerConnection(name, definition) {
+        var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+        var instance = definition instanceof Sage.SData.Client.SDataService ? definition : new Sage.SData.Client.SDataService(definition);
 
         this._connections[name] = instance;
 
@@ -926,12 +972,9 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: '_createAppContainerNode',
       value: function _createAppContainerNode() {
-        const defaultAppContainerId = 'rootNode';
-        $('body').append(`
-      <div id="${defaultAppContainerId}">
-      </div>
-    `);
-        this._appContainerNode = $(`#${defaultAppContainerId}`).get(0);
+        var defaultAppContainerId = 'rootNode';
+        $('body').append('\n      <div id="' + defaultAppContainerId + '">\n      </div>\n    ');
+        this._appContainerNode = $('#' + defaultAppContainerId).get(0);
       }
     }, {
       key: '_createViewContainerNode',
@@ -940,37 +983,11 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
           throw new Error('Set the app container node before creating the view container node.');
         }
 
-        const defaultViewContainerId = 'viewContainer';
-        const defaultViewContainerClasses = 'page-container viewContainer';
-        $(this._appContainerNode).append(`
-      <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"
-        data-breakpoint="large">
-        <div class="application-menu-header">
-          <button type="button" class="btn-icon icon-close" aria-label="${this.closeText}">
-              <svg role="presentation" aria-hidden="true" focusable="false" class="icon">
-                <use xlink:href="#icon-close"></use>
-              </svg>
-          </button>
-        </div>
-      </nav>
-      <div class="page-container scrollable tbarContainer">
-        <div id="${defaultViewContainerId}" class="${defaultViewContainerClasses}"></div>
-        <div class="modal view-settings" role="dialog" aria-modal="true" aria-hidden="false">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1>${this.viewSettingsText}</h1>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-buttonset">
-              <button type="button" class="btn-modal" style="width:100%">${this.closeText}</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    `);
+        var defaultViewContainerId = 'viewContainer';
+        var defaultViewContainerClasses = 'page-container viewContainer';
+        $(this._appContainerNode).append('\n      <nav id="application-menu" data-open-on-large="false" class="application-menu show-shadow"\n        data-breakpoint="large">\n        <div class="application-menu-header">\n          <button type="button" class="btn-icon icon-close" aria-label="' + this.closeText + '">\n              <svg role="presentation" aria-hidden="true" focusable="false" class="icon">\n                <use xlink:href="#icon-close"></use>\n              </svg>\n          </button>\n        </div>\n      </nav>\n      <div class="page-container scrollable tbarContainer">\n        <div id="' + defaultViewContainerId + '" class="' + defaultViewContainerClasses + '"></div>\n        <div class="modal view-settings" role="dialog" aria-modal="true" aria-hidden="false">\n          <div class="modal-content">\n            <div class="modal-header">\n              <h1>' + this.viewSettingsText + '</h1>\n            </div>\n            <div class="modal-body">\n            </div>\n            <div class="modal-buttonset">\n              <button type="button" class="btn-modal" style="width:100%">' + this.closeText + '</button>\n            </div>\n          </div>\n        </div>\n      </div>\n    ');
 
-        this._viewContainerNode = $(`#${defaultViewContainerId}`).get(0);
+        this._viewContainerNode = $('#' + defaultViewContainerId).get(0);
       }
     }, {
       key: 'getContainerNode',
@@ -989,10 +1006,12 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       }
     }, {
       key: 'registerView',
-      value: function registerView(view, domNode, position = 'first') {
-        const id = view.id;
+      value: function registerView(view, domNode) {
+        var position = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'first';
 
-        const node = domNode || this._viewContainerNode;
+        var id = view.id;
+
+        var node = domNode || this._viewContainerNode;
         view._placeAt = node;
         view._placePosition = position;
         this.views[id] = view;
@@ -1015,10 +1034,10 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'registerToolbar',
       value: function registerToolbar(n, t, domNode) {
-        let name = n;
-        let tbar = t;
+        var name = n;
+        var tbar = t;
 
-        if (typeof name === 'object') {
+        if ((typeof name === 'undefined' ? 'undefined' : _typeof(name)) === 'object') {
           tbar = name;
           name = tbar.name;
         }
@@ -1029,8 +1048,8 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
           tbar.init();
         }
 
-        const tbarNode = $('> .tbarContainer', this._appContainerNode).get(0);
-        const node = domNode || tbarNode;
+        var tbarNode = $('> .tbarContainer', this._appContainerNode).get(0);
+        var node = domNode || tbarNode;
         tbar.placeAt(node, 'first');
 
         return this;
@@ -1038,9 +1057,9 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'getViews',
       value: function getViews() {
-        const results = [];
+        var results = [];
 
-        for (const view in this.views) {
+        for (var view in this.views) {
           if (this.views.hasOwnProperty(view)) {
             results.push(this.views[view]);
           }
@@ -1057,8 +1076,8 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'updateOrientationDom',
       value: function updateOrientationDom(value) {
-        const root = $(this.getContainerNode());
-        const currentOrient = root.attr('orient');
+        var root = $(this.getContainerNode());
+        var currentOrient = root.attr('orient');
         if (value === currentOrient) {
           return;
         }
@@ -1083,9 +1102,9 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'registerOrientationCheck',
       value: function registerOrientationCheck(callback) {
-        const match = window.matchMedia('(orientation: portrait)');
+        var match = window.matchMedia('(orientation: portrait)');
 
-        const checkMedia = m => {
+        var checkMedia = function checkMedia(m) {
           if (m.matches) {
             callback('portrait');
           } else {
@@ -1098,7 +1117,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'getPrimaryActiveView',
       value: function getPrimaryActiveView() {
-        const el = this.getCurrentPage();
+        var el = this.getCurrentPage();
         if (el) {
           return this.getView(el);
         }
@@ -1117,34 +1136,36 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       key: 'hasView',
       value: function hasView(key) {
         return !!this._internalGetView({
-          key,
+          key: key,
           init: false
         });
       }
     }, {
       key: 'getView',
-      value: function getView(key, init = true) {
+      value: function getView(key) {
+        var init = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
         return this._internalGetView({
-          key,
-          init
+          key: key,
+          init: init
         });
       }
     }, {
       key: 'getViewDetailOnly',
       value: function getViewDetailOnly(key) {
         return this._internalGetView({
-          key,
+          key: key,
           init: false
         });
       }
     }, {
       key: '_internalGetView',
       value: function _internalGetView(options) {
-        const key = options && options.key;
-        const init = options && options.init;
+        var key = options && options.key;
+        var init = options && options.init;
 
         if (key) {
-          let view;
+          var view = void 0;
           if (typeof key === 'string') {
             view = this.views[key];
           } else if (typeof key.id === 'string') {
@@ -1166,8 +1187,8 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'getViewSecurity',
       value: function getViewSecurity(key, access) {
-        const view = this._internalGetView({
-          key,
+        var view = this._internalGetView({
+          key: key,
           init: false
         });
         return view && view.getSecurity(access);
@@ -1198,13 +1219,13 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'setPrimaryTitle',
       value: function setPrimaryTitle(title) {
-        for (const n in this.bars) {
+        for (var n in this.bars) {
           if (this.bars.hasOwnProperty(n)) {
             if (this.bars[n].managed) {
               this.bars[n].set('title', title);
 
               // update soho toolbar when title is changed since it uses text length to calculate header width
-              const header = $(this.bars.tbar.domNode);
+              var header = $(this.bars.tbar.domNode);
               this.toolbar = header.find('.toolbar').data('toolbar');
               this.toolbar.updated();
             }
@@ -1237,7 +1258,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: '_onBeforeTransition',
       value: function _onBeforeTransition(evt) {
-        const view = this.getView(evt.target);
+        var view = this.getView(evt.target);
         if (view) {
           if (evt.out) {
             this._beforeViewTransitionAway(view);
@@ -1249,7 +1270,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: '_onAfterTransition',
       value: function _onAfterTransition(evt) {
-        const view = this.getView(evt.target);
+        var view = this.getView(evt.target);
         if (view) {
           if (evt.out) {
             this._viewTransitionAway(view);
@@ -1261,7 +1282,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: '_onActivate',
       value: function _onActivate(evt) {
-        const view = this.getView(evt.target);
+        var view = this.getView(evt.target);
         if (view) {
           this._viewActivate(view, evt.tag, evt.data);
         }
@@ -1278,7 +1299,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       value: function _beforeViewTransitionTo(view) {
         this.onBeforeViewTransitionTo(view);
 
-        for (const n in this.bars) {
+        for (var n in this.bars) {
           if (this.bars[n].managed) {
             this.bars[n].clear();
           }
@@ -1298,9 +1319,9 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
       value: function _viewTransitionTo(view) {
         this.onViewTransitionTo(view);
 
-        const tools = view.options && view.options.tools || view.getTools() || {};
+        var tools = view.options && view.options.tools || view.getTools() || {};
 
-        for (const n in this.bars) {
+        for (var n in this.bars) {
           if (this.bars[n].managed) {
             this.bars[n].showTools(tools[n]);
           }
@@ -1318,31 +1339,33 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'filterNavigationContext',
       value: function filterNavigationContext(predicate, scope) {
-        const list = this.context.history || [];
-        const filtered = list.filter(item => {
-          return predicate.call(scope || this, item.data);
+        var _this8 = this;
+
+        var list = this.context.history || [];
+        var filtered = list.filter(function (item) {
+          return predicate.call(scope || _this8, item.data);
         });
 
-        return filtered.map(item => {
+        return filtered.map(function (item) {
           return item.data;
         });
       }
     }, {
       key: 'queryNavigationContext',
       value: function queryNavigationContext(predicate, d, s) {
-        let scope = s;
-        let depth = d;
+        var scope = s;
+        var depth = d;
 
         if (typeof depth !== 'number') {
           scope = depth;
           depth = 0;
         }
 
-        const list = this.context.history || [];
+        var list = this.context.history || [];
 
         depth = depth || 0;
 
-        for (let i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++) {
+        for (var i = list.length - 2, j = 0; i >= 0 && (depth <= 0 || j < depth); i--, j++) {
           if (predicate.call(scope || this, list[i].data)) {
             return list[i].data;
           }
@@ -1353,7 +1376,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'isNavigationFromResourceKind',
       value: function isNavigationFromResourceKind(kind, predicate, scope) {
-        const lookup = {};
+        var lookup = {};
         if (Array.isArray(kind)) {
           kind.forEach(function forEach(item) {
             this[item] = true;
@@ -1363,8 +1386,8 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
         }
 
         return this.queryNavigationContext(function queryNavigationContext(o) {
-          const context = o.options && o.options.source || o;
-          const resourceKind = context && context.resourceKind;
+          var context = o.options && o.options.source || o;
+          var resourceKind = context && context.resourceKind;
 
           // if a predicate is defined, both resourceKind AND predicate must match.
           if (lookup[resourceKind]) {
@@ -1381,18 +1404,18 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'registerCustomization',
       value: function registerCustomization(p, s) {
-        let path = p;
-        let spec = s;
+        var path = p;
+        var spec = s;
 
         if (arguments.length > 2) {
-          const customizationSet = arguments[0];
-          const id = arguments[1];
+          var customizationSet = arguments[0];
+          var id = arguments[1];
 
           spec = arguments[2];
-          path = id ? `${customizationSet}#${id}` : customizationSet;
+          path = id ? customizationSet + '#' + id : customizationSet;
         }
 
-        const container = this.customizations[path] || (this.customizations[path] = []);
+        var container = this.customizations[path] || (this.customizations[path] = []);
         if (container) {
           container.push(spec);
         }
@@ -1402,16 +1425,16 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'getCustomizationsFor',
       value: function getCustomizationsFor(p) {
-        let path = p;
+        var path = p;
 
         if (arguments.length > 1) {
-          path = arguments[1] ? `${arguments[0]}#${arguments[1]}` : arguments[0];
+          path = arguments[1] ? arguments[0] + '#' + arguments[1] : arguments[0];
         }
 
-        const segments = path.split('#');
-        const customizationSet = segments[0];
-        const forPath = this.customizations[path] || [];
-        const forSet = this.customizations[customizationSet] || [];
+        var segments = path.split('#');
+        var customizationSet = segments[0];
+        var forPath = this.customizations[path] || [];
+        var forSet = this.customizations[customizationSet] || [];
 
         return forPath.concat(forSet);
       }
@@ -1433,7 +1456,7 @@ define('argos/Application', ['module', 'exports', './Utility', './Models/Manager
     }, {
       key: 'setToolBarMode',
       value: function setToolBarMode(onLine) {
-        for (const n in this.bars) {
+        for (var n in this.bars) {
           if (this.bars[n].managed) {
             this.bars[n].setMode(onLine);
           }

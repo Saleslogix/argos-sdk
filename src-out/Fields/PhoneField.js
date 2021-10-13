@@ -55,7 +55,7 @@ define('argos/Fields/PhoneField', ['module', 'exports', 'dojo/_base/declare', 'd
   /**
    * @module argos/Fields/PhoneField
    */
-  const control = (0, _declare2.default)('argos.Fields.PhoneField', [_TextField2.default], /** @lends module:argos/Fields/PhoneField.prototype */{
+  var control = (0, _declare2.default)('argos.Fields.PhoneField', [_TextField2.default], /** @lends module:argos/Fields/PhoneField.prototype */{
     /**
      * @property {String}
      * Sets the `<input type=` of the field.
@@ -79,7 +79,7 @@ define('argos/Fields/PhoneField', ['module', 'exports', 'dojo/_base/declare', 'd
      * @return {String}
      */
     getValue: function getValue() {
-      let value = this.inherited(getValue, arguments);
+      var value = this.inherited(getValue, arguments);
 
       if (/^\+/.test(value)) {
         return value;

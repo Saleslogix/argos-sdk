@@ -17,26 +17,14 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
     };
   }
 
-  /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
-   *
-   * Licensed under the Apache License, Version 2.0 (the "License");
-   * you may not use this file except in compliance with the License.
-   * You may obtain a copy of the License at
-   *
-   *     http://www.apache.org/licenses/LICENSE-2.0
-   *
-   * Unless required by applicable law or agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License.
-   */
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+  };
 
-  /**
-   * @module argos/ErrorManager
-   */
-  const resource = (0, _I18n2.default)('errorManager');
-  let errors = [];
+  var resource = (0, _I18n2.default)('errorManager');
+  var errors = [];
 
   try {
     if (window.localStorage) {
@@ -50,7 +38,7 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
    * @classdesc ErrorManager is a singleton that parses and stores SData error responses into localStorage.
    * @static
    */
-  const __class = _lang2.default.setObject('argos.ErrorManager', /** @lends module:argos/ErrorManager */{
+  var __class = _lang2.default.setObject('argos.ErrorManager', /** @lends module:argos/ErrorManager */{
     // Localization
 
     /**
@@ -74,7 +62,7 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
      * @param error Object The error object that will be JSON-stringified and stored for use.
      */
     addSimpleError: function addSimpleError(description, error) {
-      const errorItem = {
+      var errorItem = {
         $key: new Date().getTime(),
         Date: moment().format(),
         Description: description,
@@ -100,16 +88,16 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
         return;
       }
 
-      const dateStamp = new Date().getTime();
-      const errorItem = {
+      var dateStamp = new Date().getTime();
+      var errorItem = {
         $key: dateStamp,
         Date: moment().format(),
         Description: '',
         Error: JSON.stringify(_Utility2.default.sanitizeForJson({
-          serverResponse,
-          requestOptions,
-          viewOptions,
-          failType
+          serverResponse: serverResponse,
+          requestOptions: requestOptions,
+          viewOptions: viewOptions,
+          failType: failType
         }))
       };
 
@@ -125,7 +113,7 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
      * @return {Object} Object with only relevant, standard properties
      */
     extractFailureResponse: function extractFailureResponse(response) {
-      const failureResponse = {
+      var failureResponse = {
         $descriptor: response.statusText,
         serverResponse: {
           readyState: response.readyState,
@@ -147,7 +135,7 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
      * @return {Object} Javascript object from json string.
      */
     fromJsonArray: function fromJsonArray(_json) {
-      let o;
+      var o = void 0;
       try {
         o = JSON.parse(_json);
         o = o[0];
@@ -167,7 +155,7 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
      * @return {Object} Object with hardset abort info
      */
     extractAbortResponse: function extractAbortResponse(response) {
-      const abortResponse = {
+      var abortResponse = {
         $descriptor: this.abortedText,
         serverResponse: {
           readyState: 4,
@@ -188,9 +176,9 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
      * @return {Object} Cleaned object for for JSON serialization
      */
     serializeValues: function serializeValues(obj) {
-      for (const key in obj) {
+      for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
-          switch (typeof obj[key]) {//eslint-disable-line
+          switch (_typeof(obj[key])) {//eslint-disable-line
             case 'undefined':
               obj[key] = 'undefined';
               break;
@@ -222,8 +210,8 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
      * and removing old errors as needed
      */
     checkCacheSize: function checkCacheSize() {
-      const errLength = errors.length;
-      const cacheSizeIndex = this.errorCacheSizeMax - 1;
+      var errLength = errors.length;
+      var cacheSizeIndex = this.errorCacheSizeMax - 1;
 
       if (errLength > cacheSizeIndex) {
         this.removeError(0, errLength - cacheSizeIndex);
@@ -237,9 +225,9 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
      * @return {Object} Returns the first error item in the match set or null if none found
      */
     getError: function getError(key, value) {
-      const errorList = this.getAllErrors();
+      var errorList = this.getAllErrors();
 
-      for (let i = 0; i < errorList.length; i++) {
+      for (var i = 0; i < errorList.length; i++) {
         if (errorList[i][key] === parseInt(value, 10)) {
           return errorList[i];
         }
@@ -290,15 +278,15 @@ define('argos/ErrorManager', ['module', 'exports', 'dojo/_base/lang', 'dojo/_bas
       App.modal.disableClose = true;
       App.modal.showToolbar = true;
       App.modal.resolveDeferred(true);
-      const promise = App.modal.createSimpleDialog({
+      var promise = App.modal.createSimpleDialog({
         title: title ? title : 'alert',
         content: message,
-        getContent: () => {
+        getContent: function getContent() {
           return;
         },
         rightButton: 'okay'
       });
-      promise.then(() => {
+      promise.then(function () {
         App.modal.disableClose = false;
         App.modal.hide();
         if (onOkay) {

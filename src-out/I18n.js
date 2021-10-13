@@ -18,11 +18,15 @@ define('argos/I18n', ['module', 'exports', 'dojo/_base/lang'], function (module,
    * @module argos/I18n
    */
   function getResource(id) {
-    const { defaultLocaleContext, localeContext, regionalContext } = window;
+    var _window = window,
+        defaultLocaleContext = _window.defaultLocaleContext,
+        localeContext = _window.localeContext,
+        regionalContext = _window.regionalContext;
+
     if (!defaultLocaleContext || !localeContext) {
       return new Proxy({}, {
         properties: [],
-        get(target, name) {
+        get: function get(target, name) {
           if (name in target) {
             return target[name];
           }
@@ -31,9 +35,9 @@ define('argos/I18n', ['module', 'exports', 'dojo/_base/lang'], function (module,
       });
     }
 
-    const defaultAttributes = defaultLocaleContext.getEntitySync(id).attributes;
-    const currentAttributes = localeContext.getEntitySync(id).attributes;
-    const regionalattributes = regionalContext.getEntitySync(id).attributes;
+    var defaultAttributes = defaultLocaleContext.getEntitySync(id).attributes;
+    var currentAttributes = localeContext.getEntitySync(id).attributes;
+    var regionalattributes = regionalContext.getEntitySync(id).attributes;
 
     _lang2.default.mixin(defaultAttributes, currentAttributes);
     return _lang2.default.mixin(defaultAttributes, regionalattributes);

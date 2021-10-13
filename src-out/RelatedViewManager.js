@@ -15,7 +15,7 @@ define('argos/RelatedViewManager', ['module', 'exports', 'dojo/_base/declare', '
     };
   }
 
-  const _widgetTypes = {};
+  var _widgetTypes = {};
 
   /**
    * @class
@@ -39,7 +39,7 @@ define('argos/RelatedViewManager', ['module', 'exports', 'dojo/_base/declare', '
   /**
    * @module argos/RelatedViewManager
    */
-  const __class = (0, _declare2.default)('argos.RelatedViewManager', null, /** @lends module:argos/RelatedViewManager.prototype */{
+  var __class = (0, _declare2.default)('argos.RelatedViewManager', null, /** @lends module:argos/RelatedViewManager.prototype */{
     id: 'relatedViewManager',
     relatedViews: null,
     relatedViewConfig: null,
@@ -55,7 +55,7 @@ define('argos/RelatedViewManager', ['module', 'exports', 'dojo/_base/declare', '
      *
      */
     destroyViews: function destroyViews() {
-      for (const relatedViewId in this.relatedViews) {
+      for (var relatedViewId in this.relatedViews) {
         if (this.relatedViews.hasOwnProperty(relatedViewId)) {
           this.relatedViews[relatedViewId].destroy();
         }
@@ -75,7 +75,7 @@ define('argos/RelatedViewManager', ['module', 'exports', 'dojo/_base/declare', '
      *
      */
     getWidgetType: function getWidgetType(widgetTypeName) {
-      let widgetType = this.widgetTypes[widgetTypeName];
+      var widgetType = this.widgetTypes[widgetTypeName];
       if (!widgetType) {
         widgetType = _RelatedViewWidgetBase2.default;
       }
@@ -89,7 +89,7 @@ define('argos/RelatedViewManager', ['module', 'exports', 'dojo/_base/declare', '
       try {
         if (contentNode) {
           if (this.enabled) {
-            const options = {};
+            var options = {};
             if (!this.relatedViewConfig.widgetType) {
               this.relatedViewConfig.widgetType = _RelatedViewWidgetBase2.default;
             }
@@ -97,8 +97,8 @@ define('argos/RelatedViewManager', ['module', 'exports', 'dojo/_base/declare', '
               this.relatedViewConfig.widgetType = this.getWidgetType(this.relatedViewConfig.widgetType);
             }
             _lang2.default.mixin(options, this.relatedViewConfig);
-            options.id = `${this.id}_${entry.$key}`;
-            const relatedViewWidget = new this.relatedViewConfig.widgetType(options); //eslint-disable-line
+            options.id = this.id + '_' + entry.$key;
+            var relatedViewWidget = new this.relatedViewConfig.widgetType(options); //eslint-disable-line
             relatedViewWidget.parentEntry = entry;
             relatedViewWidget.parentResourceKind = owner.resourceKind;
             relatedViewWidget.owner = owner;

@@ -27,8 +27,10 @@ define('argos/WidgetBase', ['module', 'exports'], function (module, exports) {
     };
   }();
 
-  let WidgetBase = function () {
-    function WidgetBase(options = {}) {
+  var WidgetBase = function () {
+    function WidgetBase() {
+      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
       _classCallCheck(this, WidgetBase);
 
       this.id = options.id || 'generic_widgetbase';
@@ -49,12 +51,12 @@ define('argos/WidgetBase', ['module', 'exports'], function (module, exports) {
     }, {
       key: 'get',
       value: function get(prop) {
-        console.warn(`Attempting to get ${prop}`);
+        console.warn('Attempting to get ' + prop);
       }
     }, {
       key: 'set',
       value: function set(prop, val) {
-        console.warn(`Attempting to set ${prop} to ${val}`);
+        console.warn('Attempting to set ' + prop + ' to ' + val);
       }
     }, {
       key: 'subscribe',
@@ -73,7 +75,7 @@ define('argos/WidgetBase', ['module', 'exports'], function (module, exports) {
         this.params = params;
         this.postMixInProperties();
 
-        const srcNodeRefDom = this.srcNodeRef.get(0);
+        var srcNodeRefDom = this.srcNodeRef.get(0);
         this.ownerDocument = this.ownerDocument || (srcNodeRefDom ? srcNodeRefDom.ownerDocument : document);
 
         this.buildRendering();
@@ -85,9 +87,9 @@ define('argos/WidgetBase', ['module', 'exports'], function (module, exports) {
     }, {
       key: 'buildRendering',
       value: function buildRendering() {
-        let root = null;
+        var root = null;
         if (this.widgetTemplate && this.widgetTemplate.constructor === Simplate) {
-          const templateString = this.widgetTemplate.apply(this);
+          var templateString = this.widgetTemplate.apply(this);
           root = $(templateString, this.ownerDocument);
         } else if (typeof this.widgetTemplate === 'string') {
           root = $(this.widgetTemplate, this.ownerDocument);

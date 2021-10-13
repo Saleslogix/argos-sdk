@@ -11,7 +11,7 @@ define('argos/Convert', ['module', 'exports', 'dojo/_base/lang'], function (modu
     };
   }
 
-  const convert = ICRMCommonSDK.convert;
+  var convert = ICRMCommonSDK.convert;
 
   /**
    * @class
@@ -37,7 +37,7 @@ define('argos/Convert', ['module', 'exports', 'dojo/_base/lang'], function (modu
   /**
    * @module argos/Convert
    */
-  const __class = _lang2.default.setObject('argos.Convert', /** @lends module:argos/Convert */{
+  var __class = _lang2.default.setObject('argos.Convert', /** @lends module:argos/Convert */{
     /**
      * Takes a string and checks to see if it is `true` or `T`, else returns false
      * @param {String} value String bool value

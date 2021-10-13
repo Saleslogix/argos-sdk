@@ -19,7 +19,7 @@ define('argos/Models/Briefcase/Offline', ['module', 'exports', 'dojo/_base/decla
     };
   }
 
-  const resource = (0, _I18n2.default)('briefcaseModel');
+  var resource = (0, _I18n2.default)('briefcaseModel');
 
   /**
    * @class
@@ -44,7 +44,7 @@ define('argos/Models/Briefcase/Offline', ['module', 'exports', 'dojo/_base/decla
   /**
    * @module argos/Models/Briefcase/Offline
    */
-  const __class = (0, _declare2.default)('argos.Models.Briefcase.Offline', [_OfflineModelBase3.default], /** @lends module:argos/Models/Briefcase/Offline.prototype */{
+  var __class = (0, _declare2.default)('argos.Models.Briefcase.Offline', [_OfflineModelBase3.default], /** @lends module:argos/Models/Briefcase/Offline.prototype */{
     id: 'briefcase_offline_model',
     entityName: 'Briefcase',
     modelName: 'Briefcase',
@@ -52,8 +52,8 @@ define('argos/Models/Briefcase/Offline', ['module', 'exports', 'dojo/_base/decla
     entityDisplayNamePlural: resource.entityDisplayNamePlural,
     isSystem: true,
     createEntry: function createEntity(entry, model, options) {
-      const entity = {}; // need to dynamicly create Properties;
-      entity.$key = `${model.entityName}_${model.getEntityId(entry)}`;
+      var entity = {}; // need to dynamicly create Properties;
+      entity.$key = model.entityName + '_' + model.getEntityId(entry);
       entity.$descriptor = model.getEntityDescription(entry);
       entity.createDate = moment().toDate();
       entity.modifyDate = moment().toDate();
@@ -67,17 +67,19 @@ define('argos/Models/Briefcase/Offline', ['module', 'exports', 'dojo/_base/decla
       return entity;
     },
     deleteEntryByEntityContext: function deleteEntryByEntityContext(entityId, entityName) {
-      const options = {
+      var _this = this;
+
+      var options = {
         filter: function filter(entry) {
           if (entry.entityId === entityId && entry.entityName === entityName) {
             return entry;
           }
         }
       };
-      this.getEntries(null, options).then(entries => {
+      this.getEntries(null, options).then(function (entries) {
         if (entries) {
-          entries.forEach(entry => {
-            this.deleteEntry(entry.$key);
+          entries.forEach(function (entry) {
+            _this.deleteEntry(entry.$key);
           });
         }
       });

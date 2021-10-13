@@ -30,7 +30,7 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
    * @classdesc Enables SData for the List view.
    * Adds the SData store to the view and exposes the needed properties for creating a Feed request.
    */
-  const __class = (0, _declare2.default)('argos._SDataListMixin', null, /** @lends module:argos/_SDataListMixin.prototype */{
+  var __class = (0, _declare2.default)('argos._SDataListMixin', null, /** @lends module:argos/_SDataListMixin.prototype */{
     /**
      * @property request Object SData request passed into the store. Optional.
      */
@@ -132,12 +132,12 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
       });
     },
     _buildQueryExpression: function _buildQueryExpression() {
-      const options = this.options;
-      const passed = options && (options.query || options.where);
+      var options = this.options;
+      var passed = options && (options.query || options.where);
       return passed ? this.query ? '(' + _Utility2.default.expand(this, passed) + ') and (' + this.query + ')' : '(' + _Utility2.default.expand(this, passed) + ')' : this.query; // eslint-disable-line
     },
     _applyStateToQueryOptions: function _applyStateToQueryOptions(queryOptions) {
-      const options = this.options;
+      var options = this.options;
 
       queryOptions.count = this.pageSize;
       queryOptions.start = this.position;
@@ -184,9 +184,9 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
       return (query || '').replace(/"/g, '""');
     },
     hasMoreData: function hasMoreData() {
-      const start = this.position;
-      const count = this.pageSize;
-      const total = this.total;
+      var start = this.position;
+      var count = this.pageSize;
+      var total = this.total;
 
       if (start > 0 && count > 0 && total >= 0) {
         return this.remaining === -1 || this.remaining > 0;
@@ -194,14 +194,14 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
       return true; // no way to determine, always assume more data
     },
     getListCount: function getListCount(options) {
-      const store = new _SData2.default({
+      var store = new _SData2.default({
         service: App.services.crm,
         resourceKind: this.resourceKind,
         contractName: this.contractName,
         scope: this
       });
 
-      const queryOptions = {
+      var queryOptions = {
         count: 1,
         start: 0,
         select: '',
@@ -209,18 +209,18 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
         sort: ''
       };
 
-      const queryResults = store.query(null, queryOptions);
+      var queryResults = store.query(null, queryOptions);
 
-      return new Promise((resolve, reject) => {
-        (0, _when2.default)(queryResults, () => {
+      return new Promise(function (resolve, reject) {
+        (0, _when2.default)(queryResults, function () {
           resolve(queryResults.total);
-        }, err => {
+        }, function (err) {
           reject(err);
         });
       });
     },
     initModel: function initModel() {
-      const model = this.getModel();
+      var model = this.getModel();
       if (model) {
         this._model = model;
         this._model.init();
@@ -234,7 +234,7 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
         return;
       }
 
-      const queryModel = model._getQueryModelByName('list');
+      var queryModel = model._getQueryModelByName('list');
       if (this.resourceKind) {
         model.resourceKind = this.resourceKind;
       }
@@ -252,7 +252,7 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
           queryModel.querySelect = [];
         }
 
-        queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter(item => {
+        queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter(function (item) {
           return queryModel.querySelect.indexOf(item) < 0;
         }));
       }
@@ -262,7 +262,7 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
           queryModel.queryInclude = [];
         }
 
-        queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter(item => {
+        queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter(function (item) {
           return queryModel.queryInclude.indexOf(item) < 0;
         }));
       }
@@ -281,7 +281,7 @@ define('argos/_SDataListMixin', ['module', 'exports', 'dojo/_base/declare', 'doj
             queryModel.queryOrderBy = [];
           }
 
-          queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter(item => {
+          queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter(function (item) {
             return queryModel.queryOrderBy.indexOf(item) < 0;
           }));
         } else {

@@ -20,7 +20,7 @@ define('argos/_RelatedViewWidgetListMixin', ['module', 'exports', 'dojo/_base/de
    * @mixin
    * @alias module:argos/_RelatedViewWidgetListMixin
    */
-  const __class = (0, _declare2.default)('argos._RelatedViewWidgetListMixin', null, /** @lends module:argos/_RelatedViewWidgetListMixin.prototype */{
+  var __class = (0, _declare2.default)('argos._RelatedViewWidgetListMixin', null, /** @lends module:argos/_RelatedViewWidgetListMixin.prototype */{
     /**
      * The related view definitions for related views for each row.
      */
@@ -33,8 +33,7 @@ define('argos/_RelatedViewWidgetListMixin', ['module', 'exports', 'dojo/_base/de
      * @property {Simplate}
      * The template used to render the single list action row.
      */
-    listActionTemplate: new Simplate([`<ul data-dojo-attach-point="actionsNode" id="popupmenu-{%= $$.getItemActionKey($) %}" class="actions-row popupmenu actions top">{%! $$.loadingTemplate %}</ul>
-    <div data-dojo-attach-point="relatedActionsNode" class="related-view-list-action"><a></a></div>`]),
+    listActionTemplate: new Simplate(['<ul data-dojo-attach-point="actionsNode" id="popupmenu-{%= $$.getItemActionKey($) %}" class="actions-row popupmenu actions top">{%! $$.loadingTemplate %}</ul>\n    <div data-dojo-attach-point="relatedActionsNode" class="related-view-list-action"><a></a></div>']),
     startup: function startup() {
       this.relatedViews = this._createCustomizedLayout(this.createRelatedViewLayout(), 'relatedViews');
       this.inherited(startup, arguments);
@@ -68,15 +67,15 @@ define('argos/_RelatedViewWidgetListMixin', ['module', 'exports', 'dojo/_base/de
         this.relatedViewManagers = {};
       }
 
-      let relatedViewManager;
+      var relatedViewManager = void 0;
       if (this.relatedViewManagers[relatedView.id]) {
         relatedViewManager = this.relatedViewManagers[relatedView.id];
       } else {
-        relatedView.id = `${this.id}_${relatedView.id}`;
-        const relatedViewOptions = {};
+        relatedView.id = this.id + '_' + relatedView.id;
+        var relatedViewOptions = {};
         _lang2.default.mixin(relatedViewOptions, relatedView);
 
-        const options = {
+        var options = {
           id: relatedView.id,
           relatedViewConfig: relatedViewOptions
         };
@@ -99,9 +98,9 @@ define('argos/_RelatedViewWidgetListMixin', ['module', 'exports', 'dojo/_base/de
       }
       if (this.relatedViews.length > 0) {
         try {
-          for (let i = 0; i < this.relatedViews.length; i++) {
+          for (var i = 0; i < this.relatedViews.length; i++) {
             if (this.relatedViews[i].enabled) {
-              const relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
+              var relatedViewManager = this.getRelatedViewManager(this.relatedViews[i]);
               if (relatedViewManager) {
                 if (!entry.$key) {
                   entry.$key = this.store.getIdentity(entry);
@@ -120,7 +119,7 @@ define('argos/_RelatedViewWidgetListMixin', ['module', 'exports', 'dojo/_base/de
      */
     destroyRelatedViewWidgets: function destroyRelatedViewWidgets() {
       if (this.relatedViewManagers) {
-        for (const relatedViewId in this.relatedViewManagers) {
+        for (var relatedViewId in this.relatedViewManagers) {
           if (this.relatedViewManagers.hasOwnProperty(relatedViewId)) {
             this.relatedViewManagers[relatedViewId].destroyViews();
           }
@@ -142,8 +141,8 @@ define('argos/_RelatedViewWidgetListMixin', ['module', 'exports', 'dojo/_base/de
      * Returns a rendered html snap shot of the entry.
      */
     getContextSnapShot: function getContextSnapShot(options) {
-      const entry = this.entries[options.key];
-      let snapShot;
+      var entry = this.entries[options.key];
+      var snapShot = void 0;
       if (entry) {
         snapShot = this.itemTemplate.apply(entry, this);
       }
@@ -151,20 +150,20 @@ define('argos/_RelatedViewWidgetListMixin', ['module', 'exports', 'dojo/_base/de
     },
     destroyRelatedView: function destroyRelatedView(relatedView) {
       if (relatedView) {
-        const relatedViewManager = this.getRelatedViewManager(relatedView);
+        var relatedViewManager = this.getRelatedViewManager(relatedView);
         if (relatedViewManager) {
           relatedViewManager.destroyViews();
         }
       }
     },
     invokeRelatedViewAction: function invokeRelatedViewAction(action, selection) {
-      let addView = true;
-      const relatedView = action.relatedView;
+      var addView = true;
+      var relatedView = action.relatedView;
       if (!relatedView) {
         return;
       }
 
-      const relatedViewManager = this.getRelatedViewManager(relatedView);
+      var relatedViewManager = this.getRelatedViewManager(relatedView);
       if (!relatedViewManager) {
         return;
       }
@@ -185,15 +184,15 @@ define('argos/_RelatedViewWidgetListMixin', ['module', 'exports', 'dojo/_base/de
 
         if (addView) {
           this.currentRelatedView = relatedView;
-          const entry = selection.data;
+          var entry = selection.data;
           if (!entry.$key) {
             entry.$key = this.store.getIdentity(entry);
           }
 
           // get selected row
-          const selectedItems = this.get('selectionModel').getSelections();
-          let selectedRow = null;
-          for (const key in selectedItems) {
+          var selectedItems = this.get('selectionModel').getSelections();
+          var selectedRow = null;
+          for (var key in selectedItems) {
             if (selectedItems.hasOwnProperty(key)) {
               selectedRow = selectedItems[key];
               break;
@@ -206,7 +205,7 @@ define('argos/_RelatedViewWidgetListMixin', ['module', 'exports', 'dojo/_base/de
             relatedViewManager.addView(entry, selectedRow.tag, this);
 
             // lets set scroller to the current row.
-            const scrollerNode = this.get('scroller');
+            var scrollerNode = this.get('scroller');
             if (scrollerNode) {
               scrollerNode.scrollTop = selectedRow.tag.offsetTop;
             }
@@ -215,10 +214,10 @@ define('argos/_RelatedViewWidgetListMixin', ['module', 'exports', 'dojo/_base/de
       }
     },
     navigateToQuickEdit: function navigateToQuickEdit(action, selection, additionalOptions) {
-      const view = App.getView(action.editView || this.quickEditView || this.editView || this.insertView);
-      const key = selection.data[this.idProperty];
-      let options = {
-        key,
+      var view = App.getView(action.editView || this.quickEditView || this.editView || this.insertView);
+      var key = selection.data[this.idProperty];
+      var options = {
+        key: key,
         selectedEntry: selection.data,
         fromContext: this
       };

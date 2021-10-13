@@ -31,7 +31,7 @@ define('argos/Fields/TextAreaField', ['module', 'exports', 'dojo/_base/declare',
    * }
    * @extends module:argos/Fields/TextField
    */
-  const control = (0, _declare2.default)('argos.Fields.TextAreaField', [_TextField2.default], /** @lends module:argos/Fields/TextAreaField.prototype */{
+  var control = (0, _declare2.default)('argos.Fields.TextAreaField', [_TextField2.default], /** @lends module:argos/Fields/TextAreaField.prototype */{
     /**
      * @cfg {Number}
      * Number of rows to show visually, does not constrain input.
@@ -51,7 +51,10 @@ define('argos/Fields/TextAreaField', ['module', 'exports', 'dojo/_base/declare',
      *
      */
     widgetTemplate: new Simplate(['<label for="{%= $.name %}">{%: $.label %}</label>', '<textarea data-dojo-attach-point="inputNode" name="{%= $.name %}" rows="{%: $.rows %}" {% if ($.readonly) { %} readonly {% } %}></textarea>']),
-    setValue: function setValue(val = '', initial) {
+    setValue: function setValue() {
+      var val = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      var initial = arguments[1];
+
       if (initial) {
         this.originalValue = val;
       }

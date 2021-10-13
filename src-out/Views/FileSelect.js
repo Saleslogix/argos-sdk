@@ -33,7 +33,7 @@ define('argos/Views/FileSelect', ['module', 'exports', 'dojo/_base/declare', '..
   /**
    * @module argos/Views/FileSelect
    */
-  const resource = (0, _I18n2.default)('fileSelect');
+  var resource = (0, _I18n2.default)('fileSelect');
 
   /**
    * @class
@@ -41,7 +41,7 @@ define('argos/Views/FileSelect', ['module', 'exports', 'dojo/_base/declare', '..
    * @classdesc File Select View is a view for selection files capabilities.
    * @extends module:argos/View
    */
-  const __class = (0, _declare2.default)('argos.Views.FileSelect', [_View2.default], /** @lends module:argos/Views/FileSelect.prototype */{
+  var __class = (0, _declare2.default)('argos.Views.FileSelect', [_View2.default], /** @lends module:argos/Views/FileSelect.prototype */{
     // Localization
     titleText: resource.titleText,
     addFileText: resource.addFileText,
@@ -63,9 +63,7 @@ define('argos/Views/FileSelect', ['module', 'exports', 'dojo/_base/declare', '..
      *      ----------------------------------------------------------------
      *      loadingText         The text to display while loading.
      */
-    loadingTemplate: new Simplate(['<li><label id="progress-label">{%= $.loadingText %}</label></li>', `<li class="progress">
-      <div class="progress-bar" id="progressbar" aria-labelledby="progress-label"></div>
-    </li>`]),
+    loadingTemplate: new Simplate(['<li><label id="progress-label">{%= $.loadingText %}</label></li>', '<li class="progress">\n      <div class="progress-bar" id="progressbar" aria-labelledby="progress-label"></div>\n    </li>']),
 
     /**
      * @property {Simplate}
@@ -81,12 +79,7 @@ define('argos/Views/FileSelect', ['module', 'exports', 'dojo/_base/declare', '..
      *
      */
     widgetTemplate: new Simplate(['<div style="padding-top: 10px;" data-title="{%: $.titleText %}" class="panel twelve columns {%= $.cls %}">', '<br>', // TODO: all views should be placed in .row -> .columns
-    '<div data-dojo-attach-point="fileArea" class="file-area">', `<div class="field" data-dojo-attach-point="fileWrapper">
-      <label class="fileupload" data-dojo-attach-point="fileupload">
-          <span class="audible">{%: $.addFileText %}</span>
-          <input type="file" data-dojo-attach-point="btnFileSelect" name="file-input" size="71" />
-      </label>
-    </div>`, '</div>', '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>', '<div class="buttons">', '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="btn-primary" data-action="onUploadFiles"><span>{%: $.uploadText %}</span></button>', '<button id="fileSelect-btn-cancel" class="btn" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>', '</div>', '</div>']),
+    '<div data-dojo-attach-point="fileArea" class="file-area">', '<div class="field" data-dojo-attach-point="fileWrapper">\n      <label class="fileupload" data-dojo-attach-point="fileupload">\n          <span class="audible">{%: $.addFileText %}</span>\n          <input type="file" data-dojo-attach-point="btnFileSelect" name="file-input" size="71" />\n      </label>\n    </div>', '</div>', '<ul class="list-content" data-dojo-attach-point="contentNode"></ul>', '<div class="buttons">', '<div><button id="fileSelect-btn-upload" data-dojo-attach-point="btnUploadFiles" class="btn-primary" data-action="onUploadFiles"><span>{%: $.uploadText %}</span></button>', '<button id="fileSelect-btn-cancel" class="btn" data-action="cancelSelect"><span>{%: $.cancelText %}</span></button><div>', '</div>', '</div>']),
     /**
      * @property {Simplate} fileTemplate
      */
@@ -146,22 +139,22 @@ define('argos/Views/FileSelect', ['module', 'exports', 'dojo/_base/declare', '..
      * @returns {Array}
      */
     getFileItems: function getFileItems() {
-      const fileItems = [];
-      const files = this._files;
-      let description = '';
-      for (let i = 0; i < files.length; i++) {
+      var fileItems = [];
+      var files = this._files;
+      var description = '';
+      for (var i = 0; i < files.length; i++) {
         description = this._getFileDescription(i);
         fileItems.push({
           file: files[i],
           fileName: files[i].name,
-          description
+          description: description
         });
       }
       return fileItems;
     },
     _getFileDescription: function _getFileDescription(fileIndex) {
-      const n = document.getElementById(`File_${fileIndex}`);
-      let desc;
+      var n = document.getElementById('File_' + fileIndex);
+      var desc = void 0;
 
       if (n) {
         desc = n.value;
@@ -169,9 +162,9 @@ define('argos/Views/FileSelect', ['module', 'exports', 'dojo/_base/declare', '..
       return desc;
     },
     _onSelectFile: function _onSelectFile() {
-      const files = this.btnFileSelect.files;
+      var files = this.btnFileSelect.files;
       if (files && files.length > 0) {
-        for (let i = 0; i < files.length; i++) {
+        for (var i = 0; i < files.length; i++) {
           this._files.push(files[i]);
         }
         this._buildForm(files);
@@ -180,41 +173,41 @@ define('argos/Views/FileSelect', ['module', 'exports', 'dojo/_base/declare', '..
       $(this.fileArea).hide();
     },
     _addFile: function _addFile(file, index) {
-      const filelength = this._getFileLength(file);
-      const data = {
-        name: `File_${index}`,
-        fileName: `${file.name}  (${filelength})`,
+      var filelength = this._getFileLength(file);
+      var data = {
+        name: 'File_' + index,
+        fileName: file.name + '  (' + filelength + ')',
         description: this._getDefaultDescription(file.name)
       };
       $(this.contentNode).append(this.fileTemplate.apply(data, this));
     },
     _getFileLength: function _getFileLength(file) {
-      let filelength = 0;
+      var filelength = 0;
       if (file.size === 0) {
         filelength = 0;
       } else {
         filelength = file.size || file.blob.length;
       }
       if (filelength === 0) {
-        filelength += `0 ${this.bytesTextBytes}`;
+        filelength += '0 ' + this.bytesTextBytes;
       } else {
         if (filelength) {
           if (filelength > 1024) {
             if (filelength > 1048576) {
-              filelength = `${Math.round(filelength / 1048576)} MB`;
+              filelength = Math.round(filelength / 1048576) + ' MB';
             } else {
-              filelength = `${Math.round(filelength / 1024)} KB`;
+              filelength = Math.round(filelength / 1024) + ' KB';
             }
           } else {
-            filelength += ` ${this.bytesTextBytesBytes}`;
+            filelength += ' ' + this.bytesTextBytesBytes;
           }
         }
       }
       return filelength;
     },
     _buildForm: function _buildForm(files) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
         this._addFile(file, i);
       }
     },
@@ -226,7 +219,7 @@ define('argos/Views/FileSelect', ['module', 'exports', 'dojo/_base/declare', '..
      */
     onUploadFiles: function onUploadFiles() {
       $(this.btnUploadFiles).hide();
-      const tpl = this.loadingTemplate.apply(this);
+      var tpl = this.loadingTemplate.apply(this);
       $(this.domNode).addClass('list-loading');
       $(this.contentNode).prepend(tpl);
       $('#progressbar', this.contentNode).progress();
@@ -236,12 +229,12 @@ define('argos/Views/FileSelect', ['module', 'exports', 'dojo/_base/declare', '..
      * Handles the display when progress events are recieved.
      */
     onUpdateProgress: function onUpdateProgress(msg) {
-      const progressbar = $('#progressbar', this.contentNode);
+      var progressbar = $('#progressbar', this.contentNode);
       if (progressbar.length) {
         if (!(msg instanceof Array) && !isNaN(msg.replace('%', ''))) {
           progressbar.data('progress').update(msg.replace('%', ''));
         }
-        $('#progress-label', this.contentNode).text(`${this.loadingText} ${msg}`);
+        $('#progress-label', this.contentNode).text(this.loadingText + ' ' + msg);
       }
     },
     /**

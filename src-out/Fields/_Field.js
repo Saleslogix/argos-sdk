@@ -47,7 +47,7 @@ define('argos/Fields/_Field', ['module', 'exports', 'dojo/_base/declare', 'dojo/
   /**
    * @module argos/Fields/_Field
    */
-  const __class = (0, _declare2.default)('argos.Fields._Field', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Fields/_Field.prototype */{
+  var __class = (0, _declare2.default)('argos.Fields._Field', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Fields/_Field.prototype */{
     _ActionMixin: null,
 
     /**
@@ -262,11 +262,11 @@ define('argos/Fields/_Field', ['module', 'exports', 'dojo/_base/declare', 'dojo/
         return false;
       }
 
-      const all = Array.isArray(this.validator) ? this.validator : [this.validator];
+      var all = Array.isArray(this.validator) ? this.validator : [this.validator];
 
-      for (let i = 0; i < all.length; i++) {
-        const current = all[i];
-        let definition;
+      for (var i = 0; i < all.length; i++) {
+        var current = all[i];
+        var definition = void 0;
 
         if (current instanceof RegExp) {
           definition = {
@@ -280,9 +280,9 @@ define('argos/Fields/_Field', ['module', 'exports', 'dojo/_base/declare', 'dojo/
           definition = current;
         }
 
-        const newValue = typeof value === 'undefined' ? this.getValue() : value;
+        var newValue = typeof value === 'undefined' ? this.getValue() : value;
 
-        let result = false;
+        var result = false;
         if (typeof definition.fn === 'function') {
           result = definition.fn.call(definition.scope || this, newValue, this, this.owner);
         } else if (definition.test instanceof RegExp) {

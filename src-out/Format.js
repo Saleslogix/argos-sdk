@@ -31,9 +31,9 @@ define('argos/Format', ['module', 'exports', 'dojo/_base/lang', './I18n'], funct
   /**
     * @module argos/Format
     */
-  const format = ICRMCommonSDK.format;
-  const resource = (0, _I18n2.default)('format');
-  const dtFormatResource = (0, _I18n2.default)('formatDateTimeFormat');
+  var format = ICRMCommonSDK.format;
+  var resource = (0, _I18n2.default)('format');
+  var dtFormatResource = (0, _I18n2.default)('formatDateTimeFormat');
 
   /**
    * @class
@@ -41,7 +41,7 @@ define('argos/Format', ['module', 'exports', 'dojo/_base/lang', './I18n'], funct
    * @classdesc Format is a singleton that provides various formatting functions.
    * @static
    */
-  const __class = _lang2.default.setObject('argos.Format', /** @lends module:argos/Format */{
+  var __class = _lang2.default.setObject('argos.Format', /** @lends module:argos/Format */{
     /**
      * @property {String}
      * Text used in {@link #yesNo yesNo} formatter for true values
@@ -160,10 +160,10 @@ define('argos/Format', ['module', 'exports', 'dojo/_base/lang', './I18n'], funct
      * @return {String} Date formatted as a string.
      */
     date: function date(val, fmt, utc) {
-      const value = format.date(val, utc);
-      const m = moment(value);
+      var value = format.date(val, utc);
+      var m = moment(value);
       if (m) {
-        const formattedDate = m.format(fmt || argos.Format.shortDateFormatText);
+        var formattedDate = m.format(fmt || argos.Format.shortDateFormatText);
         if (m.isValid()) {
           return formattedDate;
         }
@@ -229,7 +229,7 @@ define('argos/Format', ['module', 'exports', 'dojo/_base/lang', './I18n'], funct
      * @return {String} A string representation of the minutes as `'n hours m minutes'`
      */
     timespan: function timespan(val) {
-      const f = argos.Format;
+      var f = argos.Format;
       return format.timespan(val, f.hoursText, f.hourText, f.minutesText, f.minuteText);
     },
     /**

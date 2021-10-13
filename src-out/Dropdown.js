@@ -20,7 +20,7 @@ define('argos/Dropdown', ['module', 'exports', 'dojo/_base/declare', 'dijit/_Wid
    * @alias module:argos/Dropdown
    * @extends module:argos/_Templated
    */
-  const __class = (0, _declare2.default)('argos.Dropdown', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Dropdown.prototype */{
+  var __class = (0, _declare2.default)('argos.Dropdown', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/Dropdown.prototype */{
     widgetTemplate: new Simplate(['<div class="field">', '<label for="{%= $.id %}_dropdownNode" class="label">{%: $.label %}</label>', '<select id="{%= $.id %}_dropdownNode" class="dropdown {%: $.dropdownClass %}" data-dojo-attach-point="dropdownSelect"></select>', '</div>']),
     selectItemTemplate: new Simplate(['<option value="{%= $.value %}">', '{% if ($.text) { %}', '{%= $.text %}', '{% } else { %}', '{%= $.value %}', '{% } %}', '</option>']),
 
@@ -39,12 +39,17 @@ define('argos/Dropdown', ['module', 'exports', 'dojo/_base/declare', 'dijit/_Wid
       this._eventConnections = [];
       this.items = [];
     },
-    createList: function createList({ items, defaultValue }) {
-      let itemFound = null;
+    createList: function createList(_ref) {
+      var _this = this;
+
+      var items = _ref.items,
+          defaultValue = _ref.defaultValue;
+
+      var itemFound = null;
       this.items = items ? items : [];
       this._defaultValue = defaultValue;
 
-      items.forEach(item => {
+      items.forEach(function (item) {
         if (item.value === defaultValue) {
           itemFound = item;
         }
@@ -54,13 +59,13 @@ define('argos/Dropdown', ['module', 'exports', 'dojo/_base/declare', 'dijit/_Wid
         this.items.splice(0, 0, itemFound);
       }
 
-      items.forEach(item => {
-        const option = $(this.selectItemTemplate.apply({
+      items.forEach(function (item) {
+        var option = $(_this.selectItemTemplate.apply({
           key: item.key,
           value: item.value,
           text: item.text
-        }, this));
-        $(this.dropdownSelect).append(option);
+        }, _this));
+        $(_this.dropdownSelect).append(option);
       });
 
       $(this.dropdownSelect).dropdown({
@@ -75,14 +80,14 @@ define('argos/Dropdown', ['module', 'exports', 'dojo/_base/declare', 'dijit/_Wid
       return this;
     },
     destroy: function destroy() {
-      this._eventConnections.forEach(evt => {
+      this._eventConnections.forEach(function (evt) {
         evt.remove();
       });
       this._eventConnections = [];
       this.inherited(destroy, arguments);
     },
     findValue: function findValue(text) {
-      const value = this._list.children.filter(element => {
+      var value = this._list.children.filter(function (element) {
         return element.innerText === text;
       });
       return value[0];
@@ -91,11 +96,11 @@ define('argos/Dropdown', ['module', 'exports', 'dojo/_base/declare', 'dijit/_Wid
       return this._selected;
     },
     getText: function getText() {
-      const text = this.dropdownSelect.options[this.dropdownSelect.selectedIndex] ? this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text : '';
+      var text = this.dropdownSelect.options[this.dropdownSelect.selectedIndex] ? this.dropdownSelect.options[this.dropdownSelect.selectedIndex].text : '';
       return text;
     },
     getValue: function getValue() {
-      const value = this.dropdownSelect.options[this.dropdownSelect.selectedIndex].value;
+      var value = this.dropdownSelect.options[this.dropdownSelect.selectedIndex].value;
       return value;
     },
     postCreate: function postCreate() {

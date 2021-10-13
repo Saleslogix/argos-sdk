@@ -15,7 +15,7 @@ define('argos/SelectionModel', ['module', 'exports', 'dojo/_base/lang', 'dojo/_b
     };
   }
 
-  const resource = (0, _I18n2.default)('selectionModel');
+  var resource = (0, _I18n2.default)('selectionModel');
 
   /**
    * @class
@@ -41,7 +41,7 @@ define('argos/SelectionModel', ['module', 'exports', 'dojo/_base/lang', 'dojo/_b
   /**
    * @module argos/SelectionModel
    */
-  const __class = (0, _declare2.default)('argos.SelectionModel', null, /** @lends module:argos/SelectionModel.prototype */{
+  var __class = (0, _declare2.default)('argos.SelectionModel', null, /** @lends module:argos/SelectionModel.prototype */{
     // Localization
     requireSelectionText: resource.requireSelectionText,
 
@@ -129,8 +129,8 @@ define('argos/SelectionModel', ['module', 'exports', 'dojo/_base/lang', 'dojo/_b
     select: function select(key, data, tag) {
       if (!this.selections.hasOwnProperty(key)) {
         this.selections[key] = {
-          data,
-          tag
+          data: data,
+          tag: tag
         };
         this.count++;
         if (this._fireEvents) {
@@ -163,7 +163,7 @@ define('argos/SelectionModel', ['module', 'exports', 'dojo/_base/lang', 'dojo/_b
       }
 
       if (this.selections.hasOwnProperty(key)) {
-        const selection = this.selections[key];
+        var selection = this.selections[key];
 
         delete this.selections[key];
         this.count--;
@@ -177,11 +177,11 @@ define('argos/SelectionModel', ['module', 'exports', 'dojo/_base/lang', 'dojo/_b
      * Removes all items from the store
      */
     clear: function clear() {
-      const original = this.requireSelection;
+      var original = this.requireSelection;
 
       if (this.clearAsDeselect) {
         this.requireSelection = false;
-        for (const key in this.selections) {
+        for (var key in this.selections) {
           if (this.selections.hasOwnProperty(key)) {
             this.deselect(key);
           }
@@ -224,8 +224,10 @@ define('argos/SelectionModel', ['module', 'exports', 'dojo/_base/lang', 'dojo/_b
      * @return {String[]} All keys in the store
      */
     getSelectedKeys: function getSelectedKeys() {
-      return Object.keys(this.selections).filter(key => {
-        return this.selections.hasOwnProperty(key);
+      var _this = this;
+
+      return Object.keys(this.selections).filter(function (key) {
+        return _this.selections.hasOwnProperty(key);
       });
     }
   });

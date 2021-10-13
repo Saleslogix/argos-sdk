@@ -43,7 +43,7 @@ define('argos/Edit', ['module', 'exports', 'dojo/_base/declare', './_EditBase', 
   /**
    * @module argos/Edit
    */
-  const __class = (0, _declare2.default)('argos.Edit', [_EditBase3.default, _SDataEditMixin3.default, _RelatedViewWidgetEditMixin2.default], {});
+  var __class = (0, _declare2.default)('argos.Edit', [_EditBase3.default, _SDataEditMixin3.default, _RelatedViewWidgetEditMixin2.default], {});
   exports.default = __class;
   module.exports = exports['default'];
 });
