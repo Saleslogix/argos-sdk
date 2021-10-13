@@ -24,7 +24,7 @@ define('argos/DateTimePicker', ['module', 'exports', 'dojo/_base/declare', 'diji
    * @alias module:argos/DateTimePicker
    * @extends module:argos/_Templated
    */
-  var __class = (0, _declare2.default)('argos.DateTimePicker', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/DateTimePicker.prototype */{
+  const __class = (0, _declare2.default)('argos.DateTimePicker', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/DateTimePicker.prototype */{
     widgetTemplate: new Simplate(['<div class="datetime-select" data-dojo-attach-point="dateTimeNode">', '</div>']),
 
     _calendarNode: null,
@@ -36,7 +36,7 @@ define('argos/DateTimePicker', ['module', 'exports', 'dojo/_base/declare', 'diji
       this.inherited(init, arguments);
     },
     getContent: function getContent() {
-      var data = {};
+      const data = {};
       if (this._calendarNode && this._calendarNode.getContent) {
         data.calendar = this._calendarNode.getContent();
       }
@@ -53,16 +53,14 @@ define('argos/DateTimePicker', ['module', 'exports', 'dojo/_base/declare', 'diji
         this._timeSelectNode.removeListeners();
       }
     },
-    show: function show() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    show: function show(options = {}) {
       this.showTimePicker = options.showTimePicker;
       this.ensureOptions(options);
       if (!this._calendarNode) {
-        this._calendarNode = new _Calendar2.default({ id: 'datetime-calendar ' + this.id, isModal: this.isModal || options.isModal });
+        this._calendarNode = new _Calendar2.default({ id: `datetime-calendar ${this.id}`, isModal: this.isModal || options.isModal });
         $(this.dateTimeNode).append(this._calendarNode.domNode);
         this._calendarNode.show(options);
-        this._timeSelectNode = new _TimePicker2.default({ id: 'datetime-timePicker ' + this.id, showSetTime: false });
+        this._timeSelectNode = new _TimePicker2.default({ id: `datetime-timePicker ${this.id}`, showSetTime: false });
         $(this.dateTimeNode).append(this._timeSelectNode.domNode);
         this._timeSelectNode.show(options);
         if (!this.showTimePicker) {

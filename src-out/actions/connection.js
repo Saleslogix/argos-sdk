@@ -23,7 +23,7 @@ define('argos/actions/connection', ['exports'], function (exports) {
    */
 
   // action Types
-  var SET_CONNECTION_STATE = exports.SET_CONNECTION_STATE = 'SET_CONNECTION_STATE';
+  const SET_CONNECTION_STATE = exports.SET_CONNECTION_STATE = 'SET_CONNECTION_STATE';
 
   /*
   
@@ -52,7 +52,7 @@ define('argos/actions/connection', ['exports'], function (exports) {
     return {
       type: SET_CONNECTION_STATE,
       payload: {
-        online: online
+        online
       }
     };
   }

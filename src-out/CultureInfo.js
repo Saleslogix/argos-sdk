@@ -5,14 +5,14 @@ define('argos/CultureInfo', ['module', 'exports', 'dojo/_base/lang'], function (
 
   exports.default = function () {
     // eslint-disable-line
-    var localeContext = window.regionalContext;
-    var entity = localeContext.getEntitySync('CultureInfo');
+    const localeContext = window.regionalContext;
+    const entity = localeContext.getEntitySync('CultureInfo');
 
     if (!entity) {
       throw new Error('Failed loading CultureInfo.');
     }
 
-    var parsed = JSON.parse(entity.value);
+    const parsed = JSON.parse(entity.value);
     _lang2.default.setObject('Mobile.CultureInfo', parsed);
   };
 

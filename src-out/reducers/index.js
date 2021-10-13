@@ -3,20 +3,25 @@ define('argos/reducers/index', ['exports', '../actions/index', '../actions/conne
     value: true
   });
   exports.sdk = sdk;
+  /* Copyright 2017 Infor
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *    http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   */
 
-  function _toConsumableArray(arr) {
-    if (Array.isArray(arr)) {
-      for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) {
-        arr2[i] = arr[i];
-      }
-
-      return arr2;
-    } else {
-      return Array.from(arr);
-    }
-  }
-
-  var initialSDKState = {
+  /**
+   * @module argos/reducers
+   */
+  const initialSDKState = {
     online: null,
     viewports: 1,
     maxviewports: 2,
@@ -71,14 +76,8 @@ define('argos/reducers/index', ['exports', '../actions/index', '../actions/conne
    * @param {String} action.type
    * @param {Object} action.payload
    */
-  function sdk() {
-    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialSDKState;
-    var action = arguments[1];
-    var type = action.type,
-        payload = action.payload,
-        error = action.error,
-        meta = action.meta;
-    // eslint-disable-line
+  function sdk(state = initialSDKState, action) {
+    const { type, payload, error, meta } = action; // eslint-disable-line
     switch (type) {
       case _index.SET_MAX_VIEWPORTS:
         return Object.assign({}, state, {
@@ -86,7 +85,7 @@ define('argos/reducers/index', ['exports', '../actions/index', '../actions/conne
         });
       case _index.INSERT_HISTORY:
         return Object.assign({}, state, {
-          history: [].concat(_toConsumableArray(state.history), [payload.data])
+          history: [...state.history, payload.data]
         });
       case _connection.SET_CONNECTION_STATE:
         return Object.assign({}, state, {

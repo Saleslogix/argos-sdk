@@ -27,20 +27,20 @@ define('argos/Detail', ['module', 'exports', 'dojo/_base/declare', './_DetailBas
    * @mixes module:argos/_SDataDetailMixin
    * @mixes module:argos/_RelatedViewWidgetDetailMixin
    */
-  var __class = (0, _declare2.default)('argos.Detail', [_DetailBase3.default, _SDataDetailMixin3.default, _RelatedViewWidgetDetailMixin2.default, _DetailOfflineMixin3.default], {}); /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
-                                                                                                                                                                                       *
-                                                                                                                                                                                       * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                                                                                                                                       * you may not use this file except in compliance with the License.
-                                                                                                                                                                                       * You may obtain a copy of the License at
-                                                                                                                                                                                       *
-                                                                                                                                                                                       *     http://www.apache.org/licenses/LICENSE-2.0
-                                                                                                                                                                                       *
-                                                                                                                                                                                       * Unless required by applicable law or agreed to in writing, software
-                                                                                                                                                                                       * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                                                                                                                                       * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                                                                                                                                       * See the License for the specific language governing permissions and
-                                                                                                                                                                                       * limitations under the License.
-                                                                                                                                                                                       */
+  const __class = (0, _declare2.default)('argos.Detail', [_DetailBase3.default, _SDataDetailMixin3.default, _RelatedViewWidgetDetailMixin2.default, _DetailOfflineMixin3.default], {}); /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+                                                                                                                                                                                         *
+                                                                                                                                                                                         * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                                                                                                                                         * you may not use this file except in compliance with the License.
+                                                                                                                                                                                         * You may obtain a copy of the License at
+                                                                                                                                                                                         *
+                                                                                                                                                                                         *     http://www.apache.org/licenses/LICENSE-2.0
+                                                                                                                                                                                         *
+                                                                                                                                                                                         * Unless required by applicable law or agreed to in writing, software
+                                                                                                                                                                                         * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                                                                                                                                         * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                                                                                                                                         * See the License for the specific language governing permissions and
+                                                                                                                                                                                         * limitations under the License.
+                                                                                                                                                                                         */
 
   /**
    * @module argos/Detail

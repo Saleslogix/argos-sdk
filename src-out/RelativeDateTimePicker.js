@@ -23,26 +23,26 @@ define('argos/RelativeDateTimePicker', ['module', 'exports', 'dojo/_base/declare
     };
   }
 
-  var resource = (0, _I18n2.default)('relativeDateTimePicker'); /* Copyright 2017 Infor
-                                                                 *
-                                                                 * Licensed under the Apache License, Version 2.0 (the "License");
-                                                                 * you may not use this file except in compliance with the License.
-                                                                 * You may obtain a copy of the License at
-                                                                 *
-                                                                 *    http://www.apache.org/licenses/LICENSE-2.0
-                                                                 *
-                                                                 * Unless required by applicable law or agreed to in writing, software
-                                                                 * distributed under the License is distributed on an "AS IS" BASIS,
-                                                                 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                                 * See the License for the specific language governing permissions and
-                                                                 * limitations under the License.
-                                                                 */
+  const resource = (0, _I18n2.default)('relativeDateTimePicker'); /* Copyright 2017 Infor
+                                                                   *
+                                                                   * Licensed under the Apache License, Version 2.0 (the "License");
+                                                                   * you may not use this file except in compliance with the License.
+                                                                   * You may obtain a copy of the License at
+                                                                   *
+                                                                   *    http://www.apache.org/licenses/LICENSE-2.0
+                                                                   *
+                                                                   * Unless required by applicable law or agreed to in writing, software
+                                                                   * distributed under the License is distributed on an "AS IS" BASIS,
+                                                                   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                                   * See the License for the specific language governing permissions and
+                                                                   * limitations under the License.
+                                                                   */
 
   /**
    * @module argos/RelativeDateTimePicker
    */
 
-  var dtFormatResource = (0, _I18n2.default)('relativeDateTimePickerDateTimeFormat');
+  const dtFormatResource = (0, _I18n2.default)('relativeDateTimePickerDateTimeFormat');
 
   /**
    * @class
@@ -50,7 +50,7 @@ define('argos/RelativeDateTimePicker', ['module', 'exports', 'dojo/_base/declare
    * @extends module:argos/_Templated
    * @mixes module:argos/_CustomizationMixin
    */
-  var __class = (0, _declare2.default)('argos.RelativeDateTimePicker', [_WidgetBase3.default, _Templated3.default, _CustomizationMixin3.default], /** @lends module:argos/RelativeDateTimePicker.prototype */{
+  const __class = (0, _declare2.default)('argos.RelativeDateTimePicker', [_WidgetBase3.default, _Templated3.default, _CustomizationMixin3.default], /** @lends module:argos/RelativeDateTimePicker.prototype */{
     _ActionMixin: null,
     widgetTemplate: new Simplate(['<div class="relative-datetime-select" data-dojo-attach-point="relativeDateTimeNode">', '<div class="relative-datetime-select__title">{%: $.titleText %}</div>', '<ul class="simpleList" data-dojo-attach-point="listNode"></ul>', '</div>']),
     listItemTemplate: new Simplate(['<li class="simpleList__item" data-time="{%: $.time %}" data-action="select">', '<div class="item__text--left"><span>{%: $.textLeft %}</span></div>', '<div class="item__text--right"><span>{%: $.textRight %}</span></div>', '</li>']),
@@ -115,34 +115,27 @@ define('argos/RelativeDateTimePicker', ['module', 'exports', 'dojo/_base/declare
     getContent: function getContent() {
       return this._selectedTime;
     },
-    makeItem: function makeItem(_ref) {
-      var label = _ref.label,
-          time = _ref.time,
-          format = _ref.format;
-
-      var item = $(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
+    makeItem: function makeItem({ label, time, format }) {
+      const item = $(this.listItemTemplate.apply({ textLeft: label, textRight: time.format(format) }));
       item[0].time = time;
       $(this.listNode).append(item);
     },
-    makeListItems: function makeListItems(_ref2) {
-      var title = _ref2.title,
-          children = _ref2.children;
-
-      var startIndex = 0;
+    makeListItems: function makeListItems({ title, children }) {
+      let startIndex = 0;
       if (title === this.titleText) {
-        var currentTime = moment();
+        const currentTime = moment();
         if (currentTime.hours() <= this.showThisEveningUntil) {
           this.makeItem(children[startIndex]);
         }
         startIndex++;
       }
-      for (var i = startIndex; i < children.length; i++) {
+      for (let i = startIndex; i < children.length; i++) {
         this.makeItem(children[i]);
       }
       return this;
     },
     processLayout: function processLayout() {
-      for (var i = 0; i < this.layout.length; i++) {
+      for (let i = 0; i < this.layout.length; i++) {
         this.makeListItems(this.layout[i]);
       }
     },
@@ -153,9 +146,7 @@ define('argos/RelativeDateTimePicker', ['module', 'exports', 'dojo/_base/declare
         this._selectedTime = null;
       }
     },
-    show: function show() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    show: function show(options = {}) {
       this.options = options;
       this.showTimePicker = options.showTimePicker;
       this.layout = this.layout || this._createCustomizedLayout(this.createLayout());
@@ -166,8 +157,8 @@ define('argos/RelativeDateTimePicker', ['module', 'exports', 'dojo/_base/declare
     },
     toDateTimePicker: function toDateTimePicker() {
       App.modal.hide();
-      var dateTimePicker = new _DateTimePicker2.default({ isModal: true });
-      var toolbar = [{
+      const dateTimePicker = new _DateTimePicker2.default({ isModal: true });
+      const toolbar = [{
         action: 'cancel',
         className: 'button--flat button--flat--split',
         text: resource.cancelText

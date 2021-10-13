@@ -47,7 +47,7 @@ define('argos/_SDataDetailMixin', ['module', 'exports', 'dojo/_base/declare', 'd
   /**
    * @module argos/_SDataDetailMixin
    */
-  var __class = (0, _declare2.default)('argos._SDataDetailMixin', null, /** @lends module:argos/_SDataDetailMixin.prototype */{
+  const __class = (0, _declare2.default)('argos._SDataDetailMixin', null, /** @lends module:argos/_SDataDetailMixin.prototype */{
 
     /**
      * @cfg {String} resourceKind
@@ -103,12 +103,12 @@ define('argos/_SDataDetailMixin', ['module', 'exports', 'dojo/_base/declare', 'd
       });
     },
     _buildGetExpression: function _buildGetExpression() {
-      var options = this.options;
+      const options = this.options;
 
       return options && (options.id || options.key);
     },
     _applyStateToGetOptions: function _applyStateToGetOptions(getOptions) {
-      var options = this.options;
+      const options = this.options;
       if (options) {
         if (options.select) {
           getOptions.select = options.select;
@@ -143,9 +143,9 @@ define('argos/_SDataDetailMixin', ['module', 'exports', 'dojo/_base/declare', 'd
      * @return {String}
      */
     formatRelatedQuery: function formatRelatedQuery(entry, fmt, prop) {
-      var property = prop;
+      let property = prop;
       property = property || '$key';
-      var rawValue = _Utility2.default.getValue(entry, property, '');
+      const rawValue = _Utility2.default.getValue(entry, property, '');
       if (typeof rawValue !== 'undefined' && rawValue !== null) {
         return _string2.default.substitute(fmt, [rawValue]);
       }
@@ -156,7 +156,7 @@ define('argos/_SDataDetailMixin', ['module', 'exports', 'dojo/_base/declare', 'd
      * Initializes the model instance that is return with the curernt view.
      */
     initModel: function initModel() {
-      var model = this.getModel();
+      const model = this.getModel();
       if (model) {
         this._model = model;
         this._model.init();
@@ -170,7 +170,7 @@ define('argos/_SDataDetailMixin', ['module', 'exports', 'dojo/_base/declare', 'd
         return;
       }
 
-      var queryModel = model._getQueryModelByName('detail');
+      const queryModel = model._getQueryModelByName('detail');
       if (this.resourceKind) {
         model.resourceKind = this.resourceKind;
       }
@@ -185,54 +185,54 @@ define('argos/_SDataDetailMixin', ['module', 'exports', 'dojo/_base/declare', 'd
       // was to modify the protoype of the view's querySelect array.
       if (this.querySelect && this.querySelect.length) {
         /* eslint-disable */
-        console.warn('A view\'s querySelect is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's querySelect is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         if (!queryModel.querySelect) {
           queryModel.querySelect = [];
         }
 
-        queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter(function (item) {
+        queryModel.querySelect = queryModel.querySelect.concat(this.querySelect.filter(item => {
           return queryModel.querySelect.indexOf(item) < 0;
         }));
       }
 
       if (this.queryInclude && this.queryInclude.length) {
         /* eslint-disable */
-        console.warn('A view\'s queryInclude is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's queryInclude is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         if (!queryModel.queryInclude) {
           queryModel.queryInclude = [];
         }
 
-        queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter(function (item) {
+        queryModel.queryInclude = queryModel.queryInclude.concat(this.queryInclude.filter(item => {
           return queryModel.queryInclude.indexOf(item) < 0;
         }));
       }
 
       if (this.queryWhere) {
         /* eslint-disable */
-        console.warn('A view\'s queryWhere is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's queryWhere is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         queryModel.queryWhere = this.queryWhere;
       }
 
       if (this.queryArgs) {
         /* eslint-disable */
-        console.warn('A view\'s queryArgs is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's queryArgs is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         queryModel.queryArgs = _lang2.default.mixin({}, queryModel.queryArgs, this.queryArgs);
       }
 
       if (this.queryOrderBy && this.queryOrderBy.length) {
         /* eslint-disable */
-        console.warn('A view\'s queryOrderBy is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's queryOrderBy is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         if (Array.isArray(this.queryOrderBy)) {
           if (!queryModel.queryOrderBy) {
             queryModel.queryOrderBy = [];
           }
 
-          queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter(function (item) {
+          queryModel.queryOrderBy = queryModel.queryOrderBy.concat(this.queryOrderBy.filter(item => {
             return queryModel.queryOrderBy.indexOf(item) < 0;
           }));
         } else {
@@ -242,14 +242,14 @@ define('argos/_SDataDetailMixin', ['module', 'exports', 'dojo/_base/declare', 'd
 
       if (this.resourceProperty) {
         /* eslint-disable */
-        console.warn('A view\'s resourceProperty is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's resourceProperty is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         queryModel.resourceProperty = this.resourceProperty;
       }
 
       if (this.resourcePredicate) {
         /* eslint-disable */
-        console.warn('A view\'s resourcePredicate is deprecated. Register a customization to the models layout instead.');
+        console.warn(`A view's resourcePredicate is deprecated. Register a customization to the models layout instead.`);
         /* eslint-enable */
         queryModel.resourcePredicate = this.resourcePredicate;
       }

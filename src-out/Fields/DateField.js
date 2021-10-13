@@ -27,26 +27,26 @@ define('argos/Fields/DateField', ['module', 'exports', 'dojo/_base/declare', 'do
     };
   }
 
-  var resource = (0, _I18n2.default)('dateField'); /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
-                                                    *
-                                                    * Licensed under the Apache License, Version 2.0 (the "License");
-                                                    * you may not use this file except in compliance with the License.
-                                                    * You may obtain a copy of the License at
-                                                    *
-                                                    *     http://www.apache.org/licenses/LICENSE-2.0
-                                                    *
-                                                    * Unless required by applicable law or agreed to in writing, software
-                                                    * distributed under the License is distributed on an "AS IS" BASIS,
-                                                    * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-                                                    * See the License for the specific language governing permissions and
-                                                    * limitations under the License.
-                                                    */
+  const resource = (0, _I18n2.default)('dateField'); /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+                                                      *
+                                                      * Licensed under the Apache License, Version 2.0 (the "License");
+                                                      * you may not use this file except in compliance with the License.
+                                                      * You may obtain a copy of the License at
+                                                      *
+                                                      *     http://www.apache.org/licenses/LICENSE-2.0
+                                                      *
+                                                      * Unless required by applicable law or agreed to in writing, software
+                                                      * distributed under the License is distributed on an "AS IS" BASIS,
+                                                      * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                      * See the License for the specific language governing permissions and
+                                                      * limitations under the License.
+                                                      */
 
   /**
    * @module argos/Fields/DateField
    */
 
-  var dtFormatResource = (0, _I18n2.default)('dateFieldDateTimeFormat');
+  const dtFormatResource = (0, _I18n2.default)('dateFieldDateTimeFormat');
 
   /**
    * @class
@@ -68,7 +68,7 @@ define('argos/Fields/DateField', ['module', 'exports', 'dojo/_base/declare', 'do
    *
    * @extends module:argos/Fields/EditorField
    */
-  var control = (0, _declare2.default)('argos.Fields.DateField', [_EditorField2.default], /** @lends module:argos/Fields/DateField.prototype */{
+  const control = (0, _declare2.default)('argos.Fields.DateField', [_EditorField2.default], /** @lends module:argos/Fields/DateField.prototype */{
     // Localization
     /**
      * @cfg {String}
@@ -92,7 +92,32 @@ define('argos/Fields/DateField', ['module', 'exports', 'dojo/_base/declare', 'do
      * * `$$` => Owner View instance
      *
      */
-    widgetTemplate: new Simplate(['<label for="{%= $.name %}"\n      {% if ($.required) { %}\n        class="required"\n      {% } %}>\n      {%: $.label %}\n    </label>\n    <div class="field field-control-wrapper">\n      <button\n        data-dojo-attach-point="triggerNode"\n        data-action="showModal"\n        class="button field-control-trigger whiteButton"\n        aria-label="{%: $.lookupLabelText %}">\n          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>\n          </svg>\n        </button>\n      <input\n        data-dojo-attach-point="inputNode"\n        data-dojo-attach-event="onchange:_onChange"\n        type="text"\n        {% if ($.required) { %}\n          data-validate="required"\n          class="required"\n        {% } %}\n        />\n    </div>']),
+    widgetTemplate: new Simplate([`<label for="{%= $.name %}"
+      {% if ($.required) { %}
+        class="required"
+      {% } %}>
+      {%: $.label %}
+    </label>
+    <div class="field field-control-wrapper">
+      <button
+        data-dojo-attach-point="triggerNode"
+        data-action="showModal"
+        class="button field-control-trigger whiteButton"
+        aria-label="{%: $.lookupLabelText %}">
+          <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+          </svg>
+        </button>
+      <input
+        data-dojo-attach-point="inputNode"
+        data-dojo-attach-event="onchange:_onChange"
+        type="text"
+        {% if ($.required) { %}
+          data-validate="required"
+          class="required"
+        {% } %}
+        />
+    </div>`]),
     iconClass: 'calendar',
 
     /**
@@ -144,12 +169,12 @@ define('argos/Fields/DateField', ['module', 'exports', 'dojo/_base/declare', 'do
      * @param {Event} evt Event that caused change to fire.
      */
     _onChange: function _onChange() /* evt*/{
-      var jsDate = new Date(this.inputNode.value);
-      var date = moment(this.inputNode.value, this.dateFormatText, true);
+      const jsDate = new Date(this.inputNode.value);
+      let date = moment(this.inputNode.value, this.dateFormatText, true);
       if (moment(jsDate).isValid() && !date.isValid()) {
         date = moment(jsDate);
       }
-      var val = date.isValid();
+      const val = date.isValid();
 
       if (val) {
         this.validationValue = this.currentValue = date.toDate();
@@ -169,7 +194,7 @@ define('argos/Fields/DateField', ['module', 'exports', 'dojo/_base/declare', 'do
      * @return {Object} Navigation options
      */
     createNavigationOptions: function createNavigationOptions() {
-      var options = this.inherited(createNavigationOptions, arguments);
+      const options = this.inherited(createNavigationOptions, arguments);
 
       if (this.currentValue !== '' && this.currentValue !== null) {
         options.date = this.currentValue;
@@ -185,18 +210,16 @@ define('argos/Fields/DateField', ['module', 'exports', 'dojo/_base/declare', 'do
      * Retrieves the date from the {@link Calendar#getDateTime Calendar} view and sets it to currentValue.
      */
     getValuesFromView: function getValuesFromView() {
-      var view = App.getPrimaryActiveView();
+      const view = App.getPrimaryActiveView();
       if (view) {
         this.currentValue = this.validationValue = view.getDateTime();
         $(this.containerNode).removeClass('row-error'); // todo: not the right spot for this, add validation eventing
       }
     },
-    getValuesFromModal: function getValuesFromModal() {
-      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    getValuesFromModal: function getValuesFromModal(data = {}) {
       if (data.calendar.selectedDateMoment) {
         // This is the case where the DateTimePicker was used to select the date
-        var date = data.calendar.selectedDateMoment.clone();
+        const date = data.calendar.selectedDateMoment.clone();
         if (data.time) {
           date.hours(data.time.hours);
           date.minutes(data.time.minutes);
@@ -231,11 +254,11 @@ define('argos/Fields/DateField', ['module', 'exports', 'dojo/_base/declare', 'do
         return;
       }
 
-      var options = this.createNavigationOptions();
+      const options = this.createNavigationOptions();
 
-      var toolbar = void 0;
+      let toolbar;
       if (this.showRelativeDateTime && !options.timeless) {
-        this.dateTimePicker = new _RelativeDateTimePicker2.default({ id: 'relative-datetime-picker-modal ' + this.id, isModal: true });
+        this.dateTimePicker = new _RelativeDateTimePicker2.default({ id: `relative-datetime-picker-modal ${this.id}`, isModal: true });
         toolbar = [{
           action: 'cancel',
           className: 'button--flat button--flat--split',
@@ -247,7 +270,7 @@ define('argos/Fields/DateField', ['module', 'exports', 'dojo/_base/declare', 'do
           context: this.dateTimePicker
         }];
       } else {
-        this.dateTimePicker = new _DateTimePicker2.default({ id: 'datetime-picker-modal ' + this.id, isModal: true });
+        this.dateTimePicker = new _DateTimePicker2.default({ id: `datetime-picker-modal ${this.id}`, isModal: true });
         toolbar = [{
           action: 'cancel',
           className: 'button--flat button--flat--split',

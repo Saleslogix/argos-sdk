@@ -15,7 +15,7 @@ define('argos/LanguageService', ['module', 'exports', 'dojo/_base/declare'], fun
    * @class
    * @alias module:argos/LanguageService
    */
-  var __class = (0, _declare2.default)('argos.LanguageService', [], /** @lends module:argos/LanguageService.prototype */{
+  const __class = (0, _declare2.default)('argos.LanguageService', [], /** @lends module:argos/LanguageService.prototype */{
 
     /**
      *
@@ -35,7 +35,7 @@ define('argos/LanguageService', ['module', 'exports', 'dojo/_base/declare'], fun
      *
      */
     setLanguage: function setLanguage(value) {
-      var language = this.normalizeLocale(value) || value;
+      const language = this.normalizeLocale(value) || value;
       return window.localStorage && window.localStorage.setItem('language', language);
     },
 
@@ -43,7 +43,7 @@ define('argos/LanguageService', ['module', 'exports', 'dojo/_base/declare'], fun
      *
      */
     setRegion: function setRegion(value) {
-      var region = this.normalizeLocale(value) || value;
+      const region = this.normalizeLocale(value) || value;
       return window.localStorage && window.localStorage.setItem('region', region);
     },
 
@@ -51,13 +51,13 @@ define('argos/LanguageService', ['module', 'exports', 'dojo/_base/declare'], fun
      *
      */
     normalizeLocale: function normalizeLanguageCode(locale) {
-      var language = locale;
+      let language = locale;
       if (language.length > 2) {
-        var split = locale.split('-');
+        const split = locale.split('-');
         if (split[0] === split[1]) {
           language = split[0];
         } else if (split[1]) {
-          language = split[0] + '-' + split[1].toUpperCase();
+          language = `${split[0]}-${split[1].toUpperCase()}`;
         }
       }
       return language;
@@ -73,11 +73,11 @@ define('argos/LanguageService', ['module', 'exports', 'dojo/_base/declare'], fun
      *
      */
     bestAvailableLocale: function BestAvailableLocale(availableLocales, locale) {
-      var candidate = this.normalizeLocale(locale);
+      let candidate = this.normalizeLocale(locale);
       if (availableLocales.indexOf(candidate) !== -1) {
         return candidate;
       }
-      var pos = candidate.lastIndexOf('-');
+      let pos = candidate.lastIndexOf('-');
       if (pos === -1) {
         return undefined;
       }

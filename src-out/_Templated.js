@@ -38,7 +38,7 @@ define('argos/_Templated', ['module', 'exports', 'dojo/_base/declare', 'dijit/_T
   /**
    * @module argos/_Templated
    */
-  var __class = (0, _declare2.default)('argos._Templated', [_TemplatedMixin3.default], /** @lends module:argos/_Templated.prototype */{
+  const __class = (0, _declare2.default)('argos._Templated', [_TemplatedMixin3.default], /** @lends module:argos/_Templated.prototype */{
 
     _stringRepl: function _stringRepl(tmpl) {
       return tmpl;
@@ -56,7 +56,7 @@ define('argos/_Templated', ['module', 'exports', 'dojo/_base/declare', 'dijit/_T
         this.templateString = ['<div>', this.contentTemplate.apply(this), '</div>'].join('');
       } else if (this.widgetTemplate) {
         this.templateString = this.widgetTemplate.apply(this);
-        var root = $(this.templateString);
+        const root = $(this.templateString);
 
         if (root.length > 1) {
           this.templateString = ['<div>', this.templateString, '</div>'].join('');
@@ -66,11 +66,9 @@ define('argos/_Templated', ['module', 'exports', 'dojo/_base/declare', 'dijit/_T
       this.inherited(buildRendering, arguments);
     },
     startup: function startup() {
-      var _this = this;
-
       this.inherited(startup, arguments);
-      setTimeout(function () {
-        _this.initSoho();
+      setTimeout(() => {
+        this.initSoho();
       }, 1);
     },
     initSoho: function initSoho() {},

@@ -36,7 +36,7 @@ define('argos/Views/Link', ['module', 'exports', 'dojo/_base/declare', '../View'
   /**
    * @module argos/Views/Link
    */
-  var __class = (0, _declare2.default)('argos.Views.Link', [_View2.default], /** @lends module:argos/Views/Link.prototype */{
+  const __class = (0, _declare2.default)('argos.Views.Link', [_View2.default], /** @lends module:argos/Views/Link.prototype */{
     id: 'link_view',
     titleText: '',
     viewType: 'detail',
@@ -47,8 +47,7 @@ define('argos/Views/Link', ['module', 'exports', 'dojo/_base/declare', '../View'
     cls: 'link-view',
     widgetTemplate: new Simplate(['<div id="{%= $.id %}" data-title="{%= $.titleText %}" class="detail panel {%= $.cls %}">', '<iframe class="link-node" data-dojo-attach-point="linkNode"', 'sandbox="allow-scripts allow-forms allow-same-origin allow-popups allow-popups-to-escape-sandbox">', '</iframe>', '</div>']),
     _getLink: function _getLink() {
-      var link = this.options.link;
-
+      const { link } = this.options;
       return link || this.link;
     },
     onTransitionTo: function onTransitionTo() {

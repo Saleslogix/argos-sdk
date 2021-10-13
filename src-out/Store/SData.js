@@ -45,7 +45,7 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
   /**
    * @module argos/Store/SData
    */
-  var __class = (0, _declare2.default)('argos.Store.SData', null, /** @lends module:argos/Store/SData.prototype */{
+  const __class = (0, _declare2.default)('argos.Store.SData', null, /** @lends module:argos/Store/SData.prototype */{
     doDateConversion: false,
 
     /* todo: is this the appropriate name for the expansion scope? */
@@ -81,15 +81,15 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       _lang2.default.mixin(this, props);
     },
     _createRemoveRequest: function createRemoveRequest(object) {
-      var request = new Sage.SData.Client.SDataSingleResourceRequest(this.service);
-      var id = object && object.$key;
+      const request = new Sage.SData.Client.SDataSingleResourceRequest(this.service);
+      let id = object && object.$key;
 
       id = id || _Utility2.default.expand(this.scope || this.resourcePredicate);
 
       if (/(\s+)/.test(id)) {
         request.setResourceSelector(id);
       } else {
-        request.setResourceSelector('\'' + id + '\'');
+        request.setResourceSelector(`'${id}'`);
       }
       if (this.resourceKind) {
         request.setResourceKind(this.resourceKind);
@@ -101,21 +101,21 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       return request;
     },
     _createEntryRequest: function _createEntryRequest(identity, getOptions) {
-      var request = _Utility2.default.expand(this, getOptions.request || this.request);
-      var id = identity;
+      let request = _Utility2.default.expand(this, getOptions.request || this.request);
+      let id = identity;
       if (request) {
         request = request.clone();
       } else {
         id = id || _Utility2.default.expand(this.scope || this, getOptions.resourcePredicate || this.resourcePredicate);
 
-        var contractName = _Utility2.default.expand(this.scope || this, getOptions.contractName || this.contractName);
-        var resourceKind = _Utility2.default.expand(this.scope || this, getOptions.resourceKind || this.resourceKind);
-        var dataSet = _Utility2.default.expand(this.scope || this, getOptions.dataSet || this.dataSet);
-        var resourceProperty = _Utility2.default.expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty);
-        var resourcePredicate = void 0;
+        const contractName = _Utility2.default.expand(this.scope || this, getOptions.contractName || this.contractName);
+        const resourceKind = _Utility2.default.expand(this.scope || this, getOptions.resourceKind || this.resourceKind);
+        const dataSet = _Utility2.default.expand(this.scope || this, getOptions.dataSet || this.dataSet);
+        const resourceProperty = _Utility2.default.expand(this.scope || this, getOptions.resourceProperty || this.resourceProperty);
+        let resourcePredicate;
 
         if (id) {
-          resourcePredicate = /\s+/.test(id) ? id : '\'' + id + '\'';
+          resourcePredicate = /\s+/.test(id) ? id : `'${id}'`;
         }
 
         if (resourceProperty) {
@@ -137,8 +137,8 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
         }
       }
 
-      var select = _Utility2.default.expand(this.scope || this, getOptions.select || this.select);
-      var include = _Utility2.default.expand(this.scope || this, getOptions.include || this.include);
+      const select = _Utility2.default.expand(this.scope || this, getOptions.select || this.select);
+      const include = _Utility2.default.expand(this.scope || this, getOptions.include || this.include);
 
       if (select && select.length > 0) {
         request.setQueryArg('select', select.join(','));
@@ -151,18 +151,18 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       return request;
     },
     _createFeedRequest: function _createFeedRequest(q, queryOptions) {
-      var request = _Utility2.default.expand(this, queryOptions.request || this.request);
+      let request = _Utility2.default.expand(this, queryOptions.request || this.request);
       if (request) {
         request = request.clone();
       } else {
-        var queryName = _Utility2.default.expand(this.scope || this, queryOptions.queryName || this.queryName);
-        var contractName = _Utility2.default.expand(this.scope || this, queryOptions.contractName || this.contractName);
-        var resourceKind = _Utility2.default.expand(this.scope || this, queryOptions.resourceKind || this.resourceKind);
-        var resourceProperty = _Utility2.default.expand(this.scope || this, queryOptions.resourceProperty || this.resourceProperty);
-        var resourcePredicate = _Utility2.default.expand(this.scope || this, queryOptions.resourcePredicate || this.resourcePredicate);
-        var applicationName = _Utility2.default.expand(this.scope || this, queryOptions.applicationName || this.applicationName);
-        var dataSet = _Utility2.default.expand(this.scope || this, queryOptions.dataSet || this.dataSet);
-        var queryArgs = _Utility2.default.expand(this.scope || this, queryOptions.queryArgs || this.queryArgs);
+        const queryName = _Utility2.default.expand(this.scope || this, queryOptions.queryName || this.queryName);
+        const contractName = _Utility2.default.expand(this.scope || this, queryOptions.contractName || this.contractName);
+        const resourceKind = _Utility2.default.expand(this.scope || this, queryOptions.resourceKind || this.resourceKind);
+        const resourceProperty = _Utility2.default.expand(this.scope || this, queryOptions.resourceProperty || this.resourceProperty);
+        const resourcePredicate = _Utility2.default.expand(this.scope || this, queryOptions.resourcePredicate || this.resourcePredicate);
+        const applicationName = _Utility2.default.expand(this.scope || this, queryOptions.applicationName || this.applicationName);
+        const dataSet = _Utility2.default.expand(this.scope || this, queryOptions.dataSet || this.dataSet);
+        const queryArgs = _Utility2.default.expand(this.scope || this, queryOptions.queryArgs || this.queryArgs);
 
         if (queryName) {
           request = new Sage.SData.Client.SDataNamedQueryRequest(this.service).setQueryName(queryName);
@@ -193,7 +193,7 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
         }
 
         if (queryArgs) {
-          for (var arg in queryArgs) {
+          for (const arg in queryArgs) {
             if (queryArgs.hasOwnProperty(arg)) {
               request.setQueryArg(arg, queryArgs[arg]);
             }
@@ -201,9 +201,9 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
         }
       }
 
-      var select = _Utility2.default.expand(this.scope || this, queryOptions.select || this.select);
-      var include = _Utility2.default.expand(this.scope || this, queryOptions.include || this.include);
-      var orderBy = _Utility2.default.expand(this.scope || this, queryOptions.sort || this.orderBy);
+      const select = _Utility2.default.expand(this.scope || this, queryOptions.select || this.select);
+      const include = _Utility2.default.expand(this.scope || this, queryOptions.include || this.include);
+      const orderBy = _Utility2.default.expand(this.scope || this, queryOptions.sort || this.orderBy);
 
       if (select && select.length > 0) {
         request.setQueryArg('select', select.join(','));
@@ -217,10 +217,10 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
         if (typeof orderBy === 'string') {
           request.setQueryArg('orderby', orderBy);
         } else if (orderBy.length > 0) {
-          var order = [];
+          const order = [];
           orderBy.forEach(function forEach(v) {
             if (v.descending) {
-              this.push(v.attribute + ' desc');
+              this.push(`${v.attribute} desc`);
             } else {
               this.push(v.attribute);
             }
@@ -230,21 +230,21 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
         }
       }
 
-      var where = _Utility2.default.expand(this.scope || this, queryOptions.where || this.where);
-      var conditions = [];
+      const where = _Utility2.default.expand(this.scope || this, queryOptions.where || this.where);
+      const conditions = [];
 
       if (where) {
         conditions.push(where);
       }
 
-      var query = _Utility2.default.expand(this.scope || this, q);
+      const query = _Utility2.default.expand(this.scope || this, q);
 
       if (query) {
         conditions.push(query);
       }
 
       if (conditions.length > 0) {
-        request.setQueryArg('where', '(' + conditions.join(') and (') + ')');
+        request.setQueryArg('where', `(${conditions.join(') and (')})`);
       }
 
       if (typeof queryOptions.start !== 'undefined') {
@@ -260,13 +260,13 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
     _onCancel: function _onCancel() /* deferred*/{},
     _onRequestFeedSuccess: function _onRequestFeedSuccess(queryDeferred, feed) {
       if (feed) {
-        var items = _lang2.default.getObject(this.itemsProperty, false, feed);
-        var total = typeof feed.$totalResults === 'number' ? feed.$totalResults : -1;
+        const items = _lang2.default.getObject(this.itemsProperty, false, feed);
+        const total = typeof feed.$totalResults === 'number' ? feed.$totalResults : -1;
 
         queryDeferred.total = total;
         queryDeferred.resolve(items);
       } else {
-        var error = new Error('The feed result is invalid.');
+        const error = new Error('The feed result is invalid.');
         queryDeferred.reject(error);
       }
     },
@@ -274,12 +274,12 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       if (entry) {
         deferred.resolve(this.doDateConversion ? this._handleDateConversion(entry) : entry);
       } else {
-        var error = new Error('The entry result is invalid.');
+        const error = new Error('The entry result is invalid.');
         deferred.reject(error);
       }
     },
     _onRequestFailure: function _onRequestFailure(deferred, xhr, xhrOptions) {
-      var error = new Error('An error occurred requesting: ' + xhrOptions.url);
+      const error = new Error(`An error occurred requesting: ${xhrOptions.url}`);
 
       error.xhr = xhr;
       error.status = xhr.status;
@@ -289,7 +289,7 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       deferred.reject(error);
     },
     _onRequestAbort: function _onRequestAbort(deferred, xhr, xhrOptions) {
-      var error = new Error('An error occurred requesting: ' + xhrOptions.url);
+      const error = new Error(`An error occurred requesting: ${xhrOptions.url}`);
 
       error.xhr = xhr;
       error.status = 0;
@@ -299,7 +299,7 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       deferred.reject(error);
     },
     _handleDateConversion: function _handleDateConversion(entry) {
-      for (var prop in entry) {
+      for (const prop in entry) {
         if (_Convert2.default.isDateString(entry[prop])) {
           entry[prop] = _Convert2.default.toDateFromString(entry[prop]);
         }
@@ -308,10 +308,10 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       return entry;
     },
     get: function get(id, getOptions /* sdata only */) {
-      var handle = {};
-      var deferred = new _Deferred2.default();
-      var request = this._createEntryRequest(id, getOptions || {});
-      var method = this.executeGetAs ? request[this.executeGetAs] : request.read;
+      const handle = {};
+      const deferred = new _Deferred2.default();
+      const request = this._createEntryRequest(id, getOptions || {});
+      const method = this.executeGetAs ? request[this.executeGetAs] : request.read;
 
       handle.value = method.call(request, {
         success: this._onRequestEntrySuccess.bind(this, deferred),
@@ -363,13 +363,11 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * @param {Boolean} putOptions.overwrite
      * @returns {String|Number}
      */
-    put: function put(object) {
-      var putOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
-      var id = putOptions.id || this.getIdentity(object);
-      var entity = putOptions.entity || this.entityName;
-      var version = putOptions.version || this.getVersion(object);
-      var atom = !this.service.isJsonEnabled();
+    put: function put(object, putOptions = {}) {
+      const id = putOptions.id || this.getIdentity(object);
+      const entity = putOptions.entity || this.entityName;
+      const version = putOptions.version || this.getVersion(object);
+      const atom = !this.service.isJsonEnabled();
 
       if (id) {
         object.$key = id;
@@ -383,10 +381,10 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
         object.$etag = version;
       }
 
-      var handle = {};
-      var deferred = new _Deferred2.default();
-      var request = this._createEntryRequest(id, putOptions);
-      var method = putOptions.overwrite ? request.update : request.create;
+      const handle = {};
+      const deferred = new _Deferred2.default();
+      const request = this._createEntryRequest(id, putOptions);
+      const method = putOptions.overwrite ? request.update : request.create;
 
       handle.value = method.call(request, object, {
         success: this._onTransmitEntrySuccess.bind(this, deferred),
@@ -405,9 +403,7 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * @param {Object} addOptions Additional directives for creating objects
      * @param {Boolean} addOptions.overwrite
      */
-    add: function add(object) {
-      var addOptions = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
+    add: function add(object, addOptions = {}) {
       addOptions.overwrite = false;
       return this.put(object, addOptions);
     },
@@ -420,10 +416,10 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      *
      */
     remove: function remove(object) {
-      var request = this._createRemoveRequest(object);
-      var handle = {};
-      var deferred = new _Deferred2.default();
-      var method = request.delete;
+      const request = this._createRemoveRequest(object);
+      const handle = {};
+      const deferred = new _Deferred2.default();
+      const method = request.delete;
 
       handle.value = method.call(request, object, {
         success: this._onTransmitEntrySuccess.bind(this, deferred),
@@ -443,19 +439,19 @@ define('argos/Store/SData', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      *
      */
     query: function query(q, queryOptions) {
-      var handle = {};
-      var queryDeferred = new _Deferred2.default(this._onCancel.bind(this, handle));
-      var request = this._createFeedRequest(q, queryOptions || {});
+      const handle = {};
+      const queryDeferred = new _Deferred2.default(this._onCancel.bind(this, handle));
+      const request = this._createFeedRequest(q, queryOptions || {});
 
       queryDeferred.total = -1;
-      var options = {
+      const options = {
         success: this._onRequestFeedSuccess.bind(this, queryDeferred),
         failure: this._onRequestFailure.bind(this, queryDeferred),
         aborted: this._onRequestAbort.bind(this, queryDeferred),
         httpMethodOverride: queryOptions && queryOptions.httpMethodOverride
       };
 
-      var method = request.read;
+      let method = request.read;
       if (this.executeQueryAs) {
         method = request[this.executeQueryAs];
       } else if (request instanceof Sage.SData.Client.SDataResourcePropertyRequest) {

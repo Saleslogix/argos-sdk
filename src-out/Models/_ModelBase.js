@@ -90,9 +90,7 @@ define('argos/Models/_ModelBase', ['module', 'exports', 'dojo/_base/declare', 'd
       return _Utility2.default.getValue(entry, this.idProperty);
     },
     getPicklistNameByProperty: function getPicklistNameByProperty(property) {
-      var picklist = this.picklists.find(function (pl) {
-        return pl.property === property;
-      });
+      const picklist = this.picklists.find(pl => pl.property === property);
       return picklist && picklist.name || null;
     },
     buildQueryExpression: function buildQueryExpression(query, options) {// eslint-disable-line

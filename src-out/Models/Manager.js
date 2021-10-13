@@ -11,7 +11,7 @@ define('argos/Models/Manager', ['module', 'exports', 'dojo/_base/lang'], functio
     };
   }
 
-  var store = new Map();
+  const store = new Map();
 
   /**
    * @class
@@ -36,9 +36,9 @@ define('argos/Models/Manager', ['module', 'exports', 'dojo/_base/lang'], functio
   /**
    * @module argos/Models/Manager
    */
-  var __class = _lang2.default.setObject('argos.Models.Manager', /** @lends module:argos/Models/Manager */{
+  const __class = _lang2.default.setObject('argos.Models.Manager', /** @lends module:argos/Models/Manager */{
     register: function register(modelName, modelType, ctor) {
-      var value = new Map();
+      let value = new Map();
       if (store.has(modelName)) {
         value = store.get(modelName);
       }
@@ -48,14 +48,14 @@ define('argos/Models/Manager', ['module', 'exports', 'dojo/_base/lang'], functio
       return ctor;
     },
     get: function get(modelName, modelType) {
-      var value = store.get(modelName);
+      const value = store.get(modelName);
       if (value) {
         return value.get(modelType);
       }
     },
     getModel: function getModel(modelName, modelType) {
-      var ModelCtor = this.get(modelName, modelType);
-      var model = null;
+      const ModelCtor = this.get(modelName, modelType);
+      let model = null;
       if (ModelCtor) {
         model = new ModelCtor();
         model.init();
@@ -63,38 +63,16 @@ define('argos/Models/Manager', ['module', 'exports', 'dojo/_base/lang'], functio
       return model;
     },
     getModels: function getModels(modelType) {
-      var models = [];
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = store.keys()[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var key = _step.value;
-
-          var model = this.getModel(key, modelType);
-          if (model) {
-            models.push(model);
-          }
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
+      const models = [];
+      for (const key of store.keys()) {
+        const model = this.getModel(key, modelType);
+        if (model) {
+          models.push(model);
         }
       }
-
       return models;
     },
-    store: store
+    store
   });
 
   exports.default = __class;

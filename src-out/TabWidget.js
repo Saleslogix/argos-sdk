@@ -36,7 +36,7 @@ define('argos/TabWidget', ['module', 'exports', 'dojo/_base/declare', './_Templa
   /**
    * @module argos/TabWidget
    */
-  var __class = (0, _declare2.default)('argos.TabWidget', [_Templated3.default], /** @lends module:argos/TabWidget.prototype */{
+  const __class = (0, _declare2.default)('argos.TabWidget', [_Templated3.default], /** @lends module:argos/TabWidget.prototype */{
     /**
      * @property {Simplate}
      * HTML that defines a new tab list
@@ -79,9 +79,7 @@ define('argos/TabWidget', ['module', 'exports', 'dojo/_base/declare', './_Templa
     /**
      * Sets the parentNode for the tabList
      */
-    placeTabList: function placeTabList() {
-      var parentNode = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    placeTabList: function placeTabList(parentNode = {}) {
       if (!this.tabContainer.parentNode && this.isTabbed) {
         this.tabMapping = [];
         this.tabs = [];
@@ -93,18 +91,14 @@ define('argos/TabWidget', ['module', 'exports', 'dojo/_base/declare', './_Templa
      * Function used to create the tabs, should be called by the parent upon completion of populating the tabs array of dom objects
      * @param {Array} An array of the tab objects.
     */
-    createTabs: function createTabs() {
-      var _this = this;
-
-      var tabs = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
+    createTabs: function createTabs(tabs = []) {
       this.tabList = $(this.tabListTemplate.apply(this));
-      $(tabs).each(function (i, tab) {
-        $(_this.tabList).append(tab);
+      $(tabs).each((i, tab) => {
+        $(this.tabList).append(tab);
       });
 
       $(this.tabContainer).prepend($(this.tabList));
-      var tempTabs = $(this.tabContainer).tabs();
+      const tempTabs = $(this.tabContainer).tabs();
       this._sohoTabs = tempTabs.data('tabs');
       return this;
     },

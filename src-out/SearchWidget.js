@@ -19,7 +19,7 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
     };
   }
 
-  var resource = (0, _I18n2.default)('searchWidget');
+  const resource = (0, _I18n2.default)('searchWidget');
 
   /**
    * @class
@@ -70,7 +70,7 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
   /**
    * @module argos/SearchWidget
    */
-  var __class = (0, _declare2.default)('argos.SearchWidget', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/SearchWidget.prototype */{
+  const __class = (0, _declare2.default)('argos.SearchWidget', [_WidgetBase3.default, _Templated3.default], /** @lends module:argos/SearchWidget.prototype */{
     /**
      * Provides a setter for HTML node attributes, namely the value for search text
      * @property {Object}
@@ -89,7 +89,14 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
      * @property {Simplate}
      * @memberof argos.SearchWidget
      */
-    widgetTemplate: new Simplate(['\n    <span class="searchfield-wrapper">\n      <input type="text" title="{%= $.searchText %}" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress" data-options="{collapsible: false}" />\n      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use>\n      </svg>\n    </span>\n    ']),
+    widgetTemplate: new Simplate([`
+    <span class="searchfield-wrapper">
+      <input type="text" title="{%= $.searchText %}" placeholder="{%= $.searchText %}" name="query" class="searchfield" autocorrect="off" autocapitalize="off" data-dojo-attach-point="queryNode" data-dojo-attach-event="onkeypress:_onKeyPress" data-options="{collapsible: false}" />
+      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-search"></use>
+      </svg>
+    </span>
+    `]),
 
     /**
      * Text that is used when no value is in the search box - "placeholder" text.
@@ -135,7 +142,7 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
      * * Fires the {@link #onSearchExpression onSearchExpression} event which {@link List#_onSearchExpression listens to}.
      */
     search: function search() {
-      var formattedQuery = this.getFormattedSearchQuery();
+      const formattedQuery = this.getFormattedSearchQuery();
       this.onSearchExpression(formattedQuery, this);
     },
     /**
@@ -146,7 +153,7 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
      */
     customSearch: function customSearch(queryValue) {
       this.customSearchRE.lastIndex = 0;
-      var query = queryValue.replace(this.customSearchRE, '');
+      const query = queryValue.replace(this.customSearchRE, '');
       return query;
     },
     /**
@@ -158,21 +165,21 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
      * @returns {String} query Hash resolved query
      */
     hashTagSearch: function hashTagSearch(query) {
-      var hashLayout = this.hashTagQueries || [];
-      var hashQueries = [];
-      var additionalSearch = query;
+      const hashLayout = this.hashTagQueries || [];
+      const hashQueries = [];
+      let additionalSearch = query;
 
       this.hashTagSearchRE.lastIndex = 0;
-      var newQuery = query;
-      var match = void 0;
+      let newQuery = query;
+      let match;
 
       while (match = this.hashTagSearchRE.exec(newQuery)) {
         // eslint-disable-line
-        var hashQueryExpression = null;
-        var hashTag = match[1];
+        let hashQueryExpression = null;
+        const hashTag = match[1];
 
         // todo: can optimize later if necessary
-        for (var i = 0; i < hashLayout.length && !hashQueryExpression; i++) {
+        for (let i = 0; i < hashLayout.length && !hashQueryExpression; i++) {
           if (hashLayout[i].tag.substr(1) === hashTag || hashLayout[i].key === hashTag) {
             hashQueryExpression = hashLayout[i].query;
           }
@@ -190,12 +197,12 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
         return this.formatSearchQuery(query);
       }
 
-      newQuery = '(' + hashQueries.join(') and (') + ')';
+      newQuery = `(${hashQueries.join(') and (')})`;
 
       additionalSearch = additionalSearch.replace(/^\s+|\s+$/g, '');
 
       if (additionalSearch) {
-        newQuery += ' and (' + this.formatSearchQuery(additionalSearch) + ')';
+        newQuery += ` and (${this.formatSearchQuery(additionalSearch)})`;
       }
 
       return newQuery;
@@ -251,11 +258,11 @@ define('argos/SearchWidget', ['module', 'exports', 'dojo/_base/declare', 'dojo/_
      * * Determines if its a custom expression, hash tag, or normal search
      */
     getFormattedSearchQuery: function getFormattedSearchQuery() {
-      var searchQuery = this.getSearchExpression();
-      var isCustomMatch = searchQuery && this.customSearchRE.test(searchQuery);
-      var isHashTagMatch = searchQuery && this.hashTagSearchRE.test(searchQuery);
+      const searchQuery = this.getSearchExpression();
+      const isCustomMatch = searchQuery && this.customSearchRE.test(searchQuery);
+      const isHashTagMatch = searchQuery && this.hashTagSearchRE.test(searchQuery);
 
-      var formattedQuery = void 0;
+      let formattedQuery;
 
       switch (true) {
         case isCustomMatch:

@@ -44,7 +44,7 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
   /**
    * @module argos/GroupedList
    */
-  var __class = (0, _declare2.default)('argos.GroupedList', [_List2.default], /** @lends module:argos/GroupedList.prototype */{
+  const __class = (0, _declare2.default)('argos.GroupedList', [_List2.default], /** @lends module:argos/GroupedList.prototype */{
     accordion: null,
 
     /**
@@ -56,7 +56,13 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
      * @property {Simplate}
      * Simplate that defines the Group template that includes the header element with collapse button and the row container
      */
-    groupTemplate: new Simplate(['\n      <div class="accordion-header" role="presentation" data-tag="{%= $.tag %}">\n        <a href="#" role="button"><span>{%: $.title %}</span></a>\n      </div>\n      <div class="accordion-pane" data-group="{%= $.tag %}">\n      </div>\n    ']),
+    groupTemplate: new Simplate([`
+      <div class="accordion-header" role="presentation" data-tag="{%= $.tag %}">
+        <a href="#" role="button"><span>{%: $.title %}</span></a>
+      </div>
+      <div class="accordion-pane" data-group="{%= $.tag %}">
+      </div>
+    `]),
 
     /**
      * @property {Simplate}
@@ -106,16 +112,16 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
      */
     getGroupForEntry: function getGroupForEntry(entry) {
       if (this._currentGroupBySection) {
-        var title = void 0;
-        var sectionDef = this._currentGroupBySection.section.getSection(entry);
+        let title;
+        const sectionDef = this._currentGroupBySection.section.getSection(entry);
         if (this._currentGroupBySection.description) {
-          title = this._currentGroupBySection.description + ': ' + sectionDef.title;
+          title = `${this._currentGroupBySection.description}: ${sectionDef.title}`;
         } else {
           title = sectionDef.title;
         }
         return {
           tag: sectionDef.key,
-          title: title,
+          title,
           collapsed: !!sectionDef.collapsed
         };
       }
@@ -131,7 +137,7 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
      * @deprecated Use processData instead
      */
     processFeed: function processFeed(feed) {
-      var getGroupsNode = _Utility2.default.memoize(this.getGroupsNode.bind(this), function (entryGroup) {
+      const getGroupsNode = _Utility2.default.memoize(this.getGroupsNode.bind(this), entryGroup => {
         return entryGroup.tag;
       });
 
@@ -144,15 +150,15 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
       if (this.feed.$totalResults === 0) {
         this.set('listContent', this.noDataTemplate.apply(this));
       } else if (feed.$resources) {
-        for (var i = 0; i < feed.$resources.length; i++) {
-          var entry = feed.$resources[i];
-          var entryGroup = this.getGroupForEntry(entry);
+        for (let i = 0; i < feed.$resources.length; i++) {
+          const entry = feed.$resources[i];
+          const entryGroup = this.getGroupForEntry(entry);
 
           entry.$groupTag = entryGroup.tag;
           entry.$groupTitle = entryGroup.title;
 
           this.entries[entry.$key] = entry;
-          var rowNode = $(this.rowTemplate.apply(entry, this));
+          const rowNode = $(this.rowTemplate.apply(entry, this));
           this.onApplyRowTemplate(entry, rowNode.get(0));
           $(getGroupsNode(entryGroup)).append(rowNode);
         }
@@ -160,7 +166,7 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
 
       // todo: add more robust handling when $totalResults does not exist, i.e., hide element completely
       if (typeof this.feed.$totalResults !== 'undefined') {
-        var remaining = this.feed.$totalResults - (this.feed.$startIndex + this.feed.$itemsPerPage - 1);
+        const remaining = this.feed.$totalResults - (this.feed.$startIndex + this.feed.$itemsPerPage - 1);
         this.set('remainingContent', _string2.default.substitute(this.remainingText, [remaining]));
       }
 
@@ -168,23 +174,23 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
       this.updateSoho();
     },
     processData: function processData(entries) {
-      var count = entries.length;
-      var store = this.get('store');
-      var getGroupsNode = _Utility2.default.memoize(this.getGroupsNode.bind(this), function (entryGroup) {
+      const count = entries.length;
+      const store = this.get('store');
+      const getGroupsNode = _Utility2.default.memoize(this.getGroupsNode.bind(this), entryGroup => {
         return entryGroup.tag;
       });
 
       if (count > 0) {
-        for (var i = 0; i < count; i++) {
-          var entry = this._processEntry(entries[i]);
+        for (let i = 0; i < count; i++) {
+          const entry = this._processEntry(entries[i]);
           this.entries[store.getIdentity(entry)] = entry;
 
-          var entryGroup = this.getGroupForEntry(entry);
+          const entryGroup = this.getGroupForEntry(entry);
 
           entry.$groupTag = entryGroup.tag;
           entry.$groupTitle = entryGroup.title;
 
-          var rowNode = $(this.rowTemplate.apply(entry, this));
+          const rowNode = $(this.rowTemplate.apply(entry, this));
           this.onApplyRowTemplate(entry, rowNode.get(0));
 
           $(getGroupsNode(entryGroup)).append(rowNode);
@@ -193,7 +199,7 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
       this.updateSoho();
     },
     getGroupsNode: function getGroupsNode(entryGroup) {
-      var results = $('[data-group="' + entryGroup.tag + '"]', this.contentNode);
+      let results = $(`[data-group="${entryGroup.tag}"]`, this.contentNode);
       if (results.length > 0) {
         results = results.get(0);
       } else {
@@ -201,7 +207,7 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
         results = $(this.groupTemplate.apply(entryGroup, this));
         $(this.contentNode).append(results);
         // re-query what we just place in (which was a doc frag)
-        results = $('[data-group="' + entryGroup.tag + '"]', this.contentNode).get(0);
+        results = $(`[data-group="${entryGroup.tag}"]`, this.contentNode).get(0);
       }
 
       return results;
@@ -219,10 +225,10 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
       this.applyGroupByOrderBy();
     },
     setDefaultGroupBySection: function setDefaultGroupBySection() {
-      var count = 0;
+      let count = 0;
       if (this._groupBySections) {
         count = this._groupBySections.length;
-        for (var i = 0; i < count; i++) {
+        for (let i = 0; i < count; i++) {
           if (this._groupBySections[i].isDefault === true) {
             this._currentGroupBySection = this._groupBySections[i];
           }
@@ -233,9 +239,9 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
       }
     },
     getGroupBySection: function getGroupBySection(sectionId) {
-      var groupSection = null;
+      let groupSection = null;
       if (this._groupBySections) {
-        for (var i = 0; i < this._groupBySections.length; i++) {
+        for (let i = 0; i < this._groupBySections.length; i++) {
           if (this._groupBySections[i].Id === sectionId) {
             groupSection = this._groupBySections[i];
           }
@@ -256,7 +262,7 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
       }
     },
     initSoho: function initSoho() {
-      var accordion = $('.accordion.panel', this.domNode);
+      const accordion = $('.accordion.panel', this.domNode);
       accordion.accordion();
       this.accordion = accordion.data('accordion');
     },

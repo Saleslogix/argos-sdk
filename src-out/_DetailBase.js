@@ -31,7 +31,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
     };
   }
 
-  var resource = (0, _I18n2.default)('detailBase');
+  const resource = (0, _I18n2.default)('detailBase');
 
   /**
    * @class
@@ -60,7 +60,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
   /**
    * @module argos/_DetailBase
    */
-  var __class = (0, _declare2.default)('argos._DetailBase', [_View2.default, _TabWidget2.default], /** @lends module:argos/_DetailBase.prototype */{
+  const __class = (0, _declare2.default)('argos._DetailBase', [_View2.default, _TabWidget2.default], /** @lends module:argos/_DetailBase.prototype */{
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:
@@ -170,7 +170,11 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * * `$` => detail layout row
      * * `$$` => view instance
      */
-    actionTemplate: new Simplate(['<li class="{%= $.cls %}{% if ($.disabled) { %} disabled{% } %}">', '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">', '{% if ($.icon) { %}', '<img src="{%= $.icon %}" alt="icon" class="icon" />', '{% } else if ($.iconClass) { %}', '<button type="button" class="btn-icon hide-focus">\n      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>\n      </svg>\n    </button>', '{% } %}', '<label>{%: $.label %}</label>', '<span class="data">{%= $.value %}</span>', '</a>', '</li>']),
+    actionTemplate: new Simplate(['<li class="{%= $.cls %}{% if ($.disabled) { %} disabled{% } %}">', '<a data-action="{%= $.action %}" {% if ($.disabled) { %}data-disable-action="true"{% } %} class="{% if ($.disabled) { %}disabled{% } %}">', '{% if ($.icon) { %}', '<img src="{%= $.icon %}" alt="icon" class="icon" />', '{% } else if ($.iconClass) { %}', `<button type="button" class="btn-icon hide-focus">
+      <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-{%: $.iconClass %}"></use>
+      </svg>
+    </button>`, '{% } %}', '<label>{%: $.label %}</label>', '<span class="data">{%= $.value %}</span>', '</a>', '</li>']),
     /**
      * @property {Simplate}
      * HTML that is used for rows created with columns
@@ -344,51 +348,47 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       this.clear();
     },
     createErrorHandlers: function createErrorHandlers() {
-      var _this = this;
-
       this.errorHandlers = this.errorHandlers || [{
         name: 'Aborted',
-        test: function test(error) {
+        test: error => {
           return error.aborted;
         },
-        handle: function handle(error, next) {
-          _this.options = false; // force a refresh
+        handle: (error, next) => {
+          this.options = false; // force a refresh
           next();
         }
       }, {
         name: 'AlertError',
-        test: function test(error) {
-          return error.status !== _this.HTTP_STATUS.NOT_FOUND && !error.aborted;
+        test: error => {
+          return error.status !== this.HTTP_STATUS.NOT_FOUND && !error.aborted;
         },
-        handle: function handle(error, next) {
-          alert(_this.getErrorMessage(error)); //eslint-disable-line
+        handle: (error, next) => {
+          alert(this.getErrorMessage(error)); //eslint-disable-line
           next();
         }
       }, {
         name: 'NotFound',
-        test: function test(error) {
-          return error.status === _this.HTTP_STATUS.NOT_FOUND;
+        test: error => {
+          return error.status === this.HTTP_STATUS.NOT_FOUND;
         },
-        handle: function handle(error, next) {
-          $(_this.contentNode).empty().append(_this.notAvailableTemplate.apply(_this));
+        handle: (error, next) => {
+          $(this.contentNode).empty().append(this.notAvailableTemplate.apply(this));
           next();
         }
       }, {
         name: 'CatchAll',
-        test: function test() {
-          return true;
-        },
-        handle: function handle(error, next) {
-          var fromContext = _this.options.fromContext;
-          _this.options.fromContext = null;
-          var errorItem = {
-            viewOptions: _this.options,
+        test: () => true,
+        handle: (error, next) => {
+          const fromContext = this.options.fromContext;
+          this.options.fromContext = null;
+          const errorItem = {
+            viewOptions: this.options,
             serverError: error
           };
 
-          _ErrorManager2.default.addError(_this.getErrorMessage(error), errorItem);
-          _this.options.fromContext = fromContext;
-          $(_this.domNode).removeClass('panel-loading');
+          _ErrorManager2.default.addError(this.getErrorMessage(error), errorItem);
+          this.options.fromContext = fromContext;
+          $(this.domNode).removeClass('panel-loading');
           next();
         }
       }];
@@ -402,7 +402,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * @template
      */
     createToolLayout: function createToolLayout() {
-      var tools = [];
+      const tools = [];
 
       if (this.editView) {
         tools.push({
@@ -458,10 +458,10 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * Toggles the collapsed state of the section.
      */
     toggleSection: function toggleSection(params) {
-      var node = $('#' + params.$source);
+      const node = $(`#${params.$source}`);
       if (node.length) {
         node.toggleClass('collapsed');
-        var button = $('button', node).first();
+        const button = $('button', node).first();
         if (button.length) {
           button.toggleClass(this.toggleCollapseClass);
           button.toggleClass(this.toggleExpandClass);
@@ -473,8 +473,8 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * @private
      */
     placeDetailHeader: function placeDetailHeader() {
-      var value = _string2.default.substitute(this.informationText, [this.entityText]);
-      $(this.tabContainer).before(this.detailHeaderTemplate.apply({ value: value }, this));
+      const value = _string2.default.substitute(this.informationText, [this.entityText]);
+      $(this.tabContainer).before(this.detailHeaderTemplate.apply({ value }, this));
     },
     /**
      * Handler for the global `/app/refresh` event. Sets `refreshRequired` to true if the key matches.
@@ -482,7 +482,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * @private
      */
     _onRefresh: function _onRefresh(o) {
-      var descriptor = o.data && o.data[this.labelProperty];
+      const descriptor = o.data && o.data[this.labelProperty];
 
       if (this.options && this.options.key === o.key) {
         this.refreshRequired = true;
@@ -501,20 +501,16 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
         return;
       }
 
-      var relatedItems = this.layout.filter(function (section) {
-        return section.name === 'RelatedItemsSection';
-      });
+      const relatedItems = this.layout.filter(section => section.name === 'RelatedItemsSection');
 
       if (relatedItems.length > 0) {
-        var views = relatedItems[0].children.map(function (child) {
-          return App.getView(child.view, false);
-        });
-        var matchesResourceKind = views.filter(function (view) {
+        const views = relatedItems[0].children.map(child => App.getView(child.view, false));
+        const matchesResourceKind = views.filter(view => {
           if (view.resourceKind === o.resourceKind) {
             return true;
           }
 
-          var model = view.getModel();
+          const model = view.getModel();
           if (model && model.resourceKind === o.resourceKind) {
             return true;
           }
@@ -549,11 +545,11 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * @param {HTMLElement} el
      */
     navigateToEditView: function navigateToEditView() /* el*/{
-      var view = App.getView(this.editView);
+      const view = App.getView(this.editView);
       if (view) {
-        var entry = this.entry;
+        const entry = this.entry;
         view.show({
-          entry: entry,
+          entry,
           fromContext: this
         });
       }
@@ -565,8 +561,8 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * @param {String} descriptor Optional descriptor option that is mixed in.
      */
     navigateToRelatedView: function navigateToRelatedView(id, slot, descriptor) {
-      var options = this._navigationOptions[slot];
-      var view = App.getView(id);
+      const options = this._navigationOptions[slot];
+      const view = App.getView(id);
 
       if (descriptor && options) {
         options.descriptor = descriptor;
@@ -624,31 +620,31 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * @param {Object} entry data response
      */
     processLayout: function processLayout(layout, entry) {
-      var items = layout.children || layout.as || layout;
-      var options = layout.options || (layout.options = {
+      const items = layout.children || layout.as || layout;
+      const options = layout.options || (layout.options = {
         title: this.detailsText
       });
-      var sectionQueue = [];
-      var sectionStarted = false;
-      var callbacks = [];
-      var row = [];
+      const sectionQueue = [];
+      let sectionStarted = false;
+      const callbacks = [];
+      let row = [];
 
-      var sectionNode = void 0;
+      let sectionNode;
 
       if (this.isTabbed) {
         this.placeTabList(this.contentNode);
       }
 
-      for (var i = 0; i < items.length; i++) {
-        var current = items[i];
-        var include = this.expandExpression(current.include, entry);
-        var exclude = this.expandExpression(current.exclude, entry);
-        var context = void 0;
+      for (let i = 0; i < items.length; i++) {
+        const current = items[i];
+        const include = this.expandExpression(current.include, entry);
+        const exclude = this.expandExpression(current.exclude, entry);
+        let context;
 
         if (include !== undefined && !include) {
           if (i >= items.length - 1 && row.length > 0) {
-            var _rowNode = this.createRow(row);
-            $(sectionNode).append(_rowNode);
+            const rowNode = this.createRow(row);
+            $(sectionNode).append(rowNode);
             row = [];
           }
           continue;
@@ -656,8 +652,8 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
 
         if (exclude !== undefined && exclude) {
           if (i >= items.length - 1 && row.length > 0) {
-            var _rowNode2 = this.createRow(row);
-            $(sectionNode).append(_rowNode2);
+            const rowNode = this.createRow(row);
+            $(sectionNode).append(rowNode);
             row = [];
           }
           continue;
@@ -674,7 +670,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
         }
 
         if (!sectionStarted) {
-          var section = void 0;
+          let section;
           sectionStarted = true;
           if (this.isTabbed) {
             if (layout.name === this.quickActionSection) {
@@ -682,7 +678,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
               sectionNode = section.get(0);
               $(this.quickActions).append(section);
             } else {
-              var tab = $(this.tabListItemTemplate.apply(layout, this)).get(0);
+              const tab = $(this.tabListItemTemplate.apply(layout, this)).get(0);
               section = $(this.sectionBeginTemplate.apply(layout, this) + this.sectionEndTemplate.apply(layout, this));
               sectionNode = section.get(0);
               this.tabMapping.push(section.get(0));
@@ -696,11 +692,11 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
           }
         }
 
-        var provider = current.provider || _Utility2.default.getValue;
-        var property = typeof current.property === 'string' ? current.property : current.name;
-        var value = typeof current.value === 'undefined' ? provider(entry, property, entry) : current.value;
-        var rendered = void 0;
-        var formatted = void 0;
+        const provider = current.provider || _Utility2.default.getValue;
+        const property = typeof current.property === 'string' ? current.property : current.name;
+        const value = typeof current.value === 'undefined' ? provider(entry, property, entry) : current.value;
+        let rendered;
+        let formatted;
         if (current.template || current.tpl) {
           rendered = (current.template || current.tpl).apply(value, this);
           formatted = current.encode === true ? _Format2.default.encode(rendered) : rendered;
@@ -711,8 +707,8 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
           formatted = current.encode !== false ? _Format2.default.encode(value) : value;
         }
 
-        var data = _lang2.default.mixin({}, {
-          entry: entry,
+        const data = _lang2.default.mixin({}, {
+          entry,
           value: formatted,
           raw: value
         }, current);
@@ -725,7 +721,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
           data.action = this.expandExpression(current.action, entry, value);
         }
 
-        var hasAccess = App.hasAccessTo(current.security);
+        const hasAccess = App.hasAccessTo(current.security);
 
         if (current.security) {
           data.disabled = !hasAccess;
@@ -776,10 +772,10 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
           data.context = this._navigationOptions.push(context) - 1;
         }
 
-        var useListTemplate = layout.list || options.list;
+        const useListTemplate = layout.list || options.list;
 
-        var template = void 0;
-        var isColumnItem = false;
+        let template;
+        let isColumnItem = false;
         // priority: use > (relatedPropertyTemplate | relatedTemplate) > (actionPropertyTemplate | actionTemplate) > propertyTemplate
         if (current.use) {
           template = current.use;
@@ -799,7 +795,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
           isColumnItem = true;
         }
 
-        var rowNode = this.createRowNode(current, sectionNode, entry, template, data);
+        let rowNode = this.createRowNode(current, sectionNode, entry, template, data);
         if (data.raw !== undefined && data.value) {
           if (isColumnItem) {
             row.push(rowNode);
@@ -826,32 +822,32 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
           callbacks.push({
             row: current,
             node: rowNode,
-            value: value,
-            entry: entry
+            value,
+            entry
           });
         }
       }
 
-      for (var _i = 0; _i < callbacks.length; _i++) {
-        var item = callbacks[_i];
+      for (let i = 0; i < callbacks.length; i++) {
+        const item = callbacks[i];
         item.row.onCreate.apply(this, [item.row, item.node, item.value, item.entry]);
       }
 
-      for (var _i2 = 0; _i2 < sectionQueue.length; _i2++) {
-        var _current = sectionQueue[_i2];
-        this.processLayout(_current, entry);
+      for (let i = 0; i < sectionQueue.length; i++) {
+        const current = sectionQueue[i];
+        this.processLayout(current, entry);
       }
       this.isRefreshing = false;
     },
     createRow: function createRow(row) {
-      var rowTemplate = $(this.rowTemplate.apply(null, this));
-      row.forEach(function (element) {
+      const rowTemplate = $(this.rowTemplate.apply(null, this));
+      row.forEach(element => {
         rowTemplate.append(element);
       });
       return rowTemplate;
     },
     createRowNode: function createRowNode(layout, sectionNode, entry, template, data) {
-      var frag = $(template.apply(data, this));
+      const frag = $(template.apply(data, this));
       return frag.get(0);
     },
     _getStoreAttr: function _getStoreAttr() {
@@ -920,25 +916,23 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * Initiates the request.
      */
     requestData: function requestData() {
-      var _this2 = this;
-
       $(this.domNode).addClass('panel-loading');
 
-      var store = this.get('store');
+      const store = this.get('store');
 
       if (this._model) {
-        return this.requestDataUsingModel().then(function (data) {
-          _this2._onGetComplete(data);
-        }, function (err) {
-          _this2._onGetError(null, err);
+        return this.requestDataUsingModel().then(data => {
+          this._onGetComplete(data);
+        }, err => {
+          this._onGetError(null, err);
         });
       } else if (store) {
-        var getOptions = {};
+        const getOptions = {};
 
         this._applyStateToGetOptions(getOptions);
 
-        var getExpression = this._buildGetExpression() || null;
-        var getResults = this.requestDataUsingStore(getExpression, getOptions);
+        const getExpression = this._buildGetExpression() || null;
+        const getResults = this.requestDataUsingStore(getExpression, getOptions);
 
         (0, _when2.default)(getResults, this._onGetComplete.bind(this), this._onGetError.bind(this, getOptions));
 
@@ -948,15 +942,15 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       throw new Error('requestData called without a model or store defined.');
     },
     requestDataUsingModel: function requestDataUsingModel() {
-      var key = this._buildGetExpression();
+      const key = this._buildGetExpression();
       return this._model.getEntry(key, this.options);
     },
     requestDataUsingStore: function requestDataUsingStore(getExpression, getOptions) {
-      var store = this.get('store');
+      const store = this.get('store');
       return store.get(getExpression, getOptions);
     },
     _buildGetExpression: function _buildGetExpression() {
-      var options = this.options;
+      const options = this.options;
       return options && (options.id || options.key);
     },
     _applyStateToGetOptions: function _applyStateToGetOptions() /* getOptions*/{},
@@ -984,7 +978,7 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
      * @param data
      */
     activate: function activate(tag, data) {
-      var options = data && data.options;
+      const options = data && data.options;
       if (options && options.descriptor) {
         options.title = options.title || options.descriptor;
       }
@@ -1052,15 +1046,15 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       this._navigationOptions = [];
     },
     _processRelatedItem: function _processRelatedItem(data, context, rowNode) {
-      var view = App.getView(data.view, false);
-      var options = {};
+      const view = App.getView(data.view, false);
+      const options = {};
 
-      var renderRelated = function renderRelated(result) {
+      const renderRelated = result => {
         if (result >= 0) {
-          var labelNode = $('.related-item-label', rowNode).first();
+          const labelNode = $('.related-item-label', rowNode).first();
           if (labelNode.length) {
             $('.busy-xs', labelNode).remove();
-            labelNode.before('<span class="info badge">' + result + '</span>');
+            labelNode.before(`<span class="info badge">${result}</span>`);
           } else {
             console.warn('Missing the "related-item-label" dom node.'); //eslint-disable-line
           }
@@ -1075,16 +1069,16 @@ define('argos/_DetailBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_b
       }
     },
     removeEntry: function removeEntry() {
-      var entry = this._createEntryForRemove();
+      const entry = this._createEntryForRemove();
       if (entry) {
-        var store = this.get('store');
+        const store = this.get('store');
         if (store) {
           store.remove(entry).then(this._onRemoveSuccess.bind(this), this._onRemoveError.bind(this));
         }
       }
     },
     _createEntryForRemove: function _createEntryForRemove() {
-      var entry = {
+      const entry = {
         $key: this.entry.$key,
         $etag: this.entry.$etag,
         $name: this.entry.$name

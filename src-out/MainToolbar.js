@@ -15,7 +15,7 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
     };
   }
 
-  var resource = (0, _I18n2.default)('mainToolbar');
+  const resource = (0, _I18n2.default)('mainToolbar');
 
   /**
    * @class
@@ -42,7 +42,7 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
   /**
    * @module argos/MainToolbar
    */
-  var __class = (0, _declare2.default)('argos.MainToolbar', [_Toolbar2.default], /** @lends module:argos/MainToolbar.prototype */{
+  const __class = (0, _declare2.default)('argos.MainToolbar', [_Toolbar2.default], /** @lends module:argos/MainToolbar.prototype */{
     /**
      * @property {Object}
      * Used to set the title node's innerHTML
@@ -59,7 +59,40 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
      *
      * `$` - the toolbar instance
      */
-    widgetTemplate: new Simplate(['\n    <header class="header is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">\n      <div class="toolbar do-resize has-more-button has-title-button" role="toolbar" aria-label="Layouts" data-options="{maxVisibleButtons: 4}">\n        <div class="title">\n          <button class="btn-icon application-menu-trigger hide-focus" type="button" tabindex="0">\n              <span class="audible">Show navigation</span>\n              <span class="icon app-header">\n                <span class="one"></span>\n                <span class="two"></span>\n                <span class="three"></span>\n              </span>\n          </button>\n          <h1 data-dojo-attach-point="titleNode">{%= $.titleText %}</h1>\n        </div>\n        <div class="buttonset" data-dojo-attach-point="toolNode">\n        </div>\n        <div class="more">\n          <button class="btn-actions page-changer" type="button" data-options="{attachToBody: true}">\n            <svg class="icon" focusable="false" aria-hidden="true" role="presentation">\n              <use xlink:href="#icon-more"></use>\n            </svg>\n            <span class="audible" data-translate="text">More</span>\n          </button>\n          <ul id="app-toolbar-more" class="popupmenu is-selectable">\n            <li class="heading" role="presentation">{%= $.themeText %}</li>\n            <div data-dojo-attach-point="themeNode"></div>\n            <li class="separator" role="presentation"></li>\n            <li class="heading" role="presentation">{%= $.personalizationText %}</li>\n            <div data-dojo-attach-point="personalizationNode"></div>\n          </ul>\n        </div>\n      </div>\n    </header>\n  ']),
+    widgetTemplate: new Simplate([`
+    <header class="header is-personalizable is-scrolled-down" data-options="{addScrollClass: true}">
+      <div class="toolbar do-resize has-more-button has-title-button" role="toolbar" aria-label="Layouts" data-options="{maxVisibleButtons: 4}">
+        <div class="title">
+          <button class="btn-icon application-menu-trigger hide-focus" type="button" tabindex="0">
+              <span class="audible">Show navigation</span>
+              <span class="icon app-header">
+                <span class="one"></span>
+                <span class="two"></span>
+                <span class="three"></span>
+              </span>
+          </button>
+          <h1 data-dojo-attach-point="titleNode">{%= $.titleText %}</h1>
+        </div>
+        <div class="buttonset" data-dojo-attach-point="toolNode">
+        </div>
+        <div class="more">
+          <button class="btn-actions page-changer" type="button" data-options="{attachToBody: true}">
+            <svg class="icon" focusable="false" aria-hidden="true" role="presentation">
+              <use xlink:href="#icon-more"></use>
+            </svg>
+            <span class="audible" data-translate="text">More</span>
+          </button>
+          <ul id="app-toolbar-more" class="popupmenu is-selectable">
+            <li class="heading" role="presentation">{%= $.themeText %}</li>
+            <div data-dojo-attach-point="themeNode"></div>
+            <li class="separator" role="presentation"></li>
+            <li class="heading" role="presentation">{%= $.personalizationText %}</li>
+            <div data-dojo-attach-point="personalizationNode"></div>
+          </ul>
+        </div>
+      </div>
+    </header>
+  `]),
     themeTemplate: new Simplate(['<li class="is-selectable {% if($.name === $.selected) { %} is-checked {% }  %} ">', '<a href="#" tabindex="-1" role="menuitemcheckbox" data-theme="{%= $.data %}">{%= $.name %}</a>', '</li>']),
     personalizationTemplate: new Simplate(['<li class="is-selectable {% if($.name === $.selected) { %} is-checked {% }  %}">', '<a href="#" tabindex="-1" role="menuitem" data-rgbcolor="{%= $.data %}" data-colorid="{%= $.colorid %}">{%= $.name %}</a>', '</li>']),
     selectedTheme: '',
@@ -71,7 +104,21 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
      * `$` - The toolbar item object
      * `$$` - The toolbar instance
      */
-    toolTemplate: new Simplate(['\n      <button\n        class="btn-tertiary hide-focus {%= $.cls %} toolButton-right"\n        type="button"\n        title="{%: $.title %}"\n        data-action="invokeTool"\n        data-tool="{%= $.id %}">\n        {% if ($.svg) { %}\n        <svg aria-hidden="true" focusable="false" role="presentation" class="icon">\n          <use xlink:href="#icon-{%= $.svg %}"/>\n        </svg>\n        {% } %}\n        <span>{%: $.title || $.id %}</span>\n      </button>\n    ']),
+    toolTemplate: new Simplate([`
+      <button
+        class="btn-tertiary hide-focus {%= $.cls %} toolButton-right"
+        type="button"
+        title="{%: $.title %}"
+        data-action="invokeTool"
+        data-tool="{%= $.id %}">
+        {% if ($.svg) { %}
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon">
+          <use xlink:href="#icon-{%= $.svg %}"/>
+        </svg>
+        {% } %}
+        <span>{%: $.title || $.id %}</span>
+      </button>
+    `]),
     /**
      * @property {Number}
      * Current number of toolbar items set
@@ -101,51 +148,47 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
       App.persistPreferences();
     },
     buildPersonalizations: function buildPersonalizations() {
-      var _this = this;
-
-      var sohoColors = Soho.theme.personalizationColors();
+      const sohoColors = Soho.theme.personalizationColors();
 
       if (App && App.preferences && App.preferences.colorId) {
-        var savedPersolization = sohoColors[App.preferences.colorId];
+        const savedPersolization = sohoColors[App.preferences.colorId];
         this.selectedPersonalization = savedPersolization && savedPersolization.name;
       }
       if (App && App.preferences && App.preferences.theme) {
-        var savedTheme = Soho.theme.themes().find(function (obj) {
-          return obj.id === App.preferences.theme;
-        });
+        const savedTheme = Soho.theme.themes().find(obj => obj.id === App.preferences.theme);
         this.selectedTheme = savedTheme && savedTheme.name;
       }
-      Object.keys(sohoColors).forEach(function (key) {
-        var color = sohoColors[key];
-        var pers = $(_this.personalizationTemplate.apply({
+      Object.keys(sohoColors).forEach(key => {
+        const color = sohoColors[key];
+        const pers = $(this.personalizationTemplate.apply({
           name: color.name,
           data: color.value,
           colorid: color.id,
-          selected: _this.selectedPersonalization
-        }, _this));
+          selected: this.selectedPersonalization
+        }, this));
 
-        $(_this.personalizationNode).append(pers);
+        $(this.personalizationNode).append(pers);
       });
-      $(this.personalizationNode).click(function (e) {
-        _this._changePersonalization('colorId', e.target.attributes['data-colorid']);
-        _this._changePersonalization('color', e.target.attributes['data-rgbcolor']);
+      $(this.personalizationNode).click(e => {
+        this._changePersonalization('colorId', e.target.attributes['data-colorid']);
+        this._changePersonalization('color', e.target.attributes['data-rgbcolor']);
       });
-      Soho.theme.themes().forEach(function (item) {
-        var theme = $(_this.themeTemplate.apply({
+      Soho.theme.themes().forEach(item => {
+        const theme = $(this.themeTemplate.apply({
           name: item.name,
           data: item.id,
-          selected: _this.selectedTheme
-        }, _this));
-        $(_this.themeNode).append(theme);
+          selected: this.selectedTheme
+        }, this));
+        $(this.themeNode).append(theme);
       });
-      $(this.themeNode).click(function (e) {
-        _this._changePersonalization('theme', e.target.attributes['data-theme']);
+      $(this.themeNode).click(e => {
+        this._changePersonalization('theme', e.target.attributes['data-theme']);
       });
     },
     initSoho: function initSoho() {
       this.buildPersonalizations();
 
-      var header = $(this.domNode);
+      const header = $(this.domNode);
       header.header();
       this.toolbar = header.find('.toolbar').data('toolbar');
 
@@ -171,10 +214,10 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
      */
     showTools: function showTools(tools) {
       this.inherited(showTools, arguments);
-      $(this.domNode).removeClass('toolbar-size-' + this.size);
-      var onLine = this.app.onLine;
+      $(this.domNode).removeClass(`toolbar-size-${this.size}`);
+      let onLine = this.app.onLine;
       if (tools) {
-        var count = {
+        const count = {
           left: 0,
           right: 0
         };
@@ -182,10 +225,10 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
         // remove buttons from prev view
         $('button.toolButton-right', this.toolNode).remove();
 
-        for (var i = 0; i < tools.length; i++) {
-          var tool = tools[i];
-          var side = tool.side || 'right';
-          var toolTemplate = tool.template || this.toolTemplate;
+        for (let i = 0; i < tools.length; i++) {
+          const tool = tools[i];
+          const side = tool.side || 'right';
+          const toolTemplate = tool.template || this.toolTemplate;
           count[side] += 1;
           if (tool.offline) {
             onLine = false;
@@ -198,7 +241,7 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
         this.updateSoho();
 
         this.size = Math.max(count.left, count.right);
-        $(this.domNode).addClass('toolbar-size-' + this.size);
+        $(this.domNode).addClass(`toolbar-size-${this.size}`);
         this.setMode(onLine);
       }
     },
@@ -215,7 +258,7 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
 
     disableTool: function disableTool(id) {
       this.inherited(disableTool, arguments);
-      var result = this._getToolDOMNode(id);
+      const result = this._getToolDOMNode(id);
       if (result) {
         $(result).addClass('toolButton-disabled');
         result.disabled = true;
@@ -223,14 +266,14 @@ define('argos/MainToolbar', ['module', 'exports', 'dojo/_base/declare', './Toolb
     },
     enableTool: function enableTool(id) {
       this.inherited(enableTool, arguments);
-      var result = this._getToolDOMNode(id);
+      const result = this._getToolDOMNode(id);
       if (result) {
         $(result).removeClass('toolButton-disabled');
         result.disabled = false;
       }
     },
     _getToolDOMNode: function _getToolDOMNode(id) {
-      var result = $('button[data-tool=' + id + ']', this.domNode).first();
+      const result = $(`button[data-tool=${id}]`, this.domNode).first();
       return result;
     }
   });

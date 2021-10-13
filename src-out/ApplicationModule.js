@@ -39,23 +39,21 @@ define('argos/ApplicationModule', ['module', 'exports', './Views/ConfigureQuickA
     };
   }();
 
-  var ApplicationModule = function () {
+  let ApplicationModule = function () {
     _createClass(ApplicationModule, null, [{
       key: 'sdkViewsLoaded',
-      get: function get() {
+      get: function () {
         return ApplicationModule._sdkViewsLoaded;
       },
-      set: function set(val) {
+      set: function (val) {
         ApplicationModule._sdkViewsLoaded = val;
       }
     }]);
 
-    function ApplicationModule() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
+    function ApplicationModule(options = {}) {
       _classCallCheck(this, ApplicationModule);
 
-      for (var config in options) {
+      for (const config in options) {
         if (options.hasOwnProperty(config)) {
           this[config] = options[config];
         }
@@ -144,9 +142,7 @@ define('argos/ApplicationModule', ['module', 'exports', './Views/ConfigureQuickA
       value: function loadCache() {}
     }, {
       key: 'registerView',
-      value: function registerView(view, domNode) {
-        var position = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'first';
-
+      value: function registerView(view, domNode, position = 'first') {
         if (this.application) {
           this.application.registerView(view, domNode, position);
         }

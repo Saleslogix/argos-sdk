@@ -27,15 +27,27 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
     };
   }
 
-  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-    return typeof obj;
-  } : function (obj) {
-    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-  };
+  const resource = (0, _I18n2.default)('editBase'); /* Copyright (c) 2010, Sage Software, Inc. All rights reserved.
+                                                     *
+                                                     * Licensed under the Apache License, Version 2.0 (the "License");
+                                                     * you may not use this file except in compliance with the License.
+                                                     * You may obtain a copy of the License at
+                                                     *
+                                                     *     http://www.apache.org/licenses/LICENSE-2.0
+                                                     *
+                                                     * Unless required by applicable law or agreed to in writing, software
+                                                     * distributed under the License is distributed on an "AS IS" BASIS,
+                                                     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+                                                     * See the License for the specific language governing permissions and
+                                                     * limitations under the License.
+                                                     */
 
-  var resource = (0, _I18n2.default)('editBase');
+  /**
+   * @module argos/_EditBase
+   */
 
-  var __class = (0, _declare2.default)('argos._EditBase', [_View2.default], /** @lends module:argos/_EditBase */{
+
+  const __class = (0, _declare2.default)('argos._EditBase', [_View2.default], /** @lends module:argos/_EditBase */{
     /**
      * @property {Object}
      * Creates a setter map to html nodes, namely:
@@ -111,7 +123,13 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      *
      * `$` => the view instance
      */
-    sectionBeginTemplate: new Simplate(['<div class="accordion">\n      <div class="accordion-header is-selected">\n        <a href="#"><span>{%: ($.title || $.options.title) %}</span></a>\n      </div>\n      <div class="accordion-pane">\n        <fieldset class="accordion-content {%= ($.cls || $.options.cls) %}">\n    ']),
+    sectionBeginTemplate: new Simplate([`<div class="accordion">
+      <div class="accordion-header is-selected">
+        <a href="#"><span>{%: ($.title || $.options.title) %}</span></a>
+      </div>
+      <div class="accordion-pane">
+        <fieldset class="accordion-content {%= ($.cls || $.options.cls) %}">
+    `]),
     /**
      * @property {Simplate}
      * HTML that ends a section
@@ -288,14 +306,12 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      *
      */
     startup: function startup() {
-      var _this = this;
-
       this.inherited(startup, arguments);
       this.processLayout(this._createCustomizedLayout(this.createLayout()));
 
-      $('div[data-field]', this.contentNode).each(function (i, node) {
-        var name = $(node).attr('data-field');
-        var field = _this.fields[name];
+      $('div[data-field]', this.contentNode).each((i, node) => {
+        const name = $(node).attr('data-field');
+        const field = this.fields[name];
         if (field) {
           $(field.domNode).addClass('field');
           field.renderTo(node);
@@ -308,7 +324,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
     init: function init() {
       this.inherited(init, arguments);
 
-      for (var name in this.fields) {
+      for (const name in this.fields) {
         if (this.fields.hasOwnProperty(name)) {
           this.fields[name].init();
         }
@@ -324,7 +340,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * @template
      */
     createToolLayout: function createToolLayout() {
-      var tbar = [{
+      const tbar = [{
         id: 'save',
         action: 'save',
         svg: 'save',
@@ -343,7 +359,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       }
 
       return this.tools || (this.tools = {
-        tbar: tbar
+        tbar
       });
     },
     onToolCancel: function onToolCancel() {
@@ -407,8 +423,8 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * @return {Function} Either calls the fields action or returns the inherited version which looks at the view for the action
      */
     invokeAction: function invokeAction(name, parameters, evt, node) {
-      var fieldNode = $(node, this.contentNode).parents('[data-field]');
-      var field = this.fields[fieldNode.length > 0 && fieldNode.first().attr('data-field')];
+      const fieldNode = $(node, this.contentNode).parents('[data-field]');
+      const field = this.fields[fieldNode.length > 0 && fieldNode.first().attr('data-field')];
 
       if (field && typeof field[name] === 'function') {
         return field[name].apply(field, [parameters, evt, node]);
@@ -424,8 +440,8 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * @return {Boolean} If the field has the named function defined
      */
     hasAction: function hasAction(name, evt, node) {
-      var fieldNode = $(node, this.contentNode).parents('[data-field]');
-      var field = fieldNode && this.fields[fieldNode.length > 0 && fieldNode.first().attr('data-field')];
+      const fieldNode = $(node, this.contentNode).parents('[data-field]');
+      const field = fieldNode && this.fields[fieldNode.length > 0 && fieldNode.first().attr('data-field')];
 
       if (field && typeof field[name] === 'function') {
         return true;
@@ -459,8 +475,8 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       // Re-apply changes saved from concurrency/precondition failure
       if (this.previousValuesAll) {
         // Make a copy of the current values, so we can diff them
-        var currentValues = this.getValues(true);
-        var diffs = this.diffs(this.previousValuesAll, currentValues);
+        const currentValues = this.getValues(true);
+        const diffs = this.diffs(this.previousValuesAll, currentValues);
 
         if (diffs.length > 0) {
           diffs.forEach(function forEach(val) {
@@ -567,9 +583,9 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
           return true;
         },
         handle: function handleCatchAll(error, next) {
-          var fromContext = this.options.fromContext;
+          const fromContext = this.options.fromContext;
           this.options.fromContext = null;
-          var errorItem = {
+          const errorItem = {
             serverError: error
           };
 
@@ -587,7 +603,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * @return {String} View key
      */
     getTag: function getTag() {
-      var tag = this.options && this.options.entry && this.options.entry[this.idProperty];
+      let tag = this.options && this.options.entry && this.options.entry[this.idProperty];
       if (!tag) {
         tag = this.options && this.options.key;
       }
@@ -595,18 +611,18 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       return tag;
     },
     processLayout: function processLayout(layout) {
-      var rows = layout.children || layout.as || layout;
-      var sectionQueue = [];
-      var content = [];
-      var sectionStarted = false;
-      var current = void 0;
+      const rows = layout.children || layout.as || layout;
+      const sectionQueue = [];
+      const content = [];
+      let sectionStarted = false;
+      let current;
 
       if (!layout.options) {
         layout.options = {
           title: this.detailsText
         };
       }
-      for (var i = 0; i < rows.length; i++) {
+      for (let i = 0; i < rows.length; i++) {
         current = rows[i];
 
         if (current.children || current.as) {
@@ -629,26 +645,26 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       }
       content.push('</div>');
       content.push(this.sectionEndTemplate.apply(layout, this));
-      var sectionNode = $(content.join(''));
+      const sectionNode = $(content.join(''));
       sectionNode.accordion();
       this.onApplySectionNode(sectionNode.get(0), current);
       $(this.contentNode).append(sectionNode);
 
-      for (var _i = 0; _i < sectionQueue.length; _i++) {
-        current = sectionQueue[_i];
+      for (let i = 0; i < sectionQueue.length; i++) {
+        current = sectionQueue[i];
 
         this.processLayout(current);
       }
     },
     onApplySectionNode: function onApplySectionNode() /* sectionNode, layout*/{},
     createRowContent: function createRowContent(layout, content) {
-      var Ctor = _FieldManager2.default.get(layout.type);
+      const Ctor = _FieldManager2.default.get(layout.type);
       if (Ctor) {
-        var field = this.fields[layout.name || layout.property] = new Ctor(_lang2.default.mixin({
+        const field = this.fields[layout.name || layout.property] = new Ctor(_lang2.default.mixin({
           owner: this
         }, layout));
 
-        var template = field.propertyTemplate || this.propertyTemplate;
+        const template = field.propertyTemplate || this.propertyTemplate;
 
         if (field.autoFocus && !this._focusField) {
           this._focusField = field;
@@ -662,11 +678,11 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
         this.connect(field, 'onDisable', this._onDisableField);
 
         if (this.multiColumnView) {
-          var hidden = '';
+          let hidden = '';
           if (field.type === 'hidden') {
             hidden = 'display-none';
           }
-          content.push('<div class="' + this.multiColumnClass + ' columns ' + hidden + '">');
+          content.push(`<div class="${this.multiColumnClass} columns ${hidden}">`);
         }
         content.push(template.apply(field, this));
         if (this.multiColumnView) {
@@ -678,23 +694,21 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * Initiates the request.
      */
     requestData: function requestData() {
-      var _this2 = this;
-
-      var store = this.get('store');
+      const store = this.get('store');
 
       if (this._model) {
-        return this.requestDataUsingModel().then(function (data) {
-          _this2._onGetComplete(data);
-        }, function (err) {
-          _this2._onGetError(null, err);
+        return this.requestDataUsingModel().then(data => {
+          this._onGetComplete(data);
+        }, err => {
+          this._onGetError(null, err);
         });
       } else if (store) {
-        var getOptions = {};
+        const getOptions = {};
 
         this._applyStateToGetOptions(getOptions);
 
-        var getExpression = this._buildGetExpression() || null;
-        var getResults = this.requestDataUsingStore(getExpression, getOptions);
+        const getExpression = this._buildGetExpression() || null;
+        const getResults = this.requestDataUsingStore(getExpression, getOptions);
 
         (0, _when2.default)(getResults, this._onGetComplete.bind(this), this._onGetError.bind(this, getOptions));
 
@@ -707,7 +721,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       return this._model.getEntry(this.options);
     },
     requestDataUsingStore: function requestDataUsingStore(getExpression, getOptions) {
-      var store = this.get('store');
+      const store = this.get('store');
       return store.get(getExpression, getOptions);
     },
     /**
@@ -715,10 +729,10 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * value as the initial value of the field. If the value is a function, its expanded then applied.
      */
     applyFieldDefaults: function applyFieldDefaults() {
-      for (var name in this.fields) {
+      for (const name in this.fields) {
         if (this.fields.hasOwnProperty(name)) {
-          var field = this.fields[name];
-          var defaultValue = field.default;
+          const field = this.fields[name];
+          const defaultValue = field.default;
 
           if (typeof defaultValue === 'undefined') {
             continue;
@@ -732,7 +746,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * Loops all fields and calls its `clearValue()`.
      */
     clearValues: function clearValues() {
-      for (var name in this.fields) {
+      for (const name in this.fields) {
         if (this.fields.hasOwnProperty(name)) {
           this.fields[name].clearValue();
         }
@@ -749,12 +763,12 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * @param {Boolean} initial Initial state of the value, true for clean, false for dirty
      */
     setValues: function setValues(values, initial) {
-      var noValue = {};
+      const noValue = {};
 
-      for (var name in this.fields) {
+      for (const name in this.fields) {
         if (this.fields.hasOwnProperty(name)) {
-          var field = this.fields[name];
-          var value = void 0;
+          const field = this.fields[name];
+          let value;
           // for now, explicitly hidden fields (via. the field.hide() method) are not included
           if (field.isHidden()) {
             continue;
@@ -784,16 +798,16 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * @return {Object} A single object payload with all the values.
      */
     getValues: function getValues(all) {
-      var payload = {};
-      var empty = true;
+      const payload = {};
+      let empty = true;
 
-      for (var name in this.fields) {
+      for (const name in this.fields) {
         if (this.fields.hasOwnProperty(name)) {
-          var field = this.fields[name];
-          var value = field.getValue();
+          const field = this.fields[name];
+          const value = field.getValue();
 
-          var include = this.expandExpression(field.include, value, field, this);
-          var exclude = this.expandExpression(field.exclude, value, field, this);
+          const include = this.expandExpression(field.include, value, field, this);
+          const exclude = this.expandExpression(field.exclude, value, field, this);
 
           /**
            * include:
@@ -814,9 +828,9 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
           if (all || (field.alwaysUseValue || field.isDirty() || include) && !field.isHidden()) {
             if (field.applyTo !== false) {
               if (typeof field.applyTo === 'function') {
-                if ((typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object') {
+                if (typeof value === 'object') {
                   // Copy the value properties into our payload object
-                  for (var prop in value) {
+                  for (const prop in value) {
                     if (value.hasOwnProperty(prop)) {
                       payload[prop] = value[prop];
                     }
@@ -825,7 +839,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
 
                 field.applyTo(payload, value);
               } else if (typeof field.applyTo === 'string') {
-                var target = _Utility2.default.getValue(payload, field.applyTo);
+                const target = _Utility2.default.getValue(payload, field.applyTo);
                 _lang2.default.mixin(target, value);
               }
             } else {
@@ -846,16 +860,16 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
     validate: function validate() {
       this.errors = [];
 
-      for (var name in this.fields) {
+      for (const name in this.fields) {
         if (this.fields.hasOwnProperty(name)) {
-          var field = this.fields[name];
+          const field = this.fields[name];
 
-          var result = field.validate();
+          const result = field.validate();
           if (!field.isHidden() && result !== false) {
             $(field.containerNode).addClass('row-error');
 
             this.errors.push({
-              name: name,
+              name,
               message: result
             });
           } else {
@@ -905,7 +919,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
     insert: function insert() {
       this.disable();
 
-      var values = this.getValues();
+      const values = this.getValues();
       if (values) {
         this.onInsert(values);
       } else {
@@ -913,19 +927,17 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       }
     },
     onInsert: function onInsert(values) {
-      var _this3 = this;
-
-      var store = this.get('store');
-      var addOptions = {
+      const store = this.get('store');
+      const addOptions = {
         overwrite: false
       };
-      var entry = this.createEntryForInsert(values);
+      const entry = this.createEntryForInsert(values);
       this._applyStateToAddOptions(addOptions);
       if (this._model) {
-        this._model.insertEntry(entry, addOptions).then(function (data) {
-          _this3.onAddComplete(entry, data);
-        }, function (err) {
-          _this3.onAddError(addOptions, err);
+        this._model.insertEntry(entry, addOptions).then(data => {
+          this.onAddComplete(entry, data);
+        }, err => {
+          this.onAddError(addOptions, err);
         });
       } else if (store) {
         (0, _when2.default)(store.add(entry, addOptions), this.onAddComplete.bind(this, entry), this.onAddError.bind(this, addOptions));
@@ -935,7 +947,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
     onAddComplete: function onAddComplete(entry, result) {
       this.enable();
 
-      var message = this._buildRefreshMessage(entry, result);
+      const message = this._buildRefreshMessage(entry, result);
       _connect2.default.publish('/app/refresh', [message]);
 
       this.onInsertCompleted(result);
@@ -958,7 +970,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * calls `update`.
      */
     update: function update() {
-      var values = this.getValues();
+      const values = this.getValues();
       if (values) {
         this.disable();
         this.onUpdate(values);
@@ -967,19 +979,17 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       }
     },
     onUpdate: function onUpdate(values) {
-      var _this4 = this;
-
-      var store = this.get('store');
-      var putOptions = {
+      const store = this.get('store');
+      const putOptions = {
         overwrite: true
       };
-      var entry = this.createEntryForUpdate(values);
+      const entry = this.createEntryForUpdate(values);
       this._applyStateToPutOptions(putOptions);
       if (this._model) {
-        this._model.updateEntry(entry, putOptions).then(function (data) {
-          _this4.onPutComplete(entry, data);
-        }, function (err) {
-          _this4.onPutError(putOptions, err);
+        this._model.updateEntry(entry, putOptions).then(data => {
+          this.onPutComplete(entry, data);
+        }, err => {
+          this.onPutError(putOptions, err);
         });
       } else if (store) {
         (0, _when2.default)(store.put(entry, putOptions), this.onPutComplete.bind(this, entry), this.onPutError.bind(this, putOptions));
@@ -991,7 +1001,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * @return {Object} Entry/payload
      */
     createItem: function createItem() {
-      var values = this.getValues();
+      const values = this.getValues();
 
       return this.inserting ? this.createEntryForInsert(values) : this.createEntryForUpdate(values);
     },
@@ -1021,7 +1031,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
     onPutComplete: function onPutComplete(entry, result) {
       this.enable();
 
-      var message = this._buildRefreshMessage(entry, result);
+      const message = this._buildRefreshMessage(entry, result);
 
       _connect2.default.publish('/app/refresh', [message]);
 
@@ -1041,21 +1051,19 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * @returns Array List of property names that have changed
      */
     diffs: function diffs(left, right) {
-      var _this5 = this;
-
-      var acc = [];
-      var DIFF_EDITED = 'E';
+      const acc = [];
+      const DIFF_EDITED = 'E';
 
       if (DeepDiff) {
-        var _diffs = DeepDiff.diff(left, right, function (path, key) {
-          if (_this5.diffPropertyIgnores.indexOf(key) >= 0) {
+        const _diffs = DeepDiff.diff(left, right, (path, key) => {
+          if (this.diffPropertyIgnores.indexOf(key) >= 0) {
             return true;
           }
         });
 
         if (_diffs) {
-          _diffs.forEach(function (diff) {
-            var path = diff.path.join('.');
+          _diffs.forEach(diff => {
+            const path = diff.path.join('.');
             if (diff.kind === DIFF_EDITED && acc.indexOf(path) === -1) {
               acc.push(path);
             }
@@ -1066,7 +1074,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       return acc;
     },
     _extractIdPropertyFromEntry: function _extractIdPropertyFromEntry(entry) {
-      var store = this.get('store');
+      const store = this.get('store');
       if (this._model) {
         return this._model.getEntityId(entry);
       } else if (store) {
@@ -1077,9 +1085,9 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
     },
     _buildRefreshMessage: function _buildRefreshMessage(originalEntry, response) {
       if (originalEntry) {
-        var id = this._extractIdPropertyFromEntry(originalEntry);
+        const id = this._extractIdPropertyFromEntry(originalEntry);
         return {
-          id: id,
+          id,
           key: id,
           data: response
         };
@@ -1098,9 +1106,9 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * then sets the combined result into the summary validation node and sets the styling to visible
      */
     showValidationSummary: function showValidationSummary() {
-      var content = [];
+      const content = [];
 
-      for (var i = 0; i < this.errors.length; i++) {
+      for (let i = 0; i < this.errors.length; i++) {
         content.push(this.validationSummaryItemTemplate.apply(this.errors[i], this.fields[this.errors[i].name]));
       }
 
@@ -1108,9 +1116,9 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       $(this.domNode).addClass('panel-form-error');
     },
     showConcurrencySummary: function showConcurrencySummary() {
-      var content = [];
+      const content = [];
 
-      for (var i = 0; i < this.errors.length; i++) {
+      for (let i = 0; i < this.errors.length; i++) {
         content.push(this.concurrencySummaryItemTemplate.apply(this.errors[i]));
       }
 
@@ -1173,7 +1181,7 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
      * @param {String} access Can be either "update" or "insert"
      */
     getSecurity: function getSecurity(access) {
-      var lookup = {
+      const lookup = {
         update: this.updateSecurity,
         insert: this.insertSecurity
       };
@@ -1271,14 +1279,14 @@ define('argos/_EditBase', ['module', 'exports', 'dojo/_base/declare', 'dojo/_bas
       }
     },
     getRoute: function getRoute() {
-      return this.id + '/:key?';
+      return `${this.id}/:key?`;
     },
     buildRoute: function buildRoute() {
-      var parts = [];
-      var id = this.id;
+      const parts = [];
+      const id = this.id;
       parts.push(id);
 
-      var key = this.getTag() || this.entry && this.entry[this.idProperty];
+      const key = this.getTag() || this.entry && this.entry[this.idProperty];
       if (key) {
         parts.push(key);
       }

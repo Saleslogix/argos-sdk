@@ -47,7 +47,7 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
   /**
    * @module argos/RelatedViewWidget
    */
-  var resource = (0, _I18n2.default)('relatedViewWidget');
+  const resource = (0, _I18n2.default)('relatedViewWidget');
 
   /**
    * @class
@@ -55,7 +55,7 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
    * @extends module:argos/_RelatedViewWidgetBase
    * @mixes module:argos/_CustomizationMixin
    */
-  var __class = (0, _declare2.default)('argos.RelatedViewWidget', [_RelatedViewWidgetBase3.default, _CustomizationMixin3.default], /** @lends moduleargos/RelatedViewWidget.prototype */{
+  const __class = (0, _declare2.default)('argos.RelatedViewWidget', [_RelatedViewWidgetBase3.default, _CustomizationMixin3.default], /** @lends moduleargos/RelatedViewWidget.prototype */{
     _ActionMixin: null,
     cls: 'related-view-widget',
     nodataText: resource.nodataText,
@@ -157,14 +157,14 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
       }]);
     },
     createActions: function createActions(actions) {
-      for (var i = 0; i < actions.length; i++) {
-        var action = actions[i];
-        var options = {
+      for (let i = 0; i < actions.length; i++) {
+        const action = actions[i];
+        const options = {
           actionIndex: i
         };
         _lang2.default.mixin(action, options);
-        var actionTemplate = action.template || this.relatedActionTemplate;
-        var actionNode = $(actionTemplate.apply(action, action.id));
+        const actionTemplate = action.template || this.relatedActionTemplate;
+        const actionNode = $(actionTemplate.apply(action, action.id));
         $(actionNode).on('click', this.onInvokeActionItem.bind(this));
         $(this.actionsNode).append(actionNode);
       }
@@ -172,8 +172,8 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
       this.actions = actions;
     },
     onInvokeActionItem: function onInvokeActionItem(evt) {
-      var index = evt.currentTarget.attributes['data-id'].value;
-      var action = this.actions[index];
+      const index = evt.currentTarget.attributes['data-id'].value;
+      const action = this.actions[index];
       if (action) {
         if (action.isEnabled) {
           if (action.fn) {
@@ -188,7 +188,7 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
       evt.stopPropagation();
     },
     getStore: function getStore() {
-      var store = new _SData2.default({
+      const store = new _SData2.default({
         service: App.getService(),
         resourceKind: this.resourceKind,
         contractName: this.contractName,
@@ -197,7 +197,7 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
       return store;
     },
     getQueryOptions: function getQueryOptions() {
-      var whereExpression = '';
+      let whereExpression = '';
       if (this.hasOwnProperty('where')) {
         if (typeof this.where === 'function') {
           whereExpression = this.where(this.parentEntry);
@@ -206,7 +206,7 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
         }
       }
 
-      var queryOptions = {
+      const queryOptions = {
         count: this.pageSize || 1,
         start: 0,
         select: this.select || '',
@@ -221,7 +221,7 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
         this.startIndex = 1;
       }
       this.queryOptions.start = this.startIndex - 1;
-      var queryResults = this.store.query(null, this.queryOptions);
+      const queryResults = this.store.query(null, this.queryOptions);
       this.startIndex = this.startIndex > 0 && this.pageSize > 0 ? this.startIndex + this.pageSize : 1;
       return queryResults;
     },
@@ -235,7 +235,7 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
       }
     },
     onLoad: function onLoad() {
-      var data = void 0;
+      let data;
       if (this.relatedData) {
         if (typeof this.relatedData === 'function') {
           data = this.relatedData(this.parentEntry);
@@ -265,7 +265,7 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
           return;
         }
         this.relatedResults = this.fetchData();
-        (function (context, relatedResults) {
+        ((context, relatedResults) => {
           try {
             (0, _when2.default)(relatedResults, function success(relatedFeed) {
               this.onApply(relatedFeed);
@@ -285,13 +285,13 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
         }
 
         if (relatedFeed.length > 0) {
-          var moreData = void 0;
+          let moreData;
           $(this.containerNode).removeClass('hidden');
           $(this.tabNode).removeClass('collapsed');
           this.itemCount = this.itemCount + relatedFeed.length;
-          var restCount = this.relatedResults.total - this.itemCount;
+          const restCount = this.relatedResults.total - this.itemCount;
           if (restCount > 0) {
-            var moreCount = restCount >= this.pageSize ? this.pageSize : restCount;
+            const moreCount = restCount >= this.pageSize ? this.pageSize : restCount;
             moreData = _string2.default.substitute(this.selectMoreDataText, [moreCount, this.relatedResults.total]);
           } else {
             moreData = '';
@@ -309,14 +309,14 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
 
           if (this.showTotalInTab) {
             $(this.titleNode).attr({
-              innerHTML: this.title + '  ' + _string2.default.substitute(this.totalCountText, [this.relatedResults.total])
+              innerHTML: `${this.title}  ${_string2.default.substitute(this.totalCountText, [this.relatedResults.total])}`
             });
           }
-          for (var i = 0; i < relatedFeed.length; i++) {
-            var itemEntry = relatedFeed[i];
+          for (let i = 0; i < relatedFeed.length; i++) {
+            const itemEntry = relatedFeed[i];
             itemEntry.$descriptor = itemEntry.$descriptor || relatedFeed.$descriptor;
-            var itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
-            var itemNode = $(itemHTML);
+            const itemHTML = this.relatedViewRowTemplate.apply(itemEntry, this);
+            const itemNode = $(itemHTML);
             $(itemNode).on('click', this.onSelectViewRow.bind(this));
             $(this.itemsNode).append(itemNode);
           }
@@ -329,7 +329,7 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
           $(this.itemsNode).append(this.nodataTemplate.apply(this.parentEntry, this));
           if (this.showTotalInTab) {
             $(this.titleNode).attr({
-              innerHTML: this.title + '  ' + _string2.default.substitute(this.totalCountText, [0, 0])
+              innerHTML: `${this.title}  ${_string2.default.substitute(this.totalCountText, [0, 0])}`
             });
           }
           $(this.selectMoreNode).attr({
@@ -354,23 +354,23 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
       evt.stopPropagation();
     },
     onSelectViewRow: function onSelectViewRow(evt) {
-      var relatedKey = evt.currentTarget.attributes['data-relatedkey'].value;
-      var descriptor = evt.currentTarget.attributes['data-descriptor'].value;
+      const relatedKey = evt.currentTarget.attributes['data-relatedkey'].value;
+      const descriptor = evt.currentTarget.attributes['data-descriptor'].value;
 
-      var options = {
-        descriptor: descriptor,
+      const options = {
+        descriptor,
         key: relatedKey,
         title: descriptor
       };
 
-      var view = App.getView(this.detailViewId);
+      const view = App.getView(this.detailViewId);
       if (view) {
         view.show(options);
       }
       evt.stopPropagation();
     },
     onNavigateToList: function onNavigateToList(evt) {
-      var whereExpression = void 0;
+      let whereExpression;
       if (this.hasOwnProperty('listViewWhere')) {
         if (typeof this.listViewWhere === 'function') {
           whereExpression = this.listViewWhere(this.parentEntry);
@@ -387,13 +387,13 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
         }
       }
 
-      var options = {
+      const options = {
         descriptor: this.title,
         where: whereExpression,
         title: this.title
       };
 
-      var view = App.getView(this.listViewId);
+      const view = App.getView(this.listViewId);
       if (view) {
         view.show(options);
       }
@@ -427,7 +427,7 @@ define('argos/RelatedViewWidget', ['module', 'exports', 'dojo/_base/declare', 'd
       }
     },
     destroy: function destroy() {
-      this._subscribes.forEach(function (handle) {
+      this._subscribes.forEach(handle => {
         _connect2.default.unsubscribe(handle);
       });
       this.inherited(destroy, arguments);
