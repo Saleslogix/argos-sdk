@@ -25,6 +25,50 @@
   }
 }
 
+// For Cards selection that uses .cards as parent class
+.cards {
+  .card {
+    cursor: pointer;
+
+    &.is-selected {
+      background-color: $card-selected-background-color;
+      border: 2px solid $card-selected-border-color;
+
+      .card-content {
+        border: none;
+      }
+    }
+
+    &:not(.is-selected) {
+      .card-content {
+        border: 1px solid transparent;
+      }
+    }
+
+    .card-content {
+      padding: 16px;
+
+      .checkbox-label {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+
+        ~ p {
+          margin-left: 35px;
+        }
+      }
+
+      p:not(:first-child):not(.text-strong) {
+        color: $card-expandable-sub-heading;
+      }
+
+      p + p {
+        margin-top: 5px;
+      }
+    }
+  }
+}
+
 .card,
 .small-widget,
 .widget {
@@ -36,14 +80,174 @@
   position: relative;
   width: 100%;
 
+  &.compact-bottom {
+    margin-bottom: 8px;
+  }
+
+  &.card-variant {
+    @include auto-height;
+    align-items: center;
+    display: flex;
+    flex-flow: nowrap;
+    justify-content: space-between;
+
+    .card-image {
+      padding: 15px 0px 15px 15px;
+      flex: 0 0 auto;
+    }
+
+    .card-content {
+      padding: 15px;
+
+      div {
+        &.card-content-status {
+          margin-left: -4px;
+          color: $card-content-status-success-color;
+
+          .icon {
+            margin-top: -2px;
+            vertical-align: middle;
+            height: 8px;
+            color: $card-content-status-success-color;
+          }
+
+          &.success {
+            color: $card-content-status-success-color;
+
+            .icon {
+              color: $card-content-status-success-color;
+            }
+          }
+
+          &.alert {
+            color: $card-content-status-alert-color;
+
+            .icon {
+              color: $card-content-status-alert-color;
+            }
+          }
+
+          &.error {
+            color: $card-content-status-error-color;
+
+            .icon {
+              color: $card-content-status-error-color;
+            }
+          }
+        }
+
+        &.card-content-header {
+          color: $card-content-header-color;
+          font-size: 16px;
+          margin-top: 0;
+
+          .header-status {
+            color: $card-content-header-status-available-color;
+
+            &.available {
+              color: $card-content-header-status-available-color;
+            }
+
+            &.busy {
+              color: $card-content-header-status-busy-color;
+            }
+
+            &.away {
+              color: $card-content-header-status-away-color;
+            }
+          }
+        }
+
+        &.card-content-sub {
+          color: $card-content-sub-color;
+          margin-top: 2px;
+
+          .hyperlink {
+            padding: 4px 3px;
+          }
+        }
+      }
+    }
+
+    .card-buttonset {
+      .card-content-action {
+        .btn {
+          margin-right: 8px;
+
+          &:hover {
+            color: $card-content-button-color;
+
+            .icon {
+              color: $card-content-button-color;
+            }
+          }
+
+          span {
+            margin-right: 5px;
+          }
+        }
+
+        .btn-actions {
+          border-radius: 50% !important;
+          margin-right: 24px;
+          transform: rotate(90deg);
+          width: 44px;
+          height: 44px;
+
+          &:hover {
+            color: $card-content-button-color;
+
+            .icon {
+              color: $card-content-button-color;
+            }
+          }
+        }
+      }
+    }
+  }
+
   // Empty State Containers can have variable height
   &.is-empty {
     min-height: 0;
+
+    &.no-border {
+      border: 1px solid transparent;
+      box-shadow: unset;
+    }
+
+    &.inverted {
+      background-color: $typography-background-inverted;
+
+      .card-empty-title {
+        color: $typography-card-title-inverted;
+      }
+
+      .card-empty-info {
+        p {
+          color: $typography-card-info-inverted;
+        }
+      }
+    }
 
     .card-content,
     .widget-content {
       height: auto;
       min-height: 0;
+    }
+
+    .card-content {
+      padding-top: 12px;
+
+      .card-empty-info {
+        .font-size-px-14 {
+          margin: 0 auto;
+          width: 150px;
+
+          @media only screen and (max-width: $breakpoint-tablet-reduced - 16px) {
+            width: unset;
+          }
+        }
+      }
     }
   }
 
@@ -90,6 +294,76 @@
   &.auto-size {
     @include auto-height;
     @include auto-width;
+  }
+}
+
+// CSS Rule for new expandable card
+.card.expandable-card {
+  height: auto;
+  min-height: 0;
+
+  .card-header {
+    height: auto;
+    margin: 0;
+    padding: 16px;
+
+    &.expandable-card-header[role='button'] {
+      cursor: pointer;
+    }
+
+    p + p {
+      margin-top: 8px;
+    }
+
+    .sub-heading {
+      color: $card-expandable-sub-heading;
+    }
+
+    button.btn-actions {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  .card-pane {
+    height: 0;
+    overflow: hidden;
+
+    .listview {
+      margin-bottom: 24px;
+
+      li {
+        margin: 0 17px;
+        padding: 16px 7px;
+
+        .btn-icon {
+          left: 10px;
+        }
+      }
+    }
+  }
+}
+
+.card-expandable-area.card.expandable-area {
+  .expandable-header {
+    display: inline-block;
+    height: auto;
+    vertical-align: middle;
+    width: 100%;
+
+    .btn-expander {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translate(0, -50%);
+
+      svg.icon {
+        &.vertical-more {
+          transform: rotate(90deg);
+        }
+      }
+    }
   }
 }
 
@@ -155,8 +429,6 @@
   }
 
   [class^='btn'] {
-    color: $listview-toolbar-button-text-color;
-
     span {
       color: $listview-toolbar-button-text-color;
     }
@@ -214,6 +486,7 @@
   }
 
   &:not(.has-toolbar) {
+
     > .btn-actions,
     > .btn-expander {
       line-height: normal;
@@ -387,13 +660,14 @@
 .card-empty-actions,
 .widget-empty-actions,
 .empty-actions {
-  padding: 0 0 40px;
+  padding: 0 0 32px;
 }
 
 // RTL Styles
 html[dir='rtl'] {
   .card-header,
   .widget-header {
+
     > h2,
     > h1,
     > button {
@@ -426,6 +700,7 @@ html[dir='rtl'] {
 
   .card-content,
   .widget-content {
+
     .card-group-action,
     .widget-group-action {
       padding: 0 20px 0 10px;

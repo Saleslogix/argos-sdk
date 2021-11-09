@@ -27,6 +27,8 @@ $drop-shadow-depth: rgba($ids-color-boxshadow-base, 0.2);
 
 $application-menu-border-color: $ids-color-palette-slate-90;
 
+$button-color-tertiary-initial-font: $ids-color-palette-slate-60;
+
 // Accordion
 $accordion-inverse-bg-color: $ids-color-palette-slate-90;
 $accordion-inverse-pane-bg-color: $ids-color-palette-slate-90;
@@ -60,6 +62,11 @@ $breadcrumb-disabled-color: $input-color-disabled-border;
 // Builder Pattern
 $builder-header-bg-color: $ids-color-palette-slate-60;
 
+// Cards (New)
+$card-selected-border-color: $ids-color-palette-azure-60;
+$card-selected-background-color: $ids-color-palette-azure-10;
+$card-expandable-sub-heading: $ids-color-palette-slate-60;
+
 // Cardlist
 $cardlist-box-shadow-color: rgba(0, 0, 0, 0.1);
 $cardlist-border-color: $ids-color-palette-slate-30;
@@ -69,7 +76,7 @@ $masthead-border-color: $ids-color-palette-black;
 $masthead-text-color: $ids-color-palette-slate-30;
 
 // Contextual Action Panel
-$contextual-panel-bg: $ids-color-palette-slate-20;
+$contextual-panel-bg: $ids-color-palette-slate-10;
 $contextual-panel-color: $ids-color-palette-slate-60;
 $contextual-panel-border-color: $ids-color-palette-slate-30;
 $contextual-panel-searchfield-border-color: $ids-color-palette-slate-30;
@@ -221,8 +228,8 @@ $chart-progressbar-dark-fill: $ids-color-palette-slate-60;
 $chart-targeted-achievement-bg-color: $ids-color-palette-slate-30;
 
 // Date Picker
-$datepicker-alternate-month-color: $ids-color-palette-slate-30;
-$datepicker-day-color: $ids-color-palette-slate-60;
+$datepicker-alternate-month-color: $ids-color-palette-slate-40;
+$datepicker-day-color: $ids-color-palette-slate-80;
 $datepicker-hover-bg-color: $ids-color-palette-slate-20;
 $datepicker-disabled-bg-color: $ids-color-palette-slate-10;
 $datepicker-readonly-icon-color: $ids-color-palette-slate-40;
@@ -391,6 +398,16 @@ $switch-disabled-bar-color: $ids-color-palette-slate-30;
 
 // Wizard
 $wizard-color: $ids-color-palette-slate-60;
+
+// Swipe Action
+$swipeaction-left-bg-color: $ids-color-palette-slate-30;
+$swipeaction-left-active-bg-color: $ids-color-palette-slate-40;
+$swipeaction-left-hover-bg-color: $ids-color-palette-slate-40;
+$swipeaction-right-bg-color: $ids-color-palette-azure-60;
+$swipeaction-right-color: $ids-color-palette-white;
+$swipeaction-right-active-bg-color: $ids-color-palette-azure-80;
+$swipeaction-right-hover-bg-color: $ids-color-palette-azure-80;
+$swipeaction-right-hover-color: $ids-color-palette-white;
 
 // New Theme only Variables
 $new-acc-border-radius: 6px;

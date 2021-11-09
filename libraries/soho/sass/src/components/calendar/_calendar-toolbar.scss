@@ -41,6 +41,7 @@
     }
   }
 
+  .apply,
   .today {
     font-size: $ids-size-font-sm;
     font-weight: $ids-number-font-weight-bold;
@@ -55,6 +56,10 @@
     text-indent: 0;
     top: 9px;
     width: 105px;
+
+    &.dropdown-wrapper-small {
+      right: 7px;
+    }
   }
 
   // No Month Year Picker
@@ -67,6 +72,7 @@
       top: -1px;
     }
 
+    .btn-cal-month-year,
     .btn-monthyear-pane {
       border-radius: 2px;
       color: $datepicker-month-year-color;
@@ -99,6 +105,65 @@
       left: -6px;
       margin-left: 0;
       position: relative;
+    }
+  }
+
+  // Inpage
+  &.is-inpage {
+    .toolbar-section {
+      align-items: center;
+      display: flex;
+      justify-content: flex-end;
+      min-height: 48px;
+      overflow: hidden;
+      padding: 4px;
+
+      &.no-next-previous {
+        margin-right: 15px;
+      }
+    }
+
+    .btn-inpage-cal,
+    .prev,
+    .next {
+      border-radius: 50%;
+      height: 40px;
+      margin: 0;
+      width: 40px;
+    }
+
+    .btn-inpage-cal {
+      margin-right: 0;
+
+      &.active:not([disabled]) .icon {
+        color: $datepicker-selected-bg-color;
+      }
+    }
+
+    .apply {
+      padding: 9px 3px;
+    }
+
+    .today {
+      --ripple-background: #{$calendar-selected-border-color};
+
+      padding: 9px 3px;
+    }
+
+    .btn-cal-month-year {
+      &.active:not([disabled]) .icon {
+        color: $datepicker-selected-bg-color;
+      }
+
+      .icon {
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+    }
+
+    .btn-cal-month-year,
+    .btn-monthyear-pane {
+      height: 40px;
     }
   }
 }
