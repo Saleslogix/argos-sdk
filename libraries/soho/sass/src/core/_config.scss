@@ -163,6 +163,22 @@ $badge-info-hover-icon-color: $ids-color-palette-azure-20;
 $badge-disabled-text-color: $ids-color-palette-slate-50;
 $badge-disabled-bg-color: $ids-color-palette-graphite-20;
 
+// Cards
+$card-content-button-color: $ids-color-palette-azure-60;
+$card-content-status-success-color: $ids-color-palette-emerald-60;
+$card-content-status-error-color: $ids-color-palette-ruby-60;
+$card-content-status-alert-color: $ids-color-palette-amber-60;
+$card-content-sub-color: $ids-color-palette-slate-60;
+$card-content-header-color: $ids-color-palette-slate-100;
+$card-content-header-status-available-color: $ids-color-palette-emerald-60;
+$card-content-header-status-busy-color: $ids-color-palette-ruby-60;
+$card-content-header-status-away-color: $ids-color-palette-amber-60;
+
+$card-selected-border-color: $ids-color-palette-azure-60;
+$card-selected-background-color: rgba($ids-color-palette-azure-10, 0.7);
+
+$card-expandable-sub-heading: $ids-color-palette-graphite-60;
+
 // Popup Menu
 $popupmenu-color: $font-color-extrahighcontrast;
 $popupmenu-icon-color: $ids-color-palette-graphite-60;
@@ -433,7 +449,7 @@ $expandable-area-title-color: $ids-color-font-base;
 $cardlist-bg-color: $ids-color-palette-white;
 $cardlist-border-color: $ids-color-palette-graphite-30;
 $cardlist-header-color: $ids-color-font-base;
-$cardlist-actions-color: $ids-color-font-base;
+$cardlist-actions-color: $ids-color-palette-slate-60;
 $cardlist-text-color: $font-color;
 
 // Checkboxes
@@ -709,6 +725,8 @@ $datagrid-rowgroup-header: $ids-color-palette-graphite-10;
 $datagrid-rowgroup-color: $ids-color-palette-graphite-60;
 $datagrid-empty-bg-color: #f4f4f4; //$datagrid-cell-bg-color
 
+$datagrid-badges-azure-font-color: $ids-color-palette-white;
+
 // Search Results
 $sr-masthead-text-color: $font-color;
 $sr-result-bottom-border-color: $hr-top-color;
@@ -881,6 +899,11 @@ $formcompact-field-border-color: $ids-color-palette-black;
 $formcompact-field-border-focus-color: $ids-color-brand-primary-base;
 $formcompact-field-required-color: $ids-color-brand-primary-base;
 
+// Typography
+$typography-background-inverted: $ids-color-palette-slate-100;
+$typography-card-title-inverted: $ids-color-palette-white;
+$typography-card-info-inverted: $ids-color-palette-slate-10;
+
 // Splitter
 $splitter-grip-bg-color: $ids-color-palette-graphite-60;
 $splitter-active-bg-color: $ids-color-palette-graphite-20;
@@ -936,6 +959,21 @@ $field-mm: 225px;
 $field-md: $input-size-width-md;
 $field-lg: $input-size-width-lg;
 $field-full: 100%;
+
+// Action Sheet
+$actionsheet-bg-color: $popupmenu-bg-color;
+$actionsheet-box-shadow: 0 0 8px $drop-shadow-depth;
+$actionsheet-color: $popupmenu-color;
+
+// Swipe Action
+$swipeaction-left-bg-color: $ids-color-palette-graphite-30;
+$swipeaction-left-active-bg-color: $ids-color-palette-graphite-40;
+$swipeaction-left-hover-bg-color: $ids-color-palette-graphite-40;
+$swipeaction-right-bg-color: $ids-color-palette-azure-50;
+$swipeaction-right-color: $ids-color-palette-white;
+$swipeaction-right-active-bg-color: $ids-color-palette-azure-60;
+$swipeaction-right-hover-bg-color: $ids-color-palette-azure-60;
+$swipeaction-right-hover-color: $ids-color-palette-white;
 
 //Misc
 $cubic-ease: cubic-bezier(0.17, 0.04, 0.03, 0.94);

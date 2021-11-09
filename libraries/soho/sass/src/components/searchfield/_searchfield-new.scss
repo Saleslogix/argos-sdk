@@ -50,6 +50,10 @@
       height: 34px;
       padding-bottom: 6px;
       padding-top: 6px;
+
+      @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+        height: 38px;
+      }
     }
 
     > .icon,
@@ -64,17 +68,32 @@
     }
   }
 
+  &.has-close-icon-button {
+    .btn-icon.close:not(.is-empty) {
+      @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+        margin-right: 0;
+      }
+
+      > .icon.close {
+        top: -1px;
+      }
+    }
+  }
+
   .btn-icon.close {
     align-items: center;
-    display: flex;
     justify-content: center;
     overflow: visible;
     top: 50%;
     transform: translateY(-50%);
 
+    @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+      margin-right: 38px;
+    }
+
     & > svg.close.icon {
       position: relative;
-      top: 1px;
+      top: -1px;
     }
   }
 }
@@ -83,7 +102,12 @@
   &.searchfield-wrapper {
     &.non-collapsible {
       svg.icon:not(.close) {
-        top: 11px;
+        top: 10px;
+        left: 8px;
+
+        @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+          top: 12px;
+        }
       }
     }
   }
@@ -92,7 +116,7 @@
 // Firefox needs some help
 html.is-firefox {
   .searchfield-wrapper {
-    height: 34px;
+    height: 38px;
 
     &.toolbar-searchfield-wrapper {
       height: 34px;
@@ -116,7 +140,7 @@ html.is-firefox {
       }
 
       .icon:not(.close) {
-        top: 12px;
+        top: 8px;
       }
 
       .icon.close {
@@ -124,8 +148,20 @@ html.is-firefox {
       }
     }
 
+    .collapse-button {
+      height: 35px !important;
+    }
+
     > .icon {
-      top: 12px;
+      top: 10px;
+
+      &.close {
+        top: 18px;
+
+        @media only screen and (max-width: $breakpoint-phone-to-tablet) {
+          margin-right: 5px;
+        }  
+      }
     }
 
     &.is-open,

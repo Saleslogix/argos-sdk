@@ -142,6 +142,20 @@ $badge-neutral-hover-icon-color: $ids-color-palette-white;
 $badge-disabled-text-color: $ids-color-palette-slate-30;
 $badge-disabled-bg-color: $ids-color-palette-graphite-70;
 
+// Cards
+$card-content-button-color: $ids-color-palette-slate-10;
+$card-content-status-success-color: $ids-color-palette-emerald-60;
+$card-content-status-error-color: $ids-color-palette-ruby-60;
+$card-content-status-alert-color: $ids-color-palette-amber-60;
+$card-content-sub-color: $ids-color-palette-slate-30;
+$card-content-header-color: $ids-color-palette-slate-20;
+$card-content-header-status-available-color: $ids-color-palette-emerald-60;
+$card-content-header-status-busy-color: $ids-color-palette-ruby-60;
+$card-content-header-status-away-color: $ids-color-palette-amber-60;
+
+$card-selected-background-color: rgba($ids-color-brand-primary-base, 0.3);
+$card-expandable-sub-heading: $ids-color-palette-slate-20;
+
 // Popup Menu
 $popupmenu-color: $ids-color-palette-white;
 $popupmenu-icon-color: $ids-color-palette-slate-10;
@@ -582,6 +596,7 @@ $datagrid-list-filter-active-color: $ids-color-brand-primary-base;
 $datagrid-rowgroup-header: $ids-color-palette-slate-70;
 $datagrid-rowgroup-color: $font-color;
 $datagrid-empty-bg-color: $ids-color-palette-slate-70; // $datagrid-cell-bg-color
+$datagrid-badges-azure-font-color: $ids-color-palette-white;
 
 // Search Results
 $sr-masthead-text-color: $font-color;
@@ -765,6 +780,16 @@ $builder-sidebar-bg-color: $panel-bg-color;
 .dropdown-list.multiple li:hover:not(.group-label)::before {
   border: 1px solid $ids-color-palette-slate-40;
 }
+
+// Swipe Action
+$swipeaction-left-bg-color: $ids-color-palette-graphite-60;
+$swipeaction-left-active-bg-color: $ids-color-palette-graphite-70;
+$swipeaction-left-hover-bg-color: $ids-color-palette-graphite-70;
+$swipeaction-right-bg-color: $ids-color-palette-azure-50;
+$swipeaction-right-color: $ids-color-palette-white;
+$swipeaction-right-active-bg-color: $ids-color-palette-azure-60;
+$swipeaction-right-hover-bg-color: $ids-color-palette-azure-60;
+$swipeaction-right-hover-color: $ids-color-palette-white;
 
 //================================================== //
 // Core Components

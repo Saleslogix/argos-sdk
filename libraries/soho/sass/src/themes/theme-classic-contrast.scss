@@ -78,7 +78,6 @@ $hr-top-color: $ids-color-palette-graphite-30;
 $hr-bottom-color: transparent;
 
 // Circle Pager
-$circlepager-bg-color: $ids-color-palette-white;
 $circlepager-border-color: $ids-color-palette-graphite-60;
 $circlepager-hover-bg-color: $ids-color-palette-white;
 $circlepager-hover-border-color: $ids-color-palette-black;
@@ -351,6 +350,10 @@ $fieldset-title-color: $font-color-highcontrast;
 $expandable-area-border-color: $ids-color-palette-graphite-60;
 $expandable-area-title-color: $ids-color-palette-black;
 
+// Cards
+$card-selected-background-color: $selected-bg-color;
+$card-expandable-sub-heading: $ids-color-palette-graphite-90;
+
 // Cardlist
 $cardlist-bg-color: $ids-color-palette-graphite-10;
 $cardlist-border-color: $ids-color-palette-graphite-60;
@@ -599,6 +602,7 @@ $datagrid-list-filter-active-color: $ids-color-palette-azure-90;
 $datagrid-rowgroup-header: $ids-color-palette-graphite-20;
 $datagrid-rowgroup-color: $font-color;
 $datagrid-empty-bg-color: $ids-color-palette-graphite-10; //$datagrid-cell-bg-color
+$datagrid-badges-azure-font-color: $ids-color-palette-white;
 
 // Search Results
 $sr-masthead-text-color: $font-color;
@@ -782,6 +786,16 @@ $calendar-selected-bg-color: $ids-color-palette-graphite-30;
 $calendar-hover-bg-color: rgba(74, 74, 74, 0.1);
 $calendar-disabled-bg-color: $input-color-readonly-background;
 $calendar-disabled-color: $ids-color-palette-graphite-100;
+
+// Swipe Action
+$swipeaction-left-bg-color: $ids-color-palette-graphite-30;
+$swipeaction-left-active-bg-color: $ids-color-palette-graphite-40;
+$swipeaction-left-hover-bg-color: $ids-color-palette-graphite-40;
+$swipeaction-right-bg-color: $ids-color-palette-azure-50;
+$swipeaction-right-color: $ids-color-palette-white;
+$swipeaction-right-active-bg-color: $ids-color-palette-azure-60;
+$swipeaction-right-hover-bg-color: $ids-color-palette-azure-60;
+$swipeaction-right-hover-color: $ids-color-palette-white;
 
 //================================================== //
 // Special Component Overrides

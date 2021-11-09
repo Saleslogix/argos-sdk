@@ -14,6 +14,14 @@ input.spinbox {
   &:focus {
     box-shadow: none !important;
   }
+
+  &.is-hovered {
+    border-color: $input-color-hover-border !important;
+  }
+
+  &.no-hover {
+    border-color: $input-color-focus-border !important;
+  }
 }
 
 input[type='number'] {
@@ -93,6 +101,10 @@ input::-webkit-inner-spin-button {
 .spinbox-wrapper {
   display: inline-block;
 
+  input:hover  {
+    border: 1px solid $input-color-initial-border;
+  }
+
   > * {
     vertical-align: middle;
   }
@@ -120,7 +132,7 @@ input::-webkit-inner-spin-button {
     }
 
     > .spinbox-control {
-      border-color: $input-color-focus-border;
+      border-color: $input-color-focus-border !important;
 
       &.is-active {
         border-color: $input-color-focus-border;
@@ -165,7 +177,7 @@ input::-webkit-inner-spin-button {
 .spinbox-md,
 .spinbox-lg {
   input {
-    width: calc(100% - 66px) !important;
+    width: calc(100% - 50px) !important;
   }
 }
 
@@ -184,19 +196,19 @@ input::-webkit-inner-spin-button {
 }
 
 .spinbox-sm {
-  width: 150px;
+  width: 130px;
 }
 
 .spinbox-mm {
-  width: 226px;
+  width: 206px;
 }
 
 .spinbox-md {
-  width: 300px;
+  width: 280px;
 }
 
 .spinbox-lg {
-  width: 400px;
+  width: 380px;
 }
 
 // When on smaller form factors make 400px fields go down to medium size.
