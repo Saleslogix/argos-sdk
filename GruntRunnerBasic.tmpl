@@ -8,10 +8,13 @@
   <% }); %>
 
   <% with (scripts) { %>
-    <% [].concat(polyfills, jasmine, vendor, helpers, boot).forEach(function(script){ %>
+    <% [].concat(polyfills, jasmine, vendor, helpers).forEach(function(script){ %>
     <script src="<%= script %>"></script>
     <% }) %>
   <% }; %>
+
+  <script src=".grunt/grunt-contrib-jasmine/boot0.js"></script>
+  <script src=".grunt/grunt-contrib-jasmine/boot1.js"></script>
 
   <!-- Soho Configuration -->
   <script type="application/javascript">
