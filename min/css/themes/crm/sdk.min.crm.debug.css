@@ -1167,6 +1167,7 @@ input.fileupload-background-transparent {
 .summary-form .data {
   height: auto !important;
   margin-bottom: 2rem;
+  word-break: break-word;
 }
 .actions-row {
   min-width: 125px;
