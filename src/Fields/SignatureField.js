@@ -88,7 +88,7 @@ const control = declare('argos.Fields.SignatureField', [EditorField], /** @lends
    */
   widgetTemplate: new Simplate([
     '<label for="{%= $.name %}">{%: $.label %}</label>',
-    '<button class="btn--secondary" aria-label="{%: $.signatureLabelText %}"><span aria-hidden="true">{%: $.signatureText %}</span></button>',
+    '<button class="btn-secondary" aria-label="{%: $.signatureLabelText %}"><span aria-hidden="true">{%: $.signatureText %}</span></button>',
     '<img data-dojo-attach-point="signatureNode" src="" width="{%: $.config.width %}" height="{%: $.config.height %}" alt="" />',
     '<input data-dojo-attach-point="inputNode" type="hidden">',
   ]),
