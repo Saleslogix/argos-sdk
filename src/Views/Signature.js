@@ -70,7 +70,7 @@ const __class = declare('argos.Views.Signature', [View], /** @lends module:argos
    * Simplate that defines the canvas with a set width and height
    */
   canvasTemplate: new Simplate([
-    '<canvas data-dojo-attach-point="signatureNode" width="{%: $.canvasNodeWidth %}" height="{%: $.canvasNodeHeight %}" data-dojo-attach-event="onmousedown:_penDown,onmousemove:_penMove,onmouseup:_penUp,ontouchstart:_penDown,ontouchmove:_penMove,ontouchend:_penUp"></canvas>',
+    '<canvas class="canvas-area" data-dojo-attach-point="signatureNode" width="{%: $.canvasNodeWidth %}" height="{%: $.canvasNodeHeight %}" data-dojo-attach-event="onmousedown:_penDown,onmousemove:_penMove,onmouseup:_penUp,ontouchstart:_penDown,ontouchmove:_penMove,ontouchend:_penUp"></canvas>',
   ]),
   /**
    * @property {HTMLElement}

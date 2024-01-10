@@ -75,7 +75,7 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
      * @property {Simplate}
      * Simplate that defines the canvas with a set width and height
      */
-    canvasTemplate: new Simplate(['<canvas data-dojo-attach-point="signatureNode" width="{%: $.canvasNodeWidth %}" height="{%: $.canvasNodeHeight %}" data-dojo-attach-event="onmousedown:_penDown,onmousemove:_penMove,onmouseup:_penUp,ontouchstart:_penDown,ontouchmove:_penMove,ontouchend:_penUp"></canvas>']),
+    canvasTemplate: new Simplate(['<canvas class="canvas-area" data-dojo-attach-point="signatureNode" width="{%: $.canvasNodeWidth %}" height="{%: $.canvasNodeHeight %}" data-dojo-attach-event="onmousedown:_penDown,onmousemove:_penMove,onmouseup:_penUp,ontouchstart:_penDown,ontouchmove:_penMove,ontouchend:_penUp"></canvas>']),
     /**
      * @property {HTMLElement}
      * The dojo-attach-point for the canvas element
