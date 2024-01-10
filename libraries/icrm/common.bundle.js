@@ -402,7 +402,7 @@ function canvasDraw(vector, canvas, options) {
 
   // Paint canvas white vs. clearing as on Android imageFromVector alpha pixels blacken
   // context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-  context.fillStyle = 'rgb(255,255,255)';
+  context.fillStyle = options && options.fillStyle ? options.fillStyle : 'rgb(255,255,255)';
   context.fillRect(0, 0, context.canvas.width, context.canvas.height);
 
   var scale = options && options.scale ? options.scale : 1;

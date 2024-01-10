@@ -60,8 +60,8 @@ const __class = declare('argos.Views.Signature', [View], /** @lends module:argos
     '<div id="{%= $.id %}" data-title="{%: $.titleText %}" class="panel {%= $.cls %}">',
     '{%! $.canvasTemplate %}',
     '<div class="buttons">',
-    '<button class="button" data-action="_undo"><span>{%: $.undoText %}</span></button>',
-    '<button class="button" data-action="clearValue"><span>{%: $.clearCanvasText %}</span></button>',
+    '<button class="btn-secondary" data-action="_undo"><span>{%: $.undoText %}</span></button>',
+    '<button class="btn-primary" data-action="clearValue"><span>{%: $.clearCanvasText %}</span></button>',
     '</div>',
     '<div>',
   ]),
@@ -116,6 +116,7 @@ const __class = declare('argos.Views.Signature', [View], /** @lends module:argos
     lineWidth: 3,
     penColor: 'blue',
     drawColor: 'red',
+    fillStyle: 'transparent',
   },
   /**
    * @property {Boolean}
@@ -195,13 +196,13 @@ const __class = declare('argos.Views.Signature', [View], /** @lends module:argos
    * @return Number[]
    */
   _getCoords: function _getCoords(e) {
-    const offset = $(this.signatureNode).position();
+    const rect = e.target.getBoundingClientRect();
     return e.touches ? [
-      e.touches[0].pageX - offset.left,
-      e.touches[0].pageY - offset.top,
+      e.touches[0].clientX - rect.x,
+      e.touches[0].clientY - rect.y,
     ] : [
-      e.clientX - offset.left,
-      e.clientY - offset.top,
+      e.offsetX,
+      e.offsetY,
     ];
   },
   /**
@@ -303,6 +304,7 @@ const __class = declare('argos.Views.Signature', [View], /** @lends module:argos
    * @param {Object} options Options to be passed to canvasDraw
    */
   redraw: function redraw(vector, canvas, options) {
+    canvas.getContext('2d').clearRect(0, 0, this.canvasNodeWidth, this.canvasNodeHeight);
     format.canvasDraw(vector, canvas, options);
   },
   /**

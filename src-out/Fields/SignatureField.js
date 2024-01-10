@@ -89,7 +89,8 @@ define('argos/Fields/SignatureField', ['module', 'exports', 'dojo/_base/declare'
       lineWidth: 1,
       penColor: 'blue',
       width: 180,
-      height: 50
+      height: 50,
+      fillStyle: 'transparent'
     },
     /**
      * @property {Simplate}
@@ -99,7 +100,7 @@ define('argos/Fields/SignatureField', ['module', 'exports', 'dojo/_base/declare'
      * * `$$` => Owner View instance
      *
      */
-    widgetTemplate: new Simplate(['<label for="{%= $.name %}">{%: $.label %}</label>', '<button class="button simpleSubHeaderButton" aria-label="{%: $.signatureLabelText %}"><span aria-hidden="true">{%: $.signatureText %}</span></button>', '<img data-dojo-attach-point="signatureNode" src="" width="{%: $.config.width %}" height="{%: $.config.height %}" alt="" />', '<input data-dojo-attach-point="inputNode" type="hidden">']),
+    widgetTemplate: new Simplate(['<label for="{%= $.name %}">{%: $.label %}</label>', '<button class="btn--secondary" aria-label="{%: $.signatureLabelText %}"><span aria-hidden="true">{%: $.signatureText %}</span></button>', '<img data-dojo-attach-point="signatureNode" src="" width="{%: $.config.width %}" height="{%: $.config.height %}" alt="" />', '<input data-dojo-attach-point="inputNode" type="hidden">']),
     /**
      * Extends the {@link EditorField#createNavigationOptions parent} implementation by
      * also passing the `signature` array.
