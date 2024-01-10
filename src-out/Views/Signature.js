@@ -70,12 +70,12 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
      * * `$` => Signature view instance
      *
      */
-    widgetTemplate: new Simplate(['<div id="{%= $.id %}" data-title="{%: $.titleText %}" class="panel {%= $.cls %}">', '{%! $.canvasTemplate %}', '<div class="buttons">', '<button class="button" data-action="_undo"><span>{%: $.undoText %}</span></button>', '<button class="button" data-action="clearValue"><span>{%: $.clearCanvasText %}</span></button>', '</div>', '<div>']),
+    widgetTemplate: new Simplate(['<div id="{%= $.id %}" data-title="{%: $.titleText %}" class="panel {%= $.cls %}">', '{%! $.canvasTemplate %}', '<div class="buttons">', '<button class="btn-secondary" data-action="_undo"><span>{%: $.undoText %}</span></button>', '<button class="btn-primary" data-action="clearValue"><span>{%: $.clearCanvasText %}</span></button>', '</div>', '<div>']),
     /**
      * @property {Simplate}
      * Simplate that defines the canvas with a set width and height
      */
-    canvasTemplate: new Simplate(['<canvas data-dojo-attach-point="signatureNode" width="{%: $.canvasNodeWidth %}" height="{%: $.canvasNodeHeight %}" data-dojo-attach-event="onmousedown:_penDown,onmousemove:_penMove,onmouseup:_penUp,ontouchstart:_penDown,ontouchmove:_penMove,ontouchend:_penUp"></canvas>']),
+    canvasTemplate: new Simplate(['<canvas class="canvas-area" data-dojo-attach-point="signatureNode" width="{%: $.canvasNodeWidth %}" height="{%: $.canvasNodeHeight %}" data-dojo-attach-event="onmousedown:_penDown,onmousemove:_penMove,onmouseup:_penUp,ontouchstart:_penDown,ontouchmove:_penMove,ontouchend:_penUp"></canvas>']),
     /**
      * @property {HTMLElement}
      * The dojo-attach-point for the canvas element
@@ -119,7 +119,8 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
       scale: 1,
       lineWidth: 3,
       penColor: 'blue',
-      drawColor: 'red'
+      drawColor: 'red',
+      fillStyle: 'transparent'
     },
     /**
      * @property {Boolean}
@@ -199,8 +200,8 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
      * @return Number[]
      */
     _getCoords: function _getCoords(e) {
-      var offset = $(this.signatureNode).position();
-      return e.touches ? [e.touches[0].pageX - offset.left, e.touches[0].pageY - offset.top] : [e.clientX - offset.left, e.clientY - offset.top];
+      var rect = e.target.getBoundingClientRect();
+      return e.touches ? [e.touches[0].clientX - rect.x, e.touches[0].clientY - rect.y] : [e.offsetX, e.offsetY];
     },
     /**
      * Handler for `ontouchstart`, records the starting point and sets the state to down
@@ -295,6 +296,7 @@ define('argos/Views/Signature', ['module', 'exports', 'dojo/_base/declare', '../
      * @param {Object} options Options to be passed to canvasDraw
      */
     redraw: function redraw(vector, canvas, options) {
+      canvas.getContext('2d').clearRect(0, 0, this.canvasNodeWidth, this.canvasNodeHeight);
       _Format2.default.canvasDraw(vector, canvas, options);
     },
     /**

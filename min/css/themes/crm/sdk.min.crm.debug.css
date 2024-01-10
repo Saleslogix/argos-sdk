@@ -624,6 +624,11 @@ li.relatedviewitem a {
 .application-menu-header .icon-close {
   order: 1;
 }
+.canvas-area {
+  border: 1px solid #999999;
+  border-radius: 3px;
+  margin: 10px 0 10px 0;
+}
 /*For the separate Contextual Menu*/
 .contextualContent > .scroller > .group-content > .list-content {
   margin: 0;
