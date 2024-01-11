@@ -156,7 +156,7 @@ const __class = declare('argos._ListBase', [View, _PullToRefreshMixin], /** @len
   moreTemplate: new Simplate([
     '<div class="list-more" data-dojo-attach-point="moreNode">',
     '<p class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></p>',
-    '<button class="btn" data-action="more">',
+    '<button class="btn-primary" data-action="more">',
     '<span>{%= $.moreText %}</span>',
     '</button>',
     '</div>',

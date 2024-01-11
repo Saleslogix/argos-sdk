@@ -73,7 +73,7 @@ define('argos/GroupedList', ['module', 'exports', 'dojo/_base/declare', 'dojo/st
      *
      * * more
      */
-    moreTemplate: new Simplate(['<div class="list-more" data-dojo-attach-point="moreNode">', '<p class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></p>', '<button class="btn" data-action="more">', '<span>{%= $.moreText %}</span>', '</button>', '</div>']),
+    moreTemplate: new Simplate(['<div class="list-more" data-dojo-attach-point="moreNode">', '<p class="list-remaining"><span data-dojo-attach-point="remainingContentNode"></span></p>', '<button class="btn-primary" data-action="more">', '<span>{%= $.moreText %}</span>', '</button>', '</div>']),
     /**
      * @property {Object}
      * The current group object that is compared to the next entries group object
