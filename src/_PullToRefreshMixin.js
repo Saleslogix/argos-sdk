@@ -165,6 +165,7 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends module:arg
 
     $(dragNode).on('touchmove', (evt) => {
       if (!data.pulling) {
+        distance = 0;
         return;
       }
 
@@ -179,7 +180,6 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends module:arg
 
       data.top = data.startTop + distance;
 
-      evt.preventDefault();
       $(this.dragNode).css({
         top: `${data.top}px`,
       });
@@ -215,6 +215,8 @@ const __class = declare('argos._PullToRefreshMixin', null, /** @lends module:arg
       } else {
         this.onPullToRefreshCancel();
       }
+
+      distance = 0;
     };
 
     $(dragNode).on('touchcancel', touchend);

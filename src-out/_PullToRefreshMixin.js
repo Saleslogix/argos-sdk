@@ -163,6 +163,7 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
 
       $(dragNode).on('touchmove', function (evt) {
         if (!data.pulling) {
+          distance = 0;
           return;
         }
 
@@ -177,7 +178,6 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
 
         data.top = data.startTop + distance;
 
-        evt.preventDefault();
         $(_this.dragNode).css({
           top: data.top + 'px'
         });
@@ -213,6 +213,8 @@ define('argos/_PullToRefreshMixin', ['module', 'exports', 'dojo/_base/declare', 
         } else {
           _this.onPullToRefreshCancel();
         }
+
+        distance = 0;
       };
 
       $(dragNode).on('touchcancel', touchend);
