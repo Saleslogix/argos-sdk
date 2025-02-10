@@ -92,8 +92,14 @@ define('argos/Fields/DecimalField', ['module', 'exports', 'dojo/_base/declare', 
     getValue: function getValue() {
       var value = this.inherited(getValue, arguments);
       var data = Soho.Locale.currentLocale.data;
-      // // SData (and other functions) expect American formatted numbers
-      value = value.replace(data.currencySign, '').replace(data.numbers.percentSign, '').replace(new RegExp(data.numbers.group, 'ig'), '').replace(data.numbers.decimal, '.');
+      // SData (and other functions) expect American formatted numbers
+      // For the RegExp, we need to escape the group separator that might be ".", which is any character in a RegExp
+      value = value.replace(data.currencySign, '').replace(data.numbers.percentSign, '').replace(new RegExp('\\' + data.numbers.group, 'ig'), '').replace(data.numbers.decimal, '.');
+
+      if (value === '') {
+        return 0;
+      }
+
       return parseFloat(value);
     },
     /**

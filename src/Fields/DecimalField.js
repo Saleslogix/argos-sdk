@@ -78,12 +78,18 @@ const control = declare('argos.Fields.DecimalField', [TextField], /** @lends mod
   getValue: function getValue() {
     let value = this.inherited(getValue, arguments);
     const data = Soho.Locale.currentLocale.data;
-    // // SData (and other functions) expect American formatted numbers
+    // SData (and other functions) expect American formatted numbers
+    // For the RegExp, we need to escape the group separator that might be ".", which is any character in a RegExp
     value = value
       .replace(data.currencySign, '')
       .replace(data.numbers.percentSign, '')
-      .replace(new RegExp(data.numbers.group, 'ig'), '')
+      .replace(new RegExp(`\\${data.numbers.group}`, 'ig'), '')
       .replace(data.numbers.decimal, '.');
+
+    if (value === '') {
+      return 0;
+    }
+
     return parseFloat(value);
   },
   /**

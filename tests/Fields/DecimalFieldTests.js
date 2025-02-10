@@ -133,6 +133,15 @@ return describe('Sage.Platform.Mobile.Fields.DecimalField', function() {
             expect(field.getValue()).toEqual(0.50);
             done();
         });
-    })
+    });
+    it('Can parse German', function(done) {
+        Soho.Locale.set('de').done(function() {
+            var field = new DecimalField();
+            var value = '100.600,50';
+            field.inputNode.value = value;
+            expect(field.getValue()).toEqual(100_600.50);
+            done();
+        });
+    });
 });
 });
